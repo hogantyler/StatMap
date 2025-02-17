@@ -1,0 +1,16 @@
+{
+  "files": {
+    "main.css": "/StatMap/static/css/main.f855e6bc.css",
+    "main.js": "/StatMap/static/js/main.53e0a3ac.js",
+    "static/js/453.8207fe03.chunk.js": "/StatMap/static/js/453.8207fe03.chunk.js",
+    "static/media/black_globe.svg": "/StatMap/static/media/black_globe.11ed65579c11797c5b2b3941e7516669.svg",
+    "index.html": "/StatMap/index.html",
+    "main.f855e6bc.css.map": "/StatMap/static/css/main.f855e6bc.css.map",
+    "main.53e0a3ac.js.map": "/StatMap/static/js/main.53e0a3ac.js.map",
+    "453.8207fe03.chunk.js.map": "/StatMap/static/js/453.8207fe03.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.f855e6bc.css",
+    "static/js/main.53e0a3ac.js"
+  ]
+}
