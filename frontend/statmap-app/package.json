@@ -1,8 +1,7 @@
 {
   "name": "statmap-app",
   "version": "0.1.0",
-  "homepage": "https://hogantyler.github.io/statmap",
-  "private": true,
+  "homepage": "https://hogantyler.github.io/StatMap",
   "dependencies": {
     "@testing-library/dom": "^10.4.0",
     "@testing-library/jest-dom": "^6.6.3",
