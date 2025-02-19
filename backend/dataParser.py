@@ -24,7 +24,7 @@ def dataParser(input_name, output_name):
 
     # Iterate through each row of the original df
     for _, row in df.iterrows():
-        country_data = row[:4].tolist()
+        country_data = row[:1].tolist()
 
         # Iterate through facts and their sources
         for i in range(5, len(row), 2):
@@ -42,9 +42,9 @@ def dataParser(input_name, output_name):
             "Fact",
             "Fact Source",
             "Country",
-            "Continent",
-            "Capital City",
-            "Abbreviation",
+            # "Continent",
+            # "Capital City",
+            # "Abbreviation",
         ],
     )
 

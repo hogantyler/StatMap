@@ -1,72 +1,142 @@
-Fact,Fact Source,Country,Continent,Capital City,Abbreviation
-"This tropical nation is composed of over 700 islands and more than 2,400 tiny cays, most of which are formed of limestone and coral.",https://en.wikipedia.org/wiki/The_Bahamas,Bahamas,N. America,Nassau,BHS
-"The country boasts the world’s third-largest barrier reef system, along with mysterious blue holes—rare underwater sinkholes that reveal a unique marine geology.",https://en.wikipedia.org/wiki/Andros_Island,Bahamas,N. America,Nassau,BHS
-"Known as a global offshore financial hub, this island nation offers policies like zero personal and corporate income taxes, attracting international investors.",https://www.cia.gov/the-world-factbook/countries/bahamas-the/,Bahamas,N. America,Nassau,BHS
-"Gaining independence in the early 1970s from a long-term colonial power, this country now operates as a parliamentary democracy that blends its colonial heritage with local customs.",https://en.wikipedia.org/wiki/Independence_of_the_Bahamas,Bahamas,N. America,Nassau,BHS
-"The islands are the exclusive habitat of a distinctive reptile—the rock iguana—a species found only on a few of these isles, underscoring its unique local biodiversity.",https://www.cia.gov/the-world-factbook/countries/bahamas-the/,Bahamas,N. America,Nassau,BHS
-"Off the coast of one of its islands lies an enigmatic arrangement of large limestone blocks, set out in a linear formation beneath the sea. This odd underwater ""road"" has sparked theories about ancient civilizations or even connections to lost continents.",https://en.wikipedia.org/wiki/Bimini_Road,Bahamas,N. America,Nassau,BHS
-"During the U.S. Prohibition era, this archipelago’s strategic location made it a crucial transit route for bootleg liquor. The legacy of rum-running along its shores has woven a colorful and clandestine chapter into its maritime history.",https://www.grandbahamamuseum.org/exhibits/culture/bootlegging-and-rum-running,Bahamas,N. America,Nassau,BHS
-"Nestled among its secluded cays, this nation shelters an endemic rodent—a small mammal once believed to be extinct. Its survival in such isolated habitats underscores the unique and fragile ecosystem found only here.",https://en.wikipedia.org/wiki/Bahamian_hutia,Bahamas,N. America,Nassau,BHS
-"In its capital, an 18th-century staircase—carved from solid limestone by enslaved labor—rises as a striking monument. This historic landmark not only reflects the nation’s colonial past but also symbolizes resilience and cultural heritage.",https://en.wikipedia.org/wiki/Queen%27s_Staircase,Bahamas,N. America,Nassau,BHS
-"This island nation spans over 700 islands but has a population of only about 400,000, making its communities quite small. An interesting local law even bans civilians from wearing military camouflage to keep a clear distinction with uniformed personnel.",https://www.cia.gov/the-world-factbook/countries/bahamas-the/,Bahamas,N. America,Nassau,BHS
-"Since 2017, this country became the only country to have a flag that doesn't have the colors red, white, or blue.",https://en.wikipedia.org/wiki/Flag_of_Jamaica,Jamaica,N. America,Kingston,JAM
-"This country's only female national hero is known as ""Nanny of the Maroons"" for leading warfare against the British, and is now featured on this country's $500 note.",https://enslaved.org/fullStory/16-23-126814/,Jamaica,N. America,Kingston,JAM
-This country is just the tip of an underwater mountain,https://kids.nationalgeographic.com/geography/countries/article/jamaica,Jamaica,N. America,Kingston,JAM
-"Out of top 5 of the fastest runners in the 100m race, 3 of them are from this country",https://www.geeksforgeeks.org/fastest-runners-in-the-world/,Jamaica,N. America,Kingston,JAM
-"Despite always having a tropical climate, this country had a bobsled team for the Winter Olympics",https://en.wikipedia.org/wiki/Jamaica_national_bobsleigh_team,Jamaica,N. America,Kingston,JAM
-This country holds the record for most churches per square mile,https://www.visitjamaica.com/discover-jamaica/music-culture/religion-faith/,Jamaica,N. America,Kingston,JAM
-Ian Fleming wrote all of the Goldeneye novels (James Bond series) in this country,https://www.britannica.com/biography/Ian-Fleming,Jamaica,N. America,Kingston,JAM
-This country has the world's highest murder rate (2022),https://worldpopulationreview.com/country-rankings/murder-rate-by-country,Jamaica,N. America,Kingston,JAM
-"This country's national fruit is the ackee, which can cause vomiting sickness and death if not prepared correctly.",https://en.wikipedia.org/wiki/Jamaican_vomiting_sickness,Jamaica,N. America,Kingston,JAM
-"This country is where the music genre ""Reggae"" originated",https://www.britannica.com/art/reggae,Jamaica,N. America,Kingston,JAM
-"This country has an archaeological site named ""Plain of Jars"", which features thousands of stone jars",https://whc.unesco.org/en/list/1587/,Laos,Asia,Vientiane,LAO
-This country celebrates New Year's during April with a water festival!,https://kampatour.com/lao-new-year,Laos,Asia,Vientiane,LAO
-"This country is also known as the ""Land of a Million Elephants."" ",https://iowaonline.uni.edu/folklife_v2/lessons/laos.pdf,Laos,Asia,Vientiane,LAO
-"This country houses a phenomena named the ""Naga Fireballs,"" where glowing fireballs are seen rising from the river.",https://www.sciencetimes.com/articles/47637/20231213/naga-fireballs-explained-understanding-thailand-s-mysterious-blobs-rising-mekong.htm,Laos,Asia,Vientiane,LAO
-"Despite being landlocked, this country has a region called ""4000 Islands.""",https://en.wikipedia.org/wiki/Si_Phan_Don,Laos,Asia,Vientiane,LAO
-"This country has the highest sticky-rice consumption per capita than any other country,",https://en.wikipedia.org/wiki/Lao_cuisine,Laos,Asia,Vientiane,LAO
-This country's flag originally featured a white three-headed elephant on a pedestal.,https://en.wikipedia.org/wiki/Flag_of_Laos,Laos,Asia,Vientiane,LAO
-"This country traditionally holds a Rocket Festival, where they construct and launch homemade rockets.",https://en.wikipedia.org/wiki/Rocket_Festival,Laos,Asia,Vientiane,LAO
-This country is the most bombed country in the world.,https://www.halotrust.org/where-we-work/south-asia/laos/,Laos,Asia,Vientiane,LAO
-"This country's traditional greeting is called ""Nop,"" where they place two hands together in prayer position at chest level.",https://culturalatlas.sbs.com.au/lao-culture/lao-culture-greetings,Laos,Asia,Vientiane,LAO
-"This country's capital city is gradually sinking, with estimates suggesting a descent of up to 12 centimeters annually.",https://www.contiki.com/six-two/article/fun-facts-about-mexico/?utm_source=chatgpt.com,Mexico,Mexico,Mexico,Mexico
-"Home to the world's largest pyramid by volume, surpassing even Egypt's Great Pyramid of Giza.",https://www.contiki.com/six-two/article/fun-facts-about-mexico/?utm_source=chatgpt.com,Mexico,Mexico,Mexico,Mexico
-"There's an eerie island where thousands of dolls hang from trees, believed to appease a young girl's spirit.",https://en.wikipedia.org/wiki/The_Island_of_the_Dolls?utm_source=chatgpt.com,Mexico,Mexico,Mexico,Mexico
-Jeans are banned in this country,https://www.bbc.com/news/world-asia-68664644.amp,North Korea,Asia,Pyongyang,PRK
-Mandatory military service last up to a decade here,https://www.cia.gov/the-world-factbook/field/military-service-age-and-obligation/,North Korea,Asia,Pyongyang,PRK
-This country has 100% literacy rate as reported,https://www.cia.gov/the-world-factbook/countries/korea-north/#people-and-society,North Korea,Asia,Pyongyang,PRK
-This country has its own set of basketball rules different from the rest of the world,The true story behind North Korea’s bizarre basketball rules | NK News,North Korea,Asia,Pyongyang,PRK
-Has the most militarized border in the world,"Kim, Eleana. “The Flight of Cranes: Militarized Nature at the North Korea–South Korea Border.” RCC Perspectives, no. 3, 2014, pp. 65–70. JSTOR, http://www.jstor.org/stable/26241252. Accessed 5 Feb. 2025.",North Korea,Asia,Pyongyang,PRK
-Slightly larger than Virginia; slightly smaller than Mississippi,"Korea, North - The World Factbook",North Korea,Asia,Pyongyang,PRK
-99.998% ethnically homogenous,https://en.wikipedia.org/wiki/Demographics_of_North_Korea,North Korea,Asia,Pyongyang,PRK
-Latest state to declare nuclear weapons in 2006,https://www.britannica.com/technology/list-of-states-with-nuclear-weapons-2227841,North Korea,Asia,Pyongyang,PRK
-"International calls are illegal, but marijuana is legal","https://www.huffpost.com/entry/marijuana-in-north-korea_n_4067341?utm_hp_ref=tw, https://www.rfa.org/english/news/korea/phone-06162021200510.html",North Korea,Asia,Pyongyang,PRK
-"Has stadium with world's largest capacity of 150,000 people",https://www.usatoday.com/story/sports/2024/07/28/biggest-largest-stadiums-in-world/74462698007/,North Korea,Asia,Pyongyang,PRK
-Home to the world biggest castle.,https://www.trafalgar.com/real-word/facts-poland/,Poland,Europe,Warsaw,POL
-Home to the world's oldest salt mine that you can still actually visit. Has a hidden church deep underground.,https://www.trafalgar.com/real-word/facts-poland/,Poland,Europe,Warsaw,POL
-Vodka originated from this country.,https://www.trafalgar.com/real-word/facts-poland/,Poland,Europe,Warsaw,POL
-The world's first upside down house was built here.,https://www.trafalgar.com/real-word/facts-poland/,Poland,Europe,Warsaw,POL
-96% of this countries citizens identify as Roman Catholic.,https://www.swiftpassportservices.com/blog/20-fun-facts-aboutpoland/,Poland,Europe,Warsaw,POL
-"In this country, Name Day celebrations are greater than their actual birthday.",https://www.swiftpassportservices.com/blog/20-fun-facts-aboutpoland/,Poland,Europe,Warsaw,POL
-This country has the second constitution in the world.,https://www.swiftpassportservices.com/blog/20-fun-facts-aboutpoland/,Poland,Europe,Warsaw,POL
-Home to 17 UNESCO World Heritage sites.,https://www.swiftpassportservices.com/blog/20-fun-facts-aboutpoland/,Poland,Europe,Warsaw,POL
-The first women to win a Nobel Prize was born in this country.,https://awaytothecity.com/fun-facts-about-poland/,Poland,Europe,Warsaw,POL
-"Home to one of the world's oldest restaurants, serving customers from 1273 (over 750 years).",https://awaytothecity.com/fun-facts-about-poland/,Poland,Europe,Warsaw,POL
-"This country has a national holiday for poky stick or ""pepero"" snack on November 11th.",https://en.wikipedia.org/wiki/Pepero_Day,South Korea,Asia,Seoul,KOR
-The earliest recorded food delivery in this country dates back to 1768.,https://en.wikipedia.org/wiki/Delivery_culture_in_South_Korea,South Korea,Asia,Seoul,KOR
-This country has the oldest surviving astronomical observatory in the world.,https://en.wikipedia.org/wiki/Cheomseongdae,South Korea,Asia,Seoul,KOR
-One of its kings invented the language used in this country.,https://en.m.wikipedia.org/wiki/Sejong_the_Great,South Korea,Asia,Seoul,KOR
-Worlds 9th largest military by active personnel.,https://www.statista.com/statistics/264443/the-worlds-largest-armies-based-on-active-force-level/,South Korea,Asia,Seoul,KOR
-"This country has its own unique liquor called ""soju""",https://en.m.wikipedia.org/wiki/Soju,South Korea,Asia,Seoul,KOR
-Highest tertiary education between 25-34 years of age.,https://asiaexchange.org/blogs/15-stunning-facts-about-south-korea/,South Korea,Asia,Seoul,KOR
-This country has urban myth that fans in closed rooms can kill someone. ,https://www.npr.org/sections/parallels/2015/08/09/430341089/south-koreas-quirky-notions-about-electric-fans,South Korea,Asia,Seoul,KOR
-"This country has a traditional clothing called ""hanbok""",https://en.m.wikipedia.org/wiki/Hanbok,South Korea,Asia,Seoul,KOR
-This country has most number of dolmen structures.,https://en.m.wikipedia.org/wiki/List_of_dolmens,South Korea,Asia,Seoul,KOR
-This country is home to the worlds first ice hotel.,https://www.icehotel.com/,Sweden,Europe,Stockholm,SWE
-Birthplace of Spotify,https://en.wikipedia.org/wiki/Spotify,Sweden,Europe,Stockholm,SWE
-Ranked 4th in the happiest countries in the world as of 2024,https://worldpopulationreview.com/country-rankings/happiest-countries-in-the-world,Sweden,Europe,Stockholm,SWE
-"Largest Nordic country at 450,295 square kilometers (173,860 sq mi)",https://en.wikipedia.org/wiki/Sweden,Sweden,Europe,Stockholm,SWE
-"The people of this country engage in Fika, a social coffee break often including pastries.",https://en.wikipedia.org/wiki/Coffee_culture#Sweden,Sweden,Europe,Stockholm,SWE
-This countries currency is the krona.,https://en.wikipedia.org/wiki/Swedish_krona,Sweden,Europe,Stockholm,SWE
-A popular dish in this country is meatballs served with lingonberry jam and mashed potatoes.,need source,Sweden,Europe,Stockholm,SWE
-The famous pop group ABBA was formed in this country.,https://en.wikipedia.org/wiki/ABBA,Sweden,Europe,Stockholm,SWE
+Fact,Fact Source,Country
+"This tropical nation is composed of over 700 islands and more than 2,400 tiny cays, most of which are formed of limestone and coral.",https://en.wikipedia.org/wiki/The_Bahamas,Bahamas
+"The country boasts the world’s third-largest barrier reef system, along with mysterious blue holes—rare underwater sinkholes that reveal a unique marine geology.",https://en.wikipedia.org/wiki/Andros_Island,Bahamas
+"Known as a global offshore financial hub, this island nation offers policies like zero personal and corporate income taxes, attracting international investors.",https://www.cia.gov/the-world-factbook/countries/bahamas-the/,Bahamas
+"Gaining independence in the early 1970s from a long-term colonial power, this country now operates as a parliamentary democracy that blends its colonial heritage with local customs.",https://en.wikipedia.org/wiki/Independence_of_the_Bahamas,Bahamas
+"The islands are the exclusive habitat of a distinctive reptile—the rock iguana—a species found only on a few of these isles, underscoring its unique local biodiversity.",https://www.cia.gov/the-world-factbook/countries/bahamas-the/,Bahamas
+"Off the coast of one of its islands lies an enigmatic arrangement of large limestone blocks, set out in a linear formation beneath the sea. This odd underwater ""road"" has sparked theories about ancient civilizations or even connections to lost continents.",https://en.wikipedia.org/wiki/Bimini_Road,Bahamas
+"During the U.S. Prohibition era, this archipelago’s strategic location made it a crucial transit route for bootleg liquor. The legacy of rum-running along its shores has woven a colorful and clandestine chapter into its maritime history.",https://www.grandbahamamuseum.org/exhibits/culture/bootlegging-and-rum-running,Bahamas
+"Nestled among its secluded cays, this nation shelters an endemic rodent—a small mammal once believed to be extinct. Its survival in such isolated habitats underscores the unique and fragile ecosystem found only here.",https://en.wikipedia.org/wiki/Bahamian_hutia,Bahamas
+"In its capital, an 18th-century staircase—carved from solid limestone by enslaved labor—rises as a striking monument. This historic landmark not only reflects the nation’s colonial past but also symbolizes resilience and cultural heritage.",https://en.wikipedia.org/wiki/Queen%27s_Staircase,Bahamas
+"This island nation spans over 700 islands but has a population of only about 400,000, making its communities quite small. An interesting local law even bans civilians from wearing military camouflage to keep a clear distinction with uniformed personnel.",https://www.cia.gov/the-world-factbook/countries/bahamas-the/,Bahamas
+This country is the fashion capital of the world.,,France
+This country has the largest museum in the world - home to the Mona Lisa.,,France
+This country is considered the birthplace of the metric system.,https://en.wikipedia.org/wiki/History_of_the_metric_system,France
+The United States was gifted the Statue of Liberty by this country.,https://en.wikipedia.org/wiki/Statue_of_Liberty,France
+"This countries capital is nicknamed the ""City of Light"".",,France
+"Since 2017, this country became the only country to have a flag that doesn't have the colors red, white, or blue.",https://en.wikipedia.org/wiki/Flag_of_Jamaica,Jamaica
+"This country's only female national hero is known as ""Nanny of the Maroons"" for leading warfare against the British, and is now featured on this country's $500 note.",https://enslaved.org/fullStory/16-23-126814/,Jamaica
+This country is just the tip of an underwater mountain,https://kids.nationalgeographic.com/geography/countries/article/jamaica,Jamaica
+"Out of top 5 of the fastest runners in the 100m race, 3 of them are from this country",https://www.geeksforgeeks.org/fastest-runners-in-the-world/,Jamaica
+"Despite always having a tropical climate, this country had a bobsled team for the Winter Olympics",https://en.wikipedia.org/wiki/Jamaica_national_bobsleigh_team,Jamaica
+This country holds the record for most churches per square mile,https://www.visitjamaica.com/discover-jamaica/music-culture/religion-faith/,Jamaica
+Ian Fleming wrote all of the Goldeneye novels (James Bond series) in this country,https://www.britannica.com/biography/Ian-Fleming,Jamaica
+This country has the world's highest murder rate (2022),https://worldpopulationreview.com/country-rankings/murder-rate-by-country,Jamaica
+"This country's national fruit is the ackee, which can cause vomiting sickness and death if not prepared correctly.",https://en.wikipedia.org/wiki/Jamaican_vomiting_sickness,Jamaica
+"This country is where the music genre ""Reggae"" originated",https://www.britannica.com/art/reggae,Jamaica
+The Curse of the Colonel,https://www.thehanshintigers.com/team-history/top-10-infamous-moments/the-curse-of-colonel-sanders/,Japan
+This country has more adult diaper sales surpassing baby diaper sales,https://www.businessinsider.com/japan-company-shifts-adult-diapers-due-low-birth-rates-babies-2024-3?utm_source=chatgpt.com,Japan
+This country has a vending machine for every 23 people.,https://youtu.be/9UJzVLXmBG4?si=OZnK2VJxA74A2ECA,Japan
+This country uses blue traffic lights instead of green because of historical language quirks behind the word blue.,https://en.wikipedia.org/wiki/Traffic_light,Japan
+"This country provides ""corpse hotels"" where deceased loved ones are placed into a refridgerated capsule until a funeral can be arranged",https://www.nytimes.com/2017/07/01/world/asia/japan-corpse-hotels.html,Japan
+"This country holds a ""Crying Baby Sumo"" competition, where sumo wrestlers hold babies in a ring and try to make them cry first.",https://en.wikipedia.org/wiki/Naki_Sumo_Crying_Baby_Festival,Japan
+"This country annually hosts the ""Penis Festival,"" meant to promote sexual health awareness.",https://www.japan.travel/en/spot/362/,Japan
+"This country has a ""Rabbit Island,"" occupied majorly by rabbits, which was formely a secret poison gas factory.",https://www.japan.travel/en/spot/871/,Japan
+This country has a rent-a-family service.,https://en.wikipedia.org/wiki/Rental_family_service,Japan
+"This country has a place known as the ""Suicide Forest,"" with dense trees that make the area eerily silent.",https://en.wikipedia.org/wiki/Aokigahara,Japan
+"This country has an archaeological site named ""Plain of Jars"", which features thousands of stone jars",https://whc.unesco.org/en/list/1587/,Laos
+This country celebrates New Year's during April with a water festival!,https://kampatour.com/lao-new-year,Laos
+"This country is also known as the ""Land of a Million Elephants."" ",https://iowaonline.uni.edu/folklife_v2/lessons/laos.pdf,Laos
+"This country houses a phenomena named the ""Naga Fireballs,"" where glowing fireballs are seen rising from the river.",https://www.sciencetimes.com/articles/47637/20231213/naga-fireballs-explained-understanding-thailand-s-mysterious-blobs-rising-mekong.htm,Laos
+"Despite being landlocked, this country has a region called ""4000 Islands.""",https://en.wikipedia.org/wiki/Si_Phan_Don,Laos
+"This country has the highest sticky-rice consumption per capita than any other country,",https://en.wikipedia.org/wiki/Lao_cuisine,Laos
+This country's flag originally featured a white three-headed elephant on a pedestal.,https://en.wikipedia.org/wiki/Flag_of_Laos,Laos
+"This country traditionally holds a Rocket Festival, where they construct and launch homemade rockets.",https://en.wikipedia.org/wiki/Rocket_Festival,Laos
+This country is the most bombed country in the world.,https://www.halotrust.org/where-we-work/south-asia/laos/,Laos
+"This country's traditional greeting is called ""Nop,"" where they place two hands together in prayer position at chest level.",https://culturalatlas.sbs.com.au/lao-culture/lao-culture-greetings,Laos
+"This country's capital city is gradually sinking, with estimates suggesting a descent of up to 12 centimeters annually.",https://www.contiki.com/six-two/article/fun-facts-about-mexico/?utm_source=chatgpt.com,Mexico
+"Home to the world's largest pyramid by volume, surpassing even Egypt's Great Pyramid of Giza.",https://www.contiki.com/six-two/article/fun-facts-about-mexico/?utm_source=chatgpt.com,Mexico
+"There's an eerie island where thousands of dolls hang from trees, believed to appease a young girl's spirit.",https://en.wikipedia.org/wiki/The_Island_of_the_Dolls?utm_source=chatgpt.com,Mexico
+"A vast network of tunnels, thought to be up to 500 years old, was discovered beneath a major city in this country in 2015.",https://en.wikipedia.org/wiki/Puebla_tunnels?utm_source=chatgpt.com,Mexico
+Native salamanders possess the remarkable ability to regenerate limbs and even parts of their brain and heart.,https://www.lemonde.fr/planete/article/2024/08/26/au-mexique-les-axolotls-de-fascinantes-salamandres-placees-sous-la-protection-de-religieuses-dominicaines_6295794_3244.html?utm_source=chatgpt.com,Mexico
+A bridal shop in this country features a mannequin rumored to be the embalmed corpse of the previous owner's daughter.,https://en.wikipedia.org/wiki/Ghosts_in_Mexican_culture?utm_source=chatgpt.com,Mexico
+"Due to unique climatic conditions, bodies interred in a certain area of this country naturally mummify and are now displayed in a dedicated museum.",https://en.wikipedia.org/wiki/Mummies_of_Guanajuato?utm_source=chatgpt.com,Mexico
+"Residents of a coastal city from this country believe it's shielded from hurricanes by an underwater alien base, with no direct hits since 1967.",https://www.the-sun.com/news/13155656/amupac-alien-base-mexico/?utm_source=chatgpt.com,Mexico
+"In certain indigenous cultures of this country, a third gender known as ""Muxe"" is recognized and has been an integral part of the community for centuries.",https://www.contiki.com/six-two/article/fun-facts-about-mexico/?utm_source=chatgpt.com,Mexico
+"An annual event in this country showcases large, colorful sculptures of fantastical creatures, celebrating a unique form of folk art.",https://en.wikipedia.org/wiki/Mexico_City_Alebrije_Parade?utm_source=chatgpt.com,Mexico
+"There's a city where all buildings are painted in various shades of blue, creating a tranquil and picturesque atmosphere.",https://www.elegantresorts.co.uk/eleganttraveller/story/ten-interesting-facts-about-morocco?utm_source=chatgpt.com,Morocco
+"This country is home to the world's oldest continuously operating university, founded in 859 AD.",https://www.nativemorocco.com/post/10-things-you-didn-t-know-about-morocco?utm_source=chatgpt.com,Morocco
+"By law, all buildings in a major city from this country must be painted red, earning it the nickname 'the Red City'.",https://www.originaltravel.co.uk/travel-guide/morocco/fun-facts?utm_source=chatgpt.com,Morocco
+"In certain regions of this country, goats can be seen climbing argan trees to eat their fruit, a behavior unique to this area.",https://www.nationalgeographic.com/travel/article/video-watch-bizarre-tree-climbing-goats-in-action-morocco?utm_source=chatgpt.com,Morocco
+"In local culture, the liver, rather than the heart, is considered the symbol of love.",https://www.originaltravel.co.uk/travel-guide/morocco/fun-facts?utm_source=chatgpt.com,Morocco
+"This country has become a hotspot for meteorite hunting, with numerous finds since the late 1990s.",https://www.wired.com/story/morocco-meteorites-saharan-gold-rush/?utm_source=chatgpt.com,Morocco
+"This country features historical underground vaults, often referred to as a prison, with legends of vast, maze-like chambers.",https://en.wikipedia.org/wiki/Qara_Prison?utm_source=chatgpt.com,Morocco
+"This countrty boasts four imperial cities, each having served as the nation's capital at different times.",https://www.trafalgar.com/real-word/facts-about-morocco/?utm_source=chatgpt.com,Morocco
+Jeans are banned in this country,https://www.bbc.com/news/world-asia-68664644.amp,North Korea
+Mandatory military service last up to a decade here,https://www.cia.gov/the-world-factbook/field/military-service-age-and-obligation/,North Korea
+This country has 100% literacy rate as reported,https://www.cia.gov/the-world-factbook/countries/korea-north/#people-and-society,North Korea
+This country has its own set of basketball rules different from the rest of the world,The true story behind North Korea’s bizarre basketball rules | NK News,North Korea
+Has the most militarized border in the world,"Kim, Eleana. “The Flight of Cranes: Militarized Nature at the North Korea–South Korea Border.” RCC Perspectives, no. 3, 2014, pp. 65–70. JSTOR, http://www.jstor.org/stable/26241252. Accessed 5 Feb. 2025.",North Korea
+Slightly larger than Virginia; slightly smaller than Mississippi,"Korea, North - The World Factbook",North Korea
+99.998% ethnically homogenous,https://en.wikipedia.org/wiki/Demographics_of_North_Korea,North Korea
+Latest state to declare nuclear weapons in 2006,https://www.britannica.com/technology/list-of-states-with-nuclear-weapons-2227841,North Korea
+"International calls are illegal, but marijuana is legal","https://www.huffpost.com/entry/marijuana-in-north-korea_n_4067341?utm_hp_ref=tw, https://www.rfa.org/english/news/korea/phone-06162021200510.html",North Korea
+"Has stadium with world's largest capacity of 150,000 people",https://www.usatoday.com/story/sports/2024/07/28/biggest-largest-stadiums-in-world/74462698007/,North Korea
+Home to the world biggest castle.,https://www.trafalgar.com/real-word/facts-poland/,Poland
+Home to the world's oldest salt mine that you can still actually visit. Has a hidden church deep underground.,https://www.trafalgar.com/real-word/facts-poland/,Poland
+Vodka originated from this country.,https://www.trafalgar.com/real-word/facts-poland/,Poland
+The world's first upside down house was built here.,https://www.trafalgar.com/real-word/facts-poland/,Poland
+96% of this countries citizens identify as Roman Catholic.,https://www.swiftpassportservices.com/blog/20-fun-facts-aboutpoland/,Poland
+"In this country, Name Day celebrations are greater than their actual birthday.",https://www.swiftpassportservices.com/blog/20-fun-facts-aboutpoland/,Poland
+This country has the second constitution in the world.,https://www.swiftpassportservices.com/blog/20-fun-facts-aboutpoland/,Poland
+Home to 17 UNESCO World Heritage sites.,https://www.swiftpassportservices.com/blog/20-fun-facts-aboutpoland/,Poland
+The first women to win a Nobel Prize was born in this country.,https://awaytothecity.com/fun-facts-about-poland/,Poland
+"Home to one of the world's oldest restaurants, serving customers from 1273 (over 750 years).",https://awaytothecity.com/fun-facts-about-poland/,Poland
+The most common name here is Franc for men and Marija for women,https://the-slovenia.com/en/slovenia/top-100-facts-about-slovenia/,Slovenia
+The oldest vinyard in the world is located here,https://the-slovenia.com/en/slovenia/top-100-facts-about-slovenia/,Slovenia
+At least 60% of the population work out at least 3 hours a week,https://the-slovenia.com/en/slovenia/top-100-facts-about-slovenia/,Slovenia
+"An average person here eats around 123 kg of wheat products, 111 kg of vegetables, 93 kg of meat, 88 kg of fruit, 67 kg of potatoes, 11 kg of eggs, 5kg of rice and 1kg of honey per year",https://the-slovenia.com/en/slovenia/top-100-facts-about-slovenia/,Slovenia
+The first married couple to climb Mount Everest came from here,https://the-slovenia.com/en/slovenia/top-100-facts-about-slovenia/,Slovenia
+"There are around 90,000 beekeepers in this country",https://the-slovenia.com/en/slovenia/top-100-facts-about-slovenia/,Slovenia
+"More than half of the country is covered with forests, making it one of the greenest countries in the world",https://the-slovenia.com/en/slovenia/top-100-facts-about-slovenia/,Slovenia
+A remarkable 53.6 percent of this countries land is protected,https://the-slovenia.com/en/slovenia/top-100-facts-about-slovenia/,Slovenia
+This country has one of the largest underground canyons in the world,https://the-slovenia.com/en/slovenia/top-100-facts-about-slovenia/,Slovenia
+There is only 46.6 kilometres of coastline here,https://the-slovenia.com/en/slovenia/top-100-facts-about-slovenia/,Slovenia
+Nelson Mandela is from here,https://en.wikipedia.org/wiki/Nelson_Mandela,South Africa
+Maintain three capital cities,https://en.wikipedia.org/wiki/South_Africa,South Africa
+"Home to ""cradle of humankind"" that is considered birth place of humanity",https://en.wikipedia.org/wiki/Cradle_of_Humankind,South Africa
+"Only place for ""big five"" animals",https://en.wikipedia.org/wiki/Big_Five_game,South Africa
+"World's longest wine ""route 62"" is located.","https://en.wikipedia.org/wiki/Route_62_(South_Africa)#:~:text=Also%20known%20as%20the%20Wine,wine%20routes%20in%20the%20world.",South Africa
+Elon Musk was born here.,Elon Musk - Wikipedia,South Africa
+Most number of Afrikaans spoken here.,Afrikaans - Wikipedia,South Africa
+"Gained independence from British Empire in May 31, 1910.",South Africa - Wikipedia,South Africa
+Hosted 2010 World Cup.,2010 FIFA World Cup - Wikipedia,South Africa
+Ranked 40th for nominal GDP in 2023.,List of countries by GDP (nominal) - Wikipedia,South Africa
+"This country has a national holiday for poky stick or ""pepero"" snack on November 11th.",https://en.wikipedia.org/wiki/Pepero_Day,South Korea
+The earliest recorded food delivery in this country dates back to 1768.,https://en.wikipedia.org/wiki/Delivery_culture_in_South_Korea,South Korea
+This country has the oldest surviving astronomical observatory in the world.,https://en.wikipedia.org/wiki/Cheomseongdae,South Korea
+One of its kings invented the language used in this country.,https://en.m.wikipedia.org/wiki/Sejong_the_Great,South Korea
+Worlds 9th largest military by active personnel.,https://www.statista.com/statistics/264443/the-worlds-largest-armies-based-on-active-force-level/,South Korea
+"This country has its own unique liquor called ""soju""",https://en.m.wikipedia.org/wiki/Soju,South Korea
+Highest tertiary education between 25-34 years of age.,https://asiaexchange.org/blogs/15-stunning-facts-about-south-korea/,South Korea
+This country has urban myth that fans in closed rooms can kill someone. ,https://www.npr.org/sections/parallels/2015/08/09/430341089/south-koreas-quirky-notions-about-electric-fans,South Korea
+"This country has a traditional clothing called ""hanbok""",https://en.m.wikipedia.org/wiki/Hanbok,South Korea
+This country has most number of dolmen structures.,https://en.m.wikipedia.org/wiki/List_of_dolmens,South Korea
+This country is home to the worlds first ice hotel.,https://www.icehotel.com/,Sweden
+Birthplace of Spotify,https://en.wikipedia.org/wiki/Spotify,Sweden
+Ranked 4th in the happiest countries in the world as of 2024,https://worldpopulationreview.com/country-rankings/happiest-countries-in-the-world,Sweden
+"Largest Nordic country at 450,295 square kilometers (173,860 sq mi)",https://en.wikipedia.org/wiki/Sweden,Sweden
+"The people of this country engage in Fika, a social coffee break often including pastries.",https://en.wikipedia.org/wiki/Coffee_culture#Sweden,Sweden
+This countries currency is the krona.,https://en.wikipedia.org/wiki/Swedish_krona,Sweden
+A popular dish in this country is meatballs served with lingonberry jam and mashed potatoes.,need source,Sweden
+The famous pop group ABBA was formed in this country.,https://en.wikipedia.org/wiki/ABBA,Sweden
+8% of the worlds mammel scepcies can be found here,"https://www.safarisrwandasafari.com/information/facts-about-uganda-that-you-should-know/#:~:text=Uganda%20experiences%20tropical%20climate%20having,can%20be%20found%20in%20Uganda.&text=Uganda%20has%20some%20of%20the,producing%20country%20in%20the%20world.",Uganda
+This country is the second largest banana producer in the world,"https://www.safarisrwandasafari.com/information/facts-about-uganda-that-you-should-know/#:~:text=Uganda%20experiences%20tropical%20climate%20having,can%20be%20found%20in%20Uganda.&text=Uganda%20has%20some%20of%20the,producing%20country%20in%20the%20world.",Uganda
+This country has been ranked in 2012 and 2016 as the worlds top tourist destination,"https://www.safarisrwandasafari.com/information/facts-about-uganda-that-you-should-know/#:~:text=Uganda%20experiences%20tropical%20climate%20having,can%20be%20found%20in%20Uganda.&text=Uganda%20has%20some%20of%20the,producing%20country%20in%20the%20world.",Uganda
+This country boasts the highest concentration of primates of anywhere else in the world,"https://www.safarisrwandasafari.com/information/facts-about-uganda-that-you-should-know/#:~:text=Uganda%20experiences%20tropical%20climate%20having,can%20be%20found%20in%20Uganda.&text=Uganda%20has%20some%20of%20the,producing%20country%20in%20the%20world.",Uganda
+Ranked 133rd happiest courtyard (flat country) in the world,"https://www.safarisrwandasafari.com/information/facts-about-uganda-that-you-should-know/#:~:text=Uganda%20experiences%20tropical%20climate%20having,can%20be%20found%20in%20Uganda.&text=Uganda%20has%20some%20of%20the,producing%20country%20in%20the%20world.",Uganda
+This country is ranked the 2nd youngest country in the world,"https://www.safarisrwandasafari.com/information/facts-about-uganda-that-you-should-know/#:~:text=Uganda%20experiences%20tropical%20climate%20having,can%20be%20found%20in%20Uganda.&text=Uganda%20has%20some%20of%20the,producing%20country%20in%20the%20world.",Uganda
+The grey crowned cane is this countries official bird,"https://www.safarisrwandasafari.com/information/facts-about-uganda-that-you-should-know/#:~:text=Uganda%20experiences%20tropical%20climate%20having,can%20be%20found%20in%20Uganda.&text=Uganda%20has%20some%20of%20the,producing%20country%20in%20the%20world.",Uganda
+1066 different bird species have been identified here,https://destinationuganda.com/travel-guide/10-awesome-things-about-uganda/,Uganda
+"Size: 241,038 km² (93,263 sq mi) – 18.2% water & swamps",https://www.nkuringosafaris.com/basic-facts-about-uganda/,Uganda
+"There are 56 tribes here, each with their own language",https://www.nkuringosafaris.com/basic-facts-about-uganda/,Uganda
+Home to the Burj Khalifa in Dubai—the tallest building on the planet.,https://en.wikipedia.org/wiki/Burj_Khalifa,United Arab Emirates
+Palm Jumeirah is a world-famous man-made island that redefines luxury waterfront living.,https://www.nakheel.com/,United Arab Emirates
+"A federation established in 1971, this country is composed of seven emirates, including Abu Dhabi, Dubai, and Sharjah.",https://en.wikipedia.org/wiki/United_Arab_Emirates,United Arab Emirates
+"Every year, Dubai lights up with the renowned Dubai Shopping Festival, drawing millions of visitors.",https://en.wikipedia.org/wiki/Dubai_Shopping_Festival,United Arab Emirates
+The Sheikh Zayed Grand Mosque stands as a breathtaking symbol of Islamic art and architecture in this country.,https://en.wikipedia.org/wiki/Sheikh_Zayed_Grand_Mosque,United Arab Emirates
+"From vast deserts to futuristic skylines, cities like Dubai and Abu Dhabi are a testament to rapid modern development.",https://en.wikipedia.org/wiki/Abu_Dhabi,United Arab Emirates
+"Once known solely for oil, this country now thrives as a global hub for tourism, finance, and technology.",https://en.wikipedia.org/wiki/Economy_of_the_United_Arab_Emirates,United Arab Emirates
+"Only in this country can you hit the slopes indoors at Ski Dubai, the world’s first indoor ski resort.",https://www.skidxb.com/en-ae/ski-dubai,United Arab Emirates
+"A true crossroads of tradition and modernity, this country celebrates a blend of deep-rooted Emirati heritage and cosmopolitan influences.",https://en.wikipedia.org/wiki/Culture_of_the_United_Arab_Emirates,United Arab Emirates
+"Native citizens make up only a small fraction of the total population, as expatriates from over 200 countries form the majority—creating a truly global melting pot in the heart of the desert!",https://www.cia.gov/the-world-factbook/countries/united-arab-emirates/,United Arab Emirates
