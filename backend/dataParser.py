@@ -10,7 +10,7 @@ def dataParser(input_name, output_name):
     ...Fact10, Fact10 Source
 
     and modifies the csv file to be in the form of:
-    Fact, Fact Source, Country, Continent, Capital, Abbreviation
+    Fact, Fact Source, Country
 
     Parameters:
     input_name (str): The relative path to the original CSV file
