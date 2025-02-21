@@ -18,12 +18,19 @@ const Landing = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4 p-4 w-full min-h-screen">
+    <div className="relative flex flex-col items-center justify-center gap-4 p-4 w-full min-h-screen">
+      <div className="absolute top-4 right-4 bg-white border border-black p-4 rounded-lg shadow-lg w-[32rem] h-40">
+        <h3 className="text-xl font-semibold">STATMAP</h3>
+        <p className="text-sm">A game to learn more about the countries around the world.</p>
+        <button className="absolute bottom-4 left-4 bg-black text-white py-2 px-4 rounded-lg hover:bg-white hover:text-black border border-black">
+          SIGN IN
+        </button>
+      </div>
       <div className="flex justify-start w-full h-full">
         <img 
           src={BlackGlobe} 
           alt="black globe" 
-          className="h-screen max-h-screen w-auto" 
+          className="h-screen max-h-screen w-auto ml-0 sm:ml-0 md:ml-16 lg:ml-32 xl:ml-32" 
         />
       </div>
       <HoverDropMenu onSignInClick={handleOpenModal} />
