@@ -7,8 +7,6 @@ import Landing from './Landing';
 function App() {
   return (
     <div className="flex">
-      <img className='float-left' src={blackGlobe} alt="black globe" />
-      
       <Landing />
     </div>
   );
