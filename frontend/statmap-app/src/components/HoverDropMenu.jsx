@@ -13,9 +13,9 @@ import { FaMapMarkedAlt } from "react-icons/fa";
 
 const HoverDropMenu = () => {
   return (
-    <div className="group absolute top-6 left-6 ml-6 cursor-pointer z-50">
+    <div className="group absolute top-6 left-6 ml-6 cursor-pointer z-50 shadow-xl">
       <FlyoutLink href="#" FlyoutContent={MenuContent}>
-        <div className="w-18 h-18 flex items-center justify-center bg-black rounded-lg">
+        <div className="w-18 h-18 flex items-center justify-center bg-black rounded-lg shadow-xl">
           <HiMenu size={72} className="text-white" />
         </div>
       </FlyoutLink>
