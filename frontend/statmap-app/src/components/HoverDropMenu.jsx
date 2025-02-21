@@ -60,40 +60,75 @@ const FlyoutLink = ({ children, href, FlyoutContent, onSignInClick }) => {
 };
 
 const MenuContent = ({ onSignInClick }) => {
-  return (
-    <div className="w-96 bg-black p-9 shadow-xl text-white text-lg space-y-6 rounded-lg">
-      <div className="mb-6 space-y-6">
-        <h3 className="font-semibold text-xl flex items-center">
-          <FaMapMarkedAlt className="mr-2 w-6 h-6" />
-          STATMAP MENU
-        </h3>
-        <button onClick={onSignInClick} className="flex items-center text-lg hover:bg-white hover:text-black p-2 rounded">
-          <FaSignInAlt className="mr-4 w-6 h-6" />
-          SIGN-IN
+    return (
+      <div className="w-96 bg-black p-9 shadow-xl text-white text-lg space-y-6 rounded-lg">
+        <div className="mb-6 space-y-6">
+          <h3 className="font-semibold text-xl flex items-center">
+            <FaMapMarkedAlt className="mr-2 w-6 h-6" />
+            STATMAP MENU
+          </h3>
+          <button
+            onClick={onSignInClick}
+            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full" // Added w-full
+          >
+            <div className="flex items-center">
+              <FaSignInAlt className="mr-4 w-6 h-6" />
+              <span>SIGN-IN</span>
+            </div>
+            <p className="ml-10 text-sm">Access your account</p>
+          </button>
+          <a
+            href="#"
+            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full" // Added w-full
+          >
+            <div className="flex items-center">
+              <FaGamepad className="mr-4 w-6 h-6" />
+              <span>GAMEPLAY</span>
+            </div>
+            <p className="ml-10 text-sm">Start playing games</p>
+          </a>
+          <a
+            href="#"
+            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full" // Added w-full
+          >
+            <div className="flex items-center">
+              <FaTrophy className="mr-4 w-6 h-6" />
+              <span>LEADERBOARDS</span>
+            </div>
+            <p className="ml-10 text-sm">View top players</p>
+          </a>
+          <a
+            href="#"
+            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full" // Added w-full
+          >
+            <div className="flex items-center">
+              <FaUserCircle className="mr-4 w-6 h-6" />
+              <span>ACCOUNT</span>
+            </div>
+            <p className="ml-10 text-sm">Manage your profile</p>
+          </a>
+          <a
+            href="#"
+            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full" // Added w-full
+          >
+            <div className="flex items-center">
+              <FaCog className="mr-4 w-6 h-6" />
+              <span>SETTINGS</span>
+            </div>
+            <p className="ml-10 text-sm">Adjust your preferences</p>
+          </a>
+        </div>
+        <button className="group flex flex-col items-center justify-center w-full rounded-lg border-4 border-white px-4 py-2 font-semibold text-lg transition-colors hover:bg-white hover:text-black">
+          <div className="mr-4">
+          <div className="flex items-center">
+            <FaEnvelope className="mr-4 w-6 h-6" />
+            <span>CONTACT US</span>
+          </div>
+          <p className="ml-8 text-sm">Get in touch with us</p>
+          </div>
         </button>
-        <a href="#" className="flex items-center text-lg hover:bg-white hover:text-black p-2 rounded">
-          <FaGamepad className="mr-4 w-6 h-6" />
-          GAMEPLAY
-        </a>
-        <a href="#" className="flex items-center text-lg hover:bg-white hover:text-black p-2 rounded">
-          <FaTrophy className="mr-4 w-6 h-6" />
-          LEADERBOARDS
-        </a>
-        <a href="#" className="flex items-center text-lg hover:bg-white hover:text-black p-2 rounded">
-          <FaUserCircle className="mr-4 w-6 h-6" />
-          ACCOUNT
-        </a>
-        <a href="#" className="flex items-center text-lg hover:bg-white hover:text-black p-2 rounded">
-          <FaCog className="mr-4 w-6 h-6" />
-          SETTINGS
-        </a>
       </div>
-      <button className="flex items-center justify-center w-full rounded-lg border-4 border-white px-4 py-2 font-semibold text-lg transition-colors hover:bg-white hover:text-black">
-        <FaEnvelope className="mr-4 w-6 h-6" />
-        CONTACT US
-      </button>
-    </div>
-  );
-};
-
-export default HoverDropMenu;
+    );
+  };
+  
+  export default HoverDropMenu;
