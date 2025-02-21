@@ -11,10 +11,10 @@ import {
 } from "react-icons/fa";
 import { FaMapMarkedAlt } from "react-icons/fa";
 
-const Example = () => {
+const HoverDropMenu = () => {
   return (
     <div className="group absolute top-6 left-6 ml-6 cursor-pointer z-50">
-      <FlyoutLink href="#" FlyoutContent={PricingContent}>
+      <FlyoutLink href="#" FlyoutContent={MenuContent}>
         <div className="w-18 h-18 flex items-center justify-center bg-black rounded-lg">
           <HiMenu size={48} className="text-white" />
         </div>
@@ -59,7 +59,7 @@ const FlyoutLink = ({ children, href, FlyoutContent }) => {
   );
 };
 
-const PricingContent = () => {
+const MenuContent = () => {
   return (
     <div className="w-96 bg-black p-9 shadow-xl text-white text-lg space-y-6 rounded-lg">
       <div className="mb-6 space-y-6">
@@ -96,4 +96,4 @@ const PricingContent = () => {
   );
 };
 
-export default Example;
+export default HoverDropMenu;
