@@ -26,6 +26,11 @@ const Landing = () => {
           SIGN IN
         </button>
       </div>
+      <div className="absolute top-48 right-4">
+        <button className="bg-black text-white py-2 px-4 rounded-lg hover:bg-white hover:text-black border border-black">
+          PLAY
+        </button>
+      </div>
       <div className="flex justify-start w-full h-full">
         <img 
           src={BlackGlobe} 
