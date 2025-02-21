@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import DropMenu from "./DropMenu";
 import BlackGlobe from './black_globe.svg';
 
