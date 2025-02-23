@@ -3,9 +3,11 @@ import BlackGlobe from '../black_globe.svg';
 import HoverDropMenu from "./HoverDropMenu";
 import Login from "./Login";
 import Modal from "./Modal";
+import { useNavigate } from "react-router-dom";
 
 const Landing = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const navigate = useNavigate();
 
   const handleOpenModal = () => {
     console.log("Opening modal");
@@ -27,7 +29,8 @@ const Landing = () => {
         </button>
       </div>
       <div className="absolute top-48 right-4">
-        <button className="bg-black text-white py-2 px-4 rounded-lg hover:bg-white hover:text-black border border-black">
+        <button className="bg-black text-white py-2 px-4 rounded-lg hover:bg-white hover:text-black border border-black"
+        onClick={() => navigate("/play")}>
           PLAY
         </button>
       </div>
