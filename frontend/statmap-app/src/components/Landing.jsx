@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { FaUser } from "react-icons/fa"; // Added profile icon import
+import { BsFillQuestionSquareFill } from "react-icons/bs"; //question mark icon 
 import BlackGlobe from '../black_globe.svg';
 import HoverDropMenu from "./HoverDropMenu";
 import Login from "./Login";
@@ -7,7 +8,8 @@ import Modal from "./Modal";
 import { useNavigate } from "react-router-dom";
 
 const Landing = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false); //modal for side bar menu
+  const [isInstructionsModalOpen, setInstructionsModalOpen] = useState(false); //modal for instructions
   const navigate = useNavigate();
 
   const handleOpenModal = () => {
@@ -18,6 +20,17 @@ const Landing = () => {
   const handleCloseModal = () => {
     console.log("Modal close handler called");
     setIsModalOpen(false);
+  };
+
+  //instructions open/close handler
+  const handleOpenInstructions = () => {
+    console.log("Opening instructions modal");
+    setInstructionsModalOpen(true);
+  };
+
+  const handleCloseInstructions = () => {
+    console.log("Closing instructions modal");
+    setInstructionsModalOpen(false);
   };
 
   const [leaderboard] = useState([ //arbitrary leaderboard placeholder data
@@ -33,7 +46,8 @@ const Landing = () => {
     <div className="absolute top-4 right-4 bg-white border border-black p-4 rounded-lg shadow-lg w-[36rem] h-40">
         <h3 className="text-xl font-semibold">STATMAP</h3>
         <p className="text-sm">A game to learn more about the countries around the world.</p>
-        <button className="absolute bottom-4 left-4 bg-black text-white py-2 px-4 rounded-lg hover:bg-white hover:text-black border border-black">
+        <button className="absolute bottom-4 left-4 bg-black text-white py-2 px-4 rounded-lg hover:bg-white hover:text-black border border-black"
+        onClick={handleOpenModal}>
           SIGN IN
         </button>
     </div>
@@ -78,6 +92,27 @@ const Landing = () => {
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <Login />
       </Modal>
+
+      {/* Modal for Game Instructions */}
+        <Modal isOpen={isInstructionsModalOpen} onClose={handleCloseInstructions}>
+        <div className="w-full max-w-sm p-6 bg-white rounded-lg shadow-lg">
+          <h2 className="text-xl font-semibold mb-2">Game Instructions</h2>
+          <p className="text-sm">
+            Welcome to STATMAP! To play the game, you will be presented with a fact or statistic about a country from our custom database.
+            Your task is to choose the correct country from the dropdown menu. The game tests your knowledge of global geography and country-specific facts.
+            Good luck and have fun!
+          </p>
+        </div>
+      </Modal>
+
+      {/* Question mark icon at the bottom left */}
+      <button 
+        onClick={handleOpenInstructions}
+        className="fixed bottom-4 left-6 z-50 focus:outline-none"
+      >
+        <BsFillQuestionSquareFill size={50} className="text-black" />
+      </button>
+
     </div>
   );
 };
