@@ -73,7 +73,7 @@ const MenuContent = ({ onSignInClick }) => {
           >
             <div className="flex items-center">
               <FaSignInAlt className="mr-4 w-6 h-6" />
-              <span>SIGN-IN</span>
+              <span>SIGN IN</span>
             </div>
             <p className="ml-10 text-sm">Access your account</p>
           </button>
