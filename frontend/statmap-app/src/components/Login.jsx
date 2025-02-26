@@ -13,9 +13,9 @@ const Login = () => {
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="w-full max-w-sm p-6 bg-[#F5F5DC] border border-gray-300 rounded-lg shadow-lg">
+            <div className="w-full max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-lg">
                 <form className="space-y-6" onSubmit={handleSubmit}>
-                    <h5 className="text-xl font-medium text-black">Sign in to our platform</h5>
+                    <h5 className="text-xl font-medium text-black">STATMAP SIGN IN</h5>
                     <div>
                         <label htmlFor="email" className="block mb-2 text-sm font-medium text-black">Your email</label>
                         <input
@@ -48,16 +48,16 @@ const Login = () => {
                                 <input
                                     id="remember"
                                     type="checkbox"
-                                    className="w-4 h-4 border border-gray-400 rounded-sm bg-white focus:ring-3 focus:ring-blue-600"
+                                    className="w-4 h-4 border border-gray-300 rounded-sm bg-white focus:ring-3 focus:ring-blue-600"
                                 />
                             </div>
                             <label htmlFor="remember" className="ml-2 text-sm font-medium text-black">Remember me</label>
                         </div>
-                        <a href="#" className="ml-auto text-sm text-blue-500 hover:underline">Lost Password?</a>
+                        <a href="#" className="ml-auto text-sm text-black hover:underline">Lost Password?</a>
                     </div>
-                    <button type="submit" className="w-full text-white bg-blue-950 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Login to your account</button>
+                    <button type="submit" className="w-full text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Login to your account</button>
                     <div className="text-sm font-medium text-black">
-                        Not registered? <a href="#" className="text-blue-500 hover:underline">Create account</a>
+                        Not registered? <a href="#" className="text-blue-800 hover:underline">Create account</a>
                     </div>
                 </form>
             </div>
