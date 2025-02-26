@@ -1,0 +1,1412 @@
+[
+  {
+    "Fact_ID": 1,
+    "Fact": "This tropical nation is composed of over 700 islands and more than 2,400 tiny cays, most of which are formed of limestone and coral.",
+    "Source": "https://en.wikipedia.org/wiki/The_Bahamas",
+    "CC_ID": 12,
+    "Correct_Country": "Bahamas",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Nassau",
+    "CC_Abbrev": "BHS"
+  },
+  {
+    "Fact_ID": 2,
+    "Fact": "The country boasts the world’s third-largest barrier reef system, along with mysterious blue holes—rare underwater sinkholes that reveal a unique marine geology.",
+    "Source": "https://en.wikipedia.org/wiki/Andros_Island",
+    "CC_ID": 12,
+    "Correct_Country": "Bahamas",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Nassau",
+    "CC_Abbrev": "BHS"
+  },
+  {
+    "Fact_ID": 3,
+    "Fact": "Known as a global offshore financial hub, this island nation offers policies like zero personal and corporate income taxes, attracting international investors.",
+    "Source": "https://www.cia.gov/the-world-factbook/countries/bahamas-the/",
+    "CC_ID": 12,
+    "Correct_Country": "Bahamas",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Nassau",
+    "CC_Abbrev": "BHS"
+  },
+  {
+    "Fact_ID": 4,
+    "Fact": "Gaining independence in the early 1970s from a long-term colonial power, this country now operates as a parliamentary democracy that blends its colonial heritage with local customs.",
+    "Source": "https://en.wikipedia.org/wiki/Independence_of_the_Bahamas",
+    "CC_ID": 12,
+    "Correct_Country": "Bahamas",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Nassau",
+    "CC_Abbrev": "BHS"
+  },
+  {
+    "Fact_ID": 5,
+    "Fact": "The islands are the exclusive habitat of a distinctive reptile—the rock iguana—a species found only on a few of these isles, underscoring its unique local biodiversity.",
+    "Source": "https://www.cia.gov/the-world-factbook/countries/bahamas-the/",
+    "CC_ID": 12,
+    "Correct_Country": "Bahamas",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Nassau",
+    "CC_Abbrev": "BHS"
+  },
+  {
+    "Fact_ID": 6,
+    "Fact": "Off the coast of one of its islands lies an enigmatic arrangement of large limestone blocks, set out in a linear formation beneath the sea. This odd underwater \"road\" has sparked theories about ancient civilizations or even connections to lost continents.",
+    "Source": "https://en.wikipedia.org/wiki/Bimini_Road",
+    "CC_ID": 12,
+    "Correct_Country": "Bahamas",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Nassau",
+    "CC_Abbrev": "BHS"
+  },
+  {
+    "Fact_ID": 7,
+    "Fact": "During the U.S. Prohibition era, this archipelago’s strategic location made it a crucial transit route for bootleg liquor. The legacy of rum-running along its shores has woven a colorful and clandestine chapter into its maritime history.",
+    "Source": "https://www.grandbahamamuseum.org/exhibits/culture/bootlegging-and-rum-running",
+    "CC_ID": 12,
+    "Correct_Country": "Bahamas",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Nassau",
+    "CC_Abbrev": "BHS"
+  },
+  {
+    "Fact_ID": 8,
+    "Fact": "Nestled among its secluded cays, this nation shelters an endemic rodent—a small mammal once believed to be extinct. Its survival in such isolated habitats underscores the unique and fragile ecosystem found only here.",
+    "Source": "https://en.wikipedia.org/wiki/Bahamian_hutia",
+    "CC_ID": 12,
+    "Correct_Country": "Bahamas",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Nassau",
+    "CC_Abbrev": "BHS"
+  },
+  {
+    "Fact_ID": 9,
+    "Fact": "In its capital, an 18th-century staircase—carved from solid limestone by enslaved labor—rises as a striking monument. This historic landmark not only reflects the nation’s colonial past but also symbolizes resilience and cultural heritage.",
+    "Source": "https://en.wikipedia.org/wiki/Queen%27s_Staircase",
+    "CC_ID": 12,
+    "Correct_Country": "Bahamas",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Nassau",
+    "CC_Abbrev": "BHS"
+  },
+  {
+    "Fact_ID": 10,
+    "Fact": "This island nation spans over 700 islands but has a population of only about 400,000, making its communities quite small. An interesting local law even bans civilians from wearing military camouflage to keep a clear distinction with uniformed personnel.",
+    "Source": "https://www.cia.gov/the-world-factbook/countries/bahamas-the/",
+    "CC_ID": 12,
+    "Correct_Country": "Bahamas",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Nassau",
+    "CC_Abbrev": "BHS"
+  },
+  {
+    "Fact_ID": 11,
+    "Fact": "This country is the fashion capital of the world.",
+    "Source": null,
+    "CC_ID": 61,
+    "Correct_Country": "France",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Paris",
+    "CC_Abbrev": "FRA"
+  },
+  {
+    "Fact_ID": 12,
+    "Fact": "This country has the largest museum in the world - home to the Mona Lisa.",
+    "Source": null,
+    "CC_ID": 61,
+    "Correct_Country": "France",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Paris",
+    "CC_Abbrev": "FRA"
+  },
+  {
+    "Fact_ID": 13,
+    "Fact": "This country is considered the birthplace of the metric system.",
+    "Source": "https://en.wikipedia.org/wiki/History_of_the_metric_system",
+    "CC_ID": 61,
+    "Correct_Country": "France",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Paris",
+    "CC_Abbrev": "FRA"
+  },
+  {
+    "Fact_ID": 14,
+    "Fact": "The United States was gifted the Statue of Liberty by this country.",
+    "Source": "https://en.wikipedia.org/wiki/Statue_of_Liberty",
+    "CC_ID": 61,
+    "Correct_Country": "France",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Paris",
+    "CC_Abbrev": "FRA"
+  },
+  {
+    "Fact_ID": 15,
+    "Fact": "This countries capital is nicknamed the \"City of Light\".",
+    "Source": null,
+    "CC_ID": 61,
+    "Correct_Country": "France",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Paris",
+    "CC_Abbrev": "FRA"
+  },
+  {
+    "Fact_ID": 16,
+    "Fact": "Since 2017, this country became the only country to have a flag that doesn't have the colors red, white, or blue.",
+    "Source": "https://en.wikipedia.org/wiki/Flag_of_Jamaica",
+    "CC_ID": 85,
+    "Correct_Country": "Jamaica",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Kingston",
+    "CC_Abbrev": "JAM"
+  },
+  {
+    "Fact_ID": 17,
+    "Fact": "This country's only female national hero is known as \"Nanny of the Maroons\" for leading warfare against the British, and is now featured on this country's $500 note.",
+    "Source": "https://enslaved.org/fullStory/16-23-126814/",
+    "CC_ID": 85,
+    "Correct_Country": "Jamaica",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Kingston",
+    "CC_Abbrev": "JAM"
+  },
+  {
+    "Fact_ID": 18,
+    "Fact": "This country is just the tip of an underwater mountain",
+    "Source": "https://kids.nationalgeographic.com/geography/countries/article/jamaica",
+    "CC_ID": 85,
+    "Correct_Country": "Jamaica",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Kingston",
+    "CC_Abbrev": "JAM"
+  },
+  {
+    "Fact_ID": 19,
+    "Fact": "Out of top 5 of the fastest runners in the 100m race, 3 of them are from this country",
+    "Source": "https://www.geeksforgeeks.org/fastest-runners-in-the-world/",
+    "CC_ID": 85,
+    "Correct_Country": "Jamaica",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Kingston",
+    "CC_Abbrev": "JAM"
+  },
+  {
+    "Fact_ID": 20,
+    "Fact": "Despite always having a tropical climate, this country had a bobsled team for the Winter Olympics",
+    "Source": "https://en.wikipedia.org/wiki/Jamaica_national_bobsleigh_team",
+    "CC_ID": 85,
+    "Correct_Country": "Jamaica",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Kingston",
+    "CC_Abbrev": "JAM"
+  },
+  {
+    "Fact_ID": 21,
+    "Fact": "This country holds the record for most churches per square mile",
+    "Source": "https://www.visitjamaica.com/discover-jamaica/music-culture/religion-faith/",
+    "CC_ID": 85,
+    "Correct_Country": "Jamaica",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Kingston",
+    "CC_Abbrev": "JAM"
+  },
+  {
+    "Fact_ID": 22,
+    "Fact": "Ian Fleming wrote all of the Goldeneye novels (James Bond series) in this country",
+    "Source": "https://www.britannica.com/biography/Ian-Fleming",
+    "CC_ID": 85,
+    "Correct_Country": "Jamaica",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Kingston",
+    "CC_Abbrev": "JAM"
+  },
+  {
+    "Fact_ID": 23,
+    "Fact": "This country has the world's highest murder rate (2022)",
+    "Source": "https://worldpopulationreview.com/country-rankings/murder-rate-by-country",
+    "CC_ID": 85,
+    "Correct_Country": "Jamaica",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Kingston",
+    "CC_Abbrev": "JAM"
+  },
+  {
+    "Fact_ID": 24,
+    "Fact": "This country's national fruit is the ackee, which can cause vomiting sickness and death if not prepared correctly.",
+    "Source": "https://en.wikipedia.org/wiki/Jamaican_vomiting_sickness",
+    "CC_ID": 85,
+    "Correct_Country": "Jamaica",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Kingston",
+    "CC_Abbrev": "JAM"
+  },
+  {
+    "Fact_ID": 25,
+    "Fact": "This country is where the music genre \"Reggae\" originated",
+    "Source": "https://www.britannica.com/art/reggae",
+    "CC_ID": 85,
+    "Correct_Country": "Jamaica",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Kingston",
+    "CC_Abbrev": "JAM"
+  },
+  {
+    "Fact_ID": 26,
+    "Fact": "The Curse of the Colonel",
+    "Source": "https://www.thehanshintigers.com/team-history/top-10-infamous-moments/the-curse-of-colonel-sanders/",
+    "CC_ID": 86,
+    "Correct_Country": "Japan",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Tokyo",
+    "CC_Abbrev": "JPN"
+  },
+  {
+    "Fact_ID": 27,
+    "Fact": "This country has more adult diaper sales surpassing baby diaper sales",
+    "Source": "https://www.businessinsider.com/japan-company-shifts-adult-diapers-due-low-birth-rates-babies-2024-3?utm_source=chatgpt.com",
+    "CC_ID": 86,
+    "Correct_Country": "Japan",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Tokyo",
+    "CC_Abbrev": "JPN"
+  },
+  {
+    "Fact_ID": 28,
+    "Fact": "This country has a vending machine for every 23 people.",
+    "Source": "https://youtu.be/9UJzVLXmBG4?si=OZnK2VJxA74A2ECA",
+    "CC_ID": 86,
+    "Correct_Country": "Japan",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Tokyo",
+    "CC_Abbrev": "JPN"
+  },
+  {
+    "Fact_ID": 29,
+    "Fact": "This country uses blue traffic lights instead of green because of historical language quirks behind the word blue.",
+    "Source": "https://en.wikipedia.org/wiki/Traffic_light",
+    "CC_ID": 86,
+    "Correct_Country": "Japan",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Tokyo",
+    "CC_Abbrev": "JPN"
+  },
+  {
+    "Fact_ID": 30,
+    "Fact": "This country provides \"corpse hotels\" where deceased loved ones are placed into a refridgerated capsule until a funeral can be arranged",
+    "Source": "https://www.nytimes.com/2017/07/01/world/asia/japan-corpse-hotels.html",
+    "CC_ID": 86,
+    "Correct_Country": "Japan",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Tokyo",
+    "CC_Abbrev": "JPN"
+  },
+  {
+    "Fact_ID": 31,
+    "Fact": "This country holds a \"Crying Baby Sumo\" competition, where sumo wrestlers hold babies in a ring and try to make them cry first.",
+    "Source": "https://en.wikipedia.org/wiki/Naki_Sumo_Crying_Baby_Festival",
+    "CC_ID": 86,
+    "Correct_Country": "Japan",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Tokyo",
+    "CC_Abbrev": "JPN"
+  },
+  {
+    "Fact_ID": 32,
+    "Fact": "This country annually hosts the \"Penis Festival,\" meant to promote sexual health awareness.",
+    "Source": "https://www.japan.travel/en/spot/362/",
+    "CC_ID": 86,
+    "Correct_Country": "Japan",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Tokyo",
+    "CC_Abbrev": "JPN"
+  },
+  {
+    "Fact_ID": 33,
+    "Fact": "This country has a \"Rabbit Island,\" occupied majorly by rabbits, which was formely a secret poison gas factory.",
+    "Source": "https://www.japan.travel/en/spot/871/",
+    "CC_ID": 86,
+    "Correct_Country": "Japan",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Tokyo",
+    "CC_Abbrev": "JPN"
+  },
+  {
+    "Fact_ID": 34,
+    "Fact": "This country has a rent-a-family service.",
+    "Source": "https://en.wikipedia.org/wiki/Rental_family_service",
+    "CC_ID": 86,
+    "Correct_Country": "Japan",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Tokyo",
+    "CC_Abbrev": "JPN"
+  },
+  {
+    "Fact_ID": 35,
+    "Fact": "This country has a place known as the \"Suicide Forest,\" with dense trees that make the area eerily silent.",
+    "Source": "https://en.wikipedia.org/wiki/Aokigahara",
+    "CC_ID": 86,
+    "Correct_Country": "Japan",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Tokyo",
+    "CC_Abbrev": "JPN"
+  },
+  {
+    "Fact_ID": 36,
+    "Fact": "This country has an archaeological site named \"Plain of Jars\", which features thousands of stone jars",
+    "Source": "https://whc.unesco.org/en/list/1587/",
+    "CC_ID": 93,
+    "Correct_Country": "Laos",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Vientiane",
+    "CC_Abbrev": "LAO"
+  },
+  {
+    "Fact_ID": 37,
+    "Fact": "This country celebrates New Year's during April with a water festival!",
+    "Source": "https://kampatour.com/lao-new-year",
+    "CC_ID": 93,
+    "Correct_Country": "Laos",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Vientiane",
+    "CC_Abbrev": "LAO"
+  },
+  {
+    "Fact_ID": 38,
+    "Fact": "This country is also known as the \"Land of a Million Elephants.\" ",
+    "Source": "https://iowaonline.uni.edu/folklife_v2/lessons/laos.pdf",
+    "CC_ID": 93,
+    "Correct_Country": "Laos",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Vientiane",
+    "CC_Abbrev": "LAO"
+  },
+  {
+    "Fact_ID": 39,
+    "Fact": "This country houses a phenomena named the \"Naga Fireballs,\" where glowing fireballs are seen rising from the river.",
+    "Source": "https://www.sciencetimes.com/articles/47637/20231213/naga-fireballs-explained-understanding-thailand-s-mysterious-blobs-rising-mekong.htm",
+    "CC_ID": 93,
+    "Correct_Country": "Laos",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Vientiane",
+    "CC_Abbrev": "LAO"
+  },
+  {
+    "Fact_ID": 40,
+    "Fact": "Despite being landlocked, this country has a region called \"4000 Islands.\"",
+    "Source": "https://en.wikipedia.org/wiki/Si_Phan_Don",
+    "CC_ID": 93,
+    "Correct_Country": "Laos",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Vientiane",
+    "CC_Abbrev": "LAO"
+  },
+  {
+    "Fact_ID": 41,
+    "Fact": "This country has the highest sticky-rice consumption per capita than any other country,",
+    "Source": "https://en.wikipedia.org/wiki/Lao_cuisine",
+    "CC_ID": 93,
+    "Correct_Country": "Laos",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Vientiane",
+    "CC_Abbrev": "LAO"
+  },
+  {
+    "Fact_ID": 42,
+    "Fact": "This country's flag originally featured a white three-headed elephant on a pedestal.",
+    "Source": "https://en.wikipedia.org/wiki/Flag_of_Laos",
+    "CC_ID": 93,
+    "Correct_Country": "Laos",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Vientiane",
+    "CC_Abbrev": "LAO"
+  },
+  {
+    "Fact_ID": 43,
+    "Fact": "This country traditionally holds a Rocket Festival, where they construct and launch homemade rockets.",
+    "Source": "https://en.wikipedia.org/wiki/Rocket_Festival",
+    "CC_ID": 93,
+    "Correct_Country": "Laos",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Vientiane",
+    "CC_Abbrev": "LAO"
+  },
+  {
+    "Fact_ID": 44,
+    "Fact": "This country is the most bombed country in the world.",
+    "Source": "https://www.halotrust.org/where-we-work/south-asia/laos/",
+    "CC_ID": 93,
+    "Correct_Country": "Laos",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Vientiane",
+    "CC_Abbrev": "LAO"
+  },
+  {
+    "Fact_ID": 45,
+    "Fact": "This country's traditional greeting is called \"Nop,\" where they place two hands together in prayer position at chest level.",
+    "Source": "https://culturalatlas.sbs.com.au/lao-culture/lao-culture-greetings",
+    "CC_ID": 93,
+    "Correct_Country": "Laos",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Vientiane",
+    "CC_Abbrev": "LAO"
+  },
+  {
+    "Fact_ID": 46,
+    "Fact": "This country's capital city is gradually sinking, with estimates suggesting a descent of up to 12 centimeters annually.",
+    "Source": "https://www.contiki.com/six-two/article/fun-facts-about-mexico/?utm_source=chatgpt.com",
+    "CC_ID": 111,
+    "Correct_Country": "Mexico",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Mexico City",
+    "CC_Abbrev": "MEX"
+  },
+  {
+    "Fact_ID": 47,
+    "Fact": "Home to the world's largest pyramid by volume, surpassing even Egypt's Great Pyramid of Giza.",
+    "Source": "https://www.contiki.com/six-two/article/fun-facts-about-mexico/?utm_source=chatgpt.com",
+    "CC_ID": 111,
+    "Correct_Country": "Mexico",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Mexico City",
+    "CC_Abbrev": "MEX"
+  },
+  {
+    "Fact_ID": 48,
+    "Fact": "There's an eerie island where thousands of dolls hang from trees, believed to appease a young girl's spirit.",
+    "Source": "https://en.wikipedia.org/wiki/The_Island_of_the_Dolls?utm_source=chatgpt.com",
+    "CC_ID": 111,
+    "Correct_Country": "Mexico",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Mexico City",
+    "CC_Abbrev": "MEX"
+  },
+  {
+    "Fact_ID": 49,
+    "Fact": "A vast network of tunnels, thought to be up to 500 years old, was discovered beneath a major city in this country in 2015.",
+    "Source": "https://en.wikipedia.org/wiki/Puebla_tunnels?utm_source=chatgpt.com",
+    "CC_ID": 111,
+    "Correct_Country": "Mexico",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Mexico City",
+    "CC_Abbrev": "MEX"
+  },
+  {
+    "Fact_ID": 50,
+    "Fact": "Native salamanders possess the remarkable ability to regenerate limbs and even parts of their brain and heart.",
+    "Source": "https://www.lemonde.fr/planete/article/2024/08/26/au-mexique-les-axolotls-de-fascinantes-salamandres-placees-sous-la-protection-de-religieuses-dominicaines_6295794_3244.html?utm_source=chatgpt.com",
+    "CC_ID": 111,
+    "Correct_Country": "Mexico",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Mexico City",
+    "CC_Abbrev": "MEX"
+  },
+  {
+    "Fact_ID": 51,
+    "Fact": "A bridal shop in this country features a mannequin rumored to be the embalmed corpse of the previous owner's daughter.",
+    "Source": "https://en.wikipedia.org/wiki/Ghosts_in_Mexican_culture?utm_source=chatgpt.com",
+    "CC_ID": 111,
+    "Correct_Country": "Mexico",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Mexico City",
+    "CC_Abbrev": "MEX"
+  },
+  {
+    "Fact_ID": 52,
+    "Fact": "Due to unique climatic conditions, bodies interred in a certain area of this country naturally mummify and are now displayed in a dedicated museum.",
+    "Source": "https://en.wikipedia.org/wiki/Mummies_of_Guanajuato?utm_source=chatgpt.com",
+    "CC_ID": 111,
+    "Correct_Country": "Mexico",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Mexico City",
+    "CC_Abbrev": "MEX"
+  },
+  {
+    "Fact_ID": 53,
+    "Fact": "Residents of a coastal city from this country believe it's shielded from hurricanes by an underwater alien base, with no direct hits since 1967.",
+    "Source": "https://www.the-sun.com/news/13155656/amupac-alien-base-mexico/?utm_source=chatgpt.com",
+    "CC_ID": 111,
+    "Correct_Country": "Mexico",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Mexico City",
+    "CC_Abbrev": "MEX"
+  },
+  {
+    "Fact_ID": 54,
+    "Fact": "In certain indigenous cultures of this country, a third gender known as \"Muxe\" is recognized and has been an integral part of the community for centuries.",
+    "Source": "https://www.contiki.com/six-two/article/fun-facts-about-mexico/?utm_source=chatgpt.com",
+    "CC_ID": 111,
+    "Correct_Country": "Mexico",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Mexico City",
+    "CC_Abbrev": "MEX"
+  },
+  {
+    "Fact_ID": 55,
+    "Fact": "An annual event in this country showcases large, colorful sculptures of fantastical creatures, celebrating a unique form of folk art.",
+    "Source": "https://en.wikipedia.org/wiki/Mexico_City_Alebrije_Parade?utm_source=chatgpt.com",
+    "CC_ID": 111,
+    "Correct_Country": "Mexico",
+    "CC_Continent": "N. America",
+    "CC_Capital": "Mexico City",
+    "CC_Abbrev": "MEX"
+  },
+  {
+    "Fact_ID": 56,
+    "Fact": "There's a city where all buildings are painted in various shades of blue, creating a tranquil and picturesque atmosphere.",
+    "Source": "https://www.elegantresorts.co.uk/eleganttraveller/story/ten-interesting-facts-about-morocco?utm_source=chatgpt.com",
+    "CC_ID": 117,
+    "Correct_Country": "Morocco",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Rabat",
+    "CC_Abbrev": "MAR"
+  },
+  {
+    "Fact_ID": 57,
+    "Fact": "This country is home to the world's oldest continuously operating university, founded in 859 AD.",
+    "Source": "https://www.nativemorocco.com/post/10-things-you-didn-t-know-about-morocco?utm_source=chatgpt.com",
+    "CC_ID": 117,
+    "Correct_Country": "Morocco",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Rabat",
+    "CC_Abbrev": "MAR"
+  },
+  {
+    "Fact_ID": 58,
+    "Fact": "By law, all buildings in a major city from this country must be painted red, earning it the nickname 'the Red City'.",
+    "Source": "https://www.originaltravel.co.uk/travel-guide/morocco/fun-facts?utm_source=chatgpt.com",
+    "CC_ID": 117,
+    "Correct_Country": "Morocco",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Rabat",
+    "CC_Abbrev": "MAR"
+  },
+  {
+    "Fact_ID": 59,
+    "Fact": "In certain regions of this country, goats can be seen climbing argan trees to eat their fruit, a behavior unique to this area.",
+    "Source": "https://www.nationalgeographic.com/travel/article/video-watch-bizarre-tree-climbing-goats-in-action-morocco?utm_source=chatgpt.com",
+    "CC_ID": 117,
+    "Correct_Country": "Morocco",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Rabat",
+    "CC_Abbrev": "MAR"
+  },
+  {
+    "Fact_ID": 60,
+    "Fact": "In local culture, the liver, rather than the heart, is considered the symbol of love.",
+    "Source": "https://www.originaltravel.co.uk/travel-guide/morocco/fun-facts?utm_source=chatgpt.com",
+    "CC_ID": 117,
+    "Correct_Country": "Morocco",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Rabat",
+    "CC_Abbrev": "MAR"
+  },
+  {
+    "Fact_ID": 61,
+    "Fact": "This country has become a hotspot for meteorite hunting, with numerous finds since the late 1990s.",
+    "Source": "https://www.wired.com/story/morocco-meteorites-saharan-gold-rush/?utm_source=chatgpt.com",
+    "CC_ID": 117,
+    "Correct_Country": "Morocco",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Rabat",
+    "CC_Abbrev": "MAR"
+  },
+  {
+    "Fact_ID": 62,
+    "Fact": "This country features historical underground vaults, often referred to as a prison, with legends of vast, maze-like chambers.",
+    "Source": "https://en.wikipedia.org/wiki/Qara_Prison?utm_source=chatgpt.com",
+    "CC_ID": 117,
+    "Correct_Country": "Morocco",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Rabat",
+    "CC_Abbrev": "MAR"
+  },
+  {
+    "Fact_ID": 63,
+    "Fact": "This countrty boasts four imperial cities, each having served as the nation's capital at different times.",
+    "Source": "https://www.trafalgar.com/real-word/facts-about-morocco/?utm_source=chatgpt.com",
+    "CC_ID": 117,
+    "Correct_Country": "Morocco",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Rabat",
+    "CC_Abbrev": "MAR"
+  },
+  {
+    "Fact_ID": 64,
+    "Fact": "Jeans are banned in this country",
+    "Source": "https://www.bbc.com/news/world-asia-68664644.amp",
+    "CC_ID": 128,
+    "Correct_Country": "North Korea",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Pyongyang",
+    "CC_Abbrev": "PRK"
+  },
+  {
+    "Fact_ID": 65,
+    "Fact": "Mandatory military service last up to a decade here",
+    "Source": "https://www.cia.gov/the-world-factbook/field/military-service-age-and-obligation/",
+    "CC_ID": 128,
+    "Correct_Country": "North Korea",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Pyongyang",
+    "CC_Abbrev": "PRK"
+  },
+  {
+    "Fact_ID": 66,
+    "Fact": "This country has 100% literacy rate as reported",
+    "Source": "https://www.cia.gov/the-world-factbook/countries/korea-north/#people-and-society",
+    "CC_ID": 128,
+    "Correct_Country": "North Korea",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Pyongyang",
+    "CC_Abbrev": "PRK"
+  },
+  {
+    "Fact_ID": 67,
+    "Fact": "This country has its own set of basketball rules different from the rest of the world",
+    "Source": "The true story behind North Korea’s bizarre basketball rules | NK News",
+    "CC_ID": 128,
+    "Correct_Country": "North Korea",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Pyongyang",
+    "CC_Abbrev": "PRK"
+  },
+  {
+    "Fact_ID": 68,
+    "Fact": "Has the most militarized border in the world",
+    "Source": "Kim, Eleana. “The Flight of Cranes: Militarized Nature at the North Korea–South Korea Border.” RCC Perspectives, no. 3, 2014, pp. 65–70. JSTOR, http://www.jstor.org/stable/26241252. Accessed 5 Feb. 2025.",
+    "CC_ID": 128,
+    "Correct_Country": "North Korea",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Pyongyang",
+    "CC_Abbrev": "PRK"
+  },
+  {
+    "Fact_ID": 69,
+    "Fact": "Slightly larger than Virginia; slightly smaller than Mississippi",
+    "Source": "Korea, North - The World Factbook",
+    "CC_ID": 128,
+    "Correct_Country": "North Korea",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Pyongyang",
+    "CC_Abbrev": "PRK"
+  },
+  {
+    "Fact_ID": 70,
+    "Fact": "99.998% ethnically homogenous",
+    "Source": "https://en.wikipedia.org/wiki/Demographics_of_North_Korea",
+    "CC_ID": 128,
+    "Correct_Country": "North Korea",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Pyongyang",
+    "CC_Abbrev": "PRK"
+  },
+  {
+    "Fact_ID": 71,
+    "Fact": "Latest state to declare nuclear weapons in 2006",
+    "Source": "https://www.britannica.com/technology/list-of-states-with-nuclear-weapons-2227841",
+    "CC_ID": 128,
+    "Correct_Country": "North Korea",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Pyongyang",
+    "CC_Abbrev": "PRK"
+  },
+  {
+    "Fact_ID": 72,
+    "Fact": "International calls are illegal, but marijuana is legal",
+    "Source": "https://www.huffpost.com/entry/marijuana-in-north-korea_n_4067341?utm_hp_ref=tw, https://www.rfa.org/english/news/korea/phone-06162021200510.html",
+    "CC_ID": 128,
+    "Correct_Country": "North Korea",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Pyongyang",
+    "CC_Abbrev": "PRK"
+  },
+  {
+    "Fact_ID": 73,
+    "Fact": "Has stadium with world's largest capacity of 150,000 people",
+    "Source": "https://www.usatoday.com/story/sports/2024/07/28/biggest-largest-stadiums-in-world/74462698007/",
+    "CC_ID": 128,
+    "Correct_Country": "North Korea",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Pyongyang",
+    "CC_Abbrev": "PRK"
+  },
+  {
+    "Fact_ID": 74,
+    "Fact": "Home to the world biggest castle.",
+    "Source": "https://www.trafalgar.com/real-word/facts-poland/",
+    "CC_ID": 139,
+    "Correct_Country": "Poland",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Warsaw",
+    "CC_Abbrev": "POL"
+  },
+  {
+    "Fact_ID": 75,
+    "Fact": "Home to the world's oldest salt mine that you can still actually visit. Has a hidden church deep underground.",
+    "Source": "https://www.trafalgar.com/real-word/facts-poland/",
+    "CC_ID": 139,
+    "Correct_Country": "Poland",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Warsaw",
+    "CC_Abbrev": "POL"
+  },
+  {
+    "Fact_ID": 76,
+    "Fact": "Vodka originated from this country.",
+    "Source": "https://www.trafalgar.com/real-word/facts-poland/",
+    "CC_ID": 139,
+    "Correct_Country": "Poland",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Warsaw",
+    "CC_Abbrev": "POL"
+  },
+  {
+    "Fact_ID": 77,
+    "Fact": "The world's first upside down house was built here.",
+    "Source": "https://www.trafalgar.com/real-word/facts-poland/",
+    "CC_ID": 139,
+    "Correct_Country": "Poland",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Warsaw",
+    "CC_Abbrev": "POL"
+  },
+  {
+    "Fact_ID": 78,
+    "Fact": "96% of this countries citizens identify as Roman Catholic.",
+    "Source": "https://www.swiftpassportservices.com/blog/20-fun-facts-aboutpoland/",
+    "CC_ID": 139,
+    "Correct_Country": "Poland",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Warsaw",
+    "CC_Abbrev": "POL"
+  },
+  {
+    "Fact_ID": 79,
+    "Fact": "In this country, Name Day celebrations are greater than their actual birthday.",
+    "Source": "https://www.swiftpassportservices.com/blog/20-fun-facts-aboutpoland/",
+    "CC_ID": 139,
+    "Correct_Country": "Poland",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Warsaw",
+    "CC_Abbrev": "POL"
+  },
+  {
+    "Fact_ID": 80,
+    "Fact": "This country has the second constitution in the world.",
+    "Source": "https://www.swiftpassportservices.com/blog/20-fun-facts-aboutpoland/",
+    "CC_ID": 139,
+    "Correct_Country": "Poland",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Warsaw",
+    "CC_Abbrev": "POL"
+  },
+  {
+    "Fact_ID": 81,
+    "Fact": "Home to 17 UNESCO World Heritage sites.",
+    "Source": "https://www.swiftpassportservices.com/blog/20-fun-facts-aboutpoland/",
+    "CC_ID": 139,
+    "Correct_Country": "Poland",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Warsaw",
+    "CC_Abbrev": "POL"
+  },
+  {
+    "Fact_ID": 82,
+    "Fact": "The first women to win a Nobel Prize was born in this country.",
+    "Source": "https://awaytothecity.com/fun-facts-about-poland/",
+    "CC_ID": 139,
+    "Correct_Country": "Poland",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Warsaw",
+    "CC_Abbrev": "POL"
+  },
+  {
+    "Fact_ID": 83,
+    "Fact": "Home to one of the world's oldest restaurants, serving customers from 1273 (over 750 years).",
+    "Source": "https://awaytothecity.com/fun-facts-about-poland/",
+    "CC_ID": 139,
+    "Correct_Country": "Poland",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Warsaw",
+    "CC_Abbrev": "POL"
+  },
+  {
+    "Fact_ID": 84,
+    "Fact": "The most common name here is Franc for men and Marija for women",
+    "Source": "https://the-slovenia.com/en/slovenia/top-100-facts-about-slovenia/",
+    "CC_ID": 157,
+    "Correct_Country": "Slovenia",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Ljubljana",
+    "CC_Abbrev": "SVN"
+  },
+  {
+    "Fact_ID": 85,
+    "Fact": "The oldest vinyard in the world is located here",
+    "Source": "https://the-slovenia.com/en/slovenia/top-100-facts-about-slovenia/",
+    "CC_ID": 157,
+    "Correct_Country": "Slovenia",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Ljubljana",
+    "CC_Abbrev": "SVN"
+  },
+  {
+    "Fact_ID": 86,
+    "Fact": "At least 60% of the population work out at least 3 hours a week",
+    "Source": "https://the-slovenia.com/en/slovenia/top-100-facts-about-slovenia/",
+    "CC_ID": 157,
+    "Correct_Country": "Slovenia",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Ljubljana",
+    "CC_Abbrev": "SVN"
+  },
+  {
+    "Fact_ID": 87,
+    "Fact": "An average person here eats around 123 kg of wheat products, 111 kg of vegetables, 93 kg of meat, 88 kg of fruit, 67 kg of potatoes, 11 kg of eggs, 5kg of rice and 1kg of honey per year",
+    "Source": "https://the-slovenia.com/en/slovenia/top-100-facts-about-slovenia/",
+    "CC_ID": 157,
+    "Correct_Country": "Slovenia",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Ljubljana",
+    "CC_Abbrev": "SVN"
+  },
+  {
+    "Fact_ID": 88,
+    "Fact": "The first married couple to climb Mount Everest came from here",
+    "Source": "https://the-slovenia.com/en/slovenia/top-100-facts-about-slovenia/",
+    "CC_ID": 157,
+    "Correct_Country": "Slovenia",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Ljubljana",
+    "CC_Abbrev": "SVN"
+  },
+  {
+    "Fact_ID": 89,
+    "Fact": "There are around 90,000 beekeepers in this country",
+    "Source": "https://the-slovenia.com/en/slovenia/top-100-facts-about-slovenia/",
+    "CC_ID": 157,
+    "Correct_Country": "Slovenia",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Ljubljana",
+    "CC_Abbrev": "SVN"
+  },
+  {
+    "Fact_ID": 90,
+    "Fact": "More than half of the country is covered with forests, making it one of the greenest countries in the world",
+    "Source": "https://the-slovenia.com/en/slovenia/top-100-facts-about-slovenia/",
+    "CC_ID": 157,
+    "Correct_Country": "Slovenia",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Ljubljana",
+    "CC_Abbrev": "SVN"
+  },
+  {
+    "Fact_ID": 91,
+    "Fact": "A remarkable 53.6 percent of this countries land is protected",
+    "Source": "https://the-slovenia.com/en/slovenia/top-100-facts-about-slovenia/",
+    "CC_ID": 157,
+    "Correct_Country": "Slovenia",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Ljubljana",
+    "CC_Abbrev": "SVN"
+  },
+  {
+    "Fact_ID": 92,
+    "Fact": "This country has one of the largest underground canyons in the world",
+    "Source": "https://the-slovenia.com/en/slovenia/top-100-facts-about-slovenia/",
+    "CC_ID": 157,
+    "Correct_Country": "Slovenia",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Ljubljana",
+    "CC_Abbrev": "SVN"
+  },
+  {
+    "Fact_ID": 93,
+    "Fact": "There is only 46.6 kilometres of coastline here",
+    "Source": "https://the-slovenia.com/en/slovenia/top-100-facts-about-slovenia/",
+    "CC_ID": 157,
+    "Correct_Country": "Slovenia",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Ljubljana",
+    "CC_Abbrev": "SVN"
+  },
+  {
+    "Fact_ID": 94,
+    "Fact": "Nelson Mandela is from here",
+    "Source": "https://en.wikipedia.org/wiki/Nelson_Mandela",
+    "CC_ID": 160,
+    "Correct_Country": "South Africa",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Cape Town",
+    "CC_Abbrev": "ZAF"
+  },
+  {
+    "Fact_ID": 95,
+    "Fact": "Maintain three capital cities",
+    "Source": "https://en.wikipedia.org/wiki/South_Africa",
+    "CC_ID": 160,
+    "Correct_Country": "South Africa",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Cape Town",
+    "CC_Abbrev": "ZAF"
+  },
+  {
+    "Fact_ID": 96,
+    "Fact": "Home to \"cradle of humankind\" that is considered birth place of humanity",
+    "Source": "https://en.wikipedia.org/wiki/Cradle_of_Humankind",
+    "CC_ID": 160,
+    "Correct_Country": "South Africa",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Cape Town",
+    "CC_Abbrev": "ZAF"
+  },
+  {
+    "Fact_ID": 97,
+    "Fact": "Only place for \"big five\" animals",
+    "Source": "https://en.wikipedia.org/wiki/Big_Five_game",
+    "CC_ID": 160,
+    "Correct_Country": "South Africa",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Cape Town",
+    "CC_Abbrev": "ZAF"
+  },
+  {
+    "Fact_ID": 98,
+    "Fact": "World's longest wine \"route 62\" is located.",
+    "Source": "https://en.wikipedia.org/wiki/Route_62_(South_Africa)#:~:text=Also%20known%20as%20the%20Wine,wine%20routes%20in%20the%20world.",
+    "CC_ID": 160,
+    "Correct_Country": "South Africa",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Cape Town",
+    "CC_Abbrev": "ZAF"
+  },
+  {
+    "Fact_ID": 99,
+    "Fact": "Elon Musk was born here.",
+    "Source": "Elon Musk - Wikipedia",
+    "CC_ID": 160,
+    "Correct_Country": "South Africa",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Cape Town",
+    "CC_Abbrev": "ZAF"
+  },
+  {
+    "Fact_ID": 100,
+    "Fact": "Most number of Afrikaans spoken here.",
+    "Source": "Afrikaans - Wikipedia",
+    "CC_ID": 160,
+    "Correct_Country": "South Africa",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Cape Town",
+    "CC_Abbrev": "ZAF"
+  },
+  {
+    "Fact_ID": 101,
+    "Fact": "Gained independence from British Empire in May 31, 1910.",
+    "Source": "South Africa - Wikipedia",
+    "CC_ID": 160,
+    "Correct_Country": "South Africa",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Cape Town",
+    "CC_Abbrev": "ZAF"
+  },
+  {
+    "Fact_ID": 102,
+    "Fact": "Hosted 2010 World Cup.",
+    "Source": "2010 FIFA World Cup - Wikipedia",
+    "CC_ID": 160,
+    "Correct_Country": "South Africa",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Cape Town",
+    "CC_Abbrev": "ZAF"
+  },
+  {
+    "Fact_ID": 103,
+    "Fact": "Ranked 40th for nominal GDP in 2023.",
+    "Source": "List of countries by GDP (nominal) - Wikipedia",
+    "CC_ID": 160,
+    "Correct_Country": "South Africa",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Cape Town",
+    "CC_Abbrev": "ZAF"
+  },
+  {
+    "Fact_ID": 104,
+    "Fact": "This country has a national holiday for poky stick or \"pepero\" snack on November 11th.",
+    "Source": "https://en.wikipedia.org/wiki/Pepero_Day",
+    "CC_ID": 161,
+    "Correct_Country": "South Korea",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Seoul",
+    "CC_Abbrev": "KOR"
+  },
+  {
+    "Fact_ID": 105,
+    "Fact": "The earliest recorded food delivery in this country dates back to 1768.",
+    "Source": "https://en.wikipedia.org/wiki/Delivery_culture_in_South_Korea",
+    "CC_ID": 161,
+    "Correct_Country": "South Korea",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Seoul",
+    "CC_Abbrev": "KOR"
+  },
+  {
+    "Fact_ID": 106,
+    "Fact": "This country has the oldest surviving astronomical observatory in the world.",
+    "Source": "https://en.wikipedia.org/wiki/Cheomseongdae",
+    "CC_ID": 161,
+    "Correct_Country": "South Korea",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Seoul",
+    "CC_Abbrev": "KOR"
+  },
+  {
+    "Fact_ID": 107,
+    "Fact": "One of its kings invented the language used in this country.",
+    "Source": "https://en.m.wikipedia.org/wiki/Sejong_the_Great",
+    "CC_ID": 161,
+    "Correct_Country": "South Korea",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Seoul",
+    "CC_Abbrev": "KOR"
+  },
+  {
+    "Fact_ID": 108,
+    "Fact": "Worlds 9th largest military by active personnel.",
+    "Source": "https://www.statista.com/statistics/264443/the-worlds-largest-armies-based-on-active-force-level/",
+    "CC_ID": 161,
+    "Correct_Country": "South Korea",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Seoul",
+    "CC_Abbrev": "KOR"
+  },
+  {
+    "Fact_ID": 109,
+    "Fact": "This country has its own unique liquor called \"soju\"",
+    "Source": "https://en.m.wikipedia.org/wiki/Soju",
+    "CC_ID": 161,
+    "Correct_Country": "South Korea",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Seoul",
+    "CC_Abbrev": "KOR"
+  },
+  {
+    "Fact_ID": 110,
+    "Fact": "Highest tertiary education between 25-34 years of age.",
+    "Source": "https://asiaexchange.org/blogs/15-stunning-facts-about-south-korea/",
+    "CC_ID": 161,
+    "Correct_Country": "South Korea",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Seoul",
+    "CC_Abbrev": "KOR"
+  },
+  {
+    "Fact_ID": 111,
+    "Fact": "This country has urban myth that fans in closed rooms can kill someone. ",
+    "Source": "https://www.npr.org/sections/parallels/2015/08/09/430341089/south-koreas-quirky-notions-about-electric-fans",
+    "CC_ID": 161,
+    "Correct_Country": "South Korea",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Seoul",
+    "CC_Abbrev": "KOR"
+  },
+  {
+    "Fact_ID": 112,
+    "Fact": "This country has a traditional clothing called \"hanbok\"",
+    "Source": "https://en.m.wikipedia.org/wiki/Hanbok",
+    "CC_ID": 161,
+    "Correct_Country": "South Korea",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Seoul",
+    "CC_Abbrev": "KOR"
+  },
+  {
+    "Fact_ID": 113,
+    "Fact": "This country has most number of dolmen structures.",
+    "Source": "https://en.m.wikipedia.org/wiki/List_of_dolmens",
+    "CC_ID": 161,
+    "Correct_Country": "South Korea",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Seoul",
+    "CC_Abbrev": "KOR"
+  },
+  {
+    "Fact_ID": 114,
+    "Fact": "This country is home to the worlds first ice hotel.",
+    "Source": "https://www.icehotel.com/",
+    "CC_ID": 169,
+    "Correct_Country": "Sweden",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Stockholm",
+    "CC_Abbrev": "SWE"
+  },
+  {
+    "Fact_ID": 115,
+    "Fact": "Birthplace of Spotify",
+    "Source": "https://en.wikipedia.org/wiki/Spotify",
+    "CC_ID": 169,
+    "Correct_Country": "Sweden",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Stockholm",
+    "CC_Abbrev": "SWE"
+  },
+  {
+    "Fact_ID": 116,
+    "Fact": "Ranked 4th in the happiest countries in the world as of 2024",
+    "Source": "https://worldpopulationreview.com/country-rankings/happiest-countries-in-the-world",
+    "CC_ID": 169,
+    "Correct_Country": "Sweden",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Stockholm",
+    "CC_Abbrev": "SWE"
+  },
+  {
+    "Fact_ID": 117,
+    "Fact": "Largest Nordic country at 450,295 square kilometers (173,860 sq mi)",
+    "Source": "https://en.wikipedia.org/wiki/Sweden",
+    "CC_ID": 169,
+    "Correct_Country": "Sweden",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Stockholm",
+    "CC_Abbrev": "SWE"
+  },
+  {
+    "Fact_ID": 118,
+    "Fact": "The people of this country engage in Fika, a social coffee break often including pastries.",
+    "Source": "https://en.wikipedia.org/wiki/Coffee_culture#Sweden",
+    "CC_ID": 169,
+    "Correct_Country": "Sweden",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Stockholm",
+    "CC_Abbrev": "SWE"
+  },
+  {
+    "Fact_ID": 119,
+    "Fact": "This countries currency is the krona.",
+    "Source": "https://en.wikipedia.org/wiki/Swedish_krona",
+    "CC_ID": 169,
+    "Correct_Country": "Sweden",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Stockholm",
+    "CC_Abbrev": "SWE"
+  },
+  {
+    "Fact_ID": 120,
+    "Fact": "A popular dish in this country is meatballs served with lingonberry jam and mashed potatoes.",
+    "Source": "need source",
+    "CC_ID": 169,
+    "Correct_Country": "Sweden",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Stockholm",
+    "CC_Abbrev": "SWE"
+  },
+  {
+    "Fact_ID": 121,
+    "Fact": "The famous pop group ABBA was formed in this country.",
+    "Source": "https://en.wikipedia.org/wiki/ABBA",
+    "CC_ID": 169,
+    "Correct_Country": "Sweden",
+    "CC_Continent": "Europe",
+    "CC_Capital": "Stockholm",
+    "CC_Abbrev": "SWE"
+  },
+  {
+    "Fact_ID": 122,
+    "Fact": "8% of the worlds mammel scepcies can be found here",
+    "Source": "https://www.safarisrwandasafari.com/information/facts-about-uganda-that-you-should-know/#:~:text=Uganda%20experiences%20tropical%20climate%20having,can%20be%20found%20in%20Uganda.&text=Uganda%20has%20some%20of%20the,producing%20country%20in%20the%20world.",
+    "CC_ID": 183,
+    "Correct_Country": "Uganda",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Kampala",
+    "CC_Abbrev": "UGA"
+  },
+  {
+    "Fact_ID": 123,
+    "Fact": "This country is the second largest banana producer in the world",
+    "Source": "https://www.safarisrwandasafari.com/information/facts-about-uganda-that-you-should-know/#:~:text=Uganda%20experiences%20tropical%20climate%20having,can%20be%20found%20in%20Uganda.&text=Uganda%20has%20some%20of%20the,producing%20country%20in%20the%20world.",
+    "CC_ID": 183,
+    "Correct_Country": "Uganda",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Kampala",
+    "CC_Abbrev": "UGA"
+  },
+  {
+    "Fact_ID": 124,
+    "Fact": "This country has been ranked in 2012 and 2016 as the worlds top tourist destination",
+    "Source": "https://www.safarisrwandasafari.com/information/facts-about-uganda-that-you-should-know/#:~:text=Uganda%20experiences%20tropical%20climate%20having,can%20be%20found%20in%20Uganda.&text=Uganda%20has%20some%20of%20the,producing%20country%20in%20the%20world.",
+    "CC_ID": 183,
+    "Correct_Country": "Uganda",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Kampala",
+    "CC_Abbrev": "UGA"
+  },
+  {
+    "Fact_ID": 125,
+    "Fact": "This country boasts the highest concentration of primates of anywhere else in the world",
+    "Source": "https://www.safarisrwandasafari.com/information/facts-about-uganda-that-you-should-know/#:~:text=Uganda%20experiences%20tropical%20climate%20having,can%20be%20found%20in%20Uganda.&text=Uganda%20has%20some%20of%20the,producing%20country%20in%20the%20world.",
+    "CC_ID": 183,
+    "Correct_Country": "Uganda",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Kampala",
+    "CC_Abbrev": "UGA"
+  },
+  {
+    "Fact_ID": 126,
+    "Fact": "Ranked 133rd happiest courtyard (flat country) in the world",
+    "Source": "https://www.safarisrwandasafari.com/information/facts-about-uganda-that-you-should-know/#:~:text=Uganda%20experiences%20tropical%20climate%20having,can%20be%20found%20in%20Uganda.&text=Uganda%20has%20some%20of%20the,producing%20country%20in%20the%20world.",
+    "CC_ID": 183,
+    "Correct_Country": "Uganda",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Kampala",
+    "CC_Abbrev": "UGA"
+  },
+  {
+    "Fact_ID": 127,
+    "Fact": "This country is ranked the 2nd youngest country in the world",
+    "Source": "https://www.safarisrwandasafari.com/information/facts-about-uganda-that-you-should-know/#:~:text=Uganda%20experiences%20tropical%20climate%20having,can%20be%20found%20in%20Uganda.&text=Uganda%20has%20some%20of%20the,producing%20country%20in%20the%20world.",
+    "CC_ID": 183,
+    "Correct_Country": "Uganda",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Kampala",
+    "CC_Abbrev": "UGA"
+  },
+  {
+    "Fact_ID": 128,
+    "Fact": "The grey crowned cane is this countries official bird",
+    "Source": "https://www.safarisrwandasafari.com/information/facts-about-uganda-that-you-should-know/#:~:text=Uganda%20experiences%20tropical%20climate%20having,can%20be%20found%20in%20Uganda.&text=Uganda%20has%20some%20of%20the,producing%20country%20in%20the%20world.",
+    "CC_ID": 183,
+    "Correct_Country": "Uganda",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Kampala",
+    "CC_Abbrev": "UGA"
+  },
+  {
+    "Fact_ID": 129,
+    "Fact": "1066 different bird species have been identified here",
+    "Source": "https://destinationuganda.com/travel-guide/10-awesome-things-about-uganda/",
+    "CC_ID": 183,
+    "Correct_Country": "Uganda",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Kampala",
+    "CC_Abbrev": "UGA"
+  },
+  {
+    "Fact_ID": 130,
+    "Fact": "Size: 241,038 km² (93,263 sq mi) – 18.2% water & swamps",
+    "Source": "https://www.nkuringosafaris.com/basic-facts-about-uganda/",
+    "CC_ID": 183,
+    "Correct_Country": "Uganda",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Kampala",
+    "CC_Abbrev": "UGA"
+  },
+  {
+    "Fact_ID": 131,
+    "Fact": "There are 56 tribes here, each with their own language",
+    "Source": "https://www.nkuringosafaris.com/basic-facts-about-uganda/",
+    "CC_ID": 183,
+    "Correct_Country": "Uganda",
+    "CC_Continent": "Africa",
+    "CC_Capital": "Kampala",
+    "CC_Abbrev": "UGA"
+  },
+  {
+    "Fact_ID": 132,
+    "Fact": "Home to the Burj Khalifa in Dubai—the tallest building on the planet.",
+    "Source": "https://en.wikipedia.org/wiki/Burj_Khalifa",
+    "CC_ID": 185,
+    "Correct_Country": "United Arab Emirates",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Abu Dhabi",
+    "CC_Abbrev": "ARE"
+  },
+  {
+    "Fact_ID": 133,
+    "Fact": "Palm Jumeirah is a world-famous man-made island that redefines luxury waterfront living.",
+    "Source": "https://www.nakheel.com/",
+    "CC_ID": 185,
+    "Correct_Country": "United Arab Emirates",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Abu Dhabi",
+    "CC_Abbrev": "ARE"
+  },
+  {
+    "Fact_ID": 134,
+    "Fact": "A federation established in 1971, this country is composed of seven emirates, including Abu Dhabi, Dubai, and Sharjah.",
+    "Source": "https://en.wikipedia.org/wiki/United_Arab_Emirates",
+    "CC_ID": 185,
+    "Correct_Country": "United Arab Emirates",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Abu Dhabi",
+    "CC_Abbrev": "ARE"
+  },
+  {
+    "Fact_ID": 135,
+    "Fact": "Every year, Dubai lights up with the renowned Dubai Shopping Festival, drawing millions of visitors.",
+    "Source": "https://en.wikipedia.org/wiki/Dubai_Shopping_Festival",
+    "CC_ID": 185,
+    "Correct_Country": "United Arab Emirates",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Abu Dhabi",
+    "CC_Abbrev": "ARE"
+  },
+  {
+    "Fact_ID": 136,
+    "Fact": "The Sheikh Zayed Grand Mosque stands as a breathtaking symbol of Islamic art and architecture in this country.",
+    "Source": "https://en.wikipedia.org/wiki/Sheikh_Zayed_Grand_Mosque",
+    "CC_ID": 185,
+    "Correct_Country": "United Arab Emirates",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Abu Dhabi",
+    "CC_Abbrev": "ARE"
+  },
+  {
+    "Fact_ID": 137,
+    "Fact": "From vast deserts to futuristic skylines, cities like Dubai and Abu Dhabi are a testament to rapid modern development.",
+    "Source": "https://en.wikipedia.org/wiki/Abu_Dhabi",
+    "CC_ID": 185,
+    "Correct_Country": "United Arab Emirates",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Abu Dhabi",
+    "CC_Abbrev": "ARE"
+  },
+  {
+    "Fact_ID": 138,
+    "Fact": "Once known solely for oil, this country now thrives as a global hub for tourism, finance, and technology.",
+    "Source": "https://en.wikipedia.org/wiki/Economy_of_the_United_Arab_Emirates",
+    "CC_ID": 185,
+    "Correct_Country": "United Arab Emirates",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Abu Dhabi",
+    "CC_Abbrev": "ARE"
+  },
+  {
+    "Fact_ID": 139,
+    "Fact": "Only in this country can you hit the slopes indoors at Ski Dubai, the world’s first indoor ski resort.",
+    "Source": "https://www.skidxb.com/en-ae/ski-dubai",
+    "CC_ID": 185,
+    "Correct_Country": "United Arab Emirates",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Abu Dhabi",
+    "CC_Abbrev": "ARE"
+  },
+  {
+    "Fact_ID": 140,
+    "Fact": "A true crossroads of tradition and modernity, this country celebrates a blend of deep-rooted Emirati heritage and cosmopolitan influences.",
+    "Source": "https://en.wikipedia.org/wiki/Culture_of_the_United_Arab_Emirates",
+    "CC_ID": 185,
+    "Correct_Country": "United Arab Emirates",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Abu Dhabi",
+    "CC_Abbrev": "ARE"
+  },
+  {
+    "Fact_ID": 141,
+    "Fact": "Native citizens make up only a small fraction of the total population, as expatriates from over 200 countries form the majority—creating a truly global melting pot in the heart of the desert!",
+    "Source": "https://www.cia.gov/the-world-factbook/countries/united-arab-emirates/",
+    "CC_ID": 185,
+    "Correct_Country": "United Arab Emirates",
+    "CC_Continent": "Asia",
+    "CC_Capital": "Abu Dhabi",
+    "CC_Abbrev": "ARE"
+  }
+]
