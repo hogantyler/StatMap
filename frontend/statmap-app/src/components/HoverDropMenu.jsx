@@ -13,7 +13,7 @@ import { FaMapMarkedAlt } from "react-icons/fa";
 
 const HoverDropMenu = ({ onSignInClick }) => {
   return (
-    <div className="group top-1 left-1 m-1 cursor-pointer z-70">
+    <div className="group top-1 left-1 m-1 cursor-pointer z-50">
       <FlyoutLink href="#" FlyoutContent={MenuContent} onSignInClick={onSignInClick}>
         <div className="w-18 h-18 flex items-center justify-center bg-black rounded-lg shadow-xl">
           <HiMenu size={72} className="text-white" />
@@ -49,7 +49,7 @@ const FlyoutLink = ({ children, href, FlyoutContent, onSignInClick }) => {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 0 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
-            className="absolute top-0 left-0 bg-black text-white shadow-lg rounded-md"
+            className="absolute top-0 left-0 bg-black text-white shadow-lg rounded-md z-50"
           >
             <FlyoutContent onSignInClick={onSignInClick} />
           </motion.div>
@@ -69,7 +69,7 @@ const MenuContent = ({ onSignInClick }) => {
           </h3>
           <button
             onClick={onSignInClick}
-            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full" // Added w-full
+            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
           >
             <div className="flex items-center">
               <FaSignInAlt className="mr-4 w-6 h-6" />
@@ -79,7 +79,7 @@ const MenuContent = ({ onSignInClick }) => {
           </button>
           <a
             href="#"
-            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full" // Added w-full
+            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
           >
             <div className="flex items-center">
               <FaGamepad className="mr-4 w-6 h-6" />
@@ -89,7 +89,7 @@ const MenuContent = ({ onSignInClick }) => {
           </a>
           <a
             href="#"
-            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full" // Added w-full
+            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
           >
             <div className="flex items-center">
               <FaTrophy className="mr-4 w-6 h-6" />
@@ -99,7 +99,7 @@ const MenuContent = ({ onSignInClick }) => {
           </a>
           <a
             href="#"
-            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full" // Added w-full
+            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
           >
             <div className="flex items-center">
               <FaUserCircle className="mr-4 w-6 h-6" />
@@ -109,7 +109,7 @@ const MenuContent = ({ onSignInClick }) => {
           </a>
           <a
             href="#"
-            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full" // Added w-full
+            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
           >
             <div className="flex items-center">
               <FaCog className="mr-4 w-6 h-6" />
