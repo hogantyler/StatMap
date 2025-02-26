@@ -94,7 +94,7 @@ const PlayScreen = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!selectedOption) return;
+    if (isAnswered || !selectedOption) return;
 
     setIsAnswered(true);
     if (selectedOption.value === currentFact.Correct_Country) {
