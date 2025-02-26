@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import WorldMap from "../World_map.svg";
 import HoverDropMenu from "./HoverDropMenu";
 import Modal from "./Modal";
 import Login from "./Login";
 import { FaArrowLeft } from "react-icons/fa";
+import factsData from "../data/data.json";
+import Select from "react-select";
 
 //Sample list of countries
 const countries = [
@@ -40,70 +42,18 @@ const countries = [
   "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
 ];
 
-// Sample fact data
-const facts = [
-  {
-    "Fact_ID": "14",
-    "Fact": "The United States was gifted the Statue of Liberty by this country.",
-    "Source": "https://en.wikipedia.org/wiki/Statue_of_Liberty",
-    "CC_ID": "61",
-    "Correct_Country": "France",
-    "CC_Continent": "Europe",
-    "CC_Capital": "Paris",
-    "CC_Abbrev": "FRA"
-  },
-  {
-    "Fact_ID": "95",
-    "Fact": "Maintain three capital cities",
-    "Source": "https://en.wikipedia.org/wiki/South_Africa",
-    "CC_ID": "160",
-    "Correct_Country": "South Africa",
-    "CC_Continent": "Africa",
-    "CC_Capital": "Cape Town",
-    "CC_Abbrev": "ZAF"
-  },
-  {
-    "Fact_ID": "90",
-    "Fact": "More than half of the country is covered with forests, making it one of the greenest countries in the world",
-    "Source": "https://the-slovenia.com/en/slovenia/top-100-facts-about-slovenia/",
-    "CC_ID": "157",
-    "Correct_Country": "Slovenia",
-    "CC_Continent": "Europe",
-    "CC_Capital": "Ljubljana",
-    "CC_Abbrev": "SVN"
-  },
-  {
-    "Fact_ID": "62",
-    "Fact": "This country features historical underground vaults, often referred to as a prison, with legends of vast, maze-like chambers.",
-    "Source": "https://en.wikipedia.org/wiki/Qara_Prison?utm_source=chatgpt.com",
-    "CC_ID": "117",
-    "Correct_Country": "Morocco",
-    "CC_Continent": "Africa",
-    "CC_Capital": "Rabat",
-    "CC_Abbrev": "MAR"
-  },
-  {
-    "Fact_ID": "123",
-    "Fact": "This country is the second largest banana producer in the world",
-    "Source": "https://www.safarisrwandasafari.com/information/facts-about-uganda-that-you-should-know/",
-    "CC_ID": "183",
-    "Correct_Country": "Uganda",
-    "CC_Continent": "Africa",
-    "CC_Capital": "Kampala",
-    "CC_Abbrev": "UGA"
-  }
-];
+// Convert countries array to options for react-select
+const countryOptions = countries.sort().map((country) => ({
+  value: country,
+  label: country,
+}));
 
-// Helper to pick a random fact from our list.
-const getRandomFact = () => {
-  const randomIndex = Math.floor(Math.random() * facts.length);
-  return facts[randomIndex];
-};
 
 const PlayScreen = () => {
-  const [selectedCountry, setSelectedCountry] = useState("");
-  const [currentFact, setCurrentFact] = useState(getRandomFact());
-  const [attempts, setAttempts] = useState(0); // counts wrong attempts for current fact
+  const [selectedOption, setSelectedOption] = useState(null);
+  const [unusedFacts, setUnusedFacts] = useState([...factsData]); // all facts copy
+  const [currentFact, setCurrentFact] = useState(null);
+  const [attempts, setAttempts] = useState(0);
   const [score, setScore] = useState(0);
   const [feedback, setFeedback] = useState("");
   const [feedbackType, setFeedbackType] = useState(""); // "correct" or "incorrect"
@@ -111,29 +61,49 @@ const PlayScreen = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
 
+  // Function to load a new fact:
   const loadNewFact = () => {
-    setCurrentFact(getRandomFact());
+    setUnusedFacts((prevUnused) => {
+      let available = prevUnused;
+      // Reset if we've used all facts
+      if (available.length === 0) {
+        available = [...factsData];
+      }
+      const randomIndex = Math.floor(Math.random() * available.length);
+      const chosen = available[randomIndex];
+      // Remove the chosen fact from the list
+      const newUnused = available.filter((_, i) => i !== randomIndex);
+      // Update currentFact with the chosen fact
+      setCurrentFact(chosen);
+      return newUnused;
+    });
+    // Reset other states for the new question
     setAttempts(0);
-    setSelectedCountry("");
+    setSelectedOption("");
     setFeedback("");
     setFeedbackType("");
     setIsAnswered(false);
   };
 
+  // Load an initial fact on mount:
+  useEffect(() => {
+    if (!currentFact) {
+      loadNewFact();
+    }
+  }, [currentFact]);
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (isAnswered || !selectedCountry) return;
+    if (!selectedOption) return;
 
-    // Prevent further submissions for the current fact.
     setIsAnswered(true);
-
-    if (selectedCountry === currentFact.Correct_Country) {
+    if (selectedOption.value === currentFact.Correct_Country) {
       let points = 0;
       if (attempts === 0) points = 1000;
       else if (attempts === 1) points = 750;
       else if (attempts === 2) points = 500;
       else if (attempts === 3) points = 250;
-      setScore(prev => prev + points);
+      setScore((prev) => prev + points);
       setFeedback("Correct!");
       setFeedbackType("correct");
       setTimeout(() => {
@@ -153,8 +123,7 @@ const PlayScreen = () => {
         }
         setFeedback(`Incorrect! Try again. ${hint}`);
         setFeedbackType("incorrect");
-        // Allow the user to try again
-        setIsAnswered(false);
+        setIsAnswered(false); // allow another try
       } else {
         setFeedback(`Incorrect! The correct answer is ${currentFact.Correct_Country}.`);
         setFeedbackType("incorrect");
@@ -193,42 +162,42 @@ const PlayScreen = () => {
         <div className="mb-4 text-center font-bold text-gray-800 text-xl">
           Score: {score}
         </div>
-        {/* Fact Display */}
-        <div className="mb-6 p-4 border border-gray-300 rounded">
-          <p className="text-center text-gray-800">{currentFact.Fact}</p>
+        {/* Instruction text */}
+        <div className="mb-4 text-center text-lg text-gray-800">
+          Guess the country based on the fact!
         </div>
+        {/* Fact Display */}
+        {currentFact && (
+          <div className="mb-6 p-4 border border-gray-300 rounded">
+            <p className="text-center font-semibold text-gray-800">{currentFact.Fact}</p>
+          </div>
+        )}
         {/* Feedback Popup */}
         {feedback && (
           <div
-            className={`mb-4 p-2 rounded text-center ${
-              feedbackType === "correct"
+            className={`mb-4 p-2 rounded text-center ${feedbackType === "correct"
                 ? "bg-green-300 text-green-900"
                 : "bg-red-300 text-red-900"
-            }`}
+              }`}
           >
             {feedback}
           </div>
         )}
-        {/* Country Selection Form */}
+        {/* Country Selection Form using react-select */}
         <form onSubmit={handleSubmit}>
           <div className="text-center">
             <div className="mb-4 inline-block text-left max-w-xs w-full">
               <label htmlFor="countrySelect" className="font-bold block mb-2">
                 Select a country:
               </label>
-              <select
+              <Select
                 id="countrySelect"
-                value={selectedCountry}
-                onChange={(e) => setSelectedCountry(e.target.value)}
-                className="w-full bg-gray-100 text-gray-800 border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">-- Choose a country --</option>
-                {[...countries].sort().map((country) => (
-                  <option key={country} value={country}>
-                    {country}
-                  </option>
-                ))}
-              </select>
+                options={countryOptions}
+                value={selectedOption}
+                onChange={setSelectedOption}
+                placeholder="-- Choose a country --"
+                className="w-full"
+              />
             </div>
           </div>
           <div className="text-center">
@@ -251,7 +220,6 @@ const PlayScreen = () => {
 };
 
 export default PlayScreen;
-
 
 
 
