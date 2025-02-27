@@ -211,10 +211,13 @@ const PlayScreen = () => {
         </form>
       </div>
 
-      <button className="bg-black text-white py-2 px-4 mx-1 rounded-lg hover:bg-white hover:text-black border border-black"
-        onClick={() => navigate("/globe")}>
-        GLOBE MODE
-      </button>
+      <div className="flex justify-center items-center">
+        <button className="bg-gradient-to-r from-black to-blue-400 text-white py-2 px-4 mx-1 rounded-lg"
+          onClick={() => navigate("/globe")}>
+          GLOBE MODE
+        </button>
+      </div>
+
 
       {/* Login Modal */}
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
