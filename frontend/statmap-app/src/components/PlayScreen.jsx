@@ -147,7 +147,7 @@ const PlayScreen = () => {
       <HoverDropMenu onSignInClick={handleOpenModal} />
 
       {/* Back Button in top right */}
-      <div className="absolute top-5 right-5 z-50">
+      <div className="absolute top-0 right-0 z-50">
         <button
           onClick={handleBack}
           className="bg-black text-white border border-white rounded-full p-2 hover:bg-white hover:text-black transition-colors"
