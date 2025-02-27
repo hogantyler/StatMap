@@ -1,14 +1,27 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
-import { useRef, useMemo } from "react";
+import { useRef, useMemo, useState } from "react";
 import * as THREE from "three";
 import { useNavigate } from "react-router-dom";
-
+import HoverDropMenu from "./HoverDropMenu";
 import { FaArrowLeft } from "react-icons/fa";
 
 function Globe() {
-    
+    const [isModalOpen, setIsModalOpen] = useState(false); //modal for side bar menu
+
     const navigate = useNavigate();
+
+    const handleOpenModal = () => {
+        console.log("Opening modal");
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        console.log("Modal close handler called");
+        setIsModalOpen(false);
+    };
+
+    const handleBack = () => navigate("/play");
     const globeRef = useRef();
     //gets the texture loading and make it wraps once without repetittion
     const texture = new THREE.TextureLoader().load("/earth_texture.jpg", (texture) => {
@@ -17,17 +30,20 @@ function Globe() {
     }, undefined, (err) => {
         console.error('An error occurred loading the texture:', err);
     });
-    const handleBack = () => navigate("/play");
+
     return (
-        <div>
+        <div className="relative w-full h-full">
             {/* Back Button in top right */}
-            <div className="absolute top-10 right-10 z-50">
+            <div className="absolute top-5 right-5 z-50">
                 <button
                     onClick={handleBack}
                     className="bg-black text-white border border-white rounded-full p-2 hover:bg-white hover:text-black transition-colors"
                 >
                     <FaArrowLeft size={40} />
                 </button>
+            </div>
+            <div className="absolute top-0 left-0 z-50">
+                <HoverDropMenu onSignInClick={handleOpenModal} />
             </div>
             <Canvas camera={{ position: [0, 2.0, 2.0], near: 0.1, far: 1000 }} style={{ background: 'black', width: "100vw", height: "100vh" }}>
                 <ambientLight intensity={1.5} />
