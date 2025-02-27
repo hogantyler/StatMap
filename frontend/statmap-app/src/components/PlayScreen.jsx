@@ -186,7 +186,7 @@ const PlayScreen = () => {
         {/* Country Selection Form using react-select */}
         <form onSubmit={handleSubmit}>
           <div className="text-center">
-            <div className="mb-4 inline-block text-left max-w-xs w-full">
+            <div className="mb-2 inline-block text-left max-w-xs w-full">
               <label htmlFor="countrySelect" className="font-bold block mb-2">
                 Select a country:
               </label>
@@ -203,7 +203,7 @@ const PlayScreen = () => {
           <div className="text-center">
             <button
               type="submit"
-              className="bg-black text-white border border-white rounded-full w-3/5 py-3 hover:bg-white hover:text-black transition-colors"
+              className="bg-black text-white border border-white rounded-full py-2 hover:bg-white hover:text-black transition-colors"
             >
               Submit
             </button>
