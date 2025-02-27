@@ -176,8 +176,8 @@ const PlayScreen = () => {
         {feedback && (
           <div
             className={`mb-4 p-2 rounded text-center ${feedbackType === "correct"
-                ? "bg-green-300 text-green-900"
-                : "bg-red-300 text-red-900"
+              ? "bg-green-300 text-green-900"
+              : "bg-red-300 text-red-900"
               }`}
           >
             {feedback}
@@ -210,6 +210,11 @@ const PlayScreen = () => {
           </div>
         </form>
       </div>
+
+      <button className="bg-black text-white py-2 px-4 mx-1 rounded-lg hover:bg-white hover:text-black border border-black"
+        onClick={() => navigate("/globe")}>
+        GLOBE MODE
+      </button>
 
       {/* Login Modal */}
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
