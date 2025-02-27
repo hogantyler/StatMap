@@ -219,7 +219,7 @@ function Globe() {
       {/* Globe Canvas */}
       <div className="absolute top-0 left-0 w-full h-full">
         <Canvas
-          camera={{ position: [0, 2.5, 2.5], near: 0.1, far: 1000 }}
+          camera={{ position: [0, 2.5, 2.5], near: 0.01, far: 1000 }}
           style={{ background: "black", width: "100vw", height: "100vh" }}
         >
           <ambientLight intensity={1.5} />
@@ -229,7 +229,7 @@ function Globe() {
           <OrbitControls
             enableZoom={true}
             enableRotate={true}
-            minDistance={1.0}
+            minDistance={1.05}
             maxDistance={4}
             zoomSpeed={0.5}
           />
