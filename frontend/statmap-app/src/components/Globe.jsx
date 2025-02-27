@@ -207,7 +207,7 @@ function Globe() {
                         <div className="text-center">
                             <button
                                 type="submit"
-                                className="bg-black text-white border border-white rounded-full w-3/5 py-1 hover:bg-white hover:text-black transition-colors"
+                                className="bg-black text-white border border-white rounded-full w-20 md:w-3/5  py-1 hover:bg-white hover:text-black transition-colors"
                             >
                                 Submit
                             </button>
