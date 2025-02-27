@@ -172,7 +172,7 @@ function GlobePage() {
             </div>
             {/* Overlay container */}
             <div className="absolute top-0 left-0 w-full flex justify-center items-start mt-5 z-30">
-                <div className="bg-white bg-opacity-0 p-4 rounded-xl w-11/12 max-w-3xl shadow-lg">
+                <div className="bg-white bg-opacity-0 p-4 rounded-xl w-11/12 max-w-3xl">
                     {/* Score Display */}
                     <div className="mb-1 text-center font-bold text-white text-xl">
                         Score: {score}
