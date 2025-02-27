@@ -6,7 +6,7 @@ import './App.css';
 import Landing from './components/Landing';
 import PlayScreen from "./components/PlayScreen";
 import LandingTest from "./components/LandingTest";
-import Globe from "./components/Globe";
+import GlobePage from "./components/GlobePage";
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Landing />} />
         <Route path="/play" element={<PlayScreen />} />
-        <Route path="/globe" element={<Globe />} />
+        <Route path="/globe" element={<GlobePage />} />
       </Routes>
     </Router>
   );
