@@ -4,8 +4,7 @@ import { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
 
 function Globe() {
-
-    // Globe-specific logic
+    //texture loading
     const globeRef = useRef();
     const texture = new THREE.TextureLoader().load("/earth_texture.jpg", (texture) => {
         texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
@@ -16,7 +15,6 @@ function Globe() {
 
     return (
         <div className="relative w-full h-full">
-            {/* Globe Canvas */}
             <div className="absolute top-0 left-0 w-full h-full">
                 <Canvas
                     camera={{ position: [0, 2.5, 2.5], near: 0.01, far: 1000 }}
