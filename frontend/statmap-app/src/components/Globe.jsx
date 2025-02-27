@@ -48,7 +48,7 @@ function Globe() {
 
             <div className="flex justify-center">
                 {/* Overlay container */}
-                <div className="z-50 self-center bg-white bg-opacity-0 p-12 rounded-xl w-11/12 max-w-3xl shadow-lg">
+                <div className="z-20 self-center bg-white bg-opacity-0 mt-10 rounded-xl w-11/12 max-w-3xl shadow-lg">
                     {/* Score Display Above the Fact */}
                     <div className="mb-4 text-center font-bold text-white text-xl">
                         Score: {score}
