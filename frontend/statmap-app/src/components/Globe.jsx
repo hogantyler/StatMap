@@ -66,7 +66,7 @@ function Globe() {
 
             <div className="absolute top-0 left-0 w-full h-full">
                 <Canvas
-                    camera={{ position: [0, 2.0, 2.0], near: 0.1, far: 1000 }}
+                    camera={{ position: [0, 2.5, 2.5], near: 0.1, far: 1000 }}
                     style={{ background: "black", width: "100vw", height: "100vh" }}
                 >
                     <ambientLight intensity={1.5} />
@@ -96,7 +96,7 @@ function Globe() {
 function RotateGlobe({ globeRef }) {
     useFrame(() => {
         if (globeRef.current) {
-            globeRef.current.rotation.y += 0.00007;
+            globeRef.current.rotation.y += 0.001;
         }
     });
     return null;
