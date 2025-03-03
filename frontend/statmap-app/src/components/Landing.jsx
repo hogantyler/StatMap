@@ -51,10 +51,14 @@ const Landing = () => {
 
         <div className="flex flex-col justify-center items-center gap-2 bg-gradient-to-r from-gray-400 to-white text-black bg-opacity-90 p-4 rounded-lg shadow-lg m-1 mr-4 w-full max-w-[30rem]">
           <div><h3 className="text-xl font-semibold py-1">STATMAP</h3></div>
-          <p className="text-sm py-1">A game to learn more about the countries around the world.</p>
+          <p className="text-sm py-1">Learn about different countries around the world.</p>
           <button className="bg-black text-white py-2 px-4 rounded-lg hover:bg-white hover:text-black border border-black"
-            onClick={() => navigate("/play")}>
-            PLAY
+            onClick={() => navigate("/quiz")}>
+            QUIZ
+          </button>
+          <button className="bg-black text-white py-2 px-4 rounded-lg hover:bg-white hover:text-black border border-black"
+            onClick={() => navigate("/unlimited")}>
+            UNLIMITED
           </button>
         </div>
 
