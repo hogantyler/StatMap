@@ -193,7 +193,7 @@ const QuizMode = () => {
         ) : (
           // Normal Quiz Content
           <div className="bg-transparent p-6 rounded-xl w-11/12 max-w-3xl border border-white shadow-lg">
-            <div className="mb-2 text-left font-bold text-white text-med">
+            <div className="mb-2 text-center font-bold text-white text-med">
               Question: {questionNumber} of 10
             </div>
             <div className="mb-4 text-center font-bold text-white text-lg">
