@@ -48,7 +48,7 @@ const countryOptions = countries.sort().map((country) => ({
     label: country,
 }));
 
-function GlobePage() {
+function UnlimitedMode() {
     const [isModalOpen, setIsModalOpen] = useState(false); //modal for side bar menu
     const [selectedOption, setSelectedOption] = useState(null);
     const [unusedFacts, setUnusedFacts] = useState([...factsData]); // copy of all facts
@@ -143,7 +143,7 @@ function GlobePage() {
     };
 
     const handleBack = () => {
-        navigate("/play"); // Navigate back to the main PlayScreen if desired
+        navigate("/"); // Navigate back to the main PlayScreen if desired
     };
 
     // Globe-specific logic
@@ -178,15 +178,25 @@ function GlobePage() {
                         Score: {score}
                     </div>
                     {/* Instruction Text */}
-                    <div className="mb-1 text-center text-sm text-white">
+                    <div className="mb-1 text-center text-med text-white">
                         Guess the country based on the fact!
                     </div>
-                    {/* Fact Display */}
+                    {/* Fact Box */}
                     {currentFact && (
-                        <div className="p-1 border text-sm border-white rounded">
+                        <div className="mb-6 p-4 border border-white rounded relative">
                             <p className="text-center font-semibold text-white">
                                 {currentFact.Fact}
                             </p>
+                            <div className="absolute bottom-0 right-0">
+                                <a
+                                    href={currentFact.Source}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="text-xs text-white underline"
+                                >
+                                    Source
+                                </a>
+                            </div>
                         </div>
                     )}
                     {/* Feedback Popup */}
@@ -204,7 +214,10 @@ function GlobePage() {
                     <form onSubmit={handleSubmit}>
                         <div className="text-center">
                             <div className="mb-2 inline-block text-left max-w-xs w-full">
-                                <label htmlFor="countrySelect" className="font-bold block mb-1 text-sm text-white">
+                                <label
+                                    htmlFor="countrySelect"
+                                    className="font-bold block mb-2 text-white"
+                                >
                                     Select a country:
                                 </label>
                                 <Select
@@ -213,16 +226,44 @@ function GlobePage() {
                                     value={selectedOption}
                                     onChange={setSelectedOption}
                                     placeholder="-- Choose a country --"
+                                    styles={{
+                                        control: (provided, state) => ({
+                                            ...provided,
+                                            backgroundColor: "transparent",
+                                            border: "1px solid white",
+                                            boxShadow: state.isFocused ? "0 0 0 1px white" : provided.boxShadow,
+                                            "&:hover": {
+                                                border: "1px solid white",
+                                            },
+                                        }),
+                                        singleValue: (provided) => ({
+                                            ...provided,
+                                            color: "white",
+                                        }),
+                                        placeholder: (provided) => ({
+                                            ...provided,
+                                            color: "white",
+                                        }),
+                                        menu: (provided) => ({
+                                            ...provided,
+                                            backgroundColor: "transparent",
+                                            border: "1px solid white",
+                                        }),
+                                        option: (provided, state) => ({
+                                            ...provided,
+                                            backgroundColor: state.isSelected
+                                                ? "rgba(255,255,255,0.3)"
+                                                : state.isFocused
+                                                    ? "rgba(255,255,255,0.2)"
+                                                    : "transparent",
+                                            color: "white",
+                                            "&:hover": {
+                                                backgroundColor: "rgba(255,255,255,0.2)",
+                                            },
+                                        }),
+                                    }}
                                 />
                             </div>
-                        </div>
-                        <div className="text-center">
-                            <button
-                                type="submit"
-                                className="bg-black text-white border border-white rounded-full w-20 md:w-3/5  py-1 hover:bg-white hover:text-black transition-colors"
-                            >
-                                Submit
-                            </button>
                         </div>
                     </form>
                 </div>
@@ -238,4 +279,4 @@ function GlobePage() {
     );
 }
 
-export default GlobePage;
+export default UnlimitedMode;

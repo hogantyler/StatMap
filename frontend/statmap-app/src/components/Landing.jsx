@@ -53,8 +53,12 @@ const Landing = () => {
           <div><h3 className="text-xl font-semibold py-1">STATMAP</h3></div>
           <p className="text-sm py-1">Learn about different countries around the world.</p>
           <button className="bg-black text-white py-2 px-4 rounded-lg hover:bg-white hover:text-black border border-black"
-            onClick={() => navigate("/play")}>
-            PLAY
+            onClick={() => navigate("/quiz")}>
+            QUIZ
+          </button>
+          <button className="bg-black text-white py-2 px-4 rounded-lg hover:bg-white hover:text-black border border-black"
+            onClick={() => navigate("/unlimited")}>
+            UNLIMITED
           </button>
         </div>
 
