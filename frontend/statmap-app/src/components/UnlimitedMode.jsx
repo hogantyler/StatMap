@@ -265,6 +265,14 @@ function UnlimitedMode() {
                                 />
                             </div>
                         </div>
+                        <div className="text-center">
+                            <button
+                                type="submit"
+                                className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
+                            >
+                                Submit
+                            </button>
+                        </div>
                     </form>
                 </div>
             </div>
