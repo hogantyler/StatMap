@@ -1,0 +1,14 @@
+services:
+  app:
+    container_name: "app"
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=sqlite:///data/app.db
+    volumes:
+      - db-data:/app/data
+    restart: always
+
+volumes:
+  db-data:
