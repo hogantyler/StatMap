@@ -1,27 +1,37 @@
 import pandas as pd
 import sqlite3
 
+# Load CSV data containing facts
 df = pd.read_csv("./data/newFactsList.csv")
 
-conn = sqlite3.connect("StatMap.db")
+# Connect to the db.sqlite3 database
+conn = sqlite3.connect("db.sqlite3")
 cursor = conn.cursor()
 
-cursor.execute("DELETE FROM Facts")
+# Clear the api_fact table
+cursor.execute("DELETE FROM api_fact")
 
-for i in range(0, len(df["Fact"])):
+# Iterate over each fact in the CSV file
+for i in range(len(df)):
     fact = df["Fact"][i]
     source = df["Fact Source"][i]
+    
+    if pd.isnull(source):
+        source = ""
+    country = df["Country"][i]
+    
     country = df["Country"][i]
 
-    # Gets Country ID from DB
-    sql = "SELECT Country_ID FROM Countries WHERE Country = ?;"
+    # Get the corresponding country ID from the api_country table
+    sql = "SELECT id FROM api_country WHERE country = ?;"
     data = cursor.execute(sql, (country,))
-
+    
     country_id = None
     for row in data:
         country_id = row[0]
 
-    sql = "INSERT INTO Facts(Fact, Source, Country_ID) Values(?, ?, ?)"
+    # Insert the fact into the api_fact table
+    sql = "INSERT INTO api_fact (fact, source, country_id) VALUES (?, ?, ?);"
     cursor.execute(sql, (fact, source, country_id))
 
 conn.commit()
