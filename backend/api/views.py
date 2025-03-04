@@ -13,7 +13,7 @@ from .serializer import FactSerializer
 
 
 # @api_view(["GET"])
-class RandomFactAPIView(APIView):
+class RandomFactView(APIView):
     def get(self, request, format=None):
         random_fact = Fact.objects.select_related('country').order_by('?').first()
         if random_fact:
