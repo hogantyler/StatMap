@@ -5,7 +5,7 @@ services:
     ports:
       - "8000:8000"
     environment:
-      - DATABASE_URL=sqlite:///data/app.db
+      - DATABASE_URL=sqlite:///data/db.sqlite3
     volumes:
       - db-data:/app/data
     restart: always
