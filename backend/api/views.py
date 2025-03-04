@@ -1,4 +1,4 @@
-from rest_framework.decorators import api_view
+from rest_framework.decorators import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from .models import Fact, Country
@@ -12,7 +12,7 @@ from .serializer import FactSerializer
 
 
 
-@api_view(["GET"])
+# @api_view(["GET"])
 class RandomFactAPIView(APIView):
     def get(self, request, format=None):
         random_fact = Fact.objects.select_related('country').order_by('?').first()

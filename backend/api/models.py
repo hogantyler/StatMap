@@ -17,16 +17,22 @@ class Country(models.Model):
     abbrev = models.CharField(max_length=3)
 
 
-class Fact(models.Model):
-    """
-    Model for Fact, where SQLite table is expected to have property of:
-    1) fact_id (primary key)
-    2) fact (max chars = 500)
-    3) source (max chars = 300)
-    4) country (foreign key to find correct Country to reference)
-    """
+# class Fact(models.Model):
+#     """
+#     Model for Fact, where SQLite table is expected to have property of:
+#     1) fact_id (primary key)
+#     2) fact (max chars = 500)
+#     3) source (max chars = 300)
+#     4) country (foreign key to find correct Country to reference)
+#     """
 
-    fact_id = models.IntegerField(primary_key=True)
-    fact = models.CharField(max_length=500)
-    source = models.CharField(max_length=300)
-    country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name="facts")
+#     fact_id = models.IntegerField(primary_key=True)
+#     fact = models.CharField(max_length=500)
+#     source = models.CharField(max_length=300)
+#     country = models.ForeignKey(Country, on_delete=models.CASCADE, related_name="facts")
+
+class Fact(models.Model):
+    text = models.TextField()
+
+    def __str__(self):
+        return self.text
