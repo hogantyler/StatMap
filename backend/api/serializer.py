@@ -1,42 +1,38 @@
 from rest_framework import serializers
 from .models import Fact, Country
 
-
-# Serializer used to JSONify Facts for StatMap
 class FactSerializer(serializers.ModelSerializer):
     """
     JSONify's the facts from StatMap in the format of:
+    
+    fact_id: integer,
+    fact: string,
+    source: string,
+    country_id: integer,
+    country: string,
+    continent: string,
+    capital: string,
+    abbrev: string
 
-    Fact_ID: integer,
-    Fact: string,
-    Source: string,
-    CC_ID: integer,
-    Correct_Country: string,
-    CC_Continent: string,
-    CC_Capital: string,
-    CC_Abbrev: string
-
-    where CC stands for "Correct Country"
     """
-
-    Fact_ID = serializers.IntegerField(source="fact_id")
-    Fact = serializers.CharField(source="fact")
-    Source = serializers.CharField(source="source")
-    CC_ID = serializers.IntegerField(source="country_id")
-    Correct_Country = serializers.CharField(source="country.country")
-    CC_Continent = serializers.CharField(source="country.continent")
-    CC_Capital = serializers.CharField(source="country.capital")
-    CC_Abbrev = serializers.CharField(source="country.abbrev")
+    fact_id = serializers.IntegerField(source="id", read_only=True)
+    fact = serializers.CharField(read_only=True)
+    source = serializers.CharField(read_only=True)
+    country_id = serializers.IntegerField(source="country.id", read_only=True)
+    country = serializers.CharField(source="country.country", read_only=True)
+    continent = serializers.CharField(source="country.continent", read_only=True)
+    capital = serializers.CharField(source="country.capital", read_only=True)
+    abbrev = serializers.CharField(source="country.abbrev", read_only=True)
 
     class Meta:
         model = Fact
         fields = [
-            "Fact_ID",
-            "Fact",
-            "Source",
-            "CC_ID",
-            "Correct_Country",
-            "CC_Continent",
-            "CC_Capital",
-            "CC_Abbrev",
+            "fact_id",
+            "fact",
+            "source",
+            "country_id",
+            "country",
+            "continent",
+            "capital",
+            "abbrev",
         ]
