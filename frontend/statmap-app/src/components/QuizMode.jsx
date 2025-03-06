@@ -10,36 +10,189 @@ import factsData from "../data/data.json";
 
 // Sample list of countries for the dropdown
 const countries = [
-  "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Argentina",
-  "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain",
-  "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin",
-  "Bhutan", "Bolivia", "Bosnia and Herzegovina", "Botswana", "Brazil",
-  "Brunei", "Bulgaria", "Burkina Faso", "Burundi", "Cambodia", "Cameroon",
-  "Canada", "Chad", "Chile", "China", "Colombia", "Comoros", "Congo",
-  "Costa Rica", "Croatia", "Cuba", "Cyprus", "Czechia", "Denmark",
-  "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt",
-  "El Salvador", "Estonia", "Eswatini", "Ethiopia", "Fiji", "Finland",
-  "France", "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece",
-  "Grenada", "Guatemala", "Guinea", "Guyana", "Haiti", "Honduras", "Hungary",
-  "Iceland", "India", "Indonesia", "Iran", "Iraq", "Ireland", "Israel",
-  "Italy", "Jamaica", "Japan", "Jordan", "Kazakhstan", "Kenya", "Kiribati",
-  "Kuwait", "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia",
-  "Libya", "Liechtenstein", "Lithuania", "Luxembourg", "Madagascar", "Malawi",
-  "Malaysia", "Maldives", "Mali", "Malta", "Mauritania", "Mauritius", "Mexico",
-  "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique",
-  "Myanmar", "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua",
-  "Niger", "Nigeria", "North Korea", "North Macedonia", "Norway", "Oman", "Pakistan",
-  "Palau", "Panama", "Papua New Guinea", "Paraguay", "Peru", "Philippines", "Poland",
-  "Portugal", "Qatar", "Romania", "Russia", "Rwanda", "Saint Kitts and Nevis",
-  "Saint Lucia", "Saint Vincent and the Grenadines", "Samoa", "San Marino",
-  "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", "Seychelles",
-  "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", "Somalia",
-  "South Africa", "South Korea", "Spain", "Sri Lanka", "Sudan", "Suriname",
-  "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand",
-  "Timor-Leste", "Togo", "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey",
-  "Turkmenistan", "Tuvalu", "Uganda", "Ukraine", "United Arab Emirates",
-  "United Kingdom", "United States", "Uruguay", "Uzbekistan", "Vanuatu",
-  "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+  "Afghanistan",
+  "Albania",
+  "Algeria",
+  "Andorra",
+  "Angola",
+  "Argentina",
+  "Armenia",
+  "Australia",
+  "Austria",
+  "Azerbaijan",
+  "Bahamas",
+  "Bahrain",
+  "Bangladesh",
+  "Barbados",
+  "Belarus",
+  "Belgium",
+  "Belize",
+  "Benin",
+  "Bhutan",
+  "Bolivia",
+  "Bosnia and Herzegovina",
+  "Botswana",
+  "Brazil",
+  "Brunei",
+  "Bulgaria",
+  "Burkina Faso",
+  "Burundi",
+  "Cambodia",
+  "Cameroon",
+  "Canada",
+  "Chad",
+  "Chile",
+  "China",
+  "Colombia",
+  "Comoros",
+  "Congo",
+  "Costa Rica",
+  "Croatia",
+  "Cuba",
+  "Cyprus",
+  "Czechia",
+  "Denmark",
+  "Djibouti",
+  "Dominica",
+  "Dominican Republic",
+  "Ecuador",
+  "Egypt",
+  "El Salvador",
+  "Estonia",
+  "Eswatini",
+  "Ethiopia",
+  "Fiji",
+  "Finland",
+  "France",
+  "Gabon",
+  "Gambia",
+  "Georgia",
+  "Germany",
+  "Ghana",
+  "Greece",
+  "Grenada",
+  "Guatemala",
+  "Guinea",
+  "Guyana",
+  "Haiti",
+  "Honduras",
+  "Hungary",
+  "Iceland",
+  "India",
+  "Indonesia",
+  "Iran",
+  "Iraq",
+  "Ireland",
+  "Israel",
+  "Italy",
+  "Jamaica",
+  "Japan",
+  "Jordan",
+  "Kazakhstan",
+  "Kenya",
+  "Kiribati",
+  "Kuwait",
+  "Kyrgyzstan",
+  "Laos",
+  "Latvia",
+  "Lebanon",
+  "Lesotho",
+  "Liberia",
+  "Libya",
+  "Liechtenstein",
+  "Lithuania",
+  "Luxembourg",
+  "Madagascar",
+  "Malawi",
+  "Malaysia",
+  "Maldives",
+  "Mali",
+  "Malta",
+  "Mauritania",
+  "Mauritius",
+  "Mexico",
+  "Moldova",
+  "Monaco",
+  "Mongolia",
+  "Montenegro",
+  "Morocco",
+  "Mozambique",
+  "Myanmar",
+  "Namibia",
+  "Nauru",
+  "Nepal",
+  "Netherlands",
+  "New Zealand",
+  "Nicaragua",
+  "Niger",
+  "Nigeria",
+  "North Korea",
+  "North Macedonia",
+  "Norway",
+  "Oman",
+  "Pakistan",
+  "Palau",
+  "Panama",
+  "Papua New Guinea",
+  "Paraguay",
+  "Peru",
+  "Philippines",
+  "Poland",
+  "Portugal",
+  "Qatar",
+  "Romania",
+  "Russia",
+  "Rwanda",
+  "Saint Kitts and Nevis",
+  "Saint Lucia",
+  "Saint Vincent and the Grenadines",
+  "Samoa",
+  "San Marino",
+  "Sao Tome and Principe",
+  "Saudi Arabia",
+  "Senegal",
+  "Serbia",
+  "Seychelles",
+  "Sierra Leone",
+  "Singapore",
+  "Slovakia",
+  "Slovenia",
+  "Solomon Islands",
+  "Somalia",
+  "South Africa",
+  "South Korea",
+  "Spain",
+  "Sri Lanka",
+  "Sudan",
+  "Suriname",
+  "Sweden",
+  "Switzerland",
+  "Syria",
+  "Taiwan",
+  "Tajikistan",
+  "Tanzania",
+  "Thailand",
+  "Timor-Leste",
+  "Togo",
+  "Tonga",
+  "Trinidad and Tobago",
+  "Tunisia",
+  "Turkey",
+  "Turkmenistan",
+  "Tuvalu",
+  "Uganda",
+  "Ukraine",
+  "United Arab Emirates",
+  "United Kingdom",
+  "United States",
+  "Uruguay",
+  "Uzbekistan",
+  "Vanuatu",
+  "Venezuela",
+  "Vietnam",
+  "Yemen",
+  "Zambia",
+  "Zimbabwe",
 ];
 
 const countryOptions = countries.sort().map((country) => ({
@@ -76,6 +229,9 @@ const QuizMode = () => {
       }
       const randomIndex = Math.floor(Math.random() * available.length);
       const chosen = available[randomIndex];
+      fetch("http://18.118.152.10:8000/api/random_fact/").then((res) =>
+        console.log(res.json())
+      );
       const newUnused = available.filter((_, i) => i !== randomIndex);
       setCurrentFact(chosen);
       return newUnused;
@@ -136,7 +292,9 @@ const QuizMode = () => {
         setFeedbackType("incorrect");
         setIsAnswered(false);
       } else {
-        setFeedback(`Incorrect! The correct answer is ${currentFact.Correct_Country}.`);
+        setFeedback(
+          `Incorrect! The correct answer is ${currentFact.Correct_Country}.`
+        );
         setFeedbackType("incorrect");
         setTimeout(() => {
           handleNextQuestion();
@@ -181,7 +339,9 @@ const QuizMode = () => {
         {quizComplete ? (
           // Final Quiz Popup
           <div className="bg-transparent p-10 rounded-xl w-11/12 max-w-3xl border-2 border-white shadow-xl text-center">
-            <div className="mb-6 text-3xl font-bold text-white">Quiz Complete!</div>
+            <div className="mb-6 text-3xl font-bold text-white">
+              Quiz Complete!
+            </div>
             <div className="mb-6 text-2xl text-white">Final Score: {score}</div>
             <button
               onClick={handleRestartQuiz}
@@ -223,12 +383,13 @@ const QuizMode = () => {
             {/* Feedback Popup */}
             {feedback && (
               <div
-                className={`mb-4 p-2 rounded text-center ${feedbackType === "correct"
+                className={`mb-4 p-2 rounded text-center ${
+                  feedbackType === "correct"
                     ? "bg-green-300 text-green-900"
                     : feedbackType === "final"
-                      ? "bg-blue-300 text-blue-900"
-                      : "bg-red-300 text-red-900"
-                  }`}
+                    ? "bg-blue-300 text-blue-900"
+                    : "bg-red-300 text-red-900"
+                }`}
               >
                 {feedback}
               </div>
@@ -254,7 +415,9 @@ const QuizMode = () => {
                         ...provided,
                         backgroundColor: "transparent",
                         border: "1px solid white",
-                        boxShadow: state.isFocused ? "0 0 0 1px white" : provided.boxShadow,
+                        boxShadow: state.isFocused
+                          ? "0 0 0 1px white"
+                          : provided.boxShadow,
                         "&:hover": {
                           border: "1px solid white",
                         },
@@ -277,8 +440,8 @@ const QuizMode = () => {
                         backgroundColor: state.isSelected
                           ? "rgba(255,255,255,0.3)"
                           : state.isFocused
-                            ? "rgba(255,255,255,0.2)"
-                            : "transparent",
+                          ? "rgba(255,255,255,0.2)"
+                          : "transparent",
                         color: "white",
                         "&:hover": {
                           backgroundColor: "rgba(255,255,255,0.2)",
@@ -310,7 +473,3 @@ const QuizMode = () => {
 };
 
 export default QuizMode;
-
-
-
-
