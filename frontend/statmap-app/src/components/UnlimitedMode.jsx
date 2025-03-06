@@ -58,6 +58,7 @@ function UnlimitedMode() {
     const [feedback, setFeedback] = useState("");
     const [feedbackType, setFeedbackType] = useState(""); // "correct" or "incorrect"
     const [isAnswered, setIsAnswered] = useState(false);
+    const [questionFinished, setQuestionFinished] = useState(false); //for 'next' and 'source' buttons
     const navigate = useNavigate();
 
     const handleOpenModal = () => {
@@ -95,10 +96,8 @@ function UnlimitedMode() {
     };
 
     useEffect(() => {
-        if (!currentFact) {
-            loadNewFact();
-        }
-    }, [currentFact]);
+        loadNewFact();
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -114,9 +113,7 @@ function UnlimitedMode() {
             setScore((prev) => prev + points);
             setFeedback("Correct!");
             setFeedbackType("correct");
-            setTimeout(() => {
-                loadNewFact();
-            }, 2000);
+            setQuestionFinished(true);
         } else {
             if (attempts < 3) {
                 const newAttempts = attempts + 1;
@@ -135,9 +132,7 @@ function UnlimitedMode() {
             } else {
                 setFeedback(`Incorrect! The correct answer is ${currentFact.Correct_Country}.`);
                 setFeedbackType("incorrect");
-                setTimeout(() => {
-                    loadNewFact();
-                }, 2000);
+                setQuestionFinished(true);
             }
         }
     };
@@ -187,16 +182,6 @@ function UnlimitedMode() {
                             <p className="text-center font-semibold text-white">
                                 {currentFact.Fact}
                             </p>
-                            <div className="absolute bottom-0 right-0">
-                                <a
-                                    href={currentFact.Source}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-xs text-white underline"
-                                >
-                                    Source
-                                </a>
-                            </div>
                         </div>
                     )}
                     {/* Feedback Popup */}
@@ -208,6 +193,25 @@ function UnlimitedMode() {
                                 }`}
                         >
                             {feedback}
+                        </div>
+                    )}
+                    {/* End of Question/Source Popup */}
+                    {questionFinished && (
+                        <div className="flex justify-around mt-4">
+                            <a
+                                href={currentFact.Source}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
+                            >
+                                Source
+                            </a>
+                            <button
+                                onClick={() => { setQuestionFinished(false); loadNewFact(); }}
+                                className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
+                            >
+                                Next
+                            </button>
                         </div>
                     )}
                     {/* Country Selection Form */}
@@ -225,7 +229,7 @@ function UnlimitedMode() {
                                     options={countryOptions}
                                     value={selectedOption}
                                     onChange={setSelectedOption}
-                                    placeholder="-- Choose a country --"
+                                    placeholder="-- Search/Choose a country --"
                                     styles={{
                                         control: (provided, state) => ({
                                             ...provided,
@@ -235,6 +239,10 @@ function UnlimitedMode() {
                                             "&:hover": {
                                                 border: "1px solid white",
                                             },
+                                        }),
+                                        input: (provided) => ({
+                                            ...provided,
+                                            color: "white", // Typed text is white
                                         }),
                                         singleValue: (provided) => ({
                                             ...provided,
