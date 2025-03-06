@@ -85,14 +85,14 @@ const Landing = () => {
           </button>
         </div>
 
-        <button className="text-white py-2 px-4 mt-40 rounded-lg hover:bg-white hover:text-black"
-          onClick={() => navigate("/globeModeTest")}>
-          GlobeModeTest
-        </button>
+
       </div>
 
 
-
+      <button className="fixed bottom-1 right-1 text-white text-opacity-0 py-2 px-4 mt-40 rounded-lg hover:bg-white hover:text-black"
+        onClick={() => navigate("/globeModeTest")}>
+        GlobeModeTest
+      </button>
 
 
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
