@@ -36,3 +36,32 @@ class FactSerializer(serializers.ModelSerializer):
             "capital",
             "abbrev",
         ]
+        
+
+
+class CountrySerializer(serializers.ModelSerializer):
+    """
+    JSONify's the country from StatMap in the format of:
+    
+    country: string,
+    country_id: integer,
+    fact: string,
+    fact_id: integer,
+    source: string
+    
+    """
+    country = serializers.CharField(source="country.country", read_only=True)
+    country_id = serializers.IntegerField(source="country.id", read_only=True)
+    fact = serializers.CharField(read_only=True)
+    fact_id = serializers.IntegerField(source="id", read_only=True)
+    source = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = Fact
+        fields = [
+            "country",
+            "country_id",
+            "fact",
+            "fact_id",
+            "source",
+        ]
