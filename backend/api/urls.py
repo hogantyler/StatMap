@@ -24,5 +24,5 @@ urlpatterns = [
     path("", include(router.urls)),
     path("api-auth/", include("rest_framework.urls", namespace="rest_framework")),
     path('random_fact/', RandomFactView.as_view(), name='random_fact'),
-    path('country_facts/', CountryFactsView.as_view(), name='country_facts')
+    path('country_facts/<str:country_name>/', CountryFactsView.as_view(), name='country_facts'),
 ]
