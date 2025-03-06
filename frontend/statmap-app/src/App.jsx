@@ -5,7 +5,7 @@ import Login from "./components/Login";
 import './App.css';
 import Landing from './components/Landing';
 import QuizMode from "./components/QuizMode";
-import LandingTest from "./components/LandingTest";
+import LandingTest from "./components/TestComponents/LandingTest";
 import UnlimitedMode from "./components/UnlimitedMode";
 
 function App() {
