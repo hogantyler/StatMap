@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { FaUser } from "react-icons/fa"; // Added profile icon import
 import { BsFillQuestionSquareFill } from "react-icons/bs"; //question mark icon 
 import BlackGlobe from '../black_globe.svg';
-import HoverDropMenu from "./HoverDropMenu";
-import Login from "./Login";
-import Modal from "./Modal";
+import HoverDropMenu from "../HoverDropMenu";
+import Login from "../Login";
+import Modal from "../Modal";
 import { useNavigate } from "react-router-dom";
 
 const LandingTest = () => {
