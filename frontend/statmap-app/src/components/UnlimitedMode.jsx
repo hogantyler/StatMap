@@ -73,7 +73,10 @@ function UnlimitedMode() {
 
     // Function to load a new fact:
     const loadNewFact = () => {
-        setUnusedFacts((prevUnused) => {
+        fetch("http://18.118.152.10:8000/api/random_fact/")
+            .then(res => res.json())
+            .then(fact => setCurrentFact(fact))
+        /*setUnusedFacts((prevUnused) => {
             let available = prevUnused;
             // Reset if we've used all facts
             if (available.length === 0) {
@@ -86,7 +89,7 @@ function UnlimitedMode() {
             // Update currentFact with the chosen fact
             setCurrentFact(chosen);
             return newUnused;
-        });
+        }); */
         // Reset other states for the new question
         setAttempts(0);
         setSelectedOption("");
@@ -104,7 +107,7 @@ function UnlimitedMode() {
         if (isAnswered || !selectedOption) return;
 
         setIsAnswered(true);
-        if (selectedOption.value === currentFact.Correct_Country) {
+        if (selectedOption.value === currentFact.country) {
             let points = 0;
             if (attempts === 0) points = 1000;
             else if (attempts === 1) points = 750;
@@ -120,17 +123,17 @@ function UnlimitedMode() {
                 setAttempts(newAttempts);
                 let hint = "";
                 if (newAttempts === 1) {
-                    hint = `Hint: Continent - ${currentFact.CC_Continent}`;
+                    hint = `Hint: Continent - ${currentFact.continent}`;
                 } else if (newAttempts === 2) {
-                    hint = `Hint: Continent - ${currentFact.CC_Continent}, Capital - ${currentFact.CC_Capital}`;
+                    hint = `Hint: Continent - ${currentFact.continent}, Capital - ${currentFact.capital}`;
                 } else if (newAttempts === 3) {
-                    hint = `Hint: Continent - ${currentFact.CC_Continent}, Capital - ${currentFact.CC_Capital}, Abbreviation - ${currentFact.CC_Abbrev}`;
+                    hint = `Hint: Continent - ${currentFact.continent}, Capital - ${currentFact.capital}, Abbreviation - ${currentFact.abbrev}`;
                 }
                 setFeedback(`Incorrect! Try again. ${hint}`);
                 setFeedbackType("incorrect");
                 setIsAnswered(false);
             } else {
-                setFeedback(`Incorrect! The correct answer is ${currentFact.Correct_Country}.`);
+                setFeedback(`Incorrect! The correct answer is ${currentFact.country}.`);
                 setFeedbackType("incorrect");
                 setQuestionFinished(true);
             }
@@ -180,7 +183,7 @@ function UnlimitedMode() {
                     {currentFact && (
                         <div className="mb-6 p-4 border border-white rounded relative">
                             <p className="text-center font-semibold text-white">
-                                {currentFact.Fact}
+                                {currentFact.fact}
                             </p>
                         </div>
                     )}
@@ -199,7 +202,7 @@ function UnlimitedMode() {
                     {questionFinished && (
                         <div className="flex justify-around mt-4">
                             <a
-                                href={currentFact.Source}
+                                href={currentFact.source}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"

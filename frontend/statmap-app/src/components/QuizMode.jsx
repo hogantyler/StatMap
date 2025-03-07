@@ -211,7 +211,8 @@ const QuizMode = () => {
   const [feedback, setFeedback] = useState("");
   const [feedbackType, setFeedbackType] = useState(""); // "correct", "incorrect", or "final"
   const [isAnswered, setIsAnswered] = useState(false);
-  const [quizComplete, setQuizComplete] = useState(false); // NEW: Flag for quiz completion
+  const [quizComplete, setQuizComplete] = useState(false); //Flag for quiz completion
+  const [questionFinished, setQuestionFinished] = useState(false); //for 'next' and 'source' buttons
 
   // --- Navigation & Modal States ---
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -222,7 +223,10 @@ const QuizMode = () => {
 
   // --- Functions for Quiz Logic ---
   const loadNewFact = () => {
-    setUnusedFacts((prevUnused) => {
+    fetch("http://18.118.152.10:8000/api/random_fact/")
+      .then(res => res.json())
+      .then(fact => setCurrentFact(fact))
+    /* setUnusedFacts((prevUnused) => {
       let available = prevUnused;
       if (available.length === 0) {
         available = [...factsData];
@@ -235,7 +239,7 @@ const QuizMode = () => {
       const newUnused = available.filter((_, i) => i !== randomIndex);
       setCurrentFact(chosen);
       return newUnused;
-    });
+    }); */
     setAttempts(0);
     setSelectedOption(null);
     setFeedback("");
@@ -248,23 +252,21 @@ const QuizMode = () => {
       setQuestionNumber((prev) => prev + 1);
       loadNewFact();
     } else {
-      // NEW: Instead of auto-reset, mark quiz complete to show final popup
+      //Instead of auto-reset, mark quiz complete to show final popup
       setQuizComplete(true);
     }
   };
 
   // Load initial fact on mount:
   useEffect(() => {
-    if (!currentFact) {
-      loadNewFact();
-    }
-  }, [currentFact]);
+    loadNewFact();
+  }, []);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (isAnswered || !selectedOption) return;
     setIsAnswered(true);
-    if (selectedOption.value === currentFact.Correct_Country) {
+    if (selectedOption.value === currentFact.country) {
       let points = 0;
       if (attempts === 0) points = 1000;
       else if (attempts === 1) points = 750;
@@ -273,32 +275,28 @@ const QuizMode = () => {
       setScore((prev) => prev + points);
       setFeedback("Correct!");
       setFeedbackType("correct");
-      setTimeout(() => {
-        handleNextQuestion();
-      }, 2000);
+      setQuestionFinished(true)
     } else {
       if (attempts < 3) {
         const newAttempts = attempts + 1;
         setAttempts(newAttempts);
         let hint = "";
         if (newAttempts === 1) {
-          hint = `Hint: Continent - ${currentFact.CC_Continent}`;
+          hint = `Hint: Continent - ${currentFact.continent}`;
         } else if (newAttempts === 2) {
-          hint = `Hint: Continent - ${currentFact.CC_Continent}, Capital - ${currentFact.CC_Capital}`;
+          hint = `Hint: Continent - ${currentFact.continent}, Capital - ${currentFact.capital}`;
         } else if (newAttempts === 3) {
-          hint = `Hint: Continent - ${currentFact.CC_Continent}, Capital - ${currentFact.CC_Capital}, Abbreviation - ${currentFact.CC_Abbrev}`;
+          hint = `Hint: Continent - ${currentFact.continent}, Capital - ${currentFact.capital}, Abbreviation - ${currentFact.abbrev}`;
         }
         setFeedback(`Incorrect! Try again. ${hint}`);
         setFeedbackType("incorrect");
         setIsAnswered(false);
       } else {
         setFeedback(
-          `Incorrect! The correct answer is ${currentFact.Correct_Country}.`
+          `Incorrect! The correct answer is ${currentFact.country}.`
         );
         setFeedbackType("incorrect");
-        setTimeout(() => {
-          handleNextQuestion();
-        }, 2000);
+        setQuestionFinished(true);
       }
     }
   };
@@ -366,35 +364,43 @@ const QuizMode = () => {
             {currentFact && (
               <div className="mb-6 p-4 border border-white rounded relative">
                 <p className="text-center font-semibold text-white">
-                  {currentFact.Fact}
+                  {currentFact.fact}
                 </p>
-                <div className="absolute bottom-0 right-0">
-                  <a
-                    href={currentFact.Source}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="text-xs text-white underline"
-                  >
-                    Source
-                  </a>
-                </div>
               </div>
             )}
             {/* Feedback Popup */}
             {feedback && (
               <div
-                className={`mb-4 p-2 rounded text-center ${
-                  feedbackType === "correct"
-                    ? "bg-green-300 text-green-900"
-                    : feedbackType === "final"
+                className={`mb-4 p-2 rounded text-center ${feedbackType === "correct"
+                  ? "bg-green-300 text-green-900"
+                  : feedbackType === "final"
                     ? "bg-blue-300 text-blue-900"
                     : "bg-red-300 text-red-900"
-                }`}
+                  }`}
               >
                 {feedback}
               </div>
             )}
-            {/* React Select Dropdown */}
+            {/* End of Question/Source Popup */}
+            {questionFinished && (
+              <div className="flex justify-around mt-4">
+                <a
+                  href={currentFact.source}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
+                >
+                  Source
+                </a>
+                <button
+                  onClick={() => { setQuestionFinished(false); handleNextQuestion(); }}
+                  className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
+                >
+                  Next
+                </button>
+              </div>
+            )}
+            {/* Country Selection Form */}
             <form onSubmit={handleSubmit}>
               <div className="text-center">
                 <div className="mb-2 inline-block text-left max-w-xs w-full">
@@ -409,18 +415,20 @@ const QuizMode = () => {
                     options={countryOptions}
                     value={selectedOption}
                     onChange={setSelectedOption}
-                    placeholder="-- Choose a country --"
+                    placeholder="-- Search/Choose a country --"
                     styles={{
                       control: (provided, state) => ({
                         ...provided,
                         backgroundColor: "transparent",
                         border: "1px solid white",
-                        boxShadow: state.isFocused
-                          ? "0 0 0 1px white"
-                          : provided.boxShadow,
+                        boxShadow: state.isFocused ? "0 0 0 1px white" : provided.boxShadow,
                         "&:hover": {
                           border: "1px solid white",
                         },
+                      }),
+                      input: (provided) => ({
+                        ...provided,
+                        color: "white", // Typed text is white
                       }),
                       singleValue: (provided) => ({
                         ...provided,
@@ -440,8 +448,8 @@ const QuizMode = () => {
                         backgroundColor: state.isSelected
                           ? "rgba(255,255,255,0.3)"
                           : state.isFocused
-                          ? "rgba(255,255,255,0.2)"
-                          : "transparent",
+                            ? "rgba(255,255,255,0.2)"
+                            : "transparent",
                         color: "white",
                         "&:hover": {
                           backgroundColor: "rgba(255,255,255,0.2)",
