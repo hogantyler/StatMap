@@ -3,6 +3,11 @@ import { OrbitControls, Stars } from "@react-three/drei";
 import { useRef, useState, useEffect } from "react";
 import * as THREE from "three";
 
+/**
+ * Renders a 3D interactive globe with texture mapping, lighting, and user controls.
+ * 
+ * @returns {JSX.Element} A 3D globe component
+ */
 function Globe() {
     //texture loading
     const globeRef = useRef();
@@ -43,6 +48,12 @@ function Globe() {
     );
 }
 
+/**
+ * Rotates the 3D globe by updating its rotation on each frame.
+ * 
+ * @param {*} param0 Object containing a reference to the globe mesh
+ * @returns {null} No visual output, only applies rotation effect
+ */
 function RotateGlobe({ globeRef }) {
   useFrame(() => {
     if (globeRef.current) {

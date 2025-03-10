@@ -7,6 +7,11 @@ import Login from "./Login";
 import Modal from "./Modal";
 import { useNavigate } from "react-router-dom";
 
+/**
+ * Landing page component that provides navigation, game modes, leaderboards, and a help modal.
+ * 
+ * @returns {JSX.Element} The main landing page layout
+ */
 const Landing = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); //modal for side bar menu
   const [isInstructionsModalOpen, setInstructionsModalOpen] = useState(false); //modal for instructions

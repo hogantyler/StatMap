@@ -1,5 +1,11 @@
 import React from "react";
 
+/**
+ * Modal component that displays account login/sign up
+ * 
+ * @param {*} param0 Object containing isOpen (boolean), onClose (function), and children (JSX content)
+ * @returns {JSX.Element|null} The modal if open, otherwise null
+ */
 const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null;
 

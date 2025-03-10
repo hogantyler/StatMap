@@ -11,6 +11,12 @@ import {
 } from "react-icons/fa";
 import { FaMapMarkedAlt } from "react-icons/fa";
 
+/**
+ * Renders a hovered dropdown menu that provides navigation options for the user.
+ * 
+ * @param {*} param0 Contains a callback function for sign-in click event
+ * @returns {JSX.Element} A dropdown menu trigger
+ */
 const HoverDropMenu = ({ onSignInClick }) => {
   return (
     <div className="group top-1 left-1 m-1 cursor-pointer z-50">
@@ -23,6 +29,12 @@ const HoverDropMenu = ({ onSignInClick }) => {
   );
 };
 
+/**
+ * Handles the dropdown menu functionality.
+ * 
+ * @param {*} param0 Contains children elements, link href, flyout content component, and sign-in click event handler
+ * @returns {JSX.Element} A link with hover-triggered dropdown content
+ */
 const FlyoutLink = ({ children, href, FlyoutContent, onSignInClick }) => {
   const [open, setOpen] = useState(false);
 
@@ -59,6 +71,12 @@ const FlyoutLink = ({ children, href, FlyoutContent, onSignInClick }) => {
   );
 };
 
+/**
+ * Provides the content for the dropdown menu, including navigation buttons and sign-in functionality.
+ * 
+ * @param {*} param0 Contains a callback function for handling sign-in clicks
+ * @returns {JSX.Element} A styled menu with various navigation options
+ */
 const MenuContent = ({ onSignInClick }) => {
     return (
       <div className="w-96 bg-black p-9 shadow-xl text-white text-lg space-y-6 rounded-lg">
