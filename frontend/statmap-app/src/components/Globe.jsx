@@ -13,7 +13,7 @@ import { TextureLoader } from "three";
  * 
  * @returns {JSX.Element} A 3D globe component
  */
-function Globe() {
+function Globe(props) {
     //texture loading
     const globeRef = useRef();
     const cloudsRef = useRef();
