@@ -140,6 +140,7 @@ function UnlimitedMode() {
                 }, 2000);
             }
         }
+        setSelectedOption(null);
     };
 
     const handleBack = () => {
@@ -225,7 +226,7 @@ function UnlimitedMode() {
                                     options={countryOptions}
                                     value={selectedOption}
                                     onChange={setSelectedOption}
-                                    placeholder="-- Choose a country --"
+                                    placeholder="-- Search/Choose a Country --"
                                     styles={{
                                         control: (provided, state) => ({
                                             ...provided,
@@ -236,6 +237,10 @@ function UnlimitedMode() {
                                                 border: "1px solid white",
                                             },
                                         }),
+                                        input: (provided) => ({
+                                            ...provided,
+                                            color: "white", // Typed text is white
+                                          }),
                                         singleValue: (provided) => ({
                                             ...provided,
                                             color: "white",

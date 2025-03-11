@@ -143,9 +143,10 @@ const QuizMode = () => {
         }, 2000);
       }
     }
+    setSelectedOption(null);
   };
 
-  // NEW: Function to restart the quiz after completion
+  //Function to restart the quiz after completion
   const handleRestartQuiz = () => {
     setQuizComplete(false);
     setQuestionNumber(1);
@@ -248,7 +249,7 @@ const QuizMode = () => {
                     options={countryOptions}
                     value={selectedOption}
                     onChange={setSelectedOption}
-                    placeholder="-- Choose a country --"
+                    placeholder="-- Search/Choose a Country --"
                     styles={{
                       control: (provided, state) => ({
                         ...provided,
@@ -258,6 +259,10 @@ const QuizMode = () => {
                         "&:hover": {
                           border: "1px solid white",
                         },
+                      }),
+                      input: (provided) => ({
+                        ...provided,
+                        color: "white", // Typed text is white
                       }),
                       singleValue: (provided) => ({
                         ...provided,
