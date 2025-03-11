@@ -95,8 +95,8 @@ function RotateGlobe({ globeRef, cloudsRef }) {
     useFrame(({ clock }) => {
         const elapsedTime = clock.getElapsedTime();
 
-        globeRef.current.rotation.y = elapsedTime / 70;
-        cloudsRef.current.rotation.y = elapsedTime / 50;
+        globeRef.current.rotation.y = elapsedTime / 60;
+        cloudsRef.current.rotation.y = elapsedTime / 40;
     });
     return null;
 }
