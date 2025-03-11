@@ -94,7 +94,7 @@ const Landing = () => {
       </div>
 
 
-      <button className="fixed bottom-1 right-1 text-black bg-gray-300 text-opacity-1 py-2 px-4 mt-40 rounded-lg hover:bg-black hover:text-blue-500"
+      <button className="fixed bottom-1 right-1 text-white bg-black text-opacity-1 py-2 px-4 mt-40 rounded-lg hover:text-blue-500"
         onClick={() => navigate("/globeModeTest")}>
         GlobeModeTest
       </button>

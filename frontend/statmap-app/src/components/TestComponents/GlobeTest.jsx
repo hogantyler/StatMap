@@ -39,8 +39,8 @@ function GlobeTest(props) {
                     style={{ background: "black", width: "100vw", height: "100vh" }}
                 >
                     <Suspense fallback={null}>
-                        <ambientLight intensity={3} />
-                        <directionalLight position={[0, 0, 2]} intensity={6} />
+                        <ambientLight intensity={5} />
+                        <directionalLight position={[0, 0, 2]} intensity={7} />
 
                         <OrbitControls
                             enableZoom={true}
@@ -95,7 +95,7 @@ function RotateGlobe({ globeRef, cloudsRef }) {
     useFrame(({ clock }) => {
         const elapsedTime = clock.getElapsedTime();
 
-        globeRef.current.rotation.y = elapsedTime / 60;
+        globeRef.current.rotation.y = elapsedTime / 70;
         cloudsRef.current.rotation.y = elapsedTime / 50;
     });
     return null;
