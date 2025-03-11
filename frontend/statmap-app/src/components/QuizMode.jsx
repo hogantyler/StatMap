@@ -223,7 +223,7 @@ const QuizMode = () => {
 
   // --- Functions for Quiz Logic ---
   const loadNewFact = () => {
-    fetch("http://18.118.152.10:8000/api/random_fact/")
+    fetch("https://statmapapi.world/api/random_fact/")
       .then(res => res.json())
       .then(fact => setCurrentFact(fact))
     /* setUnusedFacts((prevUnused) => {
@@ -299,6 +299,7 @@ const QuizMode = () => {
         setQuestionFinished(true);
       }
     }
+    setSelectedOption(null);
   };
 
   // NEW: Function to restart the quiz after completion
