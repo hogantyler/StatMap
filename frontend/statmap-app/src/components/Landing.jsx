@@ -7,6 +7,11 @@ import Login from "./Login";
 import Modal from "./Modal";
 import { useNavigate } from "react-router-dom";
 
+/**
+ * Landing page component that provides navigation, game modes, leaderboards, and a help modal.
+ * 
+ * @returns {JSX.Element} The main landing page layout
+ */
 const Landing = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); //modal for side bar menu
   const [isInstructionsModalOpen, setInstructionsModalOpen] = useState(false); //modal for instructions
@@ -89,7 +94,7 @@ const Landing = () => {
       </div>
 
 
-      <button className="fixed bottom-1 right-1 text-white text-opacity-0 py-2 px-4 mt-40 rounded-lg hover:bg-white hover:text-black"
+      <button className="fixed bottom-1 right-1 text-white bg-black text-opacity-1 py-2 px-4 mt-40 rounded-lg hover:text-blue-500"
         onClick={() => navigate("/globeModeTest")}>
         GlobeModeTest
       </button>

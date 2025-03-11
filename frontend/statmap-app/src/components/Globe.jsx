@@ -1,12 +1,18 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import { useRef, useState, useEffect } from "react";
+import EarthMap from "../textures/8k_earth.png"
 import * as THREE from "three";
 
+/**
+ * Renders a 3D interactive globe with texture mapping, lighting, and user controls.
+ * 
+ * @returns {JSX.Element} A 3D globe component
+ */
 function Globe() {
     //texture loading
     const globeRef = useRef();
-    const texture = new THREE.TextureLoader().load("/earth_texture.jpg", (texture) => {
+    const texture = new THREE.TextureLoader().load(EarthMap, (texture) => {
         texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
         texture.repeat.set(1, 1);
     }, undefined, (err) => {
@@ -43,6 +49,12 @@ function Globe() {
     );
 }
 
+/**
+ * Rotates the 3D globe by updating its rotation on each frame.
+ * 
+ * @param {*} param0 Object containing a reference to the globe mesh
+ * @returns {null} No visual output, only applies rotation effect
+ */
 function RotateGlobe({ globeRef }) {
   useFrame(() => {
     if (globeRef.current) {

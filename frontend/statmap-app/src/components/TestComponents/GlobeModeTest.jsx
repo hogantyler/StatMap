@@ -1,10 +1,11 @@
-import Globe from "../Globe";
+
+import GlobeTest from "./GlobeTest";
 
 function GlobeModeTest(){
 
     return (
         <div>
-            <Globe />
+            <GlobeTest />
         </div>
     )
 }

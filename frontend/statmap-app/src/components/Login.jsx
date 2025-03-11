@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
 
+/**
+ * Login component for accounts that allows users to enter their credentials and sign in.
+ * 
+ * @returns {JSX.Element} A login form with email and password fields
+ */
 const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
