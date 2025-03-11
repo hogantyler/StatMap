@@ -145,14 +145,6 @@ function UnlimitedMode() {
         navigate("/"); // Navigate back to the main PlayScreen if desired
     };
 
-    // Globe-specific logic
-    const globeRef = useRef();
-    const texture = new THREE.TextureLoader().load("/earth_texture.jpg", (texture) => {
-        texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
-        texture.repeat.set(1, 1);
-    }, undefined, (err) => {
-        console.error("Error loading texture:", err);
-    });
 
     return (
         <div className="relative w-full h-full">
