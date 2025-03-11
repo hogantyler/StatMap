@@ -1,6 +1,7 @@
 import { Canvas, useFrame } from "@react-three/fiber";
 import { OrbitControls, Stars } from "@react-three/drei";
 import { useRef, useState, useEffect } from "react";
+import EarthMap from "../textures/8k_earth.png"
 import * as THREE from "three";
 
 /**
@@ -11,7 +12,7 @@ import * as THREE from "three";
 function Globe() {
     //texture loading
     const globeRef = useRef();
-    const texture = new THREE.TextureLoader().load("/earth_texture.jpg", (texture) => {
+    const texture = new THREE.TextureLoader().load(EarthMap, (texture) => {
         texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
         texture.repeat.set(1, 1);
     }, undefined, (err) => {
