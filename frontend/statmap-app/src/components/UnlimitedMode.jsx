@@ -73,7 +73,7 @@ function UnlimitedMode() {
 
     // Function to load a new fact:
     const loadNewFact = () => {
-        fetch("http://18.118.152.10:8000/api/random_fact/")
+        fetch("https://statmapapi.world/api/random_fact/")
             .then(res => res.json())
             .then(fact => setCurrentFact(fact))
         /*setUnusedFacts((prevUnused) => {
@@ -138,6 +138,7 @@ function UnlimitedMode() {
                 setQuestionFinished(true);
             }
         }
+        setSelectedOption(null);
     };
 
     const handleBack = () => {
