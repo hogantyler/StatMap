@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FaUser } from "react-icons/fa"; // Added profile icon import
 import { BsFillQuestionSquareFill } from "react-icons/bs"; //question mark icon 
 import BlackGlobe from '../black_globe.svg';
@@ -16,7 +16,7 @@ const Landing = () => {
   const [isModalOpen, setIsModalOpen] = useState(false); //modal for side bar menu
   const [isInstructionsModalOpen, setInstructionsModalOpen] = useState(false); //modal for instructions
   const navigate = useNavigate();
-
+  
   const handleOpenModal = () => {
     console.log("Opening modal");
     setIsModalOpen(true);
