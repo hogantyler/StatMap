@@ -54,6 +54,7 @@ const Landing = () => {
 
       <div className="flex flex-col justify-start items-center gap-4 p-4 w-full min-h-screen">
 
+        {/* Game Card */}
         <div className="flex flex-col justify-center items-center gap-2 bg-gradient-to-r from-gray-400 to-white text-black bg-opacity-90 p-4 rounded-lg shadow-lg m-1 mr-4 w-full max-w-[30rem]">
           <div><h3 className="text-xl font-semibold py-1">STATMAP</h3></div>
           <p className="text-sm py-1">Learn about different countries around the world.</p>
@@ -67,6 +68,7 @@ const Landing = () => {
           </button>
         </div>
 
+        {/* Leaderboard Card */}
         <div className="flex flex-col justify-center items-center bg-gradient-to-r from-white to-gray-400 p-4 rounded-lg shadow-lg">
           <h3 className="text-xl font-semibold">LEADERBOARDS</h3>
           <p className="text-sm mb-4">View the top players around the world.</p>
@@ -89,8 +91,7 @@ const Landing = () => {
             VIEW
           </button>
         </div>
-
-
+        
       </div>
 
 

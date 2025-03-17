@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useRef, useState, useEffect, Suspense } from "react";
 import * as THREE from "three";
 import { useNavigate } from "react-router-dom";
 import HoverDropMenu from "./HoverDropMenu";
@@ -8,6 +8,7 @@ import factsData from "../data/data.json";
 import Globe from "./Globe";
 import Login from "./Login";
 import Modal from "./Modal";
+import Loading from "./Loading";
 
 // Sample list of countries
 const countries = [
@@ -147,147 +148,154 @@ function UnlimitedMode() {
 
 
     return (
-        <div className="relative w-full h-full">
-            {/* Back Button in top right */}
-            <div className="absolute top-0 right-0 z-50">
-                <button
-                    onClick={handleBack}
-                    className="bg-black text-white border border-white rounded-full p-2 hover:bg-white hover:text-black transition-colors"
-                >
-                    <FaArrowLeft size={40} />
-                </button>
-            </div>
-            {/* Hover Menu in top left */}
-            <div className="absolute top-0 left-0 z-50">
-                <HoverDropMenu onSignInClick={handleOpenModal} />
-            </div>
-            {/* Overlay container */}
-            <div className="absolute top-0 left-0 w-full flex justify-center items-start mt-5 z-30">
-                <div className="bg-white bg-opacity-0 p-4 rounded-xl w-11/12 max-w-3xl">
-                    {/* Score Display */}
-                    <div className="mb-1 text-center font-bold text-white text-xl">
-                        Score: {score}
-                    </div>
-                    {/* Instruction Text */}
-                    <div className="mb-1 text-center text-med text-white">
-                        Guess the country based on the fact!
-                    </div>
-                    {/* Fact Box */}
-                    {currentFact && (
-                        <div className="mb-6 p-4 border border-white rounded relative">
-                            <p className="text-center font-semibold text-white">
-                                {currentFact.fact}
-                            </p>
-                        </div>
-                    )}
-                    {/* Feedback Popup */}
-                    {feedback && (
-                        <div
-                            className={`mb-4 p-2 rounded text-center ${feedbackType === "correct"
-                                ? "bg-green-300 text-green-900"
-                                : "bg-red-300 text-red-900"
-                                }`}
-                        >
-                            {feedback}
-                        </div>
-                    )}
-                    {/* End of Question/Source Popup */}
-                    {questionFinished && (
-                        <div className="flex justify-around mt-4">
-                            <a
-                                href={currentFact.source}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
-                            >
-                                Source
-                            </a>
-                            <button
-                                onClick={() => { setQuestionFinished(false); loadNewFact(); }}
-                                className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
-                            >
-                                Next
-                            </button>
-                        </div>
-                    )}
-                    {/* Country Selection Form */}
-                    <form onSubmit={handleSubmit}>
-                        <div className="text-center">
-                            <div className="mb-2 inline-block text-left max-w-xs w-full">
-                                <label
-                                    htmlFor="countrySelect"
-                                    className="font-bold block mb-2 text-white"
-                                >
-                                    Select a country:
-                                </label>
-                                <Select
-                                    id="countrySelect"
-                                    options={countryOptions}
-                                    value={selectedOption}
-                                    onChange={setSelectedOption}
-                                    placeholder="-- Search/Choose a country --"
-                                    styles={{
-                                        control: (provided, state) => ({
-                                            ...provided,
-                                            backgroundColor: "transparent",
-                                            border: "1px solid white",
-                                            boxShadow: state.isFocused ? "0 0 0 1px white" : provided.boxShadow,
-                                            "&:hover": {
-                                                border: "1px solid white",
-                                            },
-                                        }),
-                                        input: (provided) => ({
-                                            ...provided,
-                                            color: "white", // Typed text is white
-                                        }),
-                                        singleValue: (provided) => ({
-                                            ...provided,
-                                            color: "white",
-                                        }),
-                                        placeholder: (provided) => ({
-                                            ...provided,
-                                            color: "white",
-                                        }),
-                                        menu: (provided) => ({
-                                            ...provided,
-                                            backgroundColor: "transparent",
-                                            border: "1px solid white",
-                                        }),
-                                        option: (provided, state) => ({
-                                            ...provided,
-                                            backgroundColor: state.isSelected
-                                                ? "rgba(255,255,255,0.3)"
-                                                : state.isFocused
-                                                    ? "rgba(255,255,255,0.2)"
-                                                    : "transparent",
-                                            color: "white",
-                                            "&:hover": {
-                                                backgroundColor: "rgba(255,255,255,0.2)",
-                                            },
-                                        }),
-                                    }}
-                                />
-                            </div>
-                        </div>
-                        <div className="text-center">
-                            <button
-                                type="submit"
-                                className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
-                            >
-                                Submit
-                            </button>
-                        </div>
-                    </form>
+        <Suspense fallback={<Loading />}>
+            <div className="relative w-full h-full">
+
+                {/* Back Button in top right */}
+                <div className="absolute top-0 right-0 z-50">
+                    <button
+                        onClick={handleBack}
+                        className="bg-black text-white border border-white rounded-full p-2 hover:bg-white hover:text-black transition-colors"
+                    >
+                        <FaArrowLeft size={40} />
+                    </button>
                 </div>
+
+                {/* Hover Menu in top left */}
+                <div className="absolute top-0 left-0 z-50">
+                    <HoverDropMenu onSignInClick={handleOpenModal} />
+                </div>
+
+                {/* Overlay container */}
+                <div className="absolute top-0 left-0 w-full flex justify-center items-start mt-5 z-30">
+                    <div className="bg-white bg-opacity-0 p-4 rounded-xl w-11/12 max-w-3xl">
+                        {/* Score Display */}
+                        <div className="mb-1 text-center font-bold text-white text-xl">
+                            Score: {score}
+                        </div>
+                        {/* Instruction Text */}
+                        <div className="mb-1 text-center text-med text-white">
+                            Guess the country based on the fact!
+                        </div>
+                        {/* Fact Box */}
+                        {currentFact && (
+                            <div className="mb-6 p-4 border border-white rounded relative">
+                                <p className="text-center font-semibold text-white">
+                                    {currentFact.fact}
+                                </p>
+                            </div>
+                        )}
+                        {/* Feedback Popup */}
+                        {feedback && (
+                            <div
+                                className={`mb-4 p-2 rounded text-center ${feedbackType === "correct"
+                                    ? "bg-green-300 text-green-900"
+                                    : "bg-red-300 text-red-900"
+                                    }`}
+                            >
+                                {feedback}
+                            </div>
+                        )}
+                        {/* End of Question/Source Popup */}
+                        {questionFinished && (
+                            <div className="flex justify-around mt-4">
+                                <a
+                                    href={currentFact.source}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
+                                >
+                                    Source
+                                </a>
+                                <button
+                                    onClick={() => { setQuestionFinished(false); loadNewFact(); }}
+                                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
+                                >
+                                    Next
+                                </button>
+                            </div>
+                        )}
+                        {/* Country Selection Form */}
+                        <form onSubmit={handleSubmit}>
+                            <div className="text-center">
+                                <div className="mb-2 inline-block text-left max-w-xs w-full">
+                                    <label
+                                        htmlFor="countrySelect"
+                                        className="font-bold block mb-2 text-white"
+                                    >
+                                        Select a country:
+                                    </label>
+                                    <Select
+                                        id="countrySelect"
+                                        options={countryOptions}
+                                        value={selectedOption}
+                                        onChange={setSelectedOption}
+                                        placeholder="-- Search/Choose a country --"
+                                        styles={{
+                                            control: (provided, state) => ({
+                                                ...provided,
+                                                backgroundColor: "transparent",
+                                                border: "1px solid white",
+                                                boxShadow: state.isFocused ? "0 0 0 1px white" : provided.boxShadow,
+                                                "&:hover": {
+                                                    border: "1px solid white",
+                                                },
+                                            }),
+                                            input: (provided) => ({
+                                                ...provided,
+                                                color: "white", // Typed text is white
+                                            }),
+                                            singleValue: (provided) => ({
+                                                ...provided,
+                                                color: "white",
+                                            }),
+                                            placeholder: (provided) => ({
+                                                ...provided,
+                                                color: "white",
+                                            }),
+                                            menu: (provided) => ({
+                                                ...provided,
+                                                backgroundColor: "transparent",
+                                                border: "1px solid white",
+                                            }),
+                                            option: (provided, state) => ({
+                                                ...provided,
+                                                backgroundColor: state.isSelected
+                                                    ? "rgba(255,255,255,0.3)"
+                                                    : state.isFocused
+                                                        ? "rgba(255,255,255,0.2)"
+                                                        : "transparent",
+                                                color: "white",
+                                                "&:hover": {
+                                                    backgroundColor: "rgba(255,255,255,0.2)",
+                                                },
+                                            }),
+                                        }}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="text-center">
+                                <button
+                                    type="submit"
+                                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
+                                >
+                                    Submit
+                                </button>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+                    <Login />
+                </Modal>
+
+                {/* Globe Canvas */}
+                <Globe />
             </div>
-
-            <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-                <Login />
-            </Modal>
-
-            {/* Globe Canvas */}
-            <Globe />
-        </div>
+        </Suspense>
     );
 }
 

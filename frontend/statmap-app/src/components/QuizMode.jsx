@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, Suspense } from "react";
 import { useNavigate } from "react-router-dom";
 import Globe from "./Globe";
 import HoverDropMenu from "./HoverDropMenu";
@@ -7,6 +7,7 @@ import Login from "./Login";
 import { FaArrowLeft } from "react-icons/fa";
 import Select from "react-select";
 import factsData from "../data/data.json";
+import Loading from "./Loading"
 
 // Sample list of countries for the dropdown
 const countries = [
@@ -317,167 +318,175 @@ const QuizMode = () => {
   const handleBack = () => navigate("/");
 
   return (
-    <div className="relative min-h-screen w-full">
-      {/* Globe Background */}
-      <Globe />
-      {/* Back Button in top right */}
-      <div className="absolute top-0 right-0 z-50">
-        <button
-          onClick={handleBack}
-          className="bg-black text-white border border-white rounded-full p-2 hover:bg-white hover:text-black transition-colors"
-        >
-          <FaArrowLeft size={40} />
-        </button>
-      </div>
-      {/* Hover Menu in top left */}
-      <div className="absolute top-0 left-0 z-50">
-        <HoverDropMenu onSignInClick={handleOpenModal} />
-      </div>
-      {/* Quiz Overlay Container */}
-      <div className="absolute top-0 left-0 w-full flex justify-center items-start mt-2 z-30">
-        {quizComplete ? (
-          // Final Quiz Popup
-          <div className="bg-transparent p-10 rounded-xl w-11/12 max-w-3xl border-2 border-white shadow-xl text-center">
-            <div className="mb-6 text-3xl font-bold text-white">
-              Quiz Complete!
-            </div>
-            <div className="mb-6 text-2xl text-white">Final Score: {score}</div>
-            <button
-              onClick={handleRestartQuiz}
-              className="bg-black text-white border border-white rounded-full py-3 px-6 hover:bg-white hover:text-black transition-colors text-lg"
-            >
-              Restart Quiz
-            </button>
-          </div>
-        ) : (
-          // Normal Quiz Content
-          <div className="bg-transparent p-6 rounded-xl w-11/12 max-w-3xl border border-white shadow-lg">
-            <div className="mb-2 text-center font-bold text-white text-med">
-              Question: {questionNumber} of 10
-            </div>
-            <div className="mb-4 text-center font-bold text-white text-lg">
-              Score: {score}
-            </div>
-            <div className="mb-4 text-center text-med text-white">
-              Guess the country based on the fact!
-            </div>
-            {/* Fact Box */}
-            {currentFact && (
-              <div className="mb-6 p-4 border border-white rounded relative">
-                <p className="text-center font-semibold text-white">
-                  {currentFact.fact}
-                </p>
-              </div>
-            )}
-            {/* Feedback Popup */}
-            {feedback && (
-              <div
-                className={`mb-4 p-2 rounded text-center ${feedbackType === "correct"
-                  ? "bg-green-300 text-green-900"
-                  : feedbackType === "final"
-                    ? "bg-blue-300 text-blue-900"
-                    : "bg-red-300 text-red-900"
-                  }`}
-              >
-                {feedback}
-              </div>
-            )}
-            {/* End of Question/Source Popup */}
-            {questionFinished && (
-              <div className="flex justify-around mt-4">
-                <a
-                  href={currentFact.source}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
-                >
-                  Source
-                </a>
-                <button
-                  onClick={() => { setQuestionFinished(false); handleNextQuestion(); }}
-                  className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
-                >
-                  Next
-                </button>
-              </div>
-            )}
-            {/* Country Selection Form */}
-            <form onSubmit={handleSubmit}>
-              <div className="text-center">
-                <div className="mb-2 inline-block text-left max-w-xs w-full">
-                  <label
-                    htmlFor="countrySelect"
-                    className="font-bold block mb-2 text-white"
-                  >
-                    Select a country:
-                  </label>
-                  <Select
-                    id="countrySelect"
-                    options={countryOptions}
-                    value={selectedOption}
-                    onChange={setSelectedOption}
-                    placeholder="-- Search/Choose a country --"
-                    styles={{
-                      control: (provided, state) => ({
-                        ...provided,
-                        backgroundColor: "transparent",
-                        border: "1px solid white",
-                        boxShadow: state.isFocused ? "0 0 0 1px white" : provided.boxShadow,
-                        "&:hover": {
-                          border: "1px solid white",
-                        },
-                      }),
-                      input: (provided) => ({
-                        ...provided,
-                        color: "white", // Typed text is white
-                      }),
-                      singleValue: (provided) => ({
-                        ...provided,
-                        color: "white",
-                      }),
-                      placeholder: (provided) => ({
-                        ...provided,
-                        color: "white",
-                      }),
-                      menu: (provided) => ({
-                        ...provided,
-                        backgroundColor: "transparent",
-                        border: "1px solid white",
-                      }),
-                      option: (provided, state) => ({
-                        ...provided,
-                        backgroundColor: state.isSelected
-                          ? "rgba(255,255,255,0.3)"
-                          : state.isFocused
-                            ? "rgba(255,255,255,0.2)"
-                            : "transparent",
-                        color: "white",
-                        "&:hover": {
-                          backgroundColor: "rgba(255,255,255,0.2)",
-                        },
-                      }),
-                    }}
-                  />
-                </div>
-              </div>
-              <div className="text-center">
-                <button
-                  type="submit"
-                  className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
-                >
-                  Submit
-                </button>
-              </div>
-            </form>
-          </div>
-        )}
-      </div>
+    //suspense for loading screen
+    <Suspense fallback={<Loading />}>
+      <div className="relative min-h-screen w-full">
+        {/* Globe Background */}
+        <Globe />
 
-      {/* Login Modal */}
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <Login />
-      </Modal>
-    </div>
+        {/* Back Button in top right */}
+        <div className="absolute top-0 right-0 z-50">
+          <button
+            onClick={handleBack}
+            className="bg-black text-white border border-white rounded-full p-2 hover:bg-white hover:text-black transition-colors"
+          >
+            <FaArrowLeft size={40} />
+          </button>
+        </div>
+
+        {/* Hover Menu in top left */}
+        <div className="absolute top-0 left-0 z-50">
+          <HoverDropMenu onSignInClick={handleOpenModal} />
+        </div>
+
+        {/* Quiz Overlay Container */}
+        <div className="absolute top-0 left-0 w-full flex justify-center items-start mt-2 z-30">
+          {quizComplete ? (
+            // Final Quiz Popup
+            <div className="bg-transparent p-10 rounded-xl w-11/12 max-w-3xl border-2 border-white shadow-xl text-center">
+              <div className="mb-6 text-3xl font-bold text-white">
+                Quiz Complete!
+              </div>
+              <div className="mb-6 text-2xl text-white">Final Score: {score}</div>
+              <button
+                onClick={handleRestartQuiz}
+                className="bg-black text-white border border-white rounded-full py-3 px-6 hover:bg-white hover:text-black transition-colors text-lg"
+              >
+                Restart Quiz
+              </button>
+            </div>
+          ) : (
+            // Normal Quiz Content
+            <div className="bg-transparent p-6 rounded-xl w-11/12 max-w-3xl border border-white shadow-lg">
+              <div className="mb-2 text-center font-bold text-white text-med">
+                Question: {questionNumber} of 10
+              </div>
+              <div className="mb-4 text-center font-bold text-white text-lg">
+                Score: {score}
+              </div>
+              <div className="mb-4 text-center text-med text-white">
+                Guess the country based on the fact!
+              </div>
+              {/* Fact Box */}
+              {currentFact && (
+                <div className="mb-6 p-4 border border-white rounded relative">
+                  <p className="text-center font-semibold text-white">
+                    {currentFact.fact}
+                  </p>
+                </div>
+              )}
+              {/* Feedback Popup */}
+              {feedback && (
+                <div
+                  className={`mb-4 p-2 rounded text-center ${feedbackType === "correct"
+                    ? "bg-green-300 text-green-900"
+                    : feedbackType === "final"
+                      ? "bg-blue-300 text-blue-900"
+                      : "bg-red-300 text-red-900"
+                    }`}
+                >
+                  {feedback}
+                </div>
+              )}
+              {/* End of Question/Source Popup */}
+              {questionFinished && (
+                <div className="flex justify-around mt-4">
+                  <a
+                    href={currentFact.source}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
+                  >
+                    Source
+                  </a>
+                  <button
+                    onClick={() => { setQuestionFinished(false); handleNextQuestion(); }}
+                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
+                  >
+                    Next
+                  </button>
+                </div>
+              )}
+              {/* Country Selection Form */}
+              <form onSubmit={handleSubmit}>
+                <div className="text-center">
+                  <div className="mb-2 inline-block text-left max-w-xs w-full">
+                    <label
+                      htmlFor="countrySelect"
+                      className="font-bold block mb-2 text-white"
+                    >
+                      Select a country:
+                    </label>
+                    <Select
+                      id="countrySelect"
+                      options={countryOptions}
+                      value={selectedOption}
+                      onChange={setSelectedOption}
+                      placeholder="-- Search/Choose a country --"
+                      styles={{
+                        control: (provided, state) => ({
+                          ...provided,
+                          backgroundColor: "transparent",
+                          border: "1px solid white",
+                          boxShadow: state.isFocused ? "0 0 0 1px white" : provided.boxShadow,
+                          "&:hover": {
+                            border: "1px solid white",
+                          },
+                        }),
+                        input: (provided) => ({
+                          ...provided,
+                          color: "white", // Typed text is white
+                        }),
+                        singleValue: (provided) => ({
+                          ...provided,
+                          color: "white",
+                        }),
+                        placeholder: (provided) => ({
+                          ...provided,
+                          color: "white",
+                        }),
+                        menu: (provided) => ({
+                          ...provided,
+                          backgroundColor: "transparent",
+                          border: "1px solid white",
+                        }),
+                        option: (provided, state) => ({
+                          ...provided,
+                          backgroundColor: state.isSelected
+                            ? "rgba(255,255,255,0.3)"
+                            : state.isFocused
+                              ? "rgba(255,255,255,0.2)"
+                              : "transparent",
+                          color: "white",
+                          "&:hover": {
+                            backgroundColor: "rgba(255,255,255,0.2)",
+                          },
+                        }),
+                      }}
+                    />
+                  </div>
+                </div>
+
+                <div className="text-center">
+                  <button
+                    type="submit"
+                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
+                  >
+                    Submit
+                  </button>
+                  
+                </div>
+              </form>
+            </div>
+          )}
+        </div>
+
+        {/* Login Modal */}
+        <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+          <Login />
+        </Modal>
+      </div>
+    </Suspense>
   );
 };
 
