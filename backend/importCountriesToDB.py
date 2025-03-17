@@ -1,26 +1,44 @@
 import pandas as pd
-import sqlite3
+from supabase import create_client, Client
+from dotenv import load_dotenv
+import os
 
-# Load CSV data
-df = pd.read_csv("./data/originalFactsList.csv")
+load_dotenv()
 
-# Connect to the db.sqlite3 database
-conn = sqlite3.connect("db.sqlite3")
-cursor = conn.cursor()
 
-# Clear the table if you want to replace the test data
-cursor.execute("DELETE FROM api_country")
-conn.commit()
+def importCountriesToDB():
+    """
+    This function is made to upload countries into the Supabase DB, in the format
+    of:
 
-# Insert data from the CSV
-for i in range(len(df)):
-    country = df["Country"][i]
-    continent = df["Continent"][i]
-    capital = df["Capital City"][i]
-    abbrev = df["Abbreviation"][i]
+    """
+    # Load CSV data
+    df = pd.read_csv("./data/originalFactsList.csv")
 
-    sql = "INSERT INTO api_country (country, continent, capital, abbrev) VALUES (?, ?, ?, ?);"
-    cursor.execute(sql, (country, continent, capital, abbrev))
+    # Supabase credentials
+    SUPABASE_URL = "https://ewqbknnhmhepuqjbkgmm.supabase.co"
+    SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
 
-conn.commit()
-conn.close()
+    # Connect to Supabase
+    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+    country_data = []
+    for _, row in df.iterrows():
+        country = row["Country"]
+        continent = row["Continent"]
+        capital = row["Capital City"]
+        abbrev = row["Abbreviation"]
+
+        country_data.append(
+            {
+                "Country": country,
+                "Continent": continent,
+                "Capital": capital,
+                "Abbreviation": abbrev,
+            }
+        )
+
+    supabase.table("api_country").insert(country_data).execute()
+
+
+importCountriesToDB()
