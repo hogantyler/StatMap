@@ -38,50 +38,48 @@ function GlobeTest(props) {
                     camera={{ position: [0, 1.5, 1.5], near: 0.01, far: 1000 }}
                     style={{ background: "black", width: "100vw", height: "100vh" }}
                 >
-                    <Suspense fallback={null}>
-                        <ambientLight intensity={5} />
-                        <directionalLight position={[0, 0, 2]} intensity={7} />
 
-                        <OrbitControls
-                            enableZoom={true}
-                            enableRotate={true}
-                            enablePan={false}
-                            minDistance={1.05}
-                            maxDistance={4}
-                            zoomSpeed={0.4}
+                    <ambientLight intensity={5} />
+                    <directionalLight position={[0, 0, 2]} intensity={7} />
+
+                    <OrbitControls
+                        enableZoom={true}
+                        enableRotate={true}
+                        enablePan={false}
+                        minDistance={1.05}
+                        maxDistance={4}
+                        zoomSpeed={0.4}
+                    />
+                    <Stars
+                        radius={300}
+                        depth={60}
+                        count={20000}
+                        factor={7}
+                        saturation={0}
+                        fade={true}
+                    />
+
+                    <mesh ref={cloudsRef}>
+                        <sphereGeometry args={[1.005, 36, 36]} />
+                        <meshPhongMaterial
+                            map={cloudMap}
+                            opacity={0.4}
+                            depthWrite={true}
+                            transparent={true}
+                            side={THREE.DoubleSide}
                         />
-                        <Stars
-                            radius={300}
-                            depth={60}
-                            count={20000}
-                            factor={7}
-                            saturation={0}
-                            fade={true}
-                        />
+                    </mesh>
 
-                        <mesh ref={cloudsRef}>
-                            <sphereGeometry args={[1.005, 36, 36]} />
-                            <meshPhongMaterial
-                                map={cloudMap}
-                                opacity={0.4}
-                                depthWrite={true}
-                                transparent={true}
-                                side={THREE.DoubleSide}
-                            />
-                        </mesh>
+                    <mesh ref={globeRef}>
+                        <sphereGeometry args={[1, 36, 36]} />
+                        <meshPhongMaterial specularMap={specularMap} />
+                        <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.4} roughness={0.7} />
+                    </mesh>
 
-                        <mesh ref={globeRef}>
-                            <sphereGeometry args={[1, 36, 36]} />
-                            <meshPhongMaterial specularMap={specularMap} />
-                            <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.4} roughness={0.7} />
+                    <CountryBorders globeRef={globeRef} />
 
-                        </mesh>
-
-                        <CountryBorders globeRef={globeRef} />
-
-                        <CountryLabels globeRef={globeRef} showLabel={showLabel} />
-                        <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef}/>
-                    </Suspense>
+                    <CountryLabels globeRef={globeRef} showLabel={showLabel} />
+                    <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />
 
                     <Stats showPanel={0} />
                 </Canvas>
@@ -133,7 +131,7 @@ function CountryBorders({ globeRef }) {
             linesRef.current.remove(linesRef.current.children[0]);
         }
 
-        const radius = 1.0055; //set radius so it's on top of globle
+        const radius = 1.005; //set radius so it's on top of globle
 
         geoData.features.forEach((feature, featureIndex) => { //gets the coordinates of the countries in te geojson data
             let coordinates = [];
@@ -197,6 +195,7 @@ function CountryLabels({ globeRef, showLabel }) {
     };
 
     useEffect(() => {
+        console.log('labels fetching');
         fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
             .then(response => response.json())
             .then(data => {
@@ -207,6 +206,7 @@ function CountryLabels({ globeRef, showLabel }) {
 
     //tracking camera distance for fixed-size label scaling optimization
     const [cameraDistance, setCameraDistance] = useState(0);
+
     useFrame(() => {
         if (labelsRef.current && globeRef.current) {
             labelsRef.current.rotation.copy(globeRef.current.rotation);
@@ -365,8 +365,11 @@ function CountryLabels({ globeRef, showLabel }) {
                         transform: `scale(${(Math.max(0, cameraDistance)) / 6})`, //inverse resizing based on camera distance
                     }}
                 >
-                    <div className={`text-white ${fontSize} bg-black bg-opacity-50 px-1 py-0.5 rounded`}>
-                        {countryName}
+                    <div>
+                        <button className={`text-white ${fontSize} bg-black bg-opacity-50 px-1 py-0.5 rounded`}
+                            onClick={() => alert("leaderboard in progress")}>
+                            {countryName} button
+                        </button>
                     </div>
                 </Html>
             );

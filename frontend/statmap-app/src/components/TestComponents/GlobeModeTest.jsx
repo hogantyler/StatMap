@@ -1,11 +1,14 @@
 
 import GlobeTest from "./GlobeTest";
-
-function GlobeModeTest(){
+import React, { Suspense } from "react";
+import Loading from "../Loading";
+function GlobeModeTest() {
 
     return (
         <div>
-            <GlobeTest />
+            <Suspense fallback={<Loading />}>
+                <GlobeTest />
+            </Suspense>
         </div>
     )
 }

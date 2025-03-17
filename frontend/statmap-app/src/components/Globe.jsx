@@ -33,60 +33,56 @@ function Globe(props) {
 
     return (
         <div className="relative w-full h-full">
-                    <div className="absolute top-0 left-0 w-full h-full">
-                        <Canvas
-                            camera={{ position: [0, 1.5, 1.5], near: 0.01, far: 1000 }}
-                            style={{ background: "black", width: "100vw", height: "100vh" }}
-                        >
-                            <Suspense fallback={null}>
-                                <ambientLight intensity={5} />
-                                <directionalLight position={[0, 0, 2]} intensity={7} />
-        
-                                <OrbitControls
-                                    enableZoom={true}
-                                    enableRotate={true}
-                                    enablePan={false}
-                                    minDistance={1.05}
-                                    maxDistance={4}
-                                    zoomSpeed={0.4}
-                                />
-                                <Stars
-                                    radius={300}
-                                    depth={60}
-                                    count={20000}
-                                    factor={7}
-                                    saturation={0}
-                                    fade={true}
-                                />
-        
-                                <mesh ref={cloudsRef}>
-                                    <sphereGeometry args={[1.005, 36, 36]} />
-                                    <meshPhongMaterial
-                                        map={cloudMap}
-                                        opacity={0.4}
-                                        depthWrite={true}
-                                        transparent={true}
-                                        side={THREE.DoubleSide}
-                                    />
-                                </mesh>
-        
-                                <mesh ref={globeRef}>
-                                    <sphereGeometry args={[1, 36, 36]} />
-                                    <meshPhongMaterial specularMap={specularMap} />
-                                    <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.4} roughness={0.7} />
-        
-                                </mesh>
-        
-                                
-                                <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef}/>
-                            </Suspense>
-        
-                        
-                        </Canvas>
-                    </div>
-                </div>
+            <div className="absolute top-0 left-0 w-full h-full">
+                <Canvas
+                    camera={{ position: [0, 1.5, 1.5], near: 0.01, far: 1000 }}
+                    style={{ background: "black", width: "100vw", height: "100vh" }}
+                >
+                    <ambientLight intensity={5} />
+                    <directionalLight position={[0, 0, 2]} intensity={7} />
+
+                    <OrbitControls
+                        enableZoom={true}
+                        enableRotate={true}
+                        enablePan={false}
+                        minDistance={1.05}
+                        maxDistance={4}
+                        zoomSpeed={0.4}
+                    />
+                    <Stars
+                        radius={300}
+                        depth={60}
+                        count={20000}
+                        factor={7}
+                        saturation={0}
+                        fade={true}
+                    />
+
+                    <mesh ref={cloudsRef}>
+                        <sphereGeometry args={[1.005, 36, 36]} />
+                        <meshPhongMaterial
+                            map={cloudMap}
+                            opacity={0.4}
+                            depthWrite={true}
+                            transparent={true}
+                            side={THREE.DoubleSide}
+                        />
+                    </mesh>
+
+                    <mesh ref={globeRef}>
+                        <sphereGeometry args={[1, 36, 36]} />
+                        <meshPhongMaterial specularMap={specularMap} />
+                        <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.4} roughness={0.7} />
+
+                    </mesh>
+
+                    <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />
+                </Canvas>
+            </div>
+        </div>
     );
 }
+
 
 /**
  * Rotates the 3D globe by updating its rotation on each frame.
