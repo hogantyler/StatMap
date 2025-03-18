@@ -6,214 +6,38 @@ import Modal from "./Modal";
 import Login from "./Login";
 import { FaArrowLeft } from "react-icons/fa";
 import Select from "react-select";
-import factsData from "../data/data.json";
 import Loading from "./Loading"
-
-// Sample list of countries for the dropdown
-const countries = [
-  "Afghanistan",
-  "Albania",
-  "Algeria",
-  "Andorra",
-  "Angola",
-  "Argentina",
-  "Armenia",
-  "Australia",
-  "Austria",
-  "Azerbaijan",
-  "Bahamas",
-  "Bahrain",
-  "Bangladesh",
-  "Barbados",
-  "Belarus",
-  "Belgium",
-  "Belize",
-  "Benin",
-  "Bhutan",
-  "Bolivia",
-  "Bosnia and Herzegovina",
-  "Botswana",
-  "Brazil",
-  "Brunei",
-  "Bulgaria",
-  "Burkina Faso",
-  "Burundi",
-  "Cambodia",
-  "Cameroon",
-  "Canada",
-  "Chad",
-  "Chile",
-  "China",
-  "Colombia",
-  "Comoros",
-  "Congo",
-  "Costa Rica",
-  "Croatia",
-  "Cuba",
-  "Cyprus",
-  "Czechia",
-  "Denmark",
-  "Djibouti",
-  "Dominica",
-  "Dominican Republic",
-  "Ecuador",
-  "Egypt",
-  "El Salvador",
-  "Estonia",
-  "Eswatini",
-  "Ethiopia",
-  "Fiji",
-  "Finland",
-  "France",
-  "Gabon",
-  "Gambia",
-  "Georgia",
-  "Germany",
-  "Ghana",
-  "Greece",
-  "Grenada",
-  "Guatemala",
-  "Guinea",
-  "Guyana",
-  "Haiti",
-  "Honduras",
-  "Hungary",
-  "Iceland",
-  "India",
-  "Indonesia",
-  "Iran",
-  "Iraq",
-  "Ireland",
-  "Israel",
-  "Italy",
-  "Jamaica",
-  "Japan",
-  "Jordan",
-  "Kazakhstan",
-  "Kenya",
-  "Kiribati",
-  "Kuwait",
-  "Kyrgyzstan",
-  "Laos",
-  "Latvia",
-  "Lebanon",
-  "Lesotho",
-  "Liberia",
-  "Libya",
-  "Liechtenstein",
-  "Lithuania",
-  "Luxembourg",
-  "Madagascar",
-  "Malawi",
-  "Malaysia",
-  "Maldives",
-  "Mali",
-  "Malta",
-  "Mauritania",
-  "Mauritius",
-  "Mexico",
-  "Moldova",
-  "Monaco",
-  "Mongolia",
-  "Montenegro",
-  "Morocco",
-  "Mozambique",
-  "Myanmar",
-  "Namibia",
-  "Nauru",
-  "Nepal",
-  "Netherlands",
-  "New Zealand",
-  "Nicaragua",
-  "Niger",
-  "Nigeria",
-  "North Korea",
-  "North Macedonia",
-  "Norway",
-  "Oman",
-  "Pakistan",
-  "Palau",
-  "Panama",
-  "Papua New Guinea",
-  "Paraguay",
-  "Peru",
-  "Philippines",
-  "Poland",
-  "Portugal",
-  "Qatar",
-  "Romania",
-  "Russia",
-  "Rwanda",
-  "Saint Kitts and Nevis",
-  "Saint Lucia",
-  "Saint Vincent and the Grenadines",
-  "Samoa",
-  "San Marino",
-  "Sao Tome and Principe",
-  "Saudi Arabia",
-  "Senegal",
-  "Serbia",
-  "Seychelles",
-  "Sierra Leone",
-  "Singapore",
-  "Slovakia",
-  "Slovenia",
-  "Solomon Islands",
-  "Somalia",
-  "South Africa",
-  "South Korea",
-  "Spain",
-  "Sri Lanka",
-  "Sudan",
-  "Suriname",
-  "Sweden",
-  "Switzerland",
-  "Syria",
-  "Taiwan",
-  "Tajikistan",
-  "Tanzania",
-  "Thailand",
-  "Timor-Leste",
-  "Togo",
-  "Tonga",
-  "Trinidad and Tobago",
-  "Tunisia",
-  "Turkey",
-  "Turkmenistan",
-  "Tuvalu",
-  "Uganda",
-  "Ukraine",
-  "United Arab Emirates",
-  "United Kingdom",
-  "United States",
-  "Uruguay",
-  "Uzbekistan",
-  "Vanuatu",
-  "Venezuela",
-  "Vietnam",
-  "Yemen",
-  "Zambia",
-  "Zimbabwe",
-];
-
-const countryOptions = countries.sort().map((country) => ({
-  value: country,
-  label: country,
-}));
+import { supabase } from "./SupabaseContext";
 
 const QuizMode = () => {
   // --- Quiz Logic States ---
   const [selectedOption, setSelectedOption] = useState(null);
-  const [unusedFacts, setUnusedFacts] = useState([...factsData]);
   const [currentFact, setCurrentFact] = useState(null);
   const [attempts, setAttempts] = useState(0);
   const [score, setScore] = useState(0);
-  const [questionNumber, setQuestionNumber] = useState(1); // NEW: Question counter
+  const [questionNumber, setQuestionNumber] = useState(1); // Question counter
   const [feedback, setFeedback] = useState("");
   const [feedbackType, setFeedbackType] = useState(""); // "correct", "incorrect", or "final"
   const [isAnswered, setIsAnswered] = useState(false);
-  const [quizComplete, setQuizComplete] = useState(false); //Flag for quiz completion
+  const [quizComplete, setQuizComplete] = useState(false); // Flag for quiz completion
   const [questionFinished, setQuestionFinished] = useState(false); //for 'next' and 'source' buttons
+  const [countryOptions, setCountryOptions] = useState([]);
+
+  useEffect(() => {
+    async function fetchCountries() {
+      const { data, error } = await supabase.from("api_country").select();
+      if (error) {
+        console.error("Error fetching countries:", error);
+      } else if (data) {
+        const options = data.map(item => ({
+          value: item.Country,
+          label: item.Country,
+        }));
+        setCountryOptions(options);
+      }
+    }
+    fetchCountries();
+  }, []);
 
   // --- Navigation & Modal States ---
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -223,24 +47,18 @@ const QuizMode = () => {
   // (Globe component is imported and used below.)
 
   // --- Functions for Quiz Logic ---
-  const loadNewFact = () => {
-    fetch("https://statmapapi.world/api/random_fact/")
-      .then(res => res.json())
-      .then(fact => setCurrentFact(fact))
-    /* setUnusedFacts((prevUnused) => {
-      let available = prevUnused;
-      if (available.length === 0) {
-        available = [...factsData];
+  const loadNewFact = async () => {
+    try {
+      const { data, error } = await supabase.rpc('random_fact');
+      if (error) {
+        console.error("Error fetching fact:", error);
+        return;
       }
-      const randomIndex = Math.floor(Math.random() * available.length);
-      const chosen = available[randomIndex];
-      fetch("http://18.118.152.10:8000/api/random_fact/").then((res) =>
-        console.log(res.json())
-      );
-      const newUnused = available.filter((_, i) => i !== randomIndex);
-      setCurrentFact(chosen);
-      return newUnused;
-    }); */
+      setCurrentFact(data);
+    } catch (err) {
+      console.error("Unexpected error:", err);
+    }
+    // Reset other states for the new question
     setAttempts(0);
     setSelectedOption(null);
     setFeedback("");
@@ -267,7 +85,7 @@ const QuizMode = () => {
     e.preventDefault();
     if (isAnswered || !selectedOption) return;
     setIsAnswered(true);
-    if (selectedOption.value === currentFact.country) {
+    if (selectedOption.value === currentFact.Correct_Country) {
       let points = 0;
       if (attempts === 0) points = 1000;
       else if (attempts === 1) points = 750;
@@ -283,18 +101,18 @@ const QuizMode = () => {
         setAttempts(newAttempts);
         let hint = "";
         if (newAttempts === 1) {
-          hint = `Hint: Continent - ${currentFact.continent}`;
+          hint = `Hint: Continent - ${currentFact.CC_Continent}`;
         } else if (newAttempts === 2) {
-          hint = `Hint: Continent - ${currentFact.continent}, Capital - ${currentFact.capital}`;
+          hint = `Hint: Continent - ${currentFact.CC_Continent}, Capital - ${currentFact.CC_Capital}`;
         } else if (newAttempts === 3) {
-          hint = `Hint: Continent - ${currentFact.continent}, Capital - ${currentFact.capital}, Abbreviation - ${currentFact.abbrev}`;
+          hint = `Hint: Continent - ${currentFact.CC_Continent}, Capital - ${currentFact.CC_Capital}, Abbreviation - ${currentFact.CC_Abbrev}`;
         }
         setFeedback(`Incorrect! Try again. ${hint}`);
         setFeedbackType("incorrect");
         setIsAnswered(false);
       } else {
         setFeedback(
-          `Incorrect! The correct answer is ${currentFact.country}.`
+          `Incorrect! The correct answer is ${currentFact.Correct_Country}.`
         );
         setFeedbackType("incorrect");
         setQuestionFinished(true);
@@ -371,7 +189,7 @@ const QuizMode = () => {
               {currentFact && (
                 <div className="mb-6 p-4 border border-white rounded relative">
                   <p className="text-center font-semibold text-white">
-                    {currentFact.fact}
+                    {currentFact.Fact}
                   </p>
                 </div>
               )}
@@ -392,7 +210,7 @@ const QuizMode = () => {
               {questionFinished && (
                 <div className="flex justify-around mt-4">
                   <a
-                    href={currentFact.source}
+                    href={currentFact.Source}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
