@@ -72,14 +72,14 @@ function Country({ name, coords, altitude, globeRef}) {
     const [visible, setVisible] = useState(false);
     const countryRef = useRef();
     
-    const color = clicked ? 'green' : (hovered ? 'yellow' : 'purple');
+    const color = clicked ? 'green' : (hovered ? 'white' : 'purple');
     const show = clicked ? true : (hovered ? true : false);
     const raise = clicked ? 0.1 : (hovered ? 0 : 0);
 
     const geometry = new ConicPolygonGeometry(coords, (0.99 + raise), (altitude + raise), true, true, true, 5);
     const materials = [
-        new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: color, opacity: 0.5, transparent: true }), // side material
-        new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: 'red', opacity: 0.7, transparent: true, visible: false }), // bottom cap material
+        new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: color, opacity: 0.5, transparent: true, visible: show }), // side material
+        new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: 'yellow', opacity: 0.5, transparent: true, visible: show }), // bottom cap material
         new THREE.MeshBasicMaterial({ color: color, opacity: 0.5, transparent: true, wireframe: false, visible: show }) // top cap material
     ];
     const handleClick = (event) => {

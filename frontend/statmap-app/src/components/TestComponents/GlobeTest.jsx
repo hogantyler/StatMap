@@ -120,14 +120,14 @@ function GlobeTest(props) {
                         <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.7} roughness={0.7}  />
                     </mesh>
 
-                    <ConicGlobe globeRef={globeRef} />
+                    
 
 
-                    {/*<ConicGlobe /> <CountryBorders globeRef={globeRef} />
+                    {/*<ConicGlobe globeRef={globeRef} /> <CountryBorders globeRef={globeRef} />
                     <CountryLabels globeRef={globeRef} showLabel={showLabel} /> <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />*/}
                     <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />
-
-
+                    <CountryBorders globeRef={globeRef} />
+                    <ConicGlobe globeRef={globeRef} />
 
                     <Perf position="top-right" />
 
@@ -161,7 +161,7 @@ function CountryBorders({ globeRef }) {
     console.log("border render");
     useEffect(() => {
         //gets geosjason data
-        fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
+        fetch('https://raw.githubusercontent.com/vasturiano/three-conic-polygon-geometry/refs/heads/master/example/geojson/ne_110m_admin_0_countries.geojson')
             .then(response => response.json())
             .then(data => {
                 setGeoData(data);
