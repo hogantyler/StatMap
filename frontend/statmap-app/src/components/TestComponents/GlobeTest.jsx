@@ -1,5 +1,5 @@
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
-import { OrbitControls, Stars, Html, Stats } from "@react-three/drei";
+import { OrbitControls, Stars, Html, Stats, Text, Billboard } from "@react-three/drei";
 import { useRef, useState, useEffect, Suspense } from "react";
 import * as THREE from "three";
 import EarthMap from "../../textures/8k_earth.png"
@@ -127,6 +127,7 @@ function GlobeTest(props) {
                     <CountryLabels globeRef={globeRef} showLabel={showLabel} /> <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />*/}
                     <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />
                     <CountryBorders globeRef={globeRef} />
+                    <CountryLabels globeRef={globeRef} showLabel={showLabel} />
                     <ConicGlobe globeRef={globeRef} />
 
                     <Perf position="top-right" />
@@ -234,12 +235,13 @@ function CountryBorders({ globeRef }) {
     return <group ref={linesRef} />;
 }
 
+
+
 function CountryLabels({ globeRef, showLabel }) {
     const [geoData, setGeoData] = useState(null);
     const labelsRef = useRef();
     const { camera } = useThree();
 
-    //console.log("label render");
     //country label offsets for manual adjustments
     const countryOffsets = {
         "United States of America": [0, 0, 0],
@@ -256,7 +258,6 @@ function CountryLabels({ globeRef, showLabel }) {
             .catch(error => console.error('Error fetching GeoJSON:', error));
     }, []);
 
-    //tracking camera distance for fixed-size label scaling optimization
     const [cameraDistance, setCameraDistance] = useState(0);
 
     useFrame(() => {
@@ -264,16 +265,16 @@ function CountryLabels({ globeRef, showLabel }) {
             labelsRef.current.rotation.copy(globeRef.current.rotation);
         }
 
-        //updating camera distance for label size calculation
+        //update camera
         if (camera) {
             const distance = camera.position.distanceTo(new THREE.Vector3(0, 0, 0));
             setCameraDistance(distance);
         }
     });
 
-    //center calculation for polygons (useMemo or similar later to optimize)
+    // center calculation for polygons
     const calculatePolygonCentroid = (polygon) => {
-        //check if polygon is valid
+        
         if (!polygon || polygon.length < 3) {
             return [0, 0];
         }
@@ -295,9 +296,9 @@ function CountryLabels({ globeRef, showLabel }) {
 
         area /= 2;
 
-        //check if area is close to zero to avoid division by zero
+        // check if area is close to zero to avoid division by zero
         if (Math.abs(area) < 1e-10) {
-            //fallback to simple average if the area is too small
+            // Fallback to simple average if the area is too small
             let sumLon = 0, sumLat = 0;
             polygon.forEach(coord => {
                 sumLon += coord[0];
@@ -315,9 +316,9 @@ function CountryLabels({ globeRef, showLabel }) {
     if (!geoData) return null;
 
     const labels = [];
-    const radius = 1.0005; //slightly larger than the border radius to avoid z-fighting
+    const radius = 1.02; //height of the labels
 
-    //which countries to display with priority
+    
     const visibleCountriesBySize = new Set([
         "Russia", "Canada", "United States of America", "China", "Brazil",
         "Australia", "India", "Argentina", "Mexico", "Indonesia",
@@ -329,19 +330,19 @@ function CountryLabels({ globeRef, showLabel }) {
         "Germany", "Italy", "United Kingdom", "Japan", "Turkey", "South Korea"
     ]);
 
-    //determine if a country should be visible based on zoom level
+    // determine if a country should be visible based on zoom level
     const shouldShowLabel = (countryName, countryArea) => {
-        //show chosen countries from visibleCountriesBySize
+        
         if (visibleCountriesBySize.has(countryName)) {
             return true;
         }
 
-        //show medium countries when zoomed in a bit
+        
         if (countryArea > 10 && cameraDistance < 2.5) {
             return true;
         }
 
-        //show rest of countries when zoomed in more finally
+        
         if (cameraDistance < 1.5) {
             return true;
         }
@@ -354,7 +355,7 @@ function CountryLabels({ globeRef, showLabel }) {
         let centroid;
         let countryArea = 0;
 
-        //calculate approximate country area for filtering
+        // calculate approximate country area for filtering
         if (feature.geometry.type === "Polygon") {
             countryArea = calculateApproximateArea(feature.geometry.coordinates[0]);
             centroid = calculatePolygonCentroid(feature.geometry.coordinates[0]);
@@ -377,7 +378,7 @@ function CountryLabels({ globeRef, showLabel }) {
             centroid = bestCentroid;
         }
 
-        //only show labels that pass visibility filter
+        //show labels that pass visibility filter
         if (centroid && shouldShowLabel(countryName, countryArea)) {
             // Convert centroid to 3D position
             const lon = THREE.MathUtils.degToRad(centroid[0]);
@@ -387,7 +388,7 @@ function CountryLabels({ globeRef, showLabel }) {
             let y = radius * Math.sin(lat);
             let z = radius * Math.cos(lat) * Math.cos(lon);
 
-            //apply country-specific offset if available
+            // Apply country-specific offset if available
             if (countryOffsets[countryName]) {
                 const [offsetX, offsetY, offsetZ] = countryOffsets[countryName];
                 x += offsetX;
@@ -395,41 +396,45 @@ function CountryLabels({ globeRef, showLabel }) {
                 z += offsetZ;
             }
 
-            //calculate label size based on country importance and fixed size
-            const fontSize = visibleCountriesBySize.has(countryName) ?
-                "text-lg" : "text-xs"; // You could vary this if desired
-
-            //use drei Html to add label
+            
+            const fontSize = visibleCountriesBySize.has(countryName) ? 0.03 : 0.02;
+            
+            const scaleFactor = Math.max(0.4, cameraDistance * 0.2);
+            
+            
             labels.push(
-                <Html
+                <group 
                     key={`label-${index}`}
                     position={[x, y, z]}
-                    occlude={[globeRef]}
-                    sprite
-                    center
-                    transform
-                    distanceFactor={0.8}
-                    style={{
-                        pointerEvents: 'none',
-                        userSelect: 'none',
-                        //handle sizing manually
-                        //scale based on zoom level if needed (you can adjust the formula)
-                        transform: `scale(${(Math.max(0, cameraDistance)) / 6})`, //inverse resizing based on camera distance
-                    }}
                 >
-                    <div>
-                        <button className={`text-white ${fontSize} bg-black bg-opacity-50 px-1 py-0.5 rounded`}
-                            onClick={() => alert("leaderboard in progress")}>
+                    <Billboard follow={true} lockX={false} lockY={false} lockZ={false}>
+                        <Text
+                            fontSize={fontSize * scaleFactor}
+                            color="white"
+                            anchorX="center"
+                            anchorY="middle"
+                            // Add a background for better visibility
+                            backgroundColor="rgba(0, 0, 0, 0.5)"
+                            backgroundOpacity={0.5}
+                            backgroundPadding={[0.01, 0.01]}
+                            // Optimize visibility
+                            renderOrder={2}
+                            depthTest={false}
+                            // Optional: add outline for better contrast
+                            outlineWidth={0.001}
+                            outlineColor="black"
+                        >
                             {countryName}
-                        </button>
-                    </div>
-                </Html>
+                        </Text>
+                    </Billboard>
+                </group>
             );
         }
     });
 
     return <group ref={labelsRef}>{labels}</group>;
 }
+
 
 //function to calculate approximate area of a polygon
 function calculateApproximateArea(polygon) {
