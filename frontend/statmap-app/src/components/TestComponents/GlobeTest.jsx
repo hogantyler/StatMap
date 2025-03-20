@@ -7,6 +7,7 @@ import EarthNormalMap from "../../textures/8k_earth_normal_map.jpg"
 import EarthSpecMap from "../../textures/8k_earth_specular_map.jpg"
 import EarthCloudMap from "../../textures/cloud_texture.jpg"
 import { TextureLoader } from "three";
+import { Perf } from 'r3f-perf'
 
 function GlobeTest(props) {
     // texture loading
@@ -51,16 +52,16 @@ function GlobeTest(props) {
                         zoomSpeed={0.4}
                     />
                     <Stars
-                        radius={300}
+                        radius={200}
                         depth={60}
-                        count={20000}
+                        count={5000}
                         factor={7}
                         saturation={0}
                         fade={true}
                     />
 
                     <mesh ref={cloudsRef}>
-                        <sphereGeometry args={[1.005, 36, 36]} />
+                        <sphereGeometry args={[1.005, 40, 40]} />
                         <meshPhongMaterial
                             map={cloudMap}
                             opacity={0.4}
@@ -71,16 +72,16 @@ function GlobeTest(props) {
                     </mesh>
 
                     <mesh ref={globeRef}>
-                        <sphereGeometry args={[1, 36, 36]} />
+                        <sphereGeometry args={[1, 40, 40]} />
                         <meshPhongMaterial specularMap={specularMap} />
                         <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.4} roughness={0.7} />
                     </mesh>
 
+                    {/* <CountryBorders globeRef={globeRef} />
+                    <CountryLabels globeRef={globeRef} showLabel={showLabel} /> */}
                     <CountryBorders globeRef={globeRef} />
-
-                    <CountryLabels globeRef={globeRef} showLabel={showLabel} />
                     <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />
-
+                    <Perf position="top-right" />
                     <Stats showPanel={0} />
                 </Canvas>
             </div>
@@ -185,9 +186,7 @@ function CountryLabels({ globeRef, showLabel }) {
     const labelsRef = useRef();
     const { camera } = useThree();
 
-
-
-    //console.log("label render");
+    console.log("label render");
     //country label offsets for manual adjustments
     const countryOffsets = {
         "United States of America": [0, 0, 0],
@@ -368,7 +367,7 @@ function CountryLabels({ globeRef, showLabel }) {
                     <div>
                         <button className={`text-white ${fontSize} bg-black bg-opacity-50 px-1 py-0.5 rounded`}
                             onClick={() => alert("leaderboard in progress")}>
-                            {countryName} button
+                            {countryName}
                         </button>
                     </div>
                 </Html>
@@ -395,7 +394,5 @@ function calculateApproximateArea(polygon) {
 
     return Math.abs(area / 2);
 }
-
-
 
 export default GlobeTest;

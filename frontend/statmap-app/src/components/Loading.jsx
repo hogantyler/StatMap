@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 
 function Loading() {
     
+    //edited from this example here https://tailwindflex.com/@freja-jensen/ovel-shaped-loding-spinner
     return (
         <div className="flex items-center justify-center h-screen bg-black w-screen">
             <div className="relative">

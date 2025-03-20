@@ -53,6 +53,7 @@
   },
   "devDependencies": {
     "gh-pages": "^6.3.0",
+    "r3f-perf": "^7.2.3",
     "tailwindcss": "^3.4.17"
   }
 }
