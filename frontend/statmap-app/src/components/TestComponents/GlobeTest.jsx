@@ -37,7 +37,7 @@ function GlobeTest(props) {
             colorMap.repeat.set(1, 1);
             colorMap.offset.x = (Math.PI / 2) / (2 * Math.PI); // Same offset as in your example
         }
-        
+
         // Apply to normal map too if needed
         if (normalMap) {
             normalMap.wrapS = normalMap.wrapT = THREE.RepeatWrapping;
