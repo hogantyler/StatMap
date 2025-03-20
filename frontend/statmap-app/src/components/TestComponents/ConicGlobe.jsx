@@ -1,6 +1,6 @@
 // Import dependencies
 import React, { useRef, useEffect, useState, forwardRef } from 'react';
-import { Canvas, useFrame, useLoader, useThree } from '@react-three/fiber';
+import { Canvas, useFrame, useLoader, useThree, Html, Texts } from '@react-three/fiber';
 import { OrbitControls, Stats } from '@react-three/drei';
 import * as THREE from 'three';
 import ConicPolygonGeometry from 'three-conic-polygon-geometry';
@@ -84,7 +84,7 @@ function Country({ name, coords, altitude, globeRef}) {
     const handleClick = (event) => {
         event.stopPropagation();
         setClicked(!clicked);
-        setVisible(!visible);
+        //setVisible(!visible);
         console.log(`selected on ${name}`);
         //alert(`selected on ${name}`);
     };
