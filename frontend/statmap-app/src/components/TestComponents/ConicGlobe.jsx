@@ -29,7 +29,7 @@ function CountryPolygons({ geoData, globeRef }) {
             const countryName = properties.ADMIN;
 
             //console.log(newNames);
-            const alt = 1.005; // Height/altitude
+            const alt = 1.003; // Height/altitude
             //console.log(polygons);
 
             polygons.forEach((coords, index) => {
@@ -74,9 +74,9 @@ function Country({ name, coords, altitude, globeRef}) {
     
     const color = clicked ? 'green' : (hovered ? 'white' : 'purple');
     const show = clicked ? true : (hovered ? true : false);
-    const raise = clicked ? 0.1 : (hovered ? 0 : 0);
+    const raise = clicked ? 0.05 : (hovered ? 0 : 0);
 
-    const geometry = new ConicPolygonGeometry(coords, (0.99 + raise), (altitude + raise), true, true, true, 5);
+    const geometry = new ConicPolygonGeometry(coords, (0.99), (altitude + raise), true, true, true, 5);
     const materials = [
         new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: color, opacity: 0.5, transparent: true, visible: show }), // side material
         new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: 'yellow', opacity: 0.5, transparent: true, visible: show }), // bottom cap material

@@ -36,31 +36,31 @@ function GlobeTest(props) {
         if (colorMap) {
             colorMap.wrapS = colorMap.wrapT = THREE.RepeatWrapping;
             colorMap.repeat.set(1, 1);
-            colorMap.offset.x = (Math.PI / 2) / (2 * Math.PI); 
+            colorMap.offset.x = (Math.PI / 2) / (2 * Math.PI);
         }
 
-        
+
         if (normalMap) {
             normalMap.wrapS = normalMap.wrapT = THREE.RepeatWrapping;
             normalMap.repeat.set(1, 1);
             normalMap.offset.x = (Math.PI / 2) / (2 * Math.PI);
         }
 
-        
+
         if (specularMap) {
             specularMap.wrapS = specularMap.wrapT = THREE.RepeatWrapping;
             specularMap.repeat.set(1, 1);
             specularMap.offset.x = (Math.PI / 2) / (2 * Math.PI);
         }
 
-        
+
         if (cloudMap) {
             cloudMap.wrapS = cloudMap.wrapT = THREE.RepeatWrapping;
             cloudMap.repeat.set(1, 1);
             cloudMap.offset.x = (Math.PI / 2) / (2 * Math.PI);
         }
 
-        if(displacementMap) {
+        if (displacementMap) {
             displacementMap.wrapS = displacementMap.wrapT = THREE.RepeatWrapping;
             displacementMap.repeat.set(1, 1);
             displacementMap.offset.x = (Math.PI / 2) / (2 * Math.PI);
@@ -71,7 +71,10 @@ function GlobeTest(props) {
 
 
     console.log("globe render");
-
+    const handleClick = (event) => {
+        event.stopPropagation();
+        console.log('ocean');
+    };
 
     return (
         <div className="relative w-full h-full">
@@ -103,7 +106,7 @@ function GlobeTest(props) {
                     />
 
                     <mesh ref={cloudsRef}>
-                        
+
                         <sphereGeometry args={[1.01, 40, 40]} />
                         <meshPhongMaterial
                             map={cloudMap}
@@ -114,13 +117,13 @@ function GlobeTest(props) {
                         />
                     </mesh>
 
-                    <mesh ref={globeRef}>
+                    <mesh ref={globeRef} onClick={handleClick}>
                         <sphereGeometry args={[1, 40, 40]} />
                         <meshPhongMaterial specularMap={specularMap} />
-                        <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.7} roughness={0.7}  />
+                        <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.7} roughness={0.7} />
                     </mesh>
 
-                    
+
 
 
                     {/*<ConicGlobe globeRef={globeRef} /> <CountryBorders globeRef={globeRef} />
@@ -274,7 +277,7 @@ function CountryLabels({ globeRef, showLabel }) {
 
     // center calculation for polygons
     const calculatePolygonCentroid = (polygon) => {
-        
+
         if (!polygon || polygon.length < 3) {
             return [0, 0];
         }
@@ -318,7 +321,7 @@ function CountryLabels({ globeRef, showLabel }) {
     const labels = [];
     const radius = 1.02; //height of the labels
 
-    
+
     const visibleCountriesBySize = new Set([
         "Russia", "Canada", "United States of America", "China", "Brazil",
         "Australia", "India", "Argentina", "Mexico", "Indonesia",
@@ -330,19 +333,19 @@ function CountryLabels({ globeRef, showLabel }) {
         "Germany", "Italy", "United Kingdom", "Japan", "Turkey", "South Korea"
     ]);
 
-    
+
     const shouldShowLabel = (countryName, countryArea) => {
-        
+
         if (visibleCountriesBySize.has(countryName)) {
             return true;
         }
 
-        
+
         if (countryArea > 10 && cameraDistance < 2.5) {
             return true;
         }
 
-        
+
         if (cameraDistance < 1.5) {
             return true;
         }
@@ -378,7 +381,7 @@ function CountryLabels({ globeRef, showLabel }) {
             centroid = bestCentroid;
         }
 
-        
+
         if (centroid && shouldShowLabel(countryName, countryArea)) {
             // Convert centroid to 3D position
             const lon = THREE.MathUtils.degToRad(centroid[0]);
@@ -388,7 +391,7 @@ function CountryLabels({ globeRef, showLabel }) {
             let y = radius * Math.sin(lat);
             let z = radius * Math.cos(lat) * Math.cos(lon);
 
-            
+
             if (countryOffsets[countryName]) {
                 const [offsetX, offsetY, offsetZ] = countryOffsets[countryName];
                 x += offsetX;
@@ -396,14 +399,14 @@ function CountryLabels({ globeRef, showLabel }) {
                 z += offsetZ;
             }
 
-            
+
             const fontSize = visibleCountriesBySize.has(countryName) ? 0.03 : 0.02;
-            
+
             const scaleFactor = Math.max(0.4, cameraDistance * 0.2);
-            
-            
+
+
             labels.push(
-                <group 
+                <group
                     key={`label-${index}`}
                     position={[x, y, z]}
                 >
