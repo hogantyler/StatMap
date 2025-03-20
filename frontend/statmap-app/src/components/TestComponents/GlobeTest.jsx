@@ -3,9 +3,10 @@ import { OrbitControls, Stars, Html, Stats } from "@react-three/drei";
 import { useRef, useState, useEffect, Suspense } from "react";
 import * as THREE from "three";
 import EarthMap from "../../textures/8k_earth.png"
-import EarthNormalMap from "../../textures/8k_earth_normal_map.jpg"
+import EarthNormalMap from "../../textures/earth_normalmap_5400x2700.jpg"
 import EarthSpecMap from "../../textures/8k_earth_specular_map.jpg"
 import EarthCloudMap from "../../textures/cloud_texture.jpg"
+import EarthDisplacementMap from "../../textures/gebco_bathy_2700x1350.jpg"
 import { TextureLoader } from "three";
 import { Perf } from 'r3f-perf'
 import ConicPolygonGeometry from 'three-conic-polygon-geometry';
@@ -17,9 +18,9 @@ function GlobeTest(props) {
     const globeRef = useRef();
     const cloudsRef = useRef();
     //const conicGlobeRef = useRef();
-    const [colorMap, normalMap, specularMap, cloudMap] = useLoader(
+    const [colorMap, normalMap, specularMap, cloudMap, displacementMap] = useLoader(
         TextureLoader,
-        [EarthMap, EarthNormalMap, EarthSpecMap, EarthCloudMap]
+        [EarthMap, EarthNormalMap, EarthSpecMap, EarthCloudMap, EarthDisplacementMap]
     );
     {/*}
     const texture = new THREE.TextureLoader().load(EarthMap, (texture) => {
@@ -31,32 +32,38 @@ function GlobeTest(props) {
     */}
 
     useEffect(() => {
-        // Apply settings to colorMap (Earth texture)
+        //rotation offsets
         if (colorMap) {
             colorMap.wrapS = colorMap.wrapT = THREE.RepeatWrapping;
             colorMap.repeat.set(1, 1);
-            colorMap.offset.x = (Math.PI / 2) / (2 * Math.PI); // Same offset as in your example
+            colorMap.offset.x = (Math.PI / 2) / (2 * Math.PI); 
         }
 
-        // Apply to normal map too if needed
+        
         if (normalMap) {
             normalMap.wrapS = normalMap.wrapT = THREE.RepeatWrapping;
             normalMap.repeat.set(1, 1);
             normalMap.offset.x = (Math.PI / 2) / (2 * Math.PI);
         }
 
-        // Apply to specular map if needed
+        
         if (specularMap) {
             specularMap.wrapS = specularMap.wrapT = THREE.RepeatWrapping;
             specularMap.repeat.set(1, 1);
             specularMap.offset.x = (Math.PI / 2) / (2 * Math.PI);
         }
 
-        // Apply cloud map settings if needed
+        
         if (cloudMap) {
             cloudMap.wrapS = cloudMap.wrapT = THREE.RepeatWrapping;
             cloudMap.repeat.set(1, 1);
             cloudMap.offset.x = (Math.PI / 2) / (2 * Math.PI);
+        }
+
+        if(displacementMap) {
+            displacementMap.wrapS = displacementMap.wrapT = THREE.RepeatWrapping;
+            displacementMap.repeat.set(1, 1);
+            displacementMap.offset.x = (Math.PI / 2) / (2 * Math.PI);
         }
     }, []);
 
@@ -96,7 +103,7 @@ function GlobeTest(props) {
                     />
 
                     <mesh ref={cloudsRef}>
-                        <sphereGeometry args={[1.01, 40, 40]} />
+                        <icosahedronGeometry args={[1, 128]} />
                         <meshPhongMaterial
                             map={cloudMap}
                             opacity={0.4}
@@ -109,7 +116,7 @@ function GlobeTest(props) {
                     <mesh ref={globeRef}>
                         <sphereGeometry args={[1, 40, 40]} />
                         <meshPhongMaterial specularMap={specularMap} />
-                        <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.4} roughness={0.7} />
+                        <meshStandardMaterial map={colorMap} normalMap={normalMap} displacementMap={displacementMap} displacementScale={0.02} metalness={0.7} roughness={0.7}  />
                     </mesh>
 
                     <ConicGlobe globeRef={globeRef} />

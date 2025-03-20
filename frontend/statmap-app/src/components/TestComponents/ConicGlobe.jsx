@@ -29,7 +29,7 @@ function CountryPolygons({ geoData, globeRef }) {
             const countryName = properties.ADMIN;
 
             //console.log(newNames);
-            const alt = 1.005; // Height/altitude
+            const alt = 1.017; // Height/altitude
             //console.log(polygons);
 
             polygons.forEach((coords, index) => {
@@ -72,7 +72,7 @@ function Country({ name, coords, altitude, globeRef}) {
     const [visible, setVisible] = useState(false);
     const countryRef = useRef();
     
-    const color = clicked ? 'green' : (hovered ? 'yellow' : 'teal');
+    const color = clicked ? 'green' : (hovered ? 'yellow' : 'purple');
     const show = clicked ? true : (hovered ? true : false);
 
     const geometry = new ConicPolygonGeometry(coords, 0.99, altitude, true, true, true, 5);
