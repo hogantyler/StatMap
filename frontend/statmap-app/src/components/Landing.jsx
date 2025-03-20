@@ -100,6 +100,11 @@ const Landing = () => {
         GlobeModeTest
       </button>
 
+      <button className="fixed bottom-10 right-1 text-white bg-black text-opacity-1 py-2 px-4 mt-40 rounded-lg hover:text-blue-500"
+        onClick={() => navigate("/globeModeTestPart2")}>
+        GlobeModeTestPart2
+      </button>
+
 
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         <Login />

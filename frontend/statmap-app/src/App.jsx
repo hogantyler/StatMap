@@ -6,13 +6,8 @@ import Landing from './components/Landing';
 import QuizMode from "./components/QuizMode";
 import UnlimitedMode from "./components/UnlimitedMode";
 import GlobeModeTest from "./components/TestComponents/GlobeModeTest";
-
+import GlobeModeTestPart2 from "./components/TestComponents/GlobeModeTestPart2.jsx";
 import { SupabaseContext, supabase } from "./components/SupabaseContext.jsx";
-
-
-/* To use in any other component you must have these */
-// import SupabaseContext from "./SupabaseContext";
-// const supabase = useContext(SupabaseContext);
 
 function App() {
   return (
@@ -23,6 +18,7 @@ function App() {
           <Route path="/quiz" element={<QuizMode />} />
           <Route path="/unlimited" element={<UnlimitedMode />} />
           <Route path="/globeModeTest" element={<GlobeModeTest />} />
+          <Route path="/globeModeTestPart2" element={<GlobeModeTestPart2 />} />
         </Routes>
       </SupabaseContext.Provider>
     </Router>
