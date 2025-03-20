@@ -87,10 +87,10 @@ function Country({ name, coords, altitude, globeRef }) {
     const [clicked, setClicked] = useState(false);
     const [visible, setVisible] = useState(false);
     const countryRef = useRef();
-    const color = clicked ? 'green' : (hovered ? 'blue' : 'white');
+    const color = clicked ? 'green' : (hovered ? 'blue' : 'teal');
     const show = clicked ? true : (hovered ? true : false);
 
-    const geometry = new ConicPolygonGeometry(coords, 0.9, altitude, true, true, true, 1);
+    const geometry = new ConicPolygonGeometry(coords, 0.99, altitude, true, true, true, 1);
     const materials = [
         new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: color, opacity: 0.5, transparent: true }), // side material
         new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: 'red', opacity: 0.7, transparent: true, visible: false }), // bottom cap material
@@ -100,7 +100,8 @@ function Country({ name, coords, altitude, globeRef }) {
         event.stopPropagation();
         setClicked(!clicked);
         setVisible(!visible);
-        console.log(`Clicked on ${name}`);
+        console.log(`selected on ${name}`);
+        //alert(`selected on ${name}`);
     };
     const handlePointerOver = (event) => {
         event.stopPropagation();
@@ -161,7 +162,7 @@ function ConicGlobe({ globeRef }) {
         console.log('fetch');
     }, []);
     console.log('conicglobe');
-    console.log(geoData)
+    //console.log(geoData)
 
     return (
         <>

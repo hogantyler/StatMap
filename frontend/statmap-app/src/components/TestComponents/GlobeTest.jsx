@@ -11,11 +11,12 @@ import { Perf } from 'r3f-perf'
 import ConicPolygonGeometry from 'three-conic-polygon-geometry';
 import ConicGlobe from "./ConicGlobe";
 
+
 function GlobeTest(props) {
     // texture loading
     const globeRef = useRef();
     const cloudsRef = useRef();
-    const conicGlobeRef = useRef(); // Add this with your other refs
+    //const conicGlobeRef = useRef();
     const [colorMap, normalMap, specularMap, cloudMap] = useLoader(
         TextureLoader,
         [EarthMap, EarthNormalMap, EarthSpecMap, EarthCloudMap]
@@ -43,14 +44,14 @@ function GlobeTest(props) {
             normalMap.repeat.set(1, 1);
             normalMap.offset.x = (Math.PI / 2) / (2 * Math.PI);
         }
-        
+
         // Apply to specular map if needed
         if (specularMap) {
             specularMap.wrapS = specularMap.wrapT = THREE.RepeatWrapping;
             specularMap.repeat.set(1, 1);
             specularMap.offset.x = (Math.PI / 2) / (2 * Math.PI);
         }
-        
+
         // Apply cloud map settings if needed
         if (cloudMap) {
             cloudMap.wrapS = cloudMap.wrapT = THREE.RepeatWrapping;
@@ -82,7 +83,8 @@ function GlobeTest(props) {
                         enablePan={false}
                         minDistance={1.05}
                         maxDistance={4}
-                        zoomSpeed={0.4}
+                        zoomSpeed={0.3}
+                        rotateSpeed={0.3}
                     />
                     <Stars
                         radius={200}
@@ -110,17 +112,17 @@ function GlobeTest(props) {
                         <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.4} roughness={0.7} />
                     </mesh>
 
-                    <ConicGlobe globeRef={globeRef}/>
-                    
+                    <ConicGlobe globeRef={globeRef} />
+
 
                     {/*<ConicGlobe /> <CountryBorders globeRef={globeRef} />
                     <CountryLabels globeRef={globeRef} showLabel={showLabel} /> <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />*/}
                     <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />
-                    
 
-                    
+
+
                     <Perf position="top-right" />
-                    <Stats showPanel={0} />
+
                 </Canvas>
             </div>
         </div>
@@ -136,6 +138,10 @@ function RotateGlobe({ globeRef, cloudsRef, conicGlobeRef }) {
         //conicGlobeRef.current.rotation.y = elapsedTime / 60;
         cloudsRef.current.rotation.y = elapsedTime / 40;
     });
+    return null;
+}
+
+function BetterLabels({ globeRef }) {
     return null;
 }
 
