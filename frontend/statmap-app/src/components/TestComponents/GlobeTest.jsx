@@ -330,7 +330,7 @@ function CountryLabels({ globeRef, showLabel }) {
         "Germany", "Italy", "United Kingdom", "Japan", "Turkey", "South Korea"
     ]);
 
-    // determine if a country should be visible based on zoom level
+    
     const shouldShowLabel = (countryName, countryArea) => {
         
         if (visibleCountriesBySize.has(countryName)) {
@@ -378,7 +378,7 @@ function CountryLabels({ globeRef, showLabel }) {
             centroid = bestCentroid;
         }
 
-        //show labels that pass visibility filter
+        
         if (centroid && shouldShowLabel(countryName, countryArea)) {
             // Convert centroid to 3D position
             const lon = THREE.MathUtils.degToRad(centroid[0]);
@@ -388,7 +388,7 @@ function CountryLabels({ globeRef, showLabel }) {
             let y = radius * Math.sin(lat);
             let z = radius * Math.cos(lat) * Math.cos(lon);
 
-            // Apply country-specific offset if available
+            
             if (countryOffsets[countryName]) {
                 const [offsetX, offsetY, offsetZ] = countryOffsets[countryName];
                 x += offsetX;
@@ -432,7 +432,7 @@ function CountryLabels({ globeRef, showLabel }) {
         }
     });
 
-    return <group ref={labelsRef}>{labels}</group>;
+    return <group ref={labelsRef}>{labels}</group>; //group of all the texts
 }
 
 
