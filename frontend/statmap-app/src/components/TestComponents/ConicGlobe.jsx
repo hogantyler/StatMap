@@ -29,7 +29,7 @@ function CountryPolygons({ geoData, globeRef }) {
             const countryName = properties.ADMIN;
 
             //console.log(newNames);
-            const alt = 1.017; // Height/altitude
+            const alt = 1.005; // Height/altitude
             //console.log(polygons);
 
             polygons.forEach((coords, index) => {

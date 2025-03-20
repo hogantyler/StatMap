@@ -104,7 +104,7 @@ function GlobeTest(props) {
 
                     <mesh ref={cloudsRef}>
                         
-                        <sphereGeometry args={[1.02, 40, 40]} />
+                        <sphereGeometry args={[1.01, 40, 40]} />
                         <meshPhongMaterial
                             map={cloudMap}
                             opacity={0.3}
@@ -117,7 +117,7 @@ function GlobeTest(props) {
                     <mesh ref={globeRef}>
                         <sphereGeometry args={[1, 40, 40]} />
                         <meshPhongMaterial specularMap={specularMap} />
-                        <meshStandardMaterial map={colorMap} normalMap={normalMap} displacementMap={displacementMap} displacementScale={0.02} metalness={0.7} roughness={0.7}  />
+                        <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.7} roughness={0.7}  />
                     </mesh>
 
                     <ConicGlobe globeRef={globeRef} />
