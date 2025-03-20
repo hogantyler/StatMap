@@ -5,25 +5,7 @@ import { OrbitControls, Stats } from '@react-three/drei';
 import * as THREE from 'three';
 import ConicPolygonGeometry from 'three-conic-polygon-geometry';
 import highResEarthTexture from "../../textures/8k_earth.png";
-
-function Globe(props) {
-    // texture loading
-    const globeRef = useRef();
-    const texture = new THREE.TextureLoader().load(highResEarthTexture, (texture) => {
-        texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
-        texture.repeat.set(1, 1);
-        texture.offset.x = (Math.PI / 2) / (2 * Math.PI);
-    }, undefined, (err) => {
-        console.error("Error loading texture:", err);
-    });
-
-    return (
-        <mesh ref={globeRef}>
-            <sphereGeometry args={[1, 38, 38]} />
-            <meshStandardMaterial map={texture} roughness={1} />
-        </mesh>
-    );
-}
+import {polygonCentroid} from "d3-polygon";
 
 function CountryPolygons({ geoData, globeRef }) {
     const [meshes, setMeshes] = useState([]);
@@ -59,6 +41,7 @@ function CountryPolygons({ geoData, globeRef }) {
                 //mesh.addEventListener('click', () => console.log("clicked"));
                 //newMeshes.push(mesh);
                 //console.log(coords);
+                
                 newCountries.push({ name: countryName, coords: coords, altitude: alt, id: `${countryName}-${index}` });
             });
         });
@@ -82,15 +65,17 @@ function CountryPolygons({ geoData, globeRef }) {
     );
 }
 
-function Country({ name, coords, altitude, globeRef }) {
+function Country({ name, coords, altitude, globeRef}) {
+    //console.log("country");
     const [hovered, setHovered] = useState(false);
     const [clicked, setClicked] = useState(false);
     const [visible, setVisible] = useState(false);
     const countryRef = useRef();
+    
     const color = clicked ? 'green' : (hovered ? 'yellow' : 'teal');
     const show = clicked ? true : (hovered ? true : false);
 
-    const geometry = new ConicPolygonGeometry(coords, 0.99, altitude, true, true, true, 1);
+    const geometry = new ConicPolygonGeometry(coords, 0.99, altitude, true, true, true, 5);
     const materials = [
         new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: color, opacity: 0.5, transparent: true }), // side material
         new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: 'red', opacity: 0.7, transparent: true, visible: false }), // bottom cap material
@@ -118,7 +103,6 @@ function Country({ name, coords, altitude, globeRef }) {
     };
 
     useFrame(() => {
-        
         if (countryRef.current && globeRef.current) {
             countryRef.current.rotation.copy(globeRef.current.rotation);
         }
