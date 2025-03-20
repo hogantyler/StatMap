@@ -219,7 +219,7 @@ function CountryBorders({ globeRef }) {
 
                     //create material and line
                     const material = new THREE.LineBasicMaterial({
-                        color: 0xffffff,
+                        color: 0x008080,
                         opacity: 0.6,
                         transparent: true,
                         linewidth: 0.5
@@ -410,7 +410,7 @@ function CountryLabels({ globeRef, showLabel }) {
                     <Billboard follow={true} lockX={false} lockY={false} lockZ={false}>
                         <Text
                             fontSize={fontSize * scaleFactor}
-                            color="white"
+                            color="yellow"
                             anchorX="center"
                             anchorY="middle"
                             // Add a background for better visibility
