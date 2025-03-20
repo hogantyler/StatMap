@@ -22,6 +22,7 @@
     "react-scripts": "5.0.1",
     "react-select": "^5.10.0",
     "three": "^0.173.0",
+    "three-conic-polygon-geometry": "^2.1.2",
     "three-globe": "^2.42.2",
     "web-vitals": "^2.1.4"
   },

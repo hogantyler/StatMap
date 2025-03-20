@@ -8,11 +8,14 @@ import EarthSpecMap from "../../textures/8k_earth_specular_map.jpg"
 import EarthCloudMap from "../../textures/cloud_texture.jpg"
 import { TextureLoader } from "three";
 import { Perf } from 'r3f-perf'
+import ConicPolygonGeometry from 'three-conic-polygon-geometry';
+import ConicGlobe from "./ConicGlobe";
 
 function GlobeTest(props) {
     // texture loading
     const globeRef = useRef();
     const cloudsRef = useRef();
+    const conicGlobeRef = useRef(); // Add this with your other refs
     const [colorMap, normalMap, specularMap, cloudMap] = useLoader(
         TextureLoader,
         [EarthMap, EarthNormalMap, EarthSpecMap, EarthCloudMap]
@@ -25,6 +28,36 @@ function GlobeTest(props) {
         console.error("Error loading texture:", err);
     });
     */}
+
+    useEffect(() => {
+        // Apply settings to colorMap (Earth texture)
+        if (colorMap) {
+            colorMap.wrapS = colorMap.wrapT = THREE.RepeatWrapping;
+            colorMap.repeat.set(1, 1);
+            colorMap.offset.x = (Math.PI / 2) / (2 * Math.PI); // Same offset as in your example
+        }
+        
+        // Apply to normal map too if needed
+        if (normalMap) {
+            normalMap.wrapS = normalMap.wrapT = THREE.RepeatWrapping;
+            normalMap.repeat.set(1, 1);
+            normalMap.offset.x = (Math.PI / 2) / (2 * Math.PI);
+        }
+        
+        // Apply to specular map if needed
+        if (specularMap) {
+            specularMap.wrapS = specularMap.wrapT = THREE.RepeatWrapping;
+            specularMap.repeat.set(1, 1);
+            specularMap.offset.x = (Math.PI / 2) / (2 * Math.PI);
+        }
+        
+        // Apply cloud map settings if needed
+        if (cloudMap) {
+            cloudMap.wrapS = cloudMap.wrapT = THREE.RepeatWrapping;
+            cloudMap.repeat.set(1, 1);
+            cloudMap.offset.x = (Math.PI / 2) / (2 * Math.PI);
+        }
+    }, []);
 
     const [showLabel, setShowLabel] = useState(true);
 
@@ -61,11 +94,11 @@ function GlobeTest(props) {
                     />
 
                     <mesh ref={cloudsRef}>
-                        <sphereGeometry args={[1.005, 40, 40]} />
+                        <sphereGeometry args={[1.01, 40, 40]} />
                         <meshPhongMaterial
                             map={cloudMap}
                             opacity={0.4}
-                            depthWrite={true}
+                            depthWrite={false}
                             transparent={true}
                             side={THREE.DoubleSide}
                         />
@@ -77,10 +110,15 @@ function GlobeTest(props) {
                         <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.4} roughness={0.7} />
                     </mesh>
 
-                    {/* <CountryBorders globeRef={globeRef} />
-                    <CountryLabels globeRef={globeRef} showLabel={showLabel} /> */}
-                    <CountryBorders globeRef={globeRef} />
+                    <ConicGlobe globeRef={globeRef}/>
+                    
+
+                    {/*<ConicGlobe /> <CountryBorders globeRef={globeRef} />
+                    <CountryLabels globeRef={globeRef} showLabel={showLabel} /> <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />*/}
                     <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />
+                    
+
+                    
                     <Perf position="top-right" />
                     <Stats showPanel={0} />
                 </Canvas>
@@ -90,11 +128,12 @@ function GlobeTest(props) {
 }
 
 
-function RotateGlobe({ globeRef, cloudsRef }) {
+function RotateGlobe({ globeRef, cloudsRef, conicGlobeRef }) {
     useFrame(({ clock }) => {
         const elapsedTime = clock.getElapsedTime();
 
         globeRef.current.rotation.y = elapsedTime / 60;
+        //conicGlobeRef.current.rotation.y = elapsedTime / 60;
         cloudsRef.current.rotation.y = elapsedTime / 40;
     });
     return null;
@@ -149,7 +188,7 @@ function CountryBorders({ globeRef }) {
 
                     ring.forEach(coord => {
                         //convert longitude and latitude to 3D coordinates
-                        const lon = THREE.MathUtils.degToRad(coord[0]) + Math.PI / 2;
+                        const lon = THREE.MathUtils.degToRad(coord[0]);
                         const lat = THREE.MathUtils.degToRad(coord[1]);
 
                         //convert to Cartesian coordinates
@@ -186,7 +225,7 @@ function CountryLabels({ globeRef, showLabel }) {
     const labelsRef = useRef();
     const { camera } = useThree();
 
-    console.log("label render");
+    //console.log("label render");
     //country label offsets for manual adjustments
     const countryOffsets = {
         "United States of America": [0, 0, 0],
@@ -327,7 +366,7 @@ function CountryLabels({ globeRef, showLabel }) {
         //only show labels that pass visibility filter
         if (centroid && shouldShowLabel(countryName, countryArea)) {
             // Convert centroid to 3D position
-            const lon = THREE.MathUtils.degToRad(centroid[0]) + Math.PI / 2;
+            const lon = THREE.MathUtils.degToRad(centroid[0]);
             const lat = THREE.MathUtils.degToRad(centroid[1]);
 
             let x = radius * Math.cos(lat) * Math.sin(lon);
