@@ -8,6 +8,7 @@ import Login from "./Login";
 import Modal from "./Modal";
 import Loading from "./Loading";
 import { supabase } from "./SupabaseContext";
+import GlobeTest from "./TestComponents/GlobeTest";
 
 
 function UnlimitedMode() {
@@ -262,7 +263,7 @@ function UnlimitedMode() {
                 </Modal>
 
                 {/* Globe Canvas */}
-                <Globe />
+                <GlobeTest />
             </div>
         </Suspense>
     );
