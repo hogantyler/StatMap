@@ -103,10 +103,11 @@ function GlobeTest(props) {
                     />
 
                     <mesh ref={cloudsRef}>
-                        <icosahedronGeometry args={[1, 128]} />
+                        
+                        <sphereGeometry args={[1.02, 40, 40]} />
                         <meshPhongMaterial
                             map={cloudMap}
-                            opacity={0.4}
+                            opacity={0.3}
                             depthWrite={false}
                             transparent={true}
                             side={THREE.DoubleSide}
