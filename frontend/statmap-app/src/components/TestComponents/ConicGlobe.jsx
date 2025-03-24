@@ -7,6 +7,8 @@ import ConicPolygonGeometry from 'three-conic-polygon-geometry';
 import highResEarthTexture from "../../textures/8k_earth.png";
 import {polygonCentroid} from "d3-polygon";
 
+//drawing countries on a globe using conical projections of polygons from here: https://github.com/vasturiano/three-conic-polygon-geometry
+
 function CountryPolygons({ geoData, globeRef }) {
     const [meshes, setMeshes] = useState([]);
     const [names, setNames] = useState([]);
