@@ -76,7 +76,7 @@ function Country({ name, coords, altitude, globeRef}) {
     
     const color = clicked ? 'green' : (hovered ? 'white' : 'purple');
     const show = clicked ? true : (hovered ? true : false);
-    const raise = clicked ? 0.05 : (hovered ? 0 : 0);
+    const raise = clicked ? 0.03 : (hovered ? 0 : 0);
 
     const geometry = new ConicPolygonGeometry(coords, (0.99), (altitude + raise), true, true, true, 5);
     const materials = [
