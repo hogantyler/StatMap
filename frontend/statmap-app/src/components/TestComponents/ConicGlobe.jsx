@@ -5,7 +5,7 @@ import { OrbitControls, Stats } from '@react-three/drei';
 import * as THREE from 'three';
 import ConicPolygonGeometry from 'three-conic-polygon-geometry';
 import highResEarthTexture from "../../textures/8k_earth.png";
-import {polygonCentroid} from "d3-polygon";
+import { polygonCentroid } from "d3-polygon";
 
 //drawing countries on a globe using conical projections of polygons from here: https://github.com/vasturiano/three-conic-polygon-geometry
 
@@ -27,8 +27,10 @@ function CountryPolygons({ geoData, globeRef }) {
         //const newMeshes = [];
         //const newNames = [];
         geoData.features.forEach(({ properties, geometry }) => {
-            const polygons = geometry.type === 'Polygon' ? [geometry.coordinates] : geometry.coordinates;
+            //const polygons = geometry.type === 'Polygon' ? [geometry.coordinates] : geometry.coordinates;
+            const polygons = [geometry.coordinates];
             const countryName = properties.ADMIN;
+            console.log(`Processing country: ${countryName}. Geometry type: ${geometry.type}. Polygon: ${polygons}`);
 
             //console.log(newNames);
             const alt = 1.003; // Height/altitude
@@ -43,8 +45,9 @@ function CountryPolygons({ geoData, globeRef }) {
                 //mesh.addEventListener('click', () => console.log("clicked"));
                 //newMeshes.push(mesh);
                 //console.log(coords);
-                
-                newCountries.push({ name: countryName, coords: coords, altitude: alt, id: `${countryName}-${index}` });
+                //console.log(coords.length)
+
+                newCountries.push({ name: countryName, coords: coords, altitude: alt, id: `${countryName}-${index}`, type: geometry.type });
             });
         });
         console.log('useeffect');
@@ -61,24 +64,33 @@ function CountryPolygons({ geoData, globeRef }) {
     return (
         <>
             {countries.map((country) => (
-                <Country key={country.id} name={country.name} coords={country.coords} altitude={country.altitude} globeRef={globeRef} />
+                <Country key={country.id} name={country.name} coords={country.coords} altitude={country.altitude} globeRef={globeRef} type={country.type} />
             ))}
         </>
     );
 }
 
-function Country({ name, coords, altitude, globeRef}) {
-    //console.log("country");
+function Country({ name, coords, altitude, globeRef, type }) {
+    console.log("country");
     const [hovered, setHovered] = useState(false);
     const [clicked, setClicked] = useState(false);
     const [visible, setVisible] = useState(false);
     const countryRef = useRef();
-    
+
     const color = clicked ? 'green' : (hovered ? 'white' : 'purple');
     const show = clicked ? true : (hovered ? true : false);
     const raise = clicked ? 0.03 : (hovered ? 0 : 0);
 
-    const geometry = new ConicPolygonGeometry(coords, (0.99), (altitude + raise), true, true, true, 5);
+    //const geometry = new ConicPolygonGeometry(coords, (0.99), (altitude + raise), true, true, true, 5);
+    const geometry = [];
+    if (type === 'Polygon') {
+        geometry.push(new ConicPolygonGeometry(coords, (0.99), (altitude + raise), true, true, true, 5));
+    } else {
+        coords.forEach((coord) => {
+            geometry.push(new ConicPolygonGeometry(coord, (0.99), (altitude + raise), true, true, true, 5));
+        });
+    }
+
     const materials = [
         new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: color, opacity: 0.5, transparent: true, visible: show }), // side material
         new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: 'yellow', opacity: 0.5, transparent: true, visible: show }), // bottom cap material
@@ -118,21 +130,24 @@ function Country({ name, coords, altitude, globeRef}) {
         }
     }, [hovered, clicked, color, visible]);*/}
 
-    const edges = new THREE.EdgesGeometry(geometry);
+    //const edges = new THREE.EdgesGeometry(geometry);
     return (
+        <group ref={countryRef}>
+            {geometry.map((geo, index) => (
+                <mesh
+                key={`${name}-${index}`}
+                    onClick={handleClick}
+                    onPointerOver={handlePointerOver}
+                    onPointerOut={handlePointerOut}
+                >
+                    <primitive object={geo} attach="geometry" />
+                    <primitive object={materials[0]} attach="material-0" />
+                    <primitive object={materials[1]} attach="material-1" />
+                    <primitive object={materials[2]} attach="material-2" />
+                </mesh>
+            ))}
+        </group>
 
-        <mesh
-            ref={countryRef}
-            onClick={handleClick}
-            onPointerOver={handlePointerOver}
-            onPointerOut={handlePointerOut}
-        >
-            <primitive object={geometry} attach="geometry" />
-            <primitive object={materials[0]} attach="material-0" />
-            <primitive object={materials[1]} attach="material-1" />
-            <primitive object={materials[2]} attach="material-2" />
-
-        </mesh>
     )
 
 }
@@ -147,6 +162,7 @@ function ConicGlobe({ globeRef }) {
             .then(data => setGeoData(data))
             .catch(err => console.error('Error loading GeoJSON:', err));
         console.log('fetch');
+        //console.log(geoData);
     }, []);
     console.log('conicglobe');
     //console.log(geoData)
@@ -154,7 +170,7 @@ function ConicGlobe({ globeRef }) {
     return (
         <>
             {/* Load country polygons */}
-            {geoData && <CountryPolygons geoData={geoData} globeRef={globeRef}/>}
+            {geoData && <CountryPolygons geoData={geoData} globeRef={globeRef} />}
         </>
 
     );

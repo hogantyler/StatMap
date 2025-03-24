@@ -80,11 +80,11 @@ function GlobeTest(props) {
         <div className="relative w-full h-full">
             <div className="absolute top-0 left-0 w-full h-full">
                 <Canvas
-                    camera={{ position: [0, 1.5, 1.5], near: 0.01, far: 1000 }}
+                    camera={{ position: [0, 1, 2], near: 0.01, far: 1000 }}
                     style={{ background: "black", width: "100vw", height: "100vh" }}
                 >
 
-                    <ambientLight intensity={5} />
+                    <ambientLight intensity={4} />
                     <directionalLight position={[0, 0, 2]} intensity={7} />
 
                     <OrbitControls
@@ -106,7 +106,6 @@ function GlobeTest(props) {
                     />
 
                     <mesh ref={cloudsRef}>
-
                         <sphereGeometry args={[1.01, 40, 40]} />
                         <meshPhongMaterial
                             map={cloudMap}
@@ -119,12 +118,9 @@ function GlobeTest(props) {
 
                     <mesh ref={globeRef} onClick={handleClick}>
                         <sphereGeometry args={[1, 40, 40]} />
-                        <meshPhongMaterial specularMap={specularMap} />
+                        <meshPhongMaterial specularMap={specularMap} depthWrite={false}/>
                         <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.7} roughness={0.7} />
                     </mesh>
-
-
-
 
                     {/*<ConicGlobe globeRef={globeRef} /> <CountryBorders globeRef={globeRef} />
                     <CountryLabels globeRef={globeRef} showLabel={showLabel} /> <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />*/}
@@ -134,13 +130,11 @@ function GlobeTest(props) {
                     <ConicGlobe globeRef={globeRef} />
 
                     <Perf position="top-right" />
-
                 </Canvas>
             </div>
         </div>
     );
 }
-
 
 function RotateGlobe({ globeRef, cloudsRef, conicGlobeRef }) {
     useFrame(({ clock }) => {
@@ -156,7 +150,6 @@ function RotateGlobe({ globeRef, cloudsRef, conicGlobeRef }) {
 function BetterLabels({ globeRef }) {
     return null;
 }
-
 
 function CountryBorders({ globeRef }) {
     const [geoData, setGeoData] = useState(null);
@@ -238,8 +231,6 @@ function CountryBorders({ globeRef }) {
     return <group ref={linesRef} />;
 }
 
-
-
 function CountryLabels({ globeRef, showLabel }) {
     const [geoData, setGeoData] = useState(null);
     const labelsRef = useRef();
@@ -248,7 +239,7 @@ function CountryLabels({ globeRef, showLabel }) {
     //country label offsets for manual adjustments
     const countryOffsets = {
         "United States of America": [0, 0, 0],
-        "Norway": [0.05, -0.02, 0.02]
+        "Norway": [0, 0, 0]
     };
 
     useEffect(() => {
@@ -321,7 +312,6 @@ function CountryLabels({ globeRef, showLabel }) {
     const labels = [];
     const radius = 1.02; //height of the labels
 
-
     const visibleCountriesBySize = new Set([
         "Russia", "Canada", "United States of America", "China", "Brazil",
         "Australia", "India", "Argentina", "Mexico", "Indonesia",
@@ -332,7 +322,6 @@ function CountryLabels({ globeRef, showLabel }) {
         "Pakistan", "Ukraine", "France", "Spain", "Sweden",
         "Germany", "Italy", "United Kingdom", "Japan", "Turkey", "South Korea"
     ]);
-
 
     const shouldShowLabel = (countryName, countryArea) => {
 
