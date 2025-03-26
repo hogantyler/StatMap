@@ -30,7 +30,7 @@ function CountryPolygons({ geoData, globeRef }) {
             //const polygons = geometry.type === 'Polygon' ? [geometry.coordinates] : geometry.coordinates;
             const polygons = [geometry.coordinates];
             const countryName = properties.ADMIN;
-            console.log(`Processing country: ${countryName}. Geometry type: ${geometry.type}. Polygon: ${polygons}`);
+            //console.log(`Processing country: ${countryName}. Geometry type: ${geometry.type}. Polygon: ${polygons}`);
 
             //console.log(newNames);
             const alt = 1.003; // Height/altitude

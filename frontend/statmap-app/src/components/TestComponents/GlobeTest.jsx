@@ -71,6 +71,7 @@ function GlobeTest(props) {
 
 
     console.log("globe render");
+    
     const handleClick = (event) => {
         event.stopPropagation();
         console.log('ocean');
@@ -93,8 +94,8 @@ function GlobeTest(props) {
                         enablePan={false}
                         minDistance={1.05}
                         maxDistance={4}
-                        zoomSpeed={0.2}
-                        rotateSpeed={0.2}
+                        zoomSpeed={0.5}
+                        rotateSpeed={0.5}
                     />
                     <Stars
                         radius={200}
@@ -158,6 +159,7 @@ function CountryBorders({ globeRef }) {
     console.log("border render");
     useEffect(() => {
         //gets geosjason data
+        //https://raw.githubusercontent.com/vasturiano/three-conic-polygon-geometry/refs/heads/master/example/geojson/ne_110m_admin_0_countries.geojson
         fetch('https://raw.githubusercontent.com/vasturiano/three-conic-polygon-geometry/refs/heads/master/example/geojson/ne_110m_admin_0_countries.geojson')
             .then(response => response.json())
             .then(data => {
@@ -175,6 +177,7 @@ function CountryBorders({ globeRef }) {
 
     //lines and materials
     useEffect(() => {
+        
         if (!geoData || !linesRef.current) return;
 
         //check for existing line and clear
@@ -244,7 +247,9 @@ function CountryLabels({ globeRef, showLabel }) {
 
     useEffect(() => {
         console.log('labels fetching');
-        fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
+        //this is simpler more performant geojson: https://raw.githubusercontent.com/vasturiano/three-conic-polygon-geometry/refs/heads/master/example/geojson/ne_110m_admin_0_countries.geojson
+        //this is more complex geojson: https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson
+        fetch('https://raw.githubusercontent.com/vasturiano/three-conic-polygon-geometry/refs/heads/master/example/geojson/ne_110m_admin_0_countries.geojson')
             .then(response => response.json())
             .then(data => {
                 setGeoData(data);
