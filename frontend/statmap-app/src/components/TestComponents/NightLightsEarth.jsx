@@ -7,14 +7,14 @@ import EarthNormalMap from "../../textures/earth_normalmap_5400x2700.jpg";
 import EarthSpecMap from "../../textures/8k_earth_specular_map.jpg";
 import EarthCloudMap from "../../textures/cloud_texture.jpg";
 import EarthDisplacementMap from "../../textures/gebco_bathy_2700x1350.jpg";
-// Add the new import for night map
-import EarthNightMap from "../../textures/earth-nightmap-4k.jpg"; // Update path as needed
+import EarthNightMap from "../../textures/earth-nightmap-4k.jpg";
 import { TextureLoader } from "three";
 import { Perf } from 'r3f-perf';
 import ConicGlobe from "./ConicGlobe";
 import AtmosphereMesh from "./AtmosphereMesh";
 
-// Create a custom shader material for day/night cycle
+// custom shader for day night blending of earth globe derived from here: https://github.com/bobbyroe/earth-with-react-three-fiber/blob/main/src/EarthMaterial.jsx
+// custom shader material for day/night cycle
 function createEarthMaterial(maps, sunDirection = new THREE.Vector3(-2, 0.5, 0).normalize()) {
     const { colorMap, normalMap, specularMap, cloudMap, nightMap } = maps;
     
