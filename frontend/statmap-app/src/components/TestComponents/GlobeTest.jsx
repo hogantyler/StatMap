@@ -123,7 +123,7 @@ function GlobeTest(props) {
                         <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.7} roughness={0.7} />
                     </mesh>
 
-                    <AtmosphereMesh radius={1.03}/>
+                    <AtmosphereMesh radius={1.02}/>
 
                     {/*<ConicGlobe globeRef={globeRef} /> <CountryBorders globeRef={globeRef} />
                     <CountryLabels globeRef={globeRef} showLabel={showLabel} /> <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />*/}
