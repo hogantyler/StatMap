@@ -71,7 +71,7 @@ function GlobeTest(props) {
 
 
     console.log("globe render");
-    
+
     const handleClick = (event) => {
         event.stopPropagation();
         console.log('ocean');
@@ -397,7 +397,6 @@ function CountryLabels({ globeRef, showLabel }) {
             const fontSize = visibleCountriesBySize.has(countryName) ? 0.03 : 0.02;
 
             const scaleFactor = Math.max(0.4, cameraDistance * 0.2);
-
 
             labels.push(
                 <group

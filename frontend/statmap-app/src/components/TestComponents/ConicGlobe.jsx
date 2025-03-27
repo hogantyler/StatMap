@@ -1,5 +1,5 @@
 // Import dependencies
-import React, { useRef, useEffect, useState, forwardRef } from 'react';
+import React, { useRef, useEffect, useState, forwardRef, useMemo, useCallback } from 'react';
 import { Canvas, useFrame, useLoader, useThree, Html, Texts } from '@react-three/fiber';
 import { OrbitControls, Stats } from '@react-three/drei';
 import * as THREE from 'three';
@@ -50,12 +50,12 @@ function CountryPolygons({ geoData, globeRef }) {
                 newCountries.push({ name: countryName, coords: coords, altitude: alt, id: `${countryName}-${index}`, type: geometry.type });
             });
         });
-        console.log('useeffect');
+        console.log('loading polygons');
         //setNames(newNames);
         //setMeshes(newMeshes);
         setCountries(newCountries);
     }, []);
-    console.log('polygons');
+    console.log('country polygons');
     {/*{meshes.map((mesh, index) => (
                 <primitive key={index} object={mesh} />
                 
@@ -77,45 +77,64 @@ function Country({ name, coords, altitude, globeRef, type }) {
     const [visible, setVisible] = useState(false);
     const countryRef = useRef();
 
-    const color = clicked ? 'green' : (hovered ? 'white' : 'purple');
-    const show = clicked ? true : (hovered ? true : false);
-    const raise = clicked ? 0.03 : (hovered ? 0 : 0);
+    const { color, show, raise } = useMemo(() => ({
+        color: clicked ? 'green' : (hovered ? 'white' : 'purple'),
+        show: clicked || hovered,
+        raise: clicked ? 0.03 : (hovered ? 0 : 0)
+    }), [clicked, hovered]);
 
     //const geometry = new ConicPolygonGeometry(coords, (0.99), (altitude + raise), true, true, true, 5);
-    const geometry = [];
-    if (type === 'Polygon') {
-        geometry.push(new ConicPolygonGeometry(coords, (0.99), (altitude + raise), true, true, true, 5));
-    } else {
-        coords.forEach((coord) => {
-            geometry.push(new ConicPolygonGeometry(coord, (0.99), (altitude + raise), true, true, true, 5));
-        });
-    }
+    const geometry = useMemo(() => {
+        if (type === 'Polygon') {
+            return [new ConicPolygonGeometry(coords, (0.99), (altitude + raise), true, true, true, 5)];
+        } else {
+            return coords.map(coord => 
+                new ConicPolygonGeometry(coord, (0.99), (altitude + raise), true, true, true, 5)
+            );
+        }
+    }, [coords, altitude, raise, type]);
 
-    const materials = [
-        new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: color, opacity: 0.5, transparent: true, visible: show }), // side material
-        new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: 'yellow', opacity: 0.5, transparent: true, visible: show }), // bottom cap material
-        new THREE.MeshBasicMaterial({ color: color, opacity: 0.5, transparent: true, wireframe: false, visible: show }) // top cap material
-    ];
-    const handleClick = (event) => {
+    const materials = useMemo(() => [
+        new THREE.MeshBasicMaterial({ 
+            side: THREE.DoubleSide, 
+            color: color, 
+            opacity: 0.5, 
+            transparent: true, 
+            visible: show 
+        }),
+        new THREE.MeshBasicMaterial({ 
+            side: THREE.DoubleSide, 
+            color: 'yellow', 
+            opacity: 0.5, 
+            transparent: true, 
+            visible: show 
+        }),
+        new THREE.MeshBasicMaterial({ 
+            color: color, 
+            opacity: 0.5, 
+            transparent: true, 
+            wireframe: false, 
+            visible: show 
+        })
+    ], [color, show]);
+
+    const handleClick = useCallback((event) => {
         event.stopPropagation();
-        setClicked(!clicked);
-        //setVisible(!visible);
+        setClicked(prev => !prev);
         console.log(`selected on ${name}`);
-        //alert(`selected on ${name}`);
-    };
-    const handlePointerOver = (event) => {
+    }, [name]);
+
+    const handlePointerOver = useCallback((event) => {
         event.stopPropagation();
         setHovered(true);
-        //setVisible(true);
         document.body.style.cursor = 'pointer';
-    };
+    }, []);
 
-    const handlePointerOut = (event) => {
+    const handlePointerOut = useCallback((event) => {
         event.stopPropagation();
         setHovered(false);
-        //setVisible(false);
         document.body.style.cursor = 'auto';
-    };
+    }, []);
 
     useFrame(() => {
         if (countryRef.current && globeRef.current) {
