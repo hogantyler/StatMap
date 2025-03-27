@@ -9,8 +9,8 @@ import EarthCloudMap from "../../textures/cloud_texture.jpg"
 import EarthDisplacementMap from "../../textures/gebco_bathy_2700x1350.jpg"
 import { TextureLoader } from "three";
 import { Perf } from 'r3f-perf'
-import ConicPolygonGeometry from 'three-conic-polygon-geometry';
 import ConicGlobe from "./ConicGlobe";
+import AtmosphereMesh from "./AtmosphereMesh";
 
 
 function GlobeTest(props) {
@@ -122,6 +122,8 @@ function GlobeTest(props) {
                         <meshPhongMaterial specularMap={specularMap} depthWrite={false}/>
                         <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.7} roughness={0.7} />
                     </mesh>
+
+                    <AtmosphereMesh radius={1.03}/>
 
                     {/*<ConicGlobe globeRef={globeRef} /> <CountryBorders globeRef={globeRef} />
                     <CountryLabels globeRef={globeRef} showLabel={showLabel} /> <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />*/}
