@@ -13,39 +13,24 @@ function CountryPolygons({ geoData, globeRef }) {
     const [meshes, setMeshes] = useState([]);
     const [names, setNames] = useState([]);
     const [countries, setCountries] = useState([]);
+    const polygonsRef = useRef();
 
     useEffect(() => {
         if (!geoData) return;
 
-        {/*const materials = [
-            new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: 'white', opacity: 0.2, transparent: true }), // side material
-            new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: 'red', opacity: 0.7, transparent: true }), // bottom cap material
-            new THREE.MeshBasicMaterial({ color: 'red', opacity: 0.7, transparent: true, wireframe: true }) // top cap material
-        ];*/}
-
         const newCountries = [];
-        //const newMeshes = [];
-        //const newNames = [];
+
         geoData.features.forEach(({ properties, geometry }) => {
             //const polygons = geometry.type === 'Polygon' ? [geometry.coordinates] : geometry.coordinates;
             const polygons = [geometry.coordinates];
             const countryName = properties.ADMIN;
-            //console.log(`Processing country: ${countryName}. Geometry type: ${geometry.type}. Polygon: ${polygons}`);
-
-            //console.log(newNames);
             const alt = 1.003; // Height/altitude
-            //console.log(polygons);
 
             polygons.forEach((coords, index) => {
-                //console.log(properties.ADMIN);
-                //newNames.push(properties.ADMIN);
                 //console.log(newNames)
                 //const geometry = new ConicPolygonGeometry(coords, 0, alt, true, true, true, 1);
                 //const mesh = new THREE.Mesh(geometry, materials);
-                //mesh.addEventListener('click', () => console.log("clicked"));
                 //newMeshes.push(mesh);
-                //console.log(coords);
-                //console.log(coords.length)
 
                 newCountries.push({ name: countryName, coords: coords, altitude: alt, id: `${countryName}-${index}`, type: geometry.type });
             });
@@ -60,12 +45,20 @@ function CountryPolygons({ geoData, globeRef }) {
                 <primitive key={index} object={mesh} />
                 
             ))} */}
+    useFrame(() => {
+        if (polygonsRef.current && globeRef.current) {
+            polygonsRef.current.rotation.copy(globeRef.current.rotation);
+        }
+    });
 
     return (
         <>
-            {countries.map((country) => (
-                <Country key={country.id} name={country.name} coords={country.coords} altitude={country.altitude} globeRef={globeRef} type={country.type} />
-            ))}
+            <group ref={polygonsRef}>
+                {countries.map((country) => (
+                    <Country key={country.id} name={country.name} coords={country.coords} altitude={country.altitude} globeRef={globeRef} type={country.type} />
+                ))}
+            </group>
+
         </>
     );
 }
@@ -88,33 +81,33 @@ function Country({ name, coords, altitude, globeRef, type }) {
         if (type === 'Polygon') {
             return [new ConicPolygonGeometry(coords, (0.99), (altitude + raise), true, true, true, 5)];
         } else {
-            return coords.map(coord => 
+            return coords.map(coord =>
                 new ConicPolygonGeometry(coord, (0.99), (altitude + raise), true, true, true, 5)
             );
         }
     }, [coords, altitude, raise, type]);
 
     const materials = useMemo(() => [
-        new THREE.MeshBasicMaterial({ 
-            side: THREE.DoubleSide, 
-            color: color, 
-            opacity: 0.5, 
-            transparent: true, 
-            visible: show 
+        new THREE.MeshBasicMaterial({
+            side: THREE.DoubleSide,
+            color: color,
+            opacity: 0.5,
+            transparent: true,
+            visible: show
         }),
-        new THREE.MeshBasicMaterial({ 
-            side: THREE.DoubleSide, 
-            color: 'yellow', 
-            opacity: 0.5, 
-            transparent: true, 
-            visible: show 
+        new THREE.MeshBasicMaterial({
+            side: THREE.DoubleSide,
+            color: 'yellow',
+            opacity: 0.5,
+            transparent: true,
+            visible: show
         }),
-        new THREE.MeshBasicMaterial({ 
-            color: color, 
-            opacity: 0.5, 
-            transparent: true, 
-            wireframe: false, 
-            visible: show 
+        new THREE.MeshBasicMaterial({
+            color: color,
+            opacity: 0.5,
+            transparent: true,
+            wireframe: false,
+            visible: show
         })
     ], [color, show]);
 
@@ -136,12 +129,6 @@ function Country({ name, coords, altitude, globeRef, type }) {
         document.body.style.cursor = 'auto';
     }, []);
 
-    useFrame(() => {
-        if (countryRef.current && globeRef.current) {
-            countryRef.current.rotation.copy(globeRef.current.rotation);
-        }
-    });
-
     {/* maybe for performance issues later
     useEffect(() => {
         if (countryRef.current) {
@@ -154,7 +141,7 @@ function Country({ name, coords, altitude, globeRef, type }) {
         <group ref={countryRef}>
             {geometry.map((geo, index) => (
                 <mesh
-                key={`${name}-${index}`}
+                    key={`${name}-${index}`}
                     onClick={handleClick}
                     onPointerOver={handlePointerOver}
                     onPointerOut={handlePointerOut}
