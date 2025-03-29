@@ -143,11 +143,6 @@ function NightLightsEarth(props) {
     
     const [showLabel, setShowLabel] = useState(true);
     
-    const handleClick = (event) => {
-        event.stopPropagation();
-        console.log('ocean');
-    };
-    
     return (
         <div className="relative w-full h-full">
             <div className="absolute top-0 left-0 w-full h-full">
@@ -188,7 +183,7 @@ function NightLightsEarth(props) {
                         />
                     </mesh>
                     
-                    <mesh ref={globeRef} onClick={handleClick}>
+                    <mesh ref={globeRef} onPointerOver={(e) => e.stopPropagation()} onPointerOut={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
                         <sphereGeometry args={[1, 40, 40]} />
                         {earthMaterial ? (
                             <primitive object={earthMaterial} />
@@ -315,7 +310,7 @@ function CountryLabels({ globeRef, showLabel }) {
     const [geoData, setGeoData] = useState(null);
     const labelsRef = useRef();
     const { camera } = useThree();
-
+    console.log("label render");
     //country label offsets for manual adjustments
     const countryOffsets = {
         "United States of America": [0, 0, 0],
