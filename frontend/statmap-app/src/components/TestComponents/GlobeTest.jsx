@@ -11,63 +11,14 @@ import { TextureLoader } from "three";
 import { Perf } from 'r3f-perf'
 import ConicGlobe from "./ConicGlobe";
 import AtmosphereMesh from "./AtmosphereMesh";
+import EarthTest from "./EarthTest";
 
 
 function GlobeTest(props) {
-    // texture loading
+    const [showLabel, setShowLabel] = useState(true);
+
     const globeRef = useRef();
     const cloudsRef = useRef();
-    //const conicGlobeRef = useRef();
-    const [colorMap, normalMap, specularMap, cloudMap, displacementMap] = useLoader(
-        TextureLoader,
-        [EarthMap, EarthNormalMap, EarthSpecMap, EarthCloudMap, EarthDisplacementMap]
-    );
-    {/*}
-    const texture = new THREE.TextureLoader().load(EarthMap, (texture) => {
-        texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
-        texture.repeat.set(1, 1);
-    }, undefined, (err) => {
-        console.error("Error loading texture:", err);
-    });
-    */}
-
-    useEffect(() => {
-        //rotation offsets
-        if (colorMap) {
-            colorMap.wrapS = colorMap.wrapT = THREE.RepeatWrapping;
-            colorMap.repeat.set(1, 1);
-            colorMap.offset.x = (Math.PI / 2) / (2 * Math.PI);
-        }
-
-
-        if (normalMap) {
-            normalMap.wrapS = normalMap.wrapT = THREE.RepeatWrapping;
-            normalMap.repeat.set(1, 1);
-            normalMap.offset.x = (Math.PI / 2) / (2 * Math.PI);
-        }
-
-
-        if (specularMap) {
-            specularMap.wrapS = specularMap.wrapT = THREE.RepeatWrapping;
-            specularMap.repeat.set(1, 1);
-            specularMap.offset.x = (Math.PI / 2) / (2 * Math.PI);
-        }
-
-
-        if (cloudMap) {
-            cloudMap.wrapS = cloudMap.wrapT = THREE.RepeatWrapping;
-            cloudMap.repeat.set(1, 1);
-            cloudMap.offset.x = (Math.PI / 2) / (2 * Math.PI);
-        }
-
-        if (displacementMap) {
-            displacementMap.wrapS = displacementMap.wrapT = THREE.RepeatWrapping;
-            displacementMap.repeat.set(1, 1);
-            displacementMap.offset.x = (Math.PI / 2) / (2 * Math.PI);
-        }
-    }, []);
-
-    const [showLabel, setShowLabel] = useState(true);
 
     console.log("globe render");
 
@@ -100,22 +51,7 @@ function GlobeTest(props) {
                         fade={true}
                     />
 
-                    <mesh ref={cloudsRef}>
-                        <sphereGeometry args={[1.01, 40, 40]} />
-                        <meshPhongMaterial
-                            map={cloudMap}
-                            opacity={0.3}
-                            depthWrite={false}
-                            transparent={true}
-                            side={THREE.DoubleSide}
-                        />
-                    </mesh>
-
-                    <mesh ref={globeRef} onPointerOver={(e) => e.stopPropagation()} onPointerOut={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
-                        <sphereGeometry args={[1, 40, 40]} />
-                        <meshPhongMaterial specularMap={specularMap} />
-                        <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.7} roughness={0.7} />
-                    </mesh>
+                    <EarthTest ref={globeRef} cloudsRef={cloudsRef}/>
 
                     <AtmosphereMesh radius={1.02} />
 
@@ -139,12 +75,8 @@ function RotateGlobe({ globeRef, cloudsRef, conicGlobeRef }) {
 
         globeRef.current.rotation.y = elapsedTime / 60;
         //conicGlobeRef.current.rotation.y = elapsedTime / 60;
-        cloudsRef.current.rotation.y = elapsedTime / 40;
+        cloudsRef.current.rotation.y = elapsedTime / 30;
     });
-    return null;
-}
-
-function BetterLabels({ globeRef }) {
     return null;
 }
 
@@ -234,6 +166,7 @@ function CountryLabels({ globeRef, showLabel }) {
     const [geoData, setGeoData] = useState(null);
     const labelsRef = useRef();
     const { camera } = useThree();
+    console.log("label render");
 
     //country label offsets for manual adjustments
     const countryOffsets = {
