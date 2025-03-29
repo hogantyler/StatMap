@@ -119,11 +119,11 @@ function GlobeTest(props) {
 
                     <mesh ref={globeRef} onClick={handleClick}>
                         <sphereGeometry args={[1, 40, 40]} />
-                        <meshPhongMaterial specularMap={specularMap} depthWrite={false}/>
+                        <meshPhongMaterial specularMap={specularMap} depthWrite={false} />
                         <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.7} roughness={0.7} />
                     </mesh>
 
-                    <AtmosphereMesh radius={1.02}/>
+                    <AtmosphereMesh radius={1.02} />
 
                     {/*<ConicGlobe globeRef={globeRef} /> <CountryBorders globeRef={globeRef} />
                     <CountryLabels globeRef={globeRef} showLabel={showLabel} /> <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />*/}
@@ -179,7 +179,7 @@ function CountryBorders({ globeRef }) {
 
     //lines and materials
     useEffect(() => {
-        
+
         if (!geoData || !linesRef.current) return;
 
         //check for existing line and clear

@@ -1,5 +1,5 @@
 // Import dependencies
-import React, { useRef, useEffect, useState, forwardRef, useMemo, useCallback } from 'react';
+import React, { useRef, useEffect, useState, forwardRef, memo, useMemo, useCallback } from 'react';
 import { Canvas, useFrame, useLoader, useThree, Html, Texts } from '@react-three/fiber';
 import { OrbitControls, Stats } from '@react-three/drei';
 import * as THREE from 'three';
@@ -13,7 +13,14 @@ function CountryPolygons({ geoData, globeRef }) {
     const [meshes, setMeshes] = useState([]);
     const [names, setNames] = useState([]);
     const [countries, setCountries] = useState([]);
+    const [selectedCountry, setSelectedCountry] = useState(null);
     const polygonsRef = useRef();
+
+    const handleCountrySelect = (countryId) => {
+        setSelectedCountry(prevSelected =>
+            prevSelected === countryId ? null : countryId
+        );
+    };
 
     useEffect(() => {
         if (!geoData) return;
@@ -24,7 +31,9 @@ function CountryPolygons({ geoData, globeRef }) {
             //const polygons = geometry.type === 'Polygon' ? [geometry.coordinates] : geometry.coordinates;
             const polygons = [geometry.coordinates];
             const countryName = properties.ADMIN;
-            const alt = 1.003; // Height/altitude
+            const iso_a3 = properties.ISO_A3;
+            const alt = 1.003; // Height/altitude 1.003
+            //console.log(countryName, iso_a3);
 
             polygons.forEach((coords, index) => {
                 //console.log(newNames)
@@ -32,7 +41,7 @@ function CountryPolygons({ geoData, globeRef }) {
                 //const mesh = new THREE.Mesh(geometry, materials);
                 //newMeshes.push(mesh);
 
-                newCountries.push({ name: countryName, coords: coords, altitude: alt, id: `${countryName}-${index}`, type: geometry.type });
+                newCountries.push({ name: countryName, coords: coords, altitude: alt, id: `${countryName}-${index}`, iso: iso_a3, type: geometry.type });
             });
         });
         console.log('loading polygons');
@@ -55,7 +64,16 @@ function CountryPolygons({ geoData, globeRef }) {
         <>
             <group ref={polygonsRef}>
                 {countries.map((country) => (
-                    <Country key={country.id} name={country.name} coords={country.coords} altitude={country.altitude} globeRef={globeRef} type={country.type} />
+                    <Country
+                        key={country.id}
+                        name={country.name}
+                        coords={country.coords}
+                        altitude={country.altitude}
+                        type={country.type}
+                        iso={country.iso}
+                        isSelected={selectedCountry === country.id}
+                        onSelect={() => handleCountrySelect(country.id)}
+                    />
                 ))}
             </group>
 
@@ -63,7 +81,7 @@ function CountryPolygons({ geoData, globeRef }) {
     );
 }
 
-function Country({ name, coords, altitude, globeRef, type }) {
+const Country = memo(function Country({ name, coords, altitude, type, iso, isSelected, onSelect }) {
     console.log("country");
     const [hovered, setHovered] = useState(false);
     const [clicked, setClicked] = useState(false);
@@ -71,40 +89,44 @@ function Country({ name, coords, altitude, globeRef, type }) {
     const countryRef = useRef();
 
     const { color, show, raise } = useMemo(() => ({
-        color: clicked ? 'green' : (hovered ? 'white' : 'purple'),
-        show: clicked || hovered,
-        raise: clicked ? 0.03 : (hovered ? 0 : 0)
-    }), [clicked, hovered]);
+        color: isSelected ? 'green' : (hovered ? 'white' : 'purple'),
+        show: isSelected || hovered,
+        raise: isSelected ? 0.03 : (hovered ? 0 : 0)
+    }), [isSelected, hovered]);
 
     //const geometry = new ConicPolygonGeometry(coords, (0.99), (altitude + raise), true, true, true, 5);
     const geometry = useMemo(() => {
+        //console.log("memo render");
         if (type === 'Polygon') {
-            return [new ConicPolygonGeometry(coords, (0.99), (altitude + raise), true, true, true, 5)];
+            return [new ConicPolygonGeometry(coords, (0.99), (altitude + raise), false, true, true, 5)];
         } else {
             return coords.map(coord =>
-                new ConicPolygonGeometry(coord, (0.99), (altitude + raise), true, true, true, 5)
+                new ConicPolygonGeometry(coord, (0.99), (altitude + raise), false, true, true, 5)
             );
         }
     }, [coords, altitude, raise, type]);
 
-    const materials = useMemo(() => [
+    const materials = useMemo(() => [ //side material
         new THREE.MeshBasicMaterial({
             side: THREE.DoubleSide,
             color: color,
-            opacity: 0.5,
+            opacity: 0.3,
             transparent: true,
+            wireframe: false,
             visible: show
         }),
-        new THREE.MeshBasicMaterial({
+        new THREE.MeshBasicMaterial({ //top material
             side: THREE.DoubleSide,
-            color: 'yellow',
-            opacity: 0.5,
+            color: color,
+            opacity: 0.3,
             transparent: true,
+            wireframe: false,
             visible: show
         }),
-        new THREE.MeshBasicMaterial({
+        new THREE.MeshBasicMaterial({ //bottom material
+            side: THREE.DoubleSide,
             color: color,
-            opacity: 0.5,
+            opacity: 0.3,
             transparent: true,
             wireframe: false,
             visible: show
@@ -113,7 +135,8 @@ function Country({ name, coords, altitude, globeRef, type }) {
 
     const handleClick = useCallback((event) => {
         event.stopPropagation();
-        setClicked(prev => !prev);
+        //setClicked(prev => !prev);
+        onSelect();
         console.log(`selected on ${name}`);
     }, [name]);
 
@@ -156,7 +179,12 @@ function Country({ name, coords, altitude, globeRef, type }) {
 
     )
 
-}
+}, (prevProps, nextProps) => {
+    // Custom comparison function - only re-render if these conditions change
+    return (
+        prevProps.isSelected === nextProps.isSelected
+    );
+});
 
 function ConicGlobe({ globeRef }) {
     const [geoData, setGeoData] = useState(null);
