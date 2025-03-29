@@ -69,13 +69,7 @@ function GlobeTest(props) {
 
     const [showLabel, setShowLabel] = useState(true);
 
-
     console.log("globe render");
-
-    const handleClick = (event) => {
-        event.stopPropagation();
-        console.log('ocean');
-    };
 
     return (
         <div className="relative w-full h-full">
@@ -94,8 +88,8 @@ function GlobeTest(props) {
                         enablePan={false}
                         minDistance={1.05}
                         maxDistance={4}
-                        zoomSpeed={0.5}
-                        rotateSpeed={0.5}
+                        zoomSpeed={0.4}
+                        rotateSpeed={0.4}
                     />
                     <Stars
                         radius={200}
@@ -117,9 +111,9 @@ function GlobeTest(props) {
                         />
                     </mesh>
 
-                    <mesh ref={globeRef} onClick={handleClick}>
+                    <mesh ref={globeRef} onPointerOver={(e) => e.stopPropagation()} onPointerOut={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
                         <sphereGeometry args={[1, 40, 40]} />
-                        <meshPhongMaterial specularMap={specularMap} depthWrite={false} />
+                        <meshPhongMaterial specularMap={specularMap} />
                         <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.7} roughness={0.7} />
                     </mesh>
 
