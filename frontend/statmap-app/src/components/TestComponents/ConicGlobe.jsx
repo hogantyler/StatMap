@@ -1,10 +1,8 @@
 // Import dependencies
 import React, { useRef, useEffect, useState, forwardRef, memo, useMemo, useCallback } from 'react';
-import { Canvas, useFrame, useLoader, useThree, Html, Texts } from '@react-three/fiber';
-import { OrbitControls, Stats } from '@react-three/drei';
+import {useFrame} from '@react-three/fiber';
 import * as THREE from 'three';
 import ConicPolygonGeometry from 'three-conic-polygon-geometry';
-import highResEarthTexture from "../../textures/8k_earth.png";
 import { polygonCentroid } from "d3-polygon";
 
 //drawing countries on a globe using conical projections of polygons from here: https://github.com/vasturiano/three-conic-polygon-geometry
@@ -50,10 +48,7 @@ function CountryPolygons({ geoData, globeRef }) {
         setCountries(newCountries);
     }, []);
     console.log('country polygons');
-    {/*{meshes.map((mesh, index) => (
-                <primitive key={index} object={mesh} />
-                
-            ))} */}
+
     useFrame(() => {
         if (polygonsRef.current && globeRef.current) {
             polygonsRef.current.rotation.copy(globeRef.current.rotation);
@@ -87,6 +82,7 @@ const Country = memo(function Country({ name, coords, altitude, type, iso, isSel
     const [clicked, setClicked] = useState(false);
     const [visible, setVisible] = useState(false);
     const countryRef = useRef();
+    
 
     const { color, show, raise } = useMemo(() => ({
         color: isSelected ? 'green' : (hovered ? 'white' : 'purple'),
@@ -180,7 +176,7 @@ const Country = memo(function Country({ name, coords, altitude, type, iso, isSel
     )
 
 }, (prevProps, nextProps) => {
-    // Custom comparison function - only re-render if these conditions change
+    //comparison function - only re-render if these conditions change
     return (
         prevProps.isSelected === nextProps.isSelected
     );
