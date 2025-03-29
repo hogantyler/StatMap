@@ -263,7 +263,7 @@ function UnlimitedMode() {
                 </Modal>
 
                 {/* Globe Canvas */}
-                <GlobeTest />
+                <Globe />
             </div>
         </Suspense>
     );
