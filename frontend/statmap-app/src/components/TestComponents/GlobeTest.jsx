@@ -1,18 +1,11 @@
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { OrbitControls, Stars, Html, Stats, Text, Billboard } from "@react-three/drei";
-import { useRef, useState, useEffect, Suspense } from "react";
+import { useRef, useState, useEffect, useMemo, useCallback } from "react";
 import * as THREE from "three";
-import EarthMap from "../../textures/8k_earth.png"
-import EarthNormalMap from "../../textures/earth_normalmap_5400x2700.jpg"
-import EarthSpecMap from "../../textures/8k_earth_specular_map.jpg"
-import EarthCloudMap from "../../textures/cloud_texture.jpg"
-import EarthDisplacementMap from "../../textures/gebco_bathy_2700x1350.jpg"
-import { TextureLoader } from "three";
 import { Perf } from 'r3f-perf'
 import ConicGlobe from "./ConicGlobe";
 import AtmosphereMesh from "./AtmosphereMesh";
 import EarthTest from "./EarthTest";
-
 
 function GlobeTest(props) {
     const [showLabel, setShowLabel] = useState(true);
@@ -166,13 +159,15 @@ function CountryLabels({ globeRef, showLabel }) {
     const [geoData, setGeoData] = useState(null);
     const labelsRef = useRef();
     const { camera } = useThree();
+    const [cameraDistance, setCameraDistance] = useState(0);
+
     console.log("label render");
 
     //country label offsets for manual adjustments
-    const countryOffsets = {
+    const countryOffsets = useMemo(() => ({
         "United States of America": [0, 0, 0],
         "Norway": [0, 0, 0]
-    };
+    }), []);
 
     useEffect(() => {
         console.log('labels fetching');
@@ -186,8 +181,6 @@ function CountryLabels({ globeRef, showLabel }) {
             .catch(error => console.error('Error fetching GeoJSON:', error));
     }, []);
 
-    const [cameraDistance, setCameraDistance] = useState(0);
-
     useFrame(() => {
         if (labelsRef.current && globeRef.current) {
             labelsRef.current.rotation.copy(globeRef.current.rotation);
@@ -196,13 +189,14 @@ function CountryLabels({ globeRef, showLabel }) {
         //update camera
         if (camera) {
             const distance = camera.position.distanceTo(new THREE.Vector3(0, 0, 0));
-            setCameraDistance(distance);
+            if (Math.abs(distance - cameraDistance) > 0.03) { // Only update if significant change
+                setCameraDistance(distance);
+            }
         }
     });
 
     // center calculation for polygons
-    const calculatePolygonCentroid = (polygon) => {
-
+    const calculatePolygonCentroid = useCallback((polygon) => {
         if (!polygon || polygon.length < 3) {
             return [0, 0];
         }
@@ -224,7 +218,7 @@ function CountryLabels({ globeRef, showLabel }) {
 
         area /= 2;
 
-        // check if area is close to zero to avoid division by zero
+        // Check if area is close to zero to avoid division by zero
         if (Math.abs(area) < 1e-10) {
             // Fallback to simple average if the area is too small
             let sumLon = 0, sumLat = 0;
@@ -239,7 +233,7 @@ function CountryLabels({ globeRef, showLabel }) {
         cy = cy / (6 * area);
 
         return [cx, cy];
-    };
+    }, []);
 
     if (!geoData) return null;
 
