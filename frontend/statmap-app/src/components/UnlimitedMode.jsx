@@ -1,4 +1,4 @@
-import { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, useRef} from "react";
 import { useNavigate } from "react-router-dom";
 import HoverDropMenu from "./HoverDropMenu";
 import { FaArrowLeft } from "react-icons/fa";
@@ -9,9 +9,9 @@ import Modal from "./Modal";
 import Loading from "./Loading";
 import { supabase } from "./SupabaseContext";
 import GlobeTest from "./TestComponents/GlobeTest";
+import { CountrySelectionProvider, useCountrySelection } from "./CountrySelectionContext";
 
-
-function UnlimitedMode() {
+function UnlimitedModeContent() {
     const [isModalOpen, setIsModalOpen] = useState(false); //modal for side bar menu
     const [selectedOption, setSelectedOption] = useState(null);
     const [currentFact, setCurrentFact] = useState(null);
@@ -23,6 +23,7 @@ function UnlimitedMode() {
     const [questionFinished, setQuestionFinished] = useState(false); //for 'next' and 'source' buttons
     const navigate = useNavigate();
     const [countryOptions, setCountryOptions] = useState([]);
+<<<<<<< HEAD
     
       useEffect(() => {
         async function fetchCountries() {
@@ -40,6 +41,8 @@ function UnlimitedMode() {
         fetchCountries();
       }, []);
     
+=======
+>>>>>>> 6afb2ee960aa293a2d9a98297d8414579a19ab6e
 
     const handleOpenModal = () => {
         setIsModalOpen(true);
@@ -49,17 +52,55 @@ function UnlimitedMode() {
         setIsModalOpen(false);
     };
 
+    
+    const { selectedCountry } = useCountrySelection(); // Use the context to get the selected country from the globe
+    const prevSelectedCountryRef = useRef(null); // ref for tracking country selection changes
+
+    // For handling country selection from the globe
+    useEffect(() => {
+        // Skip if it's the same country as before to prevent unnecessary rerenders
+        if (selectedCountry && selectedCountry !== prevSelectedCountryRef.current && !isAnswered) {
+            prevSelectedCountryRef.current = selectedCountry;
+            console.log(`logging ${selectedCountry} from unlimited mode page`);
+            
+            // Find the matching country option
+            {/*const matchingOption = countryOptions.find(
+                option => option.value.toLowerCase() === selectedCountry.toLowerCase()
+            );*/}
+
+            {/*if (matchingOption) {
+                setSelectedOption(matchingOption);
+            }*/}
+        }
+    }, [selectedCountry]);
+
+    useEffect(() => {
+        async function fetchCountries() {
+            const { data, error } = await supabase.from("api_country").select();
+            if (error) {
+                console.error("Error fetching countries:", error);
+            } else if (data) {
+                const options = data.map(item => ({
+                    value: item.Country,
+                    label: item.Country,
+                }));
+                setCountryOptions(options);
+            }
+        }
+        fetchCountries();
+    }, []);
+
     // Function to load a new fact:
     const loadNewFact = async () => {
         try {
-          const { data, error } = await supabase.rpc('random_fact');
-          if (error) {
-            console.error("Error fetching fact:", error);
-            return;
-          }
-          setCurrentFact(data);
+            const { data, error } = await supabase.rpc('random_fact');
+            if (error) {
+                console.error("Error fetching fact:", error);
+                return;
+            }
+            setCurrentFact(data);
         } catch (err) {
-          console.error("Unexpected error:", err);
+            console.error("Unexpected error:", err);
         }
         // Reset other states for the new question
         setAttempts(0);
@@ -67,7 +108,8 @@ function UnlimitedMode() {
         setFeedback("");
         setFeedbackType("");
         setIsAnswered(false);
-      };
+        prevSelectedCountryRef.current = null; //reset after answering question
+    };
 
     useEffect(() => {
         loadNewFact();
@@ -268,5 +310,12 @@ function UnlimitedMode() {
         </Suspense>
     );
 }
-
+// wrapping the component with the countryselection context provider
+function UnlimitedMode() {
+    return (
+        <CountrySelectionProvider>
+            <UnlimitedModeContent />
+        </CountrySelectionProvider>
+    );
+}
 export default UnlimitedMode;
