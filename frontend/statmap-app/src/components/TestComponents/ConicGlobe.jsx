@@ -30,7 +30,7 @@ function CountryPolygons({ geoData, globeRef }) {
             const polygons = [geometry.coordinates];
             const countryName = properties.ADMIN;
             const iso_a3 = properties.ISO_A3;
-            const alt = 1.003; // Height/altitude 1.003
+            const alt = 1.002; // Height/altitude 1.003
             //console.log(countryName, iso_a3);
 
             polygons.forEach((coords, index) => {
@@ -85,9 +85,9 @@ const Country = memo(function Country({ name, coords, altitude, type, iso, isSel
     
 
     const { color, show, raise } = useMemo(() => ({
-        color: isSelected ? 'green' : (hovered ? 'white' : 'purple'),
+        color: isSelected ? 'teal' : (hovered ? 'cyan' : 'purple'),
         show: isSelected || hovered,
-        raise: isSelected ? 0.03 : (hovered ? 0 : 0)
+        raise: isSelected ? 0.015 : (hovered ? 0 : 0)
     }), [isSelected, hovered]);
 
     //const geometry = new ConicPolygonGeometry(coords, (0.99), (altitude + raise), true, true, true, 5);
@@ -106,7 +106,7 @@ const Country = memo(function Country({ name, coords, altitude, type, iso, isSel
         new THREE.MeshBasicMaterial({
             side: THREE.DoubleSide,
             color: color,
-            opacity: 0.3,
+            opacity: 0.45,
             transparent: true,
             wireframe: false,
             visible: show
@@ -114,7 +114,7 @@ const Country = memo(function Country({ name, coords, altitude, type, iso, isSel
         new THREE.MeshBasicMaterial({ //top material
             side: THREE.DoubleSide,
             color: color,
-            opacity: 0.3,
+            opacity: 0.45,
             transparent: true,
             wireframe: false,
             visible: show
@@ -122,7 +122,7 @@ const Country = memo(function Country({ name, coords, altitude, type, iso, isSel
         new THREE.MeshBasicMaterial({ //bottom material
             side: THREE.DoubleSide,
             color: color,
-            opacity: 0.3,
+            opacity: 0.45,
             transparent: true,
             wireframe: false,
             visible: show

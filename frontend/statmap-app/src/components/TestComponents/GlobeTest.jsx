@@ -1,5 +1,5 @@
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
-import { OrbitControls, Stars, Html, Stats, Text, Billboard } from "@react-three/drei";
+import { OrbitControls, Stars, Stats, Text, Billboard } from "@react-three/drei";
 import { useRef, useState, useEffect, useMemo, useCallback } from "react";
 import * as THREE from "three";
 import { Perf } from 'r3f-perf'
@@ -50,11 +50,10 @@ function GlobeTest(props) {
 
                     {/*<ConicGlobe globeRef={globeRef} /> <CountryBorders globeRef={globeRef} />
                     <CountryLabels globeRef={globeRef} showLabel={showLabel} /> <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />*/}
-                    <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />
+                    <ConicGlobe globeRef={globeRef} />
                     <CountryBorders globeRef={globeRef} />
                     <CountryLabels globeRef={globeRef} showLabel={showLabel} />
-                    <ConicGlobe globeRef={globeRef} />
-
+                    <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />
                     <Perf position="top-right" />
                 </Canvas>
             </div>
@@ -66,9 +65,9 @@ function RotateGlobe({ globeRef, cloudsRef, conicGlobeRef }) {
     useFrame(({ clock }) => {
         const elapsedTime = clock.getElapsedTime();
 
-        globeRef.current.rotation.y = elapsedTime / 60;
+        globeRef.current.rotation.y = elapsedTime / 70;
         //conicGlobeRef.current.rotation.y = elapsedTime / 60;
-        cloudsRef.current.rotation.y = elapsedTime / 30;
+        cloudsRef.current.rotation.y = elapsedTime / 40;
     });
     return null;
 }
