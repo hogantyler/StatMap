@@ -4,6 +4,7 @@ import {useFrame} from '@react-three/fiber';
 import * as THREE from 'three';
 import ConicPolygonGeometry from 'three-conic-polygon-geometry';
 import { polygonCentroid } from "d3-polygon";
+import { useCountrySelection } from '../CountrySelectionContext';
 
 //drawing countries on a globe using conical projections of polygons from here: https://github.com/vasturiano/three-conic-polygon-geometry
 
@@ -13,11 +14,14 @@ function CountryPolygons({ geoData, globeRef }) {
     const [countries, setCountries] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState(null);
     const polygonsRef = useRef();
+    const { selectCountry } = useCountrySelection();
 
-    const handleCountrySelect = (countryId) => {
+    const handleCountrySelect = (countryId) => {//handler for making sure only one country is selectable at a time
         setSelectedCountry(prevSelected =>
             prevSelected === countryId ? null : countryId
         );
+        //console.log(`Country selected: ${countryId}`);
+        selectCountry(countryId);
     };
 
     useEffect(() => {
@@ -66,8 +70,8 @@ function CountryPolygons({ geoData, globeRef }) {
                         altitude={country.altitude}
                         type={country.type}
                         iso={country.iso}
-                        isSelected={selectedCountry === country.id}
-                        onSelect={() => handleCountrySelect(country.id)}
+                        isSelected={selectedCountry === country.name}
+                        onSelect={() => handleCountrySelect(country.name)}
                     />
                 ))}
             </group>
@@ -81,6 +85,7 @@ const Country = memo(function Country({ name, coords, altitude, type, iso, isSel
     const [hovered, setHovered] = useState(false);
     const [clicked, setClicked] = useState(false);
     const [visible, setVisible] = useState(false);
+    
     const countryRef = useRef();
     
 
@@ -133,7 +138,7 @@ const Country = memo(function Country({ name, coords, altitude, type, iso, isSel
         event.stopPropagation();
         //setClicked(prev => !prev);
         onSelect();
-        console.log(`selected on ${name}`);
+        //console.log(`selected on ${name}`);
     }, [name]);
 
     const handlePointerOver = useCallback((event) => {
