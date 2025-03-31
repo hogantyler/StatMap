@@ -26,7 +26,7 @@ const Login = () => {
                         name="email"
                         id="email"
                         className="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                        placeholder="your email / username"
+                        placeholder="your email"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
