@@ -247,7 +247,8 @@ function CountryLabels({ globeRef, showLabel }) {
         "Angola", "Mali", "South Africa", "Colombia", "Ethiopia",
         "Bolivia", "Egypt", "Tanzania", "Nigeria", "Venezuela",
         "Pakistan", "Ukraine", "France", "Spain", "Sweden",
-        "Germany", "Italy", "United Kingdom", "Japan", "Turkey", "South Korea"
+        "Germany", "Italy", "United Kingdom", "Japan", "Turkey", "South Korea",
+        "Greenland"
     ]);
 
     const shouldShowLabel = (countryName, countryArea) => {
