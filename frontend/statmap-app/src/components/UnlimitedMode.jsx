@@ -26,7 +26,7 @@ function UnlimitedMode() {
     
       useEffect(() => {
         async function fetchCountries() {
-          const { data, error } = await supabase.from("api_country").select();
+          const { data, error } = await supabase.from("Countries").select();
           if (error) {
             console.error("Error fetching countries:", error);
           } else if (data) {
