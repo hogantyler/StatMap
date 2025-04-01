@@ -58,6 +58,7 @@ function UnlimitedMode() {
     const [feedback, setFeedback] = useState("");
     const [feedbackType, setFeedbackType] = useState(""); // "correct" or "incorrect"
     const [isAnswered, setIsAnswered] = useState(false);
+    const [questionFinished, setQuestionFinished] = useState(false); //for 'next' and 'source' buttons
     const navigate = useNavigate();
 
     const handleOpenModal = () => {
@@ -72,7 +73,10 @@ function UnlimitedMode() {
 
     // Function to load a new fact:
     const loadNewFact = () => {
-        setUnusedFacts((prevUnused) => {
+        fetch("https://statmapapi.world/api/random_fact/")
+            .then(res => res.json())
+            .then(fact => setCurrentFact(fact))
+        /*setUnusedFacts((prevUnused) => {
             let available = prevUnused;
             // Reset if we've used all facts
             if (available.length === 0) {
@@ -85,7 +89,7 @@ function UnlimitedMode() {
             // Update currentFact with the chosen fact
             setCurrentFact(chosen);
             return newUnused;
-        });
+        }); */
         // Reset other states for the new question
         setAttempts(0);
         setSelectedOption("");
@@ -95,17 +99,15 @@ function UnlimitedMode() {
     };
 
     useEffect(() => {
-        if (!currentFact) {
-            loadNewFact();
-        }
-    }, [currentFact]);
+        loadNewFact();
+    }, []);
 
     const handleSubmit = (e) => {
         e.preventDefault();
         if (isAnswered || !selectedOption) return;
 
         setIsAnswered(true);
-        if (selectedOption.value === currentFact.Correct_Country) {
+        if (selectedOption.value === currentFact.country) {
             let points = 0;
             if (attempts === 0) points = 1000;
             else if (attempts === 1) points = 750;
@@ -114,30 +116,26 @@ function UnlimitedMode() {
             setScore((prev) => prev + points);
             setFeedback("Correct!");
             setFeedbackType("correct");
-            setTimeout(() => {
-                loadNewFact();
-            }, 2000);
+            setQuestionFinished(true);
         } else {
             if (attempts < 3) {
                 const newAttempts = attempts + 1;
                 setAttempts(newAttempts);
                 let hint = "";
                 if (newAttempts === 1) {
-                    hint = `Hint: Continent - ${currentFact.CC_Continent}`;
+                    hint = `Hint: Continent - ${currentFact.continent}`;
                 } else if (newAttempts === 2) {
-                    hint = `Hint: Continent - ${currentFact.CC_Continent}, Capital - ${currentFact.CC_Capital}`;
+                    hint = `Hint: Continent - ${currentFact.continent}, Capital - ${currentFact.capital}`;
                 } else if (newAttempts === 3) {
-                    hint = `Hint: Continent - ${currentFact.CC_Continent}, Capital - ${currentFact.CC_Capital}, Abbreviation - ${currentFact.CC_Abbrev}`;
+                    hint = `Hint: Continent - ${currentFact.continent}, Capital - ${currentFact.capital}, Abbreviation - ${currentFact.abbrev}`;
                 }
                 setFeedback(`Incorrect! Try again. ${hint}`);
                 setFeedbackType("incorrect");
                 setIsAnswered(false);
             } else {
-                setFeedback(`Incorrect! The correct answer is ${currentFact.Correct_Country}.`);
+                setFeedback(`Incorrect! The correct answer is ${currentFact.country}.`);
                 setFeedbackType("incorrect");
-                setTimeout(() => {
-                    loadNewFact();
-                }, 2000);
+                setQuestionFinished(true);
             }
         }
         setSelectedOption(null);
@@ -147,14 +145,6 @@ function UnlimitedMode() {
         navigate("/"); // Navigate back to the main PlayScreen if desired
     };
 
-    // Globe-specific logic
-    const globeRef = useRef();
-    const texture = new THREE.TextureLoader().load("/earth_texture.jpg", (texture) => {
-        texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
-        texture.repeat.set(1, 1);
-    }, undefined, (err) => {
-        console.error("Error loading texture:", err);
-    });
 
     return (
         <div className="relative w-full h-full">
@@ -186,18 +176,8 @@ function UnlimitedMode() {
                     {currentFact && (
                         <div className="mb-6 p-4 border border-white rounded relative">
                             <p className="text-center font-semibold text-white">
-                                {currentFact.Fact}
+                                {currentFact.fact}
                             </p>
-                            <div className="absolute bottom-0 right-0">
-                                <a
-                                    href={currentFact.Source}
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                    className="text-xs text-white underline"
-                                >
-                                    Source
-                                </a>
-                            </div>
                         </div>
                     )}
                     {/* Feedback Popup */}
@@ -209,6 +189,25 @@ function UnlimitedMode() {
                                 }`}
                         >
                             {feedback}
+                        </div>
+                    )}
+                    {/* End of Question/Source Popup */}
+                    {questionFinished && (
+                        <div className="flex justify-around mt-4">
+                            <a
+                                href={currentFact.source}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
+                            >
+                                Source
+                            </a>
+                            <button
+                                onClick={() => { setQuestionFinished(false); loadNewFact(); }}
+                                className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
+                            >
+                                Next
+                            </button>
                         </div>
                     )}
                     {/* Country Selection Form */}
@@ -226,7 +225,7 @@ function UnlimitedMode() {
                                     options={countryOptions}
                                     value={selectedOption}
                                     onChange={setSelectedOption}
-                                    placeholder="-- Search/Choose a Country --"
+                                    placeholder="-- Search/Choose a country --"
                                     styles={{
                                         control: (provided, state) => ({
                                             ...provided,
@@ -240,7 +239,7 @@ function UnlimitedMode() {
                                         input: (provided) => ({
                                             ...provided,
                                             color: "white", // Typed text is white
-                                          }),
+                                        }),
                                         singleValue: (provided) => ({
                                             ...provided,
                                             color: "white",

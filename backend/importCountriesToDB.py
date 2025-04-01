@@ -1,26 +1,26 @@
 import pandas as pd
 import sqlite3
 
+# Load CSV data
 df = pd.read_csv("./data/originalFactsList.csv")
 
-conn = sqlite3.connect("StatMap.db")
+# Connect to the db.sqlite3 database
+conn = sqlite3.connect("db.sqlite3")
 cursor = conn.cursor()
 
-data = cursor.execute("SELECT count(*) FROM Countries")
+# Clear the table if you want to replace the test data
+cursor.execute("DELETE FROM api_country")
+conn.commit()
 
-num_countries = 0
-for row in data:
-    num_countries = row[0]
+# Insert data from the CSV
+for i in range(len(df)):
+    country = df["Country"][i]
+    continent = df["Continent"][i]
+    capital = df["Capital City"][i]
+    abbrev = df["Abbreviation"][i]
 
-if num_countries == 0:
-    for i in range(0, len(df["Country"])):
-        country = df["Country"][i]
-        continent = df["Continent"][i]
-        capital = df["Capital City"][i]
-        abbrev = df["Abbreviation"][i]
-
-        sql = "INSERT INTO Countries (Country, Continent, Capital, Abbrev) VALUES (?, ?, ?, ?);"
-        cursor.execute(sql, (country, continent, capital, abbrev))
+    sql = "INSERT INTO api_country (country, continent, capital, abbrev) VALUES (?, ?, ?, ?);"
+    cursor.execute(sql, (country, continent, capital, abbrev))
 
 conn.commit()
 conn.close()
