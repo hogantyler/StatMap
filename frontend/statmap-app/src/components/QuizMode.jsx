@@ -64,8 +64,8 @@ const QuizModeContent = () => {
       alert("Please select a country on the globe first.");
       return;
     }
-    const answer = selectedCountry || "";
-    if (answer === currentFact?.Correct_Country) {
+    const answer = selectedCountry;
+    if (answer.includes(currentFact?.Correct_Country) || currentFact?.Correct_Country.includes(answer)) {
       let points = attempts === 0 ? 1000 : attempts === 1 ? 750 : attempts === 2 ? 500 : 250;
       setScore((prev) => prev + points);
       setFeedback("Correct!");
