@@ -1,106 +1,96 @@
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
-import { OrbitControls, Stars, Html, Stats } from "@react-three/drei";
-import { useRef, useState, useEffect, Suspense } from "react";
+import { OrbitControls, Stars, Stats, Text, Billboard } from "@react-three/drei";
+import { useRef, useState, useEffect, useMemo, useCallback } from "react";
 import * as THREE from "three";
-import EarthMap from "../../textures/8k_earth.png"
-import EarthNormalMap from "../../textures/8k_earth_normal_map.jpg"
-import EarthSpecMap from "../../textures/8k_earth_specular_map.jpg"
-import EarthCloudMap from "../../textures/cloud_texture.jpg"
-import { TextureLoader } from "three";
+import { Perf } from 'r3f-perf'
+import ConicGlobe from "./ConicGlobe";
+import TestAtmosphere from "./TestAtmosphere";
+import EarthTest from "./EarthTest";
 
+/**
+ * Ultimate graphical component containing canvas which encapsulates all the 3D graphical webgl/three.js/react-three-fiber components.
+ * 
+ * @returns A Canvas component that encapsulates all the 3D components including the globe, lights, stars, etc.
+ */
 function GlobeTest(props) {
-    // texture loading
+    const [showLabel, setShowLabel] = useState(true);
+    const [showPerformance, setShowPerformance] = useState(true);
+
     const globeRef = useRef();
     const cloudsRef = useRef();
-    const [colorMap, normalMap, specularMap, cloudMap] = useLoader(
-        TextureLoader,
-        [EarthMap, EarthNormalMap, EarthSpecMap, EarthCloudMap]
-    );
-    {/*}
-    const texture = new THREE.TextureLoader().load(EarthMap, (texture) => {
-        texture.wrapS = texture.wrapT = THREE.ClampToEdgeWrapping;
-        texture.repeat.set(1, 1);
-    }, undefined, (err) => {
-        console.error("Error loading texture:", err);
-    });
-    */}
-
-    const [showLabel, setShowLabel] = useState(true);
-
 
     console.log("globe render");
 
+    // Toggle performance monitor with key press
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'p') {
+                setShowPerformance(prev => !prev);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
 
     return (
         <div className="relative w-full h-full">
             <div className="absolute top-0 left-0 w-full h-full">
                 <Canvas
-                    camera={{ position: [0, 1.5, 1.5], near: 0.01, far: 1000 }}
+                    camera={{ position: [0, 1, 2], near: 0.01, far: 1000 }}
                     style={{ background: "black", width: "100vw", height: "100vh" }}
                 >
-                    <Suspense fallback={null}>
-                        <ambientLight intensity={5} />
-                        <directionalLight position={[0, 0, 2]} intensity={7} />
 
-                        <OrbitControls
-                            enableZoom={true}
-                            enableRotate={true}
-                            enablePan={false}
-                            minDistance={1.05}
-                            maxDistance={4}
-                            zoomSpeed={0.4}
-                        />
-                        <Stars
-                            radius={300}
-                            depth={60}
-                            count={20000}
-                            factor={7}
-                            saturation={0}
-                            fade={true}
-                        />
+                    <ambientLight intensity={4} />
+                    <directionalLight position={[0, 0, 2]} intensity={7} />
 
-                        <mesh ref={cloudsRef}>
-                            <sphereGeometry args={[1.005, 36, 36]} />
-                            <meshPhongMaterial
-                                map={cloudMap}
-                                opacity={0.4}
-                                depthWrite={true}
-                                transparent={true}
-                                side={THREE.DoubleSide}
-                            />
-                        </mesh>
+                    <OrbitControls
+                        enableZoom={true}
+                        enableRotate={true}
+                        enablePan={false}
+                        minDistance={1.05}
+                        maxDistance={4}
+                        zoomSpeed={0.4}
+                        rotateSpeed={0.4}
+                    />
+                    <Stars
+                        radius={200}
+                        depth={60}
+                        count={5000}
+                        factor={7}
+                        saturation={0}
+                        fade={true}
+                    />
 
-                        <mesh ref={globeRef}>
-                            <sphereGeometry args={[1, 36, 36]} />
-                            <meshPhongMaterial specularMap={specularMap} />
-                            <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.4} roughness={0.7} />
+                    <EarthTest ref={globeRef} cloudsRef={cloudsRef} />
 
-                        </mesh>
+                    <TestAtmosphere radius={1.02} />
 
-                        <CountryBorders globeRef={globeRef} />
+                    {/*<ConicGlobe globeRef={globeRef} /> <CountryBorders globeRef={globeRef} />
+                    <CountryLabels globeRef={globeRef} showLabel={showLabel} /> <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />*/}
+                    <ConicGlobe globeRef={globeRef} />
+                    <CountryBorders globeRef={globeRef} />
+                    <CountryLabels globeRef={globeRef} showLabel={showLabel} />
+                    <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />
 
-                        <CountryLabels globeRef={globeRef} showLabel={showLabel} />
-                        <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef}/>
-                    </Suspense>
-
-                    <Stats showPanel={0} />
+                    {/* Performance monitor (toggle with 'p' key) */}
+                    {showPerformance && <Perf position="top-right" />}
                 </Canvas>
             </div>
         </div>
     );
 }
 
-
-function RotateGlobe({ globeRef, cloudsRef }) {
+function RotateGlobe({ globeRef, cloudsRef, conicGlobeRef }) {
     useFrame(({ clock }) => {
         const elapsedTime = clock.getElapsedTime();
 
-        globeRef.current.rotation.y = elapsedTime / 60;
+        globeRef.current.rotation.y = elapsedTime / 70;
+        //conicGlobeRef.current.rotation.y = elapsedTime / 60;
         cloudsRef.current.rotation.y = elapsedTime / 40;
     });
     return null;
 }
-
 
 function CountryBorders({ globeRef }) {
     const [geoData, setGeoData] = useState(null);
@@ -109,7 +99,8 @@ function CountryBorders({ globeRef }) {
     console.log("border render");
     useEffect(() => {
         //gets geosjason data
-        fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
+        //https://raw.githubusercontent.com/vasturiano/three-conic-polygon-geometry/refs/heads/master/example/geojson/ne_110m_admin_0_countries.geojson
+        fetch('https://raw.githubusercontent.com/vasturiano/three-conic-polygon-geometry/refs/heads/master/example/geojson/ne_110m_admin_0_countries.geojson')
             .then(response => response.json())
             .then(data => {
                 setGeoData(data);
@@ -126,6 +117,7 @@ function CountryBorders({ globeRef }) {
 
     //lines and materials
     useEffect(() => {
+
         if (!geoData || !linesRef.current) return;
 
         //check for existing line and clear
@@ -133,7 +125,7 @@ function CountryBorders({ globeRef }) {
             linesRef.current.remove(linesRef.current.children[0]);
         }
 
-        const radius = 1.0055; //set radius so it's on top of globle
+        const radius = 1.005; //set radius so it's on top of globle
 
         geoData.features.forEach((feature, featureIndex) => { //gets the coordinates of the countries in te geojson data
             let coordinates = [];
@@ -150,7 +142,7 @@ function CountryBorders({ globeRef }) {
 
                     ring.forEach(coord => {
                         //convert longitude and latitude to 3D coordinates
-                        const lon = THREE.MathUtils.degToRad(coord[0]) + Math.PI / 2;
+                        const lon = THREE.MathUtils.degToRad(coord[0]);
                         const lat = THREE.MathUtils.degToRad(coord[1]);
 
                         //convert to Cartesian coordinates
@@ -166,7 +158,7 @@ function CountryBorders({ globeRef }) {
 
                     //create material and line
                     const material = new THREE.LineBasicMaterial({
-                        color: 0xffffff,
+                        color: 0x008080,
                         opacity: 0.6,
                         transparent: true,
                         linewidth: 0.5
@@ -186,18 +178,21 @@ function CountryLabels({ globeRef, showLabel }) {
     const [geoData, setGeoData] = useState(null);
     const labelsRef = useRef();
     const { camera } = useThree();
+    const [cameraDistance, setCameraDistance] = useState(0);
 
+    console.log("label render");
 
-
-    //console.log("label render");
     //country label offsets for manual adjustments
-    const countryOffsets = {
+    const countryOffsets = useMemo(() => ({
         "United States of America": [0, 0, 0],
-        "Norway": [0.05, -0.02, 0.02]
-    };
+        "Norway": [0, 0, 0]
+    }), []);
 
     useEffect(() => {
-        fetch('https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson')
+        console.log('labels fetching');
+        //this is simpler more performant geojson: https://raw.githubusercontent.com/vasturiano/three-conic-polygon-geometry/refs/heads/master/example/geojson/ne_110m_admin_0_countries.geojson
+        //this is more complex geojson: https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson
+        fetch('https://raw.githubusercontent.com/vasturiano/three-conic-polygon-geometry/refs/heads/master/example/geojson/ne_110m_admin_0_countries.geojson')
             .then(response => response.json())
             .then(data => {
                 setGeoData(data);
@@ -205,23 +200,22 @@ function CountryLabels({ globeRef, showLabel }) {
             .catch(error => console.error('Error fetching GeoJSON:', error));
     }, []);
 
-    //tracking camera distance for fixed-size label scaling optimization
-    const [cameraDistance, setCameraDistance] = useState(0);
     useFrame(() => {
         if (labelsRef.current && globeRef.current) {
             labelsRef.current.rotation.copy(globeRef.current.rotation);
         }
 
-        //updating camera distance for label size calculation
+        //update camera
         if (camera) {
             const distance = camera.position.distanceTo(new THREE.Vector3(0, 0, 0));
-            setCameraDistance(distance);
+            if (Math.abs(distance - cameraDistance) > 0.03) { // Only update if significant change
+                setCameraDistance(distance);
+            }
         }
     });
 
-    //center calculation for polygons (useMemo or similar later to optimize)
-    const calculatePolygonCentroid = (polygon) => {
-        //check if polygon is valid
+    // center calculation for polygons
+    const calculatePolygonCentroid = useCallback((polygon) => {
         if (!polygon || polygon.length < 3) {
             return [0, 0];
         }
@@ -243,9 +237,9 @@ function CountryLabels({ globeRef, showLabel }) {
 
         area /= 2;
 
-        //check if area is close to zero to avoid division by zero
+        // Check if area is close to zero to avoid division by zero
         if (Math.abs(area) < 1e-10) {
-            //fallback to simple average if the area is too small
+            // Fallback to simple average if the area is too small
             let sumLon = 0, sumLat = 0;
             polygon.forEach(coord => {
                 sumLon += coord[0];
@@ -258,14 +252,13 @@ function CountryLabels({ globeRef, showLabel }) {
         cy = cy / (6 * area);
 
         return [cx, cy];
-    };
+    }, []);
 
     if (!geoData) return null;
 
     const labels = [];
-    const radius = 1.0005; //slightly larger than the border radius to avoid z-fighting
+    const radius = 1.02; //height of the labels
 
-    //which countries to display with priority
     const visibleCountriesBySize = new Set([
         "Russia", "Canada", "United States of America", "China", "Brazil",
         "Australia", "India", "Argentina", "Mexico", "Indonesia",
@@ -274,22 +267,22 @@ function CountryLabels({ globeRef, showLabel }) {
         "Angola", "Mali", "South Africa", "Colombia", "Ethiopia",
         "Bolivia", "Egypt", "Tanzania", "Nigeria", "Venezuela",
         "Pakistan", "Ukraine", "France", "Spain", "Sweden",
-        "Germany", "Italy", "United Kingdom", "Japan", "Turkey", "South Korea"
+        "Germany", "Italy", "United Kingdom", "Japan", "Turkey", "South Korea",
+        "Greenland"
     ]);
 
-    //determine if a country should be visible based on zoom level
     const shouldShowLabel = (countryName, countryArea) => {
-        //show chosen countries from visibleCountriesBySize
+
         if (visibleCountriesBySize.has(countryName)) {
             return true;
         }
 
-        //show medium countries when zoomed in a bit
+
         if (countryArea > 10 && cameraDistance < 2.5) {
             return true;
         }
 
-        //show rest of countries when zoomed in more finally
+
         if (cameraDistance < 1.5) {
             return true;
         }
@@ -302,7 +295,7 @@ function CountryLabels({ globeRef, showLabel }) {
         let centroid;
         let countryArea = 0;
 
-        //calculate approximate country area for filtering
+        // calculate approximate country area for filtering
         if (feature.geometry.type === "Polygon") {
             countryArea = calculateApproximateArea(feature.geometry.coordinates[0]);
             centroid = calculatePolygonCentroid(feature.geometry.coordinates[0]);
@@ -325,17 +318,17 @@ function CountryLabels({ globeRef, showLabel }) {
             centroid = bestCentroid;
         }
 
-        //only show labels that pass visibility filter
+
         if (centroid && shouldShowLabel(countryName, countryArea)) {
             // Convert centroid to 3D position
-            const lon = THREE.MathUtils.degToRad(centroid[0]) + Math.PI / 2;
+            const lon = THREE.MathUtils.degToRad(centroid[0]);
             const lat = THREE.MathUtils.degToRad(centroid[1]);
 
             let x = radius * Math.cos(lat) * Math.sin(lon);
             let y = radius * Math.sin(lat);
             let z = radius * Math.cos(lat) * Math.cos(lon);
 
-            //apply country-specific offset if available
+
             if (countryOffsets[countryName]) {
                 const [offsetX, offsetY, offsetZ] = countryOffsets[countryName];
                 x += offsetX;
@@ -343,38 +336,44 @@ function CountryLabels({ globeRef, showLabel }) {
                 z += offsetZ;
             }
 
-            //calculate label size based on country importance and fixed size
-            const fontSize = visibleCountriesBySize.has(countryName) ?
-                "text-lg" : "text-xs"; // You could vary this if desired
 
-            //use drei Html to add label
+            const fontSize = visibleCountriesBySize.has(countryName) ? 0.03 : 0.02;
+
+            const scaleFactor = Math.max(0.4, cameraDistance * 0.2);
+
             labels.push(
-                <Html
+                <group
                     key={`label-${index}`}
                     position={[x, y, z]}
-                    occlude={[globeRef]}
-                    sprite
-                    center
-                    transform
-                    distanceFactor={0.8}
-                    style={{
-                        pointerEvents: 'none',
-                        userSelect: 'none',
-                        //handle sizing manually
-                        //scale based on zoom level if needed (you can adjust the formula)
-                        transform: `scale(${(Math.max(0, cameraDistance)) / 6})`, //inverse resizing based on camera distance
-                    }}
                 >
-                    <div className={`text-white ${fontSize} bg-black bg-opacity-50 px-1 py-0.5 rounded`}>
-                        {countryName}
-                    </div>
-                </Html>
+                    <Billboard follow={true} lockX={false} lockY={false} lockZ={false}>
+                        <Text
+                            fontSize={fontSize * scaleFactor}
+                            color="yellow"
+                            anchorX="center"
+                            anchorY="middle"
+                            // Add a background for better visibility
+                            backgroundColor="rgba(0, 0, 0, 0.5)"
+                            backgroundOpacity={0.5}
+                            backgroundPadding={[0.01, 0.01]}
+                            // Optimize visibility
+                            renderOrder={2}
+                            depthTest={false}
+                            // Optional: add outline for better contrast
+                            outlineWidth={0.001}
+                            outlineColor="black"
+                        >
+                            {countryName}
+                        </Text>
+                    </Billboard>
+                </group>
             );
         }
     });
 
-    return <group ref={labelsRef}>{labels}</group>;
+    return <group ref={labelsRef}>{labels}</group>; //group of all the texts
 }
+
 
 //function to calculate approximate area of a polygon
 function calculateApproximateArea(polygon) {
@@ -392,7 +391,5 @@ function calculateApproximateArea(polygon) {
 
     return Math.abs(area / 2);
 }
-
-
 
 export default GlobeTest;
