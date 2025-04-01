@@ -22,13 +22,13 @@ function UnlimitedModeContent() {
 
   // Retrieve selected country from context
   const { selectedCountry } = useCountrySelection();
-  const prevSelectedCountryRef = useRef(null);
+  const prevSelectedCountryRef = useRef(null); // ref for tracking country selection changes
 
   // Wrap modal handlers in useCallback to avoid unnecessary re-renders
   const handleOpenModal = useCallback(() => setIsModalOpen(true), []);
   const handleCloseModal = useCallback(() => setIsModalOpen(false), []);
 
-  // Track selected country changes
+  // Track selected country changes fed from globe component via countryselection context
   useEffect(() => {
     if (selectedCountry && selectedCountry !== prevSelectedCountryRef.current && !isAnswered) {
       prevSelectedCountryRef.current = selectedCountry;
