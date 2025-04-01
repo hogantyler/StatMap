@@ -4,7 +4,7 @@ import { useRef, useState, useEffect, useMemo, useCallback } from "react";
 import * as THREE from "three";
 import { Perf } from 'r3f-perf'
 import ConicGlobe from "./ConicGlobe";
-import AtmosphereMesh from "./AtmosphereMesh";
+import AtmosphereMesh from "../AtmosphereMesh";
 import EarthTest from "./EarthTest";
 
 /**

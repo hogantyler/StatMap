@@ -2,7 +2,7 @@ import React, { useState, useEffect, Suspense, useRef, useCallback } from "react
 import { useNavigate } from "react-router-dom";
 import HoverDropMenu from "./HoverDropMenu";
 import { FaArrowLeft } from "react-icons/fa";
-import GlobeTest from "./TestComponents/GlobeTest";
+import Globe from "./Globe";
 import Login from "./Login";
 import Modal from "./Modal";
 import Loading from "./Loading";
@@ -189,7 +189,7 @@ function UnlimitedModeContent() {
         </Modal>
 
         {/* Globe Canvas */}
-        <GlobeTest />
+        <Globe />
       </div>
     </Suspense>
   );

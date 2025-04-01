@@ -11,7 +11,7 @@ import EarthNightMap from "../../textures/earth-nightmap-4k.jpg";
 import { TextureLoader } from "three";
 import { Perf } from 'r3f-perf';
 import ConicGlobe from "./ConicGlobe";
-import AtmosphereMesh from "./AtmosphereMesh";
+import AtmosphereMesh from "../AtmosphereMesh";
 
 // custom shader for day night blending of earth globe derived from here: https://github.com/bobbyroe/earth-with-react-three-fiber/blob/main/src/EarthMaterial.jsx
 // custom shader material for day/night cycle

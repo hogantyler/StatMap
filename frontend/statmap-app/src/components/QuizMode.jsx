@@ -8,8 +8,9 @@ import { FaArrowLeft } from "react-icons/fa";
 import Select from "react-select";
 import Loading from "./Loading"
 import { supabase } from "./SupabaseContext";
+import { CountrySelectionProvider, useCountrySelection } from "./CountrySelectionContext";
 
-const QuizMode = () => {
+const QuizModeContent = () => {
   // --- Quiz Logic States ---
   const [selectedOption, setSelectedOption] = useState(null);
   const [currentFact, setCurrentFact] = useState(null);
@@ -307,5 +308,14 @@ const QuizMode = () => {
     </Suspense>
   );
 };
+
+// Wrapping the component with the country selection context provider
+function QuizMode() {
+  return (
+    <CountrySelectionProvider>
+      <QuizModeContent />
+    </CountrySelectionProvider>
+  );
+}
 
 export default QuizMode;
