@@ -2,24 +2,147 @@ import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { OrbitControls, Stars, Stats, Text, Billboard } from "@react-three/drei";
 import { useRef, useState, useEffect, useMemo, useCallback } from "react";
 import * as THREE from "three";
-import { Perf } from 'r3f-perf'
+import EarthMap from "../../textures/8k_earth.png";
+import EarthNormalMap from "../../textures/earth_normalmap_5400x2700.jpg";
+import EarthSpecMap from "../../textures/8k_earth_specular_map.jpg";
+import EarthCloudMap from "../../textures/cloud_texture.jpg";
+import EarthDisplacementMap from "../../textures/gebco_bathy_2700x1350.jpg";
+import EarthNightMap from "../../textures/earth-nightmap-4k.jpg";
+import { TextureLoader } from "three";
+import { Perf } from 'r3f-perf';
 import ConicGlobe from "./ConicGlobe";
 import AtmosphereMesh from "./AtmosphereMesh";
-import EarthTest from "./EarthTest";
 
-/**
- * Ultimate graphical component containing canvas which encapsulates all the 3D graphical webgl/three.js/react-three-fiber components.
- * 
- * @returns A Canvas component that encapsulates all the 3D components including the globe, lights, stars, etc.
- */
-function GlobeTest(props) {
-    const [showLabel, setShowLabel] = useState(true);
+// custom shader for day night blending of earth globe derived from here: https://github.com/bobbyroe/earth-with-react-three-fiber/blob/main/src/EarthMaterial.jsx
+// custom shader material for day/night cycle
+function createEarthMaterial(maps, sunDirection = new THREE.Vector3(-2, 0.5, 0).normalize()) {
+    const { colorMap, normalMap, specularMap, cloudMap, nightMap } = maps;
+    
+    const uniforms = {
+        dayTexture: { value: colorMap },
+        nightTexture: { value: nightMap },
+        normalMap: { value: normalMap },
+        specularMap: { value: specularMap },
+        sunDirection: { value: sunDirection },
+    };
+    
+    const vertexShader = `
+        varying vec2 vUv;
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+        
+        void main() {
+            // Position
+            vec4 modelPosition = modelMatrix * vec4(position, 1.0);
+            gl_Position = projectionMatrix * viewMatrix * modelPosition;
+            
+            // Model normal
+            vec3 modelNormal = (modelMatrix * vec4(normal, 0.0)).xyz;
+            
+            // Varyings
+            vUv = uv;
+            vNormal = modelNormal;
+            vPosition = modelPosition.xyz;
+        }
+    `;
+    
+    const fragmentShader = `
+        uniform sampler2D dayTexture;
+        uniform sampler2D nightTexture;
+        uniform sampler2D normalMap;
+        uniform sampler2D specularMap;
+        uniform vec3 sunDirection;
+        
+        varying vec2 vUv;
+        varying vec3 vNormal;
+        varying vec3 vPosition;
+        
+        void main() {
+            vec3 viewDirection = normalize(vPosition - cameraPosition);
+            vec3 normal = normalize(vNormal);
+            vec3 color = vec3(0.0);
+            
+            // Rotate texture coordinates by 90 degrees to align with country borders
+            // This shifts the texture a quarter turn to the left
+            vec2 rotatedUv = vec2(vUv.x + 0.25, vUv.y);
+            // Handle wrapping for x coordinate
+            if (rotatedUv.x < 0.0) rotatedUv.x += 1.0;
+            
+            // Sun orientation
+            float sunOrientation = dot(sunDirection, normal);
+            
+            // Day / night color
+            float dayMix = smoothstep(-0.25, 0.5, sunOrientation);
+            vec3 dayColor = texture2D(dayTexture, rotatedUv).rgb;
+            vec3 nightColor = texture2D(nightTexture, rotatedUv).rgb;
+            color = mix(nightColor, dayColor, dayMix);
+            
+            // Add some specular highlights on the day side
+            if (dayMix > 0.1) {
+                vec3 reflection = reflect(-sunDirection, normal);
+                float specular = max(0.0, dot(reflection, -viewDirection));
+                specular = pow(specular, 20.0) * texture2D(specularMap, rotatedUv).r;
+                color += specular * 0.5 * dayMix;
+            }
+            
+            // Final color
+            gl_FragColor = vec4(color, 1.0);
+        }
+    `;
+    
+    return new THREE.ShaderMaterial({
+        uniforms: uniforms,
+        vertexShader: vertexShader,
+        fragmentShader: fragmentShader,
+    });
+}
 
+function NightLightsEarth(props) {
+    // texture loading
     const globeRef = useRef();
     const cloudsRef = useRef();
-
-    console.log("globe render");
-
+    
+    // Add nightMap to the texture loader
+    const [colorMap, normalMap, specularMap, cloudMap, displacementMap, nightMap] = useLoader(
+        TextureLoader,
+        [EarthMap, EarthNormalMap, EarthSpecMap, EarthCloudMap, EarthDisplacementMap, EarthNightMap]
+    );
+    
+    // Sun direction state that can be animated
+    const [sunDirection] = useState(() => new THREE.Vector3(-2, 0.5, 1.5).normalize());
+    
+    useEffect(() => {
+        // Configure textures with proper wrapping
+        const configureMaps = (maps) => {
+            maps.forEach(map => {
+                if (map) {
+                    map.wrapS = map.wrapT = THREE.RepeatWrapping;
+                    map.repeat.set(1, 1);
+                    // We'll handle the rotation in the shader instead of using offsets
+                    map.offset.x = 0;
+                }
+            });
+        };
+        
+        configureMaps([colorMap, normalMap, specularMap, cloudMap, displacementMap, nightMap]);
+    }, [colorMap, normalMap, specularMap, cloudMap, displacementMap, nightMap]);
+    
+    // Create earth material with shader
+    const earthMaterial = useMemo(() => {
+        if (colorMap && normalMap && specularMap && nightMap) {
+            return createEarthMaterial({
+                colorMap,
+                normalMap,
+                specularMap,
+                cloudMap,
+                nightMap
+            }, sunDirection);
+        }
+        return null;
+    }, [colorMap, normalMap, specularMap, cloudMap, nightMap, sunDirection]);
+    
+    const [showLabel, setShowLabel] = useState(true);
+    
     return (
         <div className="relative w-full h-full">
             <div className="absolute top-0 left-0 w-full h-full">
@@ -27,19 +150,19 @@ function GlobeTest(props) {
                     camera={{ position: [0, 1, 2], near: 0.01, far: 1000 }}
                     style={{ background: "black", width: "100vw", height: "100vh" }}
                 >
-
-                    <ambientLight intensity={4} />
-                    <directionalLight position={[0, 0, 2]} intensity={7} />
-
+                    
+                    <directionalLight position={[sunDirection.x, sunDirection.y, sunDirection.z]} intensity={0.5} />
+                    
                     <OrbitControls
                         enableZoom={true}
                         enableRotate={true}
                         enablePan={false}
                         minDistance={1.05}
                         maxDistance={4}
-                        zoomSpeed={0.4}
-                        rotateSpeed={0.4}
+                        zoomSpeed={0.5}
+                        rotateSpeed={0.5}
                     />
+                    
                     <Stars
                         radius={200}
                         depth={60}
@@ -48,17 +171,37 @@ function GlobeTest(props) {
                         saturation={0}
                         fade={true}
                     />
-
-                    <EarthTest ref={globeRef} cloudsRef={cloudsRef}/>
-
+                    
+                    <mesh ref={cloudsRef}>
+                        <sphereGeometry args={[1.01, 40, 40]} />
+                        <meshPhongMaterial
+                            map={cloudMap}
+                            opacity={0.3}
+                            depthWrite={false}
+                            transparent={true}
+                            side={THREE.DoubleSide}
+                        />
+                    </mesh>
+                    
+                    <mesh ref={globeRef} onPointerOver={(e) => e.stopPropagation()} onPointerOut={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
+                        <sphereGeometry args={[1, 40, 40]} />
+                        {earthMaterial ? (
+                            <primitive object={earthMaterial} />
+                        ) : (
+                            <>
+                                <meshPhongMaterial specularMap={specularMap} depthWrite={false}/>
+                                <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.7} roughness={0.7} />
+                            </>
+                        )}
+                    </mesh>
+                    
                     <AtmosphereMesh radius={1.02} />
-
-                    {/*<ConicGlobe globeRef={globeRef} /> <CountryBorders globeRef={globeRef} />
-                    <CountryLabels globeRef={globeRef} showLabel={showLabel} /> <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />*/}
-                    <ConicGlobe globeRef={globeRef} />
+                    
+                    <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />
                     <CountryBorders globeRef={globeRef} />
                     <CountryLabels globeRef={globeRef} showLabel={showLabel} />
-                    <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />
+                    <ConicGlobe globeRef={globeRef} />
+                    
                     <Perf position="top-right" />
                 </Canvas>
             </div>
@@ -70,7 +213,7 @@ function RotateGlobe({ globeRef, cloudsRef, conicGlobeRef }) {
     useFrame(({ clock }) => {
         const elapsedTime = clock.getElapsedTime();
 
-        globeRef.current.rotation.y = elapsedTime / 70;
+        globeRef.current.rotation.y = elapsedTime / 60;
         //conicGlobeRef.current.rotation.y = elapsedTime / 60;
         cloudsRef.current.rotation.y = elapsedTime / 40;
     });
@@ -102,7 +245,7 @@ function CountryBorders({ globeRef }) {
 
     //lines and materials
     useEffect(() => {
-
+        
         if (!geoData || !linesRef.current) return;
 
         //check for existing line and clear
@@ -252,8 +395,7 @@ function CountryLabels({ globeRef, showLabel }) {
         "Angola", "Mali", "South Africa", "Colombia", "Ethiopia",
         "Bolivia", "Egypt", "Tanzania", "Nigeria", "Venezuela",
         "Pakistan", "Ukraine", "France", "Spain", "Sweden",
-        "Germany", "Italy", "United Kingdom", "Japan", "Turkey", "South Korea",
-        "Greenland"
+        "Germany", "Italy", "United Kingdom", "Japan", "Turkey", "South Korea"
     ]);
 
     const shouldShowLabel = (countryName, countryArea) => {
@@ -377,4 +519,4 @@ function calculateApproximateArea(polygon) {
     return Math.abs(area / 2);
 }
 
-export default GlobeTest;
+export default NightLightsEarth;

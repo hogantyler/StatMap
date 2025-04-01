@@ -1,11 +1,10 @@
 // Import dependencies
-import React, { useRef, useEffect, useState, forwardRef } from 'react';
-import { Canvas, useFrame, useLoader, useThree, Html, Texts } from '@react-three/fiber';
-import { OrbitControls, Stats } from '@react-three/drei';
+import React, { useRef, useEffect, useState, forwardRef, memo, useMemo, useCallback } from 'react';
+import {useFrame} from '@react-three/fiber';
 import * as THREE from 'three';
 import ConicPolygonGeometry from 'three-conic-polygon-geometry';
-import highResEarthTexture from "../../textures/8k_earth.png";
 import { polygonCentroid } from "d3-polygon";
+import { useCountrySelection } from '../CountrySelectionContext';
 
 //drawing countries on a globe using conical projections of polygons from here: https://github.com/vasturiano/three-conic-polygon-geometry
 
@@ -13,115 +12,146 @@ function CountryPolygons({ geoData, globeRef }) {
     const [meshes, setMeshes] = useState([]);
     const [names, setNames] = useState([]);
     const [countries, setCountries] = useState([]);
+    const [selectedCountry, setSelectedCountry] = useState(null);
+    const polygonsRef = useRef();
+    const { selectCountry } = useCountrySelection();
+
+    const handleCountrySelect = (countryId) => {//handler for making sure only one country is selectable at a time
+        setSelectedCountry(prevSelected =>
+            prevSelected === countryId ? null : countryId
+        );
+        //console.log(`Country selected: ${countryId}`);
+        selectCountry(countryId);
+    };
 
     useEffect(() => {
         if (!geoData) return;
 
-        {/*const materials = [
-            new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: 'white', opacity: 0.2, transparent: true }), // side material
-            new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: 'red', opacity: 0.7, transparent: true }), // bottom cap material
-            new THREE.MeshBasicMaterial({ color: 'red', opacity: 0.7, transparent: true, wireframe: true }) // top cap material
-        ];*/}
-
         const newCountries = [];
-        //const newMeshes = [];
-        //const newNames = [];
+
         geoData.features.forEach(({ properties, geometry }) => {
             //const polygons = geometry.type === 'Polygon' ? [geometry.coordinates] : geometry.coordinates;
             const polygons = [geometry.coordinates];
             const countryName = properties.ADMIN;
-            console.log(`Processing country: ${countryName}. Geometry type: ${geometry.type}. Polygon: ${polygons}`);
-
-            //console.log(newNames);
-            const alt = 1.003; // Height/altitude
-            //console.log(polygons);
+            const iso_a3 = properties.ISO_A3;
+            const alt = 1.003; // Height/altitude 1.003
+            //console.log(countryName, iso_a3);
 
             polygons.forEach((coords, index) => {
-                //console.log(properties.ADMIN);
-                //newNames.push(properties.ADMIN);
                 //console.log(newNames)
                 //const geometry = new ConicPolygonGeometry(coords, 0, alt, true, true, true, 1);
                 //const mesh = new THREE.Mesh(geometry, materials);
-                //mesh.addEventListener('click', () => console.log("clicked"));
                 //newMeshes.push(mesh);
-                //console.log(coords);
-                //console.log(coords.length)
 
-                newCountries.push({ name: countryName, coords: coords, altitude: alt, id: `${countryName}-${index}`, type: geometry.type });
+                newCountries.push({ name: countryName, coords: coords, altitude: alt, id: `${countryName}-${index}`, iso: iso_a3, type: geometry.type });
             });
         });
-        console.log('useeffect');
+        console.log('loading polygons');
         //setNames(newNames);
         //setMeshes(newMeshes);
         setCountries(newCountries);
     }, []);
-    console.log('polygons');
-    {/*{meshes.map((mesh, index) => (
-                <primitive key={index} object={mesh} />
-                
-            ))} */}
+    console.log('country polygons');
+
+    useFrame(() => {
+        if (polygonsRef.current && globeRef.current) {
+            polygonsRef.current.rotation.copy(globeRef.current.rotation);
+        }
+    });
 
     return (
         <>
-            {countries.map((country) => (
-                <Country key={country.id} name={country.name} coords={country.coords} altitude={country.altitude} globeRef={globeRef} type={country.type} />
-            ))}
+            <group ref={polygonsRef}>
+                {countries.map((country) => (
+                    <Country
+                        key={country.id}
+                        name={country.name}
+                        coords={country.coords}
+                        altitude={country.altitude}
+                        type={country.type}
+                        iso={country.iso}
+                        isSelected={selectedCountry === country.name}
+                        onSelect={() => handleCountrySelect(country.name)}
+                    />
+                ))}
+            </group>
+
         </>
     );
 }
 
-function Country({ name, coords, altitude, globeRef, type }) {
+const Country = memo(function Country({ name, coords, altitude, type, iso, isSelected, onSelect }) {
     console.log("country");
     const [hovered, setHovered] = useState(false);
     const [clicked, setClicked] = useState(false);
     const [visible, setVisible] = useState(false);
+    
     const countryRef = useRef();
+    
 
-    const color = clicked ? 'green' : (hovered ? 'white' : 'purple');
-    const show = clicked ? true : (hovered ? true : false);
-    const raise = clicked ? 0.03 : (hovered ? 0 : 0);
+    const { color, show, raise } = useMemo(() => ({
+        color: isSelected ? 'teal' : (hovered ? 'cyan' : 'purple'),
+        show: isSelected || hovered,
+        raise: isSelected ? 0.005 : (hovered ? 0 : 0)
+    }), [isSelected, hovered]);
 
     //const geometry = new ConicPolygonGeometry(coords, (0.99), (altitude + raise), true, true, true, 5);
-    const geometry = [];
-    if (type === 'Polygon') {
-        geometry.push(new ConicPolygonGeometry(coords, (0.99), (altitude + raise), true, true, true, 5));
-    } else {
-        coords.forEach((coord) => {
-            geometry.push(new ConicPolygonGeometry(coord, (0.99), (altitude + raise), true, true, true, 5));
-        });
-    }
+    const geometry = useMemo(() => {
+        //console.log("memo render");
+        if (type === 'Polygon') {
+            return [new ConicPolygonGeometry(coords, (0.99), (altitude + raise), false, true, true, 5)];
+        } else {
+            return coords.map(coord =>
+                new ConicPolygonGeometry(coord, (0.99), (altitude + raise), false, true, true, 5)
+            );
+        }
+    }, [coords, altitude, raise, type]);
 
-    const materials = [
-        new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: color, opacity: 0.5, transparent: true, visible: show }), // side material
-        new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: 'yellow', opacity: 0.5, transparent: true, visible: show }), // bottom cap material
-        new THREE.MeshBasicMaterial({ color: color, opacity: 0.5, transparent: true, wireframe: false, visible: show }) // top cap material
-    ];
-    const handleClick = (event) => {
+    const materials = useMemo(() => [ //side material
+        new THREE.MeshBasicMaterial({
+            side: THREE.DoubleSide,
+            color: color,
+            opacity: 0.45,
+            transparent: true,
+            wireframe: false,
+            visible: show
+        }),
+        new THREE.MeshBasicMaterial({ //top material
+            side: THREE.DoubleSide,
+            color: color,
+            opacity: 0.45,
+            transparent: true,
+            wireframe: false,
+            visible: show
+        }),
+        new THREE.MeshBasicMaterial({ //bottom material
+            side: THREE.DoubleSide,
+            color: color,
+            opacity: 0.45,
+            transparent: true,
+            wireframe: false,
+            visible: show
+        })
+    ], [color, show]);
+
+    const handleClick = useCallback((event) => {
         event.stopPropagation();
-        setClicked(!clicked);
-        //setVisible(!visible);
-        console.log(`selected on ${name}`);
-        //alert(`selected on ${name}`);
-    };
-    const handlePointerOver = (event) => {
+        //setClicked(prev => !prev);
+        onSelect();
+        //console.log(`selected on ${name}`);
+    }, [name]);
+
+    const handlePointerOver = useCallback((event) => {
         event.stopPropagation();
         setHovered(true);
-        //setVisible(true);
         document.body.style.cursor = 'pointer';
-    };
+    }, []);
 
-    const handlePointerOut = (event) => {
+    const handlePointerOut = useCallback((event) => {
         event.stopPropagation();
         setHovered(false);
-        //setVisible(false);
         document.body.style.cursor = 'auto';
-    };
-
-    useFrame(() => {
-        if (countryRef.current && globeRef.current) {
-            countryRef.current.rotation.copy(globeRef.current.rotation);
-        }
-    });
+    }, []);
 
     {/* maybe for performance issues later
     useEffect(() => {
@@ -135,7 +165,7 @@ function Country({ name, coords, altitude, globeRef, type }) {
         <group ref={countryRef}>
             {geometry.map((geo, index) => (
                 <mesh
-                key={`${name}-${index}`}
+                    key={`${name}-${index}`}
                     onClick={handleClick}
                     onPointerOver={handlePointerOver}
                     onPointerOut={handlePointerOut}
@@ -150,7 +180,12 @@ function Country({ name, coords, altitude, globeRef, type }) {
 
     )
 
-}
+}, (prevProps, nextProps) => {
+    //comparison function - only re-render if these conditions change
+    return (
+        prevProps.isSelected === nextProps.isSelected
+    );
+});
 
 function ConicGlobe({ globeRef }) {
     const [geoData, setGeoData] = useState(null);
