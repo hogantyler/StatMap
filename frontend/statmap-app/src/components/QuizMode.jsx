@@ -1,6 +1,6 @@
 import React, { useState, useEffect, Suspense, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import Globe from "./Globe";
+import Globe from "./GlobeComponents/Globe";
 import HoverDropMenu from "./HoverDropMenu";
 import Modal from "./Modal";
 import Login from "./Login";

@@ -2,7 +2,7 @@ import React, { useState, useEffect, Suspense, useRef, useCallback } from "react
 import { useNavigate } from "react-router-dom";
 import HoverDropMenu from "./HoverDropMenu";
 import { FaArrowLeft } from "react-icons/fa";
-import Globe from "./Globe";
+import Globe from "./GlobeComponents/Globe";
 import Login from "./Login";
 import Modal from "./Modal";
 import Loading from "./Loading";
