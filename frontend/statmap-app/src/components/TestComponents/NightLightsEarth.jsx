@@ -98,9 +98,22 @@ function createEarthMaterial(maps, sunDirection = new THREE.Vector3(-2, 0.5, 0).
 }
 
 function NightLightsEarth(props) {
+    const [showPerformance, setShowPerformance] = useState(true);
     // texture loading
     const globeRef = useRef();
     const cloudsRef = useRef();
+
+    // Toggle performance monitor with key press
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'p') {
+                setShowPerformance(prev => !prev);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
     
     // Add nightMap to the texture loader
     const [colorMap, normalMap, specularMap, cloudMap, displacementMap, nightMap] = useLoader(
@@ -202,7 +215,8 @@ function NightLightsEarth(props) {
                     <CountryLabels globeRef={globeRef} showLabel={showLabel} />
                     <ConicGlobe globeRef={globeRef} />
                     
-                    <Perf position="top-right" />
+                    {/* Performance monitor (toggle with 'p' key) */}
+                    {showPerformance && <Perf position="top-right" />}
                 </Canvas>
             </div>
         </div>

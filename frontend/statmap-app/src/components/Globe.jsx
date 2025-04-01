@@ -14,11 +14,24 @@ import EarthTest from "./TestComponents/EarthTest";
  */
 function Globe(props) {
     const [showLabel, setShowLabel] = useState(true);
+    const [showPerformance, setShowPerformance] = useState(false);
 
     const globeRef = useRef();
     const cloudsRef = useRef();
 
     console.log("globe render");
+
+    // Toggle performance monitor with key press
+    useEffect(() => {
+        const handleKeyDown = (e) => {
+            if (e.key === 'p') {
+                setShowPerformance(prev => !prev);
+            }
+        };
+
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
 
     return (
         <div className="relative w-full h-full">
@@ -49,7 +62,7 @@ function Globe(props) {
                         fade={true}
                     />
 
-                    <EarthTest ref={globeRef} cloudsRef={cloudsRef}/>
+                    <EarthTest ref={globeRef} cloudsRef={cloudsRef} />
 
                     <AtmosphereMesh radius={1.02} />
 
@@ -59,7 +72,9 @@ function Globe(props) {
                     <CountryBorders globeRef={globeRef} />
                     <CountryLabels globeRef={globeRef} showLabel={showLabel} />
                     <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />
-                    {/*<Perf position="top-right" /> */}
+                    
+                    {/* Performance monitor (toggle with 'p' key) */}
+                    {showPerformance && <Perf position="top-right" />}
                 </Canvas>
             </div>
         </div>
