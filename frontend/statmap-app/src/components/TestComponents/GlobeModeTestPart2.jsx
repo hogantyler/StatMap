@@ -8,7 +8,9 @@ function GlobeModeTestPart2() {
   const [selectedCountryName, setSelectedCountryName] = useState("");
 
   useEffect(() => {
-    fetch("https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson")
+    fetch(
+      "https://raw.githubusercontent.com/holtzy/D3-graph-gallery/master/DATA/world.geojson"
+    )
       .then((res) => res.json())
       .then((data) => setCountriesData(data.features))
       .catch((err) => console.error("Error fetching geojson:", err));
