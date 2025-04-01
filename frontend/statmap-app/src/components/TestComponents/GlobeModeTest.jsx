@@ -4,6 +4,11 @@ import GlobeTest from "./GlobeTest";
 import NightLightsEarth from "./NightLightsEarth";
 import { CountrySelectionProvider, useCountrySelection } from "../CountrySelectionContext";
 
+/**
+ * Renders a page with interactive globe with experimetnal features under testing and development.
+ * 
+ * @returns {JSX.Element} A graphical component containing all the globe related items with a change button to switch between two different test globe components. This is all wrapped with countryselection provider to make context accessible for child comoponents.
+ */
 function GlobeModeTest() {
 
     const [nightGlobe, setNightGlobe] = useState(false);

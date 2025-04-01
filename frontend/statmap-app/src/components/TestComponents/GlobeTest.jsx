@@ -7,6 +7,11 @@ import ConicGlobe from "./ConicGlobe";
 import AtmosphereMesh from "./AtmosphereMesh";
 import EarthTest from "./EarthTest";
 
+/**
+ * Ultimate graphical component containing canvas which encapsulates all the 3D graphical webgl/three.js/react-three-fiber components.
+ * 
+ * @returns A Canvas component that encapsulates all the 3D components including the globe, lights, stars, etc.
+ */
 function GlobeTest(props) {
     const [showLabel, setShowLabel] = useState(true);
 

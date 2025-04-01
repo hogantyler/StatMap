@@ -9,9 +9,14 @@ import EarthCloudMap from "../../textures/cloud_texture.jpg"
 import EarthDisplacementMap from "../../textures/gebco_bathy_2700x1350.jpg"
 import { TextureLoader } from "three";
 
+/**
+ * Renders a page with interactive globe with experimetnal features under testing and development.
+ * 
+ * @returns part of the 3D earth that has to do with texture wrapping and anisotropic filtering and defines three.js/react-three-fiber material
+ */
 function EarthTest(props) {
-    // texture loading
-    //const earthRef = useRef();
+    // Texture loading
+    // const earthRef = useRef();
     const [colorMap, normalMap, specularMap, cloudMap, displacementMap] = useLoader(
         TextureLoader,
         [EarthMap, EarthNormalMap, EarthSpecMap, EarthCloudMap, EarthDisplacementMap]
