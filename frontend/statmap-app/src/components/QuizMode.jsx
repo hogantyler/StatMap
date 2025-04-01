@@ -1,51 +1,29 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Globe from "./Globe";
 import HoverDropMenu from "./HoverDropMenu";
 import Modal from "./Modal";
 import Login from "./Login";
 import { FaArrowLeft } from "react-icons/fa";
-import Select from "react-select";
 import Loading from "./Loading"
 import { supabase } from "./SupabaseContext";
 import { CountrySelectionProvider, useCountrySelection } from "./CountrySelectionContext";
 
 const QuizModeContent = () => {
   // --- Quiz Logic States ---
-  const [selectedOption, setSelectedOption] = useState(null);
+  const { selectedCountry } = useCountrySelection();
   const [currentFact, setCurrentFact] = useState(null);
   const [attempts, setAttempts] = useState(0);
   const [score, setScore] = useState(0);
   const [questionNumber, setQuestionNumber] = useState(1); // Question counter
   const [feedback, setFeedback] = useState("");
   const [feedbackType, setFeedbackType] = useState(""); // "correct", "incorrect", or "final"
-  const [isAnswered, setIsAnswered] = useState(false);
   const [quizComplete, setQuizComplete] = useState(false); // Flag for quiz completion
   const [questionFinished, setQuestionFinished] = useState(false); //for 'next' and 'source' buttons
-  const [countryOptions, setCountryOptions] = useState([]);
-
-  useEffect(() => {
-    async function fetchCountries() {
-      const { data, error } = await supabase.from("Countries").select();
-      if (error) {
-        console.error("Error fetching countries:", error);
-      } else if (data) {
-        const options = data.map(item => ({
-          value: item.Country,
-          label: item.Country,
-        }));
-        setCountryOptions(options);
-      }
-    }
-    fetchCountries();
-  }, []);
 
   // --- Navigation & Modal States ---
   const [isModalOpen, setIsModalOpen] = useState(false);
   const navigate = useNavigate();
-
-  // --- Globe Background Setup (using existing Globe component) ---
-  // (Globe component is imported and used below.)
 
   // --- Functions for Quiz Logic ---
   const loadNewFact = async () => {
@@ -61,10 +39,8 @@ const QuizModeContent = () => {
     }
     // Reset other states for the new question
     setAttempts(0);
-    setSelectedOption(null);
     setFeedback("");
     setFeedbackType("");
-    setIsAnswered(false);
   };
 
   const handleNextQuestion = () => {
@@ -82,20 +58,18 @@ const QuizModeContent = () => {
     loadNewFact();
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (isAnswered || !selectedOption) return;
-    setIsAnswered(true);
-    if (selectedOption.value === currentFact.Correct_Country) {
-      let points = 0;
-      if (attempts === 0) points = 1000;
-      else if (attempts === 1) points = 750;
-      else if (attempts === 2) points = 500;
-      else if (attempts === 3) points = 250;
+  // Handler for submitting the answer based solely on globe selection
+  const handleSubmitAnswer = useCallback(() => {
+    if (!selectedCountry) {
+      alert("Please select a country on the globe first.");
+      return;
+    }
+    const answer = selectedCountry || "";
+    if (answer === currentFact?.Correct_Country) {
+      let points = attempts === 0 ? 1000 : attempts === 1 ? 750 : attempts === 2 ? 500 : 250;
       setScore((prev) => prev + points);
       setFeedback("Correct!");
       setFeedbackType("correct");
-      setQuestionFinished(true)
     } else {
       if (attempts < 3) {
         const newAttempts = attempts + 1;
@@ -110,19 +84,16 @@ const QuizModeContent = () => {
         }
         setFeedback(`Incorrect! Try again. ${hint}`);
         setFeedbackType("incorrect");
-        setIsAnswered(false);
+        return;
       } else {
-        setFeedback(
-          `Incorrect! The correct answer is ${currentFact.Correct_Country}.`
-        );
+        setFeedback(`Incorrect! The correct answer is ${currentFact?.Correct_Country}.`);
         setFeedbackType("incorrect");
-        setQuestionFinished(true);
       }
     }
-    setSelectedOption(null);
-  };
+    setQuestionFinished(true);
+  }, [selectedCountry, currentFact, attempts]);
 
-  // NEW: Function to restart the quiz after completion
+  // Function to restart the quiz after completion
   const handleRestartQuiz = () => {
     setQuizComplete(false);
     setQuestionNumber(1);
@@ -194,6 +165,22 @@ const QuizModeContent = () => {
                   </p>
                 </div>
               )}
+              {/* Display the currently selected country */}
+              <div className="mb-4 text-center text-white">
+                Selected Country:{" "}
+                {selectedCountry
+                  ? selectedCountry
+                  : "None"}
+              </div>
+              {/* Submit Answer Button in green */}
+              <div className="text-center">
+                <button
+                  onClick={handleSubmitAnswer}
+                  className="bg-green-600 text-white border border-white rounded-full py-2 px-6 hover:bg-green-500 transition-colors"
+                >
+                  Submit Answer
+                </button>
+              </div>
               {/* Feedback Popup */}
               {feedback && (
                 <div
@@ -226,76 +213,6 @@ const QuizModeContent = () => {
                   </button>
                 </div>
               )}
-              {/* Country Selection Form */}
-              <form onSubmit={handleSubmit}>
-                <div className="text-center">
-                  <div className="mb-2 inline-block text-left max-w-xs w-full">
-                    <label
-                      htmlFor="countrySelect"
-                      className="font-bold block mb-2 text-white"
-                    >
-                      Select a country:
-                    </label>
-                    <Select
-                      id="countrySelect"
-                      options={countryOptions}
-                      value={selectedOption}
-                      onChange={setSelectedOption}
-                      placeholder="-- Search/Choose a country --"
-                      styles={{
-                        control: (provided, state) => ({
-                          ...provided,
-                          backgroundColor: "transparent",
-                          border: "1px solid white",
-                          boxShadow: state.isFocused ? "0 0 0 1px white" : provided.boxShadow,
-                          "&:hover": {
-                            border: "1px solid white",
-                          },
-                        }),
-                        input: (provided) => ({
-                          ...provided,
-                          color: "white", // Typed text is white
-                        }),
-                        singleValue: (provided) => ({
-                          ...provided,
-                          color: "white",
-                        }),
-                        placeholder: (provided) => ({
-                          ...provided,
-                          color: "white",
-                        }),
-                        menu: (provided) => ({
-                          ...provided,
-                          backgroundColor: "transparent",
-                          border: "1px solid white",
-                        }),
-                        option: (provided, state) => ({
-                          ...provided,
-                          backgroundColor: state.isSelected
-                            ? "rgba(255,255,255,0.3)"
-                            : state.isFocused
-                              ? "rgba(255,255,255,0.2)"
-                              : "transparent",
-                          color: "white",
-                          "&:hover": {
-                            backgroundColor: "rgba(255,255,255,0.2)",
-                          },
-                        }),
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div className="text-center">
-                  <button
-                    type="submit"
-                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
-                  >
-                    Submit
-                  </button>
-                  
-                </div>
-              </form>
             </div>
           )}
         </div>
