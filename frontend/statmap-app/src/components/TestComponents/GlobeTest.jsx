@@ -4,7 +4,7 @@ import { useRef, useState, useEffect, useMemo, useCallback } from "react";
 import * as THREE from "three";
 import { Perf } from 'r3f-perf'
 import ConicGlobe from "./ConicGlobe";
-import AtmosphereMesh from "../AtmosphereMesh";
+import TestAtmosphere from "./TestAtmosphere";
 import EarthTest from "./EarthTest";
 
 /**
@@ -51,7 +51,7 @@ function GlobeTest(props) {
 
                     <EarthTest ref={globeRef} cloudsRef={cloudsRef}/>
 
-                    <AtmosphereMesh radius={1.02} />
+                    <TestAtmosphere radius={1.02} />
 
                     {/*<ConicGlobe globeRef={globeRef} /> <CountryBorders globeRef={globeRef} />
                     <CountryLabels globeRef={globeRef} showLabel={showLabel} /> <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />*/}
