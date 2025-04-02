@@ -1,6 +1,6 @@
 /* js context for communicating which country is selected from the conicglobe component to gameplay pages.
    Creates the context, defines and provides the values of the context which includes its state and set state function as well as its custom useCountrySelection
-   usecontext hook */
+   usecontext hook. Created with the help of an LLM*/
 
 import React, { createContext, useState, useContext } from 'react';
 
