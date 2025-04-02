@@ -30,6 +30,7 @@ function GlobeTest(props) {
     const cloudsRef = useRef();
     const controlsRef = useRef();
     const linesRef = useRef();
+    const isDraggingRef = useRef(false);
 
     console.log("globe render");
 
@@ -43,6 +44,28 @@ function GlobeTest(props) {
 
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
+    }, []);
+
+    // Handlers for OrbitControls drag state
+    const handleDragStart = useCallback(() => {
+        isDraggingRef.current = true;
+        // Optional: You could change the cursor globally here if needed
+        // document.body.style.cursor = 'grabbing';
+    }, []);
+
+    const handleDragEnd = useCallback(() => {
+        isDraggingRef.current = false;
+        // Optional: Reset cursor
+        // document.body.style.cursor = 'auto';
+
+        // --- Important ---
+        // Force a slight delay or check if the pointer moved significantly
+        // before setting isDraggingRef.current to false if simple clicks
+        // are triggering onEnd immediately after onClick.
+        // A simple timeout might work, but check OrbitControls behavior.
+        // For now, let's assume onEnd fires correctly after a drag.
+        // If clicks trigger onEnd too quickly, a more robust solution
+        // involving tracking pointer movement distance might be needed.
     }, []);
 
     return (
@@ -66,8 +89,8 @@ function GlobeTest(props) {
                             zoomSpeed={0.4}
                             rotateSpeed={0.4}
                             // Event handlers to track drag state
-                            //onStart={}
-                            //onEnd={}
+                            onStart={handleDragStart}
+                            onEnd={handleDragEnd}
                         />
                         <Stars
                             radius={200}
@@ -80,13 +103,13 @@ function GlobeTest(props) {
 
                         <EarthTest ref={globeRef} cloudsRef={cloudsRef} />
                         <TestAtmosphere radius={1.02} />
-                        <ConicGlobe globeRef={globeRef} />
+                        <ConicGlobe globeRef={globeRef} isDraggingRef={isDraggingRef}/>
                         <CountryBorders globeRef={globeRef} linesRef={linesRef} />
                         <CountryLabels globeRef={globeRef} showLabel={showLabel} />
                         <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} linesRef={linesRef} />
 
                         {/* Performance monitor (toggle with 'p' key) */}
-                        {showPerformance && <Perf position="top-right" />}
+                        {showPerformance && <Perf position="bottom-right" />}
                     </Canvas>
                 </div>
             </div>

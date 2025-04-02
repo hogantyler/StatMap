@@ -3,7 +3,7 @@ import React, { useRef, useEffect, useState, forwardRef, memo, useMemo, useCallb
 import {useFrame} from '@react-three/fiber';
 import * as THREE from 'three';
 import ConicPolygonGeometry from 'three-conic-polygon-geometry';
-import { polygonCentroid } from "d3-polygon";
+//import { polygonCentroid } from "d3-polygon";
 import { useCountrySelection } from '../CountrySelectionContext'; // Context for passing selected country to game pages
 import { useDragState } from './GlobeTest'; // Context for dragging state in globetest
 

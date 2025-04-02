@@ -74,7 +74,7 @@ function Globe(props) {
                     <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />
                     
                     {/* Performance monitor (toggle with 'p' key) */}
-                    {showPerformance && <Perf position="top-right" />}
+                    {showPerformance && <Perf position="bottom-right" />}
                 </Canvas>
             </div>
         </div>
@@ -376,7 +376,7 @@ function CountryLabels({ globeRef, showLabel }) {
 
 
 //function to calculate approximate area of a polygon
-function calculateApproximateArea(polygon) {
+export function calculateApproximateArea(polygon) {
     if (!polygon || polygon.length < 3) {
         return 0;
     }
