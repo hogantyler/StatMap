@@ -131,7 +131,7 @@ const QuizModeContent = () => {
 
         {/* Quiz Overlay Container */}
         <div className="absolute top-0 left-0 w-full flex justify-center items-start mt-2 z-30">
-          {quizComplete ? (
+        {quizComplete ? (
             // Final Quiz Popup
             <div className="bg-transparent p-10 rounded-xl w-11/12 max-w-3xl border-2 border-white shadow-xl text-center">
               <div className="mb-6 text-3xl font-bold text-white">
@@ -145,7 +145,7 @@ const QuizModeContent = () => {
                 Restart Quiz
               </button>
             </div>
-          ) : (
+        ) : (
             // Normal Quiz Content
             <div className="bg-transparent p-6 rounded-xl w-11/12 max-w-3xl border border-white shadow-lg">
               <div className="mb-2 text-center font-bold text-white text-med">
@@ -188,7 +188,7 @@ const QuizModeContent = () => {
                     ? "bg-green-300 text-green-900"
                     : feedbackType === "final"
                       ? "bg-blue-300 text-blue-900"
-                      : "bg-red-300 text-red-900"
+                    : "bg-red-300 text-red-900"
                     }`}
                 >
                   {feedback}
