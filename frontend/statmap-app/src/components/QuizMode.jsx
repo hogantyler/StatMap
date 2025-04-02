@@ -118,7 +118,7 @@ const QuizModeContent = () => {
         <div className="absolute top-0 right-0 z-50">
           <button
             onClick={handleBack}
-            className="bg-black text-white border border-white rounded-full p-2 hover:bg-white hover:text-black transition-colors"
+            className="bg-black text-white rounded-full p-2 hover:bg-white hover:text-black transition-colors"
           >
             <FaArrowLeft size={40} />
           </button>
@@ -130,13 +130,11 @@ const QuizModeContent = () => {
         </div>
 
         {/* Quiz Overlay Container */}
-        <div className="absolute top-0 left-0 w-full flex justify-center items-start mt-2 z-30">
         {quizComplete ? (
-            // Final Quiz Popup
+          // Final Quiz Popup - restored as before
+          <div className="absolute top-0 left-0 w-full flex justify-center items-center mt-2 z-30 pointer-events-auto">
             <div className="bg-transparent p-10 rounded-xl w-11/12 max-w-3xl border-2 border-white shadow-xl text-center">
-              <div className="mb-6 text-3xl font-bold text-white">
-                Quiz Complete!
-              </div>
+              <div className="mb-6 text-3xl font-bold text-white">Quiz Complete!</div>
               <div className="mb-6 text-2xl text-white">Final Score: {score}</div>
               <button
                 onClick={handleRestartQuiz}
@@ -145,38 +143,41 @@ const QuizModeContent = () => {
                 Restart Quiz
               </button>
             </div>
+          </div>
         ) : (
-            // Normal Quiz Content
-            <div className="bg-transparent p-6 rounded-xl w-11/12 max-w-3xl border border-white shadow-lg">
-              <div className="mb-2 text-center font-bold text-white text-med">
+          // Normal Quiz Content with a wider, reactive container
+          <div className="absolute top-0 left-0 w-full flex justify-center items-start mt-2 z-30 pointer-events-none">
+            <div className="bg-white bg-opacity-0 p-4 rounded-xl w-11/12 max-w-3xl">
+              {/* Question Indicator */}
+              <div className="mb-1 text-center font-bold text-white text-sm">
                 Question: {questionNumber} of 10
               </div>
-              <div className="mb-4 text-center font-bold text-white text-lg">
-                Score: {score}
-              </div>
-              <div className="mb-4 text-center text-med text-white">
+              {/* Score Display */}
+              <div className="mb-1 text-center font-bold text-white text-xl">Score: {score}</div>
+              {/* Instruction Text */}
+              <div className="mb-1 text-center text-med text-white">
                 Guess the country based on the fact!
               </div>
               {/* Fact Box */}
               {currentFact && (
-                <div className="mb-6 p-4 border border-white rounded relative">
-                  <p className="text-center font-semibold text-white">
+                <div className="mb-2 p-2 border border-white rounded relative">
+                  <p className="text-center font-semibold text-white text-med">
                     {currentFact.Fact}
                   </p>
                 </div>
               )}
-              {/* Display the currently selected country */}
-              <div className="mb-4 text-center text-white">
+              {/* Selected Country Indicator */}
+              <div className="mb-4 text-center text-white text-sm">
                 Selected Country:{" "}
                 {selectedCountry
                   ? selectedCountry
                   : "None"}
               </div>
               {/* Submit Answer Button in green */}
-              <div className="text-center">
+              <div className="text-center pointer-events-auto">
                 <button
                   onClick={handleSubmitAnswer}
-                  className="bg-green-600 text-white border border-white rounded-full py-2 px-6 hover:bg-green-500 transition-colors"
+                  className="bg-green-600 text-white border border-white rounded-full py-2 px-4 hover:bg-green-500 transition-colors text-sm"
                 >
                   Submit Answer
                 </button>
@@ -184,38 +185,39 @@ const QuizModeContent = () => {
               {/* Feedback Popup */}
               {feedback && (
                 <div
-                  className={`mb-4 p-2 rounded text-center ${feedbackType === "correct"
+                  className={`mt-4 p-2 rounded text-center text-sm ${feedbackType === "correct"
                     ? "bg-green-300 text-green-900"
-                    : feedbackType === "final"
-                      ? "bg-blue-300 text-blue-900"
                     : "bg-red-300 text-red-900"
-                    }`}
+                    } pointer-events-auto`}
                 >
                   {feedback}
                 </div>
               )}
               {/* End of Question/Source Popup */}
               {questionFinished && (
-                <div className="flex justify-around mt-4">
+                <div className="flex justify-around mt-4 pointer-events-auto">
                   <a
                     href={currentFact.Source}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
+                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors text-sm"
                   >
                     Source
                   </a>
                   <button
-                    onClick={() => { setQuestionFinished(false); handleNextQuestion(); }}
-                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
+                    onClick={() => {
+                      setQuestionFinished(false);
+                      handleNextQuestion();
+                    }}
+                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors text-sm"
                   >
                     Next
                   </button>
                 </div>
               )}
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
         {/* Login Modal */}
         <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
