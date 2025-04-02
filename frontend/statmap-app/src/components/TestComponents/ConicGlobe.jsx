@@ -132,7 +132,7 @@ const Country = memo(function Country({ name, coords, altitude, type, iso, isSel
     ], [color, show]);
 
     const handleClick = useCallback((event) => {
-        if (isDraggingRef.current) { // <<< Check the ref
+        if (isDraggingRef.current) {
             console.log('Click ignored: dragging');
             event.stopPropagation();
             return; // Do nothing if dragging
@@ -140,10 +140,10 @@ const Country = memo(function Country({ name, coords, altitude, type, iso, isSel
         event.stopPropagation();
         onSelect();
         // console.log(`selected on ${name}`);
-    }, [onSelect, isDraggingRef]); // <<< Add ref to dependencies
+    }, [onSelect, isDraggingRef]);
 
     const handlePointerOver = useCallback((event) => {
-        if (isDraggingRef.current) { // <<< Check the ref
+        if (isDraggingRef.current) {
             console.log('Hover ignored: dragging');
             event.stopPropagation();
             return; // Do nothing if dragging
@@ -151,22 +151,13 @@ const Country = memo(function Country({ name, coords, altitude, type, iso, isSel
         event.stopPropagation();
         setHovered(true);
         document.body.style.cursor = 'pointer';
-    }, [isDraggingRef]); // <<< Add ref to dependencies
+    }, [isDraggingRef]);
 
     const handlePointerOut = useCallback((event) => {
-        // No need to check isDraggingRef here - always reset hover state and cursor
-        // This ensures the cursor resets even if a drag ends while over a country
         event.stopPropagation();
         setHovered(false);
         document.body.style.cursor = 'auto';
-    }, []); // No dependency needed
-
-    {/* maybe for performance issues later
-    useEffect(() => {
-        if (countryRef.current) {
-            countryRef.current.material[0].color.set(color);
-        }
-    }, [hovered, clicked, color, visible]);*/}
+    }, []);
 
     //const edges = new THREE.EdgesGeometry(geometry);
     return (

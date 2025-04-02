@@ -20,7 +20,7 @@ function GlobeTest(props) {
     const cloudsRef = useRef();
     const controlsRef = useRef();
     const linesRef = useRef();
-    const isDraggingRef = useRef(false);
+    const isDraggingRef = useRef(false); // For checking if the globe is being rotated
 
     console.log("globe render");
 
@@ -66,7 +66,7 @@ function GlobeTest(props) {
                             maxDistance={4}
                             zoomSpeed={0.4}
                             rotateSpeed={0.4}
-                            // Event handlers to track drag state
+                            // Event handlers to track if globe is being rotated
                             onStart={handleDragStart}
                             onEnd={handleDragEnd}
                         />
