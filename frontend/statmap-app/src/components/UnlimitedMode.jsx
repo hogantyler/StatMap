@@ -18,6 +18,7 @@ function UnlimitedModeContent() {
   const [feedbackType, setFeedbackType] = useState(""); // "correct" or "incorrect"
   const [isAnswered, setIsAnswered] = useState(false);
   const [questionFinished, setQuestionFinished] = useState(false); // for 'next' and 'source' buttons
+  const [isCollapsed, setIsCollapsed] = useState(false); //making the fact box collapse
   const navigate = useNavigate();
 
   // Retrieve selected country from context
@@ -67,6 +68,7 @@ function UnlimitedModeContent() {
       alert("Please select a country on the globe first.");
       return;
     }
+    setIsCollapsed(false); //show fact after submission(if it was hidden)
     setIsAnswered(true);
     const answer = selectedCountry || "";
     if (answer.includes(currentFact?.Correct_Country) || currentFact?.Correct_Country.includes(answer)) {
@@ -109,7 +111,7 @@ function UnlimitedModeContent() {
         <div className="absolute top-0 right-0 z-50">
           <button
             onClick={handleBack}
-            className="bg-black text-white rounded-full p-2 hover:bg-white hover:text-black transition-colors"
+            className="text-white rounded-full p-2 hover:text-red-600 transition-colors"
           >
             <FaTimes size={50} />
           </button>
@@ -122,51 +124,63 @@ function UnlimitedModeContent() {
 
         {/* Overlay Container */}
         <div className="absolute top-0 left-0 w-full flex justify-center items-start mt-5 z-30 pointer-events-none">
-          <div className="bg-white bg-opacity-0 p-4 rounded-xl w-11/12 max-w-3xl">
-            {/* Score Display */}
-            <div className="mb-1 text-center text-small text-white text-xl">Score: {score}</div>
-            {/* Instruction Text */}
-            <div className="mb-1 text-center text-small text-white">Guess the country based on the fact!</div>
-            {/* Fact Box */}
-            {currentFact && (
-              <div className="mb-2 p-2 border border-white rounded relative">
-                <p className="text-center font-semibold text-white text-med">{currentFact.Fact}</p>
-              </div>
-            )}
-            {/* Display the currently selected country */}
-            <div className="mb-4 text-center text-white">
-              Selected Country:{" "}
-              {selectedCountry
-                ? selectedCountry
-                : "None"}
+          <div className="bg-white bg-opacity-0 p-4 rounded-xl w-11/12 max-w-3xl pointer-events-auto">
+            {/* COLLAPSIBLE SECTION: Score, Instruction, Fact Box */}
+            <div className={`${isCollapsed ? "hidden" : "block"}`}>
+              <div className="mb-1 text-center font-bold text-white text-xl">Score: {score}</div>
+              <div className="mb-1 text-center text-white">Guess the country based on the fact!</div>
+              {currentFact && (
+                <div className="mb-2 p-2 border border-white rounded relative">
+                  <p className="text-center font-semibold text-white text-med">{currentFact.Fact}</p>
+                </div>
+              )}
             </div>
-            {/* Submit Answer Button in green */}
-            <div className="text-center pointer-events-auto">
+            {/* Non-collapsible Section */}
+            <div className="mb-4 text-center text-white">
+              Selected Country: {selectedCountry ? selectedCountry : "None"}
+            </div>
+            <div className="flex justify-center items-center">
               <button
                 onClick={handleSubmitAnswer}
                 className="bg-green-600 text-white border border-white rounded-full py-2 px-6 hover:bg-green-500 transition-colors"
               >
                 Submit Answer
               </button>
+              {/* When fact is expanded, place the hide fact button to the right */}
+              {!isCollapsed && (
+                <button
+                  onClick={() => setIsCollapsed(true)}
+                  className="ml-4 bg-white text-black rounded-full p-1 hover:bg-green-600 transition-colors"
+                >
+                  Hide Fact
+                </button>
+              )}
             </div>
+            {/* When fact is collapsed, show the show fact button above the submit answer button */}
+            {isCollapsed && (
+              <div className="flex justify-center items-center mb-4">
+                <button
+                  onClick={() => setIsCollapsed(false)}
+                  className="bg-white text-black rounded-full p-1 hover:bg-green-600 transition-colors"
+                >
+                  Show Fact
+                </button>
+              </div>
+            )}
             {/* Feedback Popup */}
             {feedback && (
-              <div
-                className={`mt-4 p-2 rounded text-center ${
-                  feedbackType === "correct" ? "bg-green-300 text-green-900" : "bg-red-300 text-red-900"
-                }`}
-              >
+              <div className={`mt-4 p-2 rounded text-center text-sm ${feedbackType === "correct" ? "bg-green-300 text-green-900" : "bg-red-300 text-red-900"}`}>
                 {feedback}
               </div>
             )}
             {/* End of Question/Source Popup */}
             {questionFinished && (
-              <div className="flex justify-around mt-4">
+              <div className="flex justify-around mt-4 pointer-events-auto">
                 <a
                   href={currentFact.Source}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors pointer-events-auto"
+                  className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors text-sm"
                 >
                   Source
                 </a>
@@ -175,7 +189,7 @@ function UnlimitedModeContent() {
                     setQuestionFinished(false);
                     loadNewFact();
                   }}
-                  className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors pointer-events-auto"
+                  className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors text-sm"
                 >
                   Next
                 </button>

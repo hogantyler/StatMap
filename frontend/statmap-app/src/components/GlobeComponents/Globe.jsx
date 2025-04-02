@@ -19,6 +19,8 @@ function Globe(props) {
     const globeRef = useRef();
     const cloudsRef = useRef();
 
+    const isDraggingRef = useRef(false); // For checking if the globe is being rotated
+
     console.log("globe render");
 
     // Toggle performance monitor with key press
@@ -68,13 +70,13 @@ function Globe(props) {
 
                     {/*<ConicGlobe globeRef={globeRef} /> <CountryBorders globeRef={globeRef} />
                     <CountryLabels globeRef={globeRef} showLabel={showLabel} /> <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />*/}
-                    <ConicGlobe globeRef={globeRef} />
+                    <ConicGlobe globeRef={globeRef} isDraggingRef={isDraggingRef} />
                     <CountryBorders globeRef={globeRef} />
                     <CountryLabels globeRef={globeRef} showLabel={showLabel} />
                     <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />
                     
                     {/* Performance monitor (toggle with 'p' key) */}
-                    {showPerformance && <Perf position="top-right" />}
+                    {showPerformance && <Perf position="bottom-right" />}
                 </Canvas>
             </div>
         </div>
@@ -376,7 +378,7 @@ function CountryLabels({ globeRef, showLabel }) {
 
 
 //function to calculate approximate area of a polygon
-function calculateApproximateArea(polygon) {
+export function calculateApproximateArea(polygon) {
     if (!polygon || polygon.length < 3) {
         return 0;
     }

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Form, Button } from "react-bootstrap";
 import { supabase } from "../SupabaseContext";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 const LobbyTest = () => {
@@ -53,9 +53,9 @@ const LobbyTest = () => {
       <div className="absolute top-0 right-0 z-50">
         <button
           onClick={handleBack}
-          className="bg-black text-white border border-white rounded-full p-2 hover:bg-white hover:text-black transition-colors"
+          className="text-black border border-white rounded-full p-2 hover:text-red-600 transition-colors"
         >
-          <FaArrowLeft size={40} />
+          <FaTimes size={50} />
         </button>
       </div>
       <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-gray-400 to-white p-6">

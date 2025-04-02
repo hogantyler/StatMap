@@ -7,15 +7,6 @@ import ConicGlobe from "./ConicGlobe";
 import TestAtmosphere from "./TestAtmosphere";
 import EarthTest from "./EarthTest";
 
-// A context to share the dragging state
-export const DragContext = createContext({
-    isDragging: false,
-    setIsDragging: () => { }
-});
-
-// Custom hook to use the drag context
-export const useDragState = () => useContext(DragContext);
-
 /**
  * Ultimate graphical component containing canvas which encapsulates all the 3D graphical webgl/three.js/react-three-fiber components.
  * 
@@ -24,12 +15,12 @@ export const useDragState = () => useContext(DragContext);
 function GlobeTest(props) {
     const [showLabel, setShowLabel] = useState(true);
     const [showPerformance, setShowPerformance] = useState(true);
-    const [isDragging, setIsDragging] = useState(false);
 
     const globeRef = useRef();
     const cloudsRef = useRef();
     const controlsRef = useRef();
     const linesRef = useRef();
+    const isDraggingRef = useRef(false); // For checking if the globe is being rotated
 
     console.log("globe render");
 
@@ -45,8 +36,18 @@ function GlobeTest(props) {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, []);
 
+    // Handlers for OrbitControls drag state
+    const handleDragStart = useCallback(() => {
+        isDraggingRef.current = true;
+        document.body.style.cursor = 'grabbing';
+    }, []);
+
+    const handleDragEnd = useCallback(() => {
+        isDraggingRef.current = false;
+        document.body.style.cursor = 'auto';
+    }, []);
+
     return (
-        <DragContext.Provider value={{ isDragging, setIsDragging }}>
             <div className="relative w-full h-full">
                 <div className="absolute top-0 left-0 w-full h-full">
                     <Canvas
@@ -65,9 +66,9 @@ function GlobeTest(props) {
                             maxDistance={4}
                             zoomSpeed={0.4}
                             rotateSpeed={0.4}
-                            // Event handlers to track drag state
-                            //onStart={}
-                            //onEnd={}
+                            // Event handlers to track if globe is being rotated
+                            onStart={handleDragStart}
+                            onEnd={handleDragEnd}
                         />
                         <Stars
                             radius={200}
@@ -80,17 +81,16 @@ function GlobeTest(props) {
 
                         <EarthTest ref={globeRef} cloudsRef={cloudsRef} />
                         <TestAtmosphere radius={1.02} />
-                        <ConicGlobe globeRef={globeRef} />
+                        <ConicGlobe globeRef={globeRef} isDraggingRef={isDraggingRef}/>
                         <CountryBorders globeRef={globeRef} linesRef={linesRef} />
                         <CountryLabels globeRef={globeRef} showLabel={showLabel} />
                         <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} linesRef={linesRef} />
 
                         {/* Performance monitor (toggle with 'p' key) */}
-                        {showPerformance && <Perf position="top-right" />}
+                        {showPerformance && <Perf position="bottom-right" />}
                     </Canvas>
                 </div>
             </div>
-        </DragContext.Provider>
     );
 }
 

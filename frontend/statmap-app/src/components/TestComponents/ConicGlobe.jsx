@@ -3,25 +3,23 @@ import React, { useRef, useEffect, useState, forwardRef, memo, useMemo, useCallb
 import {useFrame} from '@react-three/fiber';
 import * as THREE from 'three';
 import ConicPolygonGeometry from 'three-conic-polygon-geometry';
-import { polygonCentroid } from "d3-polygon";
+//import { polygonCentroid } from "d3-polygon";
 import { useCountrySelection } from '../CountrySelectionContext'; // Context for passing selected country to game pages
-import { useDragState } from './GlobeTest'; // Context for dragging state in globetest
 
 //drawing countries on a globe using conical projections of polygons from here: https://github.com/vasturiano/three-conic-polygon-geometry
 
-function CountryPolygons({ geoData, globeRef }) {
-    const [meshes, setMeshes] = useState([]);
-    const [names, setNames] = useState([]);
+function CountryPolygons({ geoData, globeRef, isDraggingRef }) {
     const [countries, setCountries] = useState([]);
     const [selectedCountry, setSelectedCountry] = useState(null);
-    const polygonsRef = useRef();
     const { selectCountry } = useCountrySelection();
+    const polygonsRef = useRef();
 
-    const handleCountrySelect = (countryId) => {//handler for making sure only one country is selectable at a time and setting selected country context so game page can access selected country
+    //handler for making sure only one country is selectable at a time and setting selected country context so game page can access selected country
+    const handleCountrySelect = (countryId) => {
         setSelectedCountry(prevSelected =>
             prevSelected === countryId ? null : countryId
         );
-        //console.log(`Country selected: ${countryId}`);
+        console.log(`Country selected: ${countryId}`);
         selectCountry(countryId);
     };
 
@@ -73,6 +71,7 @@ function CountryPolygons({ geoData, globeRef }) {
                         iso={country.iso}
                         isSelected={selectedCountry === country.name}
                         onSelect={() => handleCountrySelect(country.name)}
+                        isDraggingRef={isDraggingRef}
                     />
                 ))}
             </group>
@@ -81,11 +80,9 @@ function CountryPolygons({ geoData, globeRef }) {
     );
 }
 
-const Country = memo(function Country({ name, coords, altitude, type, iso, isSelected, onSelect }) {
+const Country = memo(function Country({ name, coords, altitude, type, iso, isSelected, onSelect, isDraggingRef }) {
     console.log("country");
     const [hovered, setHovered] = useState(false);
-    const [clicked, setClicked] = useState(false);
-    const [visible, setVisible] = useState(false);
     
     const countryRef = useRef();
 
@@ -135,30 +132,32 @@ const Country = memo(function Country({ name, coords, altitude, type, iso, isSel
     ], [color, show]);
 
     const handleClick = useCallback((event) => {
+        if (isDraggingRef.current) {
+            console.log('Click ignored: dragging');
+            event.stopPropagation();
+            return; // Do nothing if dragging
+        }
         event.stopPropagation();
-        //setClicked(prev => !prev);
         onSelect();
-        //console.log(`selected on ${name}`);
-    }, [name]);
+        // console.log(`selected on ${name}`);
+    }, [onSelect, isDraggingRef]);
 
     const handlePointerOver = useCallback((event) => {
+        if (isDraggingRef.current) {
+            console.log('Hover ignored: dragging');
+            event.stopPropagation();
+            return; // Do nothing if dragging
+        }
         event.stopPropagation();
         setHovered(true);
         document.body.style.cursor = 'pointer';
-    }, []);
+    }, [isDraggingRef]);
 
     const handlePointerOut = useCallback((event) => {
         event.stopPropagation();
         setHovered(false);
         document.body.style.cursor = 'auto';
     }, []);
-
-    {/* maybe for performance issues later
-    useEffect(() => {
-        if (countryRef.current) {
-            countryRef.current.material[0].color.set(color);
-        }
-    }, [hovered, clicked, color, visible]);*/}
 
     //const edges = new THREE.EdgesGeometry(geometry);
     return (
@@ -182,11 +181,12 @@ const Country = memo(function Country({ name, coords, altitude, type, iso, isSel
 }, (prevProps, nextProps) => {
     //comparison function - only re-render if these conditions change
     return (
-        prevProps.isSelected === nextProps.isSelected
+        prevProps.isSelected === nextProps.isSelected &&
+        prevProps.isDraggingRef === nextProps.isDraggingRef
     );
 });
 
-function ConicGlobe({ globeRef }) {
+function ConicGlobe({ globeRef, isDraggingRef }) {
     const [geoData, setGeoData] = useState(null);
     //https://raw.githubusercontent.com/vasturiano/three-conic-polygon-geometry/refs/heads/master/example/geojson/ne_110m_admin_0_countries.geojson
     // Load GeoJSON data
@@ -204,7 +204,7 @@ function ConicGlobe({ globeRef }) {
     return (
         <>
             {/* Load country polygons */}
-            {geoData && <CountryPolygons geoData={geoData} globeRef={globeRef} />}
+            {geoData && <CountryPolygons geoData={geoData} globeRef={globeRef} isDraggingRef={isDraggingRef} />}
         </>
 
     );
