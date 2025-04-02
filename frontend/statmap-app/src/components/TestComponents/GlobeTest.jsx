@@ -7,15 +7,6 @@ import ConicGlobe from "./ConicGlobe";
 import TestAtmosphere from "./TestAtmosphere";
 import EarthTest from "./EarthTest";
 
-// A context to share the dragging state
-export const DragContext = createContext({
-    isDragging: false,
-    setIsDragging: () => { }
-});
-
-// Custom hook to use the drag context
-export const useDragState = () => useContext(DragContext);
-
 /**
  * Ultimate graphical component containing canvas which encapsulates all the 3D graphical webgl/three.js/react-three-fiber components.
  * 
@@ -24,7 +15,6 @@ export const useDragState = () => useContext(DragContext);
 function GlobeTest(props) {
     const [showLabel, setShowLabel] = useState(true);
     const [showPerformance, setShowPerformance] = useState(true);
-    const [isDragging, setIsDragging] = useState(false);
 
     const globeRef = useRef();
     const cloudsRef = useRef();
@@ -49,27 +39,15 @@ function GlobeTest(props) {
     // Handlers for OrbitControls drag state
     const handleDragStart = useCallback(() => {
         isDraggingRef.current = true;
-        // Optional: You could change the cursor globally here if needed
-        // document.body.style.cursor = 'grabbing';
+        document.body.style.cursor = 'grabbing';
     }, []);
 
     const handleDragEnd = useCallback(() => {
         isDraggingRef.current = false;
-        // Optional: Reset cursor
-        // document.body.style.cursor = 'auto';
-
-        // --- Important ---
-        // Force a slight delay or check if the pointer moved significantly
-        // before setting isDraggingRef.current to false if simple clicks
-        // are triggering onEnd immediately after onClick.
-        // A simple timeout might work, but check OrbitControls behavior.
-        // For now, let's assume onEnd fires correctly after a drag.
-        // If clicks trigger onEnd too quickly, a more robust solution
-        // involving tracking pointer movement distance might be needed.
+        document.body.style.cursor = 'auto';
     }, []);
 
     return (
-        <DragContext.Provider value={{ isDragging, setIsDragging }}>
             <div className="relative w-full h-full">
                 <div className="absolute top-0 left-0 w-full h-full">
                     <Canvas
@@ -113,7 +91,6 @@ function GlobeTest(props) {
                     </Canvas>
                 </div>
             </div>
-        </DragContext.Provider>
     );
 }
 
