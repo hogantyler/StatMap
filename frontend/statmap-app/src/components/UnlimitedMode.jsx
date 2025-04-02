@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Suspense, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import HoverDropMenu from "./HoverDropMenu";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 import Globe from "./GlobeComponents/Globe";
 import Login from "./Login";
 import Modal from "./Modal";
@@ -109,9 +109,9 @@ function UnlimitedModeContent() {
         <div className="absolute top-0 right-0 z-50">
           <button
             onClick={handleBack}
-            className="bg-black text-white border border-white rounded-full p-2 hover:bg-white hover:text-black transition-colors"
+            className="bg-black text-white rounded-full p-2 hover:bg-white hover:text-black transition-colors"
           >
-            <FaArrowLeft size={40} />
+            <FaTimes size={50} />
           </button>
         </div>
 
@@ -121,16 +121,16 @@ function UnlimitedModeContent() {
         </div>
 
         {/* Overlay Container */}
-        <div className="absolute top-0 left-0 w-full flex justify-center items-start mt-5 z-30">
+        <div className="absolute top-0 left-0 w-full flex justify-center items-start mt-5 z-30 pointer-events-none">
           <div className="bg-white bg-opacity-0 p-4 rounded-xl w-11/12 max-w-3xl">
             {/* Score Display */}
-            <div className="mb-1 text-center font-bold text-white text-xl">Score: {score}</div>
+            <div className="mb-1 text-center text-small text-white text-xl">Score: {score}</div>
             {/* Instruction Text */}
-            <div className="mb-1 text-center text-med text-white">Guess the country based on the fact!</div>
+            <div className="mb-1 text-center text-small text-white">Guess the country based on the fact!</div>
             {/* Fact Box */}
             {currentFact && (
-              <div className="mb-4 p-4 border border-white rounded relative">
-                <p className="text-center font-semibold text-white">{currentFact.Fact}</p>
+              <div className="mb-2 p-2 border border-white rounded relative">
+                <p className="text-center font-semibold text-white text-med">{currentFact.Fact}</p>
               </div>
             )}
             {/* Display the currently selected country */}
@@ -141,7 +141,7 @@ function UnlimitedModeContent() {
                 : "None"}
             </div>
             {/* Submit Answer Button in green */}
-            <div className="text-center">
+            <div className="text-center pointer-events-auto">
               <button
                 onClick={handleSubmitAnswer}
                 className="bg-green-600 text-white border border-white rounded-full py-2 px-6 hover:bg-green-500 transition-colors"
@@ -166,7 +166,7 @@ function UnlimitedModeContent() {
                   href={currentFact.Source}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
+                  className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors pointer-events-auto"
                 >
                   Source
                 </a>
@@ -175,7 +175,7 @@ function UnlimitedModeContent() {
                     setQuestionFinished(false);
                     loadNewFact();
                   }}
-                  className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
+                  className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors pointer-events-auto"
                 >
                   Next
                 </button>

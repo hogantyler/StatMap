@@ -4,7 +4,7 @@ import Globe from "./GlobeComponents/Globe";
 import HoverDropMenu from "./HoverDropMenu";
 import Modal from "./Modal";
 import Login from "./Login";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 import Loading from "./Loading"
 import { supabase } from "./SupabaseContext";
 import { CountrySelectionProvider, useCountrySelection } from "./CountrySelectionContext";
@@ -120,7 +120,7 @@ const QuizModeContent = () => {
             onClick={handleBack}
             className="bg-black text-white rounded-full p-2 hover:bg-white hover:text-black transition-colors"
           >
-            <FaArrowLeft size={40} />
+            <FaTimes size={40} />
           </button>
         </div>
 
