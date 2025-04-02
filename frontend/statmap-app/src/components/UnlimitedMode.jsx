@@ -111,7 +111,7 @@ function UnlimitedModeContent() {
         <div className="absolute top-0 right-0 z-50">
           <button
             onClick={handleBack}
-            className="bg-black text-white rounded-full p-2 hover:bg-white hover:text-black transition-colors"
+            className="text-white rounded-full p-2 hover:text-red-600 transition-colors"
           >
             <FaTimes size={50} />
           </button>

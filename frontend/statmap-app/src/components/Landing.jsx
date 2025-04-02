@@ -65,6 +65,12 @@ const Landing = () => {
           >
             UNLIMITED
           </button>
+          <button
+            className="text-white bg-black text-opacity-1 py-2 px-4 rounded-lg hover:text-blue-500"
+            onClick={() => navigate("/lobbyTest")}
+          >
+            MULTIPLAYER (COMING SOON)
+          </button>
         </div>
 
         {/* Leaderboard Card */}
@@ -97,25 +103,12 @@ const Landing = () => {
         </div>
       </div>
 
-      <button
-        className="fixed left-1 top-1 text-white bg-black text-opacity-1 py-2 px-4 mt-40 rounded-lg hover:text-blue-500"
-        onClick={() => navigate("/lobbyTest")}
-      >
-        LOBBY
-      </button>
 
       <button
-        className="fixed bottom-1 right-1 text-white bg-black text-opacity-1 py-2 px-4 mt-40 rounded-lg hover:text-blue-500"
+        className="fixed bottom-1 right-1 text-white bg-white text-opacity-1 py-2 px-4 mt-40 rounded-lg hover:text-blue-500"
         onClick={() => navigate("/globeModeTest")}
       >
         GlobeModeTest
-      </button>
-
-      <button
-        className="fixed bottom-10 right-1 text-white bg-black text-opacity-1 my-2 py-2 px-4 mt-40 rounded-lg hover:text-blue-500"
-        onClick={() => navigate("/globeModeTestPart2")}
-      >
-        GlobeModeTestPart2
       </button>
 
       {/* Modal compoent that gets opened when handleOpenModal is called and displays the passed content */}
@@ -131,8 +124,8 @@ const Landing = () => {
               <p className="text-sm">
                 Welcome to STATMAP! To play the game, you will be presented with
                 a fact or statistic about a country from our custom database.
-                Your task is to choose the correct country from the dropdown
-                menu. The game tests your knowledge of global geography and
+                Your task is to choose the correct country on the interactive globe.
+                The game tests your knowledge of global geography and
                 country-specific facts. Good luck and have fun!
               </p>
             </div>
@@ -140,7 +133,7 @@ const Landing = () => {
         }
         className="fixed bottom-4 left-6 z-50 focus:outline-none"
       >
-        <BsFillQuestionSquareFill size={50} className="text-black" />
+        <BsFillQuestionSquareFill size={50} className="bg-white text-black hover:text-green-600" />
       </button>
     </div>
   );

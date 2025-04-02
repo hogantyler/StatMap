@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../SupabaseContext";
 import { useNavigate } from "react-router-dom";
-import { FaArrowLeft } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 
 /**
  * This outputs a 6 character digit code, which is immediately integrated into the
@@ -105,7 +105,7 @@ function CreateLobby() {
     navigate("/lobbyTest");
   };
 
-  const handleBack = () => navigate("/");
+  const handleBack = () => navigate("/lobbytest");
 
   return (
     <>
@@ -113,9 +113,9 @@ function CreateLobby() {
       <div className="absolute top-0 right-0 z-50">
         <button
           onClick={handleBack}
-          className="bg-black text-white border border-white rounded-full p-2 hover:bg-white hover:text-black transition-colors"
+          className=" text-black border border-white rounded-full p-2  hover:text-red-600 transition-colors"
         >
-          <FaArrowLeft size={40} />
+          <FaTimes size={50} />
         </button>
       </div>
       <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-gray-400 to-white p-4">
