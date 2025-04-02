@@ -3,9 +3,9 @@ import { OrbitControls, Stars, Stats, Text, Billboard } from "@react-three/drei"
 import { useRef, useState, useEffect, useMemo, useCallback } from "react";
 import * as THREE from "three";
 import { Perf } from 'r3f-perf'
-import ConicGlobe from "./TestComponents/ConicGlobe";
+import ConicGlobe from "../TestComponents/ConicGlobe";
 import AtmosphereMesh from "./AtmosphereMesh";
-import EarthTest from "./TestComponents/EarthTest";
+import EarthTest from "../TestComponents/EarthTest";
 
 /**
  * Ultimate graphical component containing canvas which encapsulates all the 3D graphical webgl/three.js/react-three-fiber components.

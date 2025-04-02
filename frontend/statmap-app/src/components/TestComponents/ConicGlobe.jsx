@@ -4,7 +4,8 @@ import {useFrame} from '@react-three/fiber';
 import * as THREE from 'three';
 import ConicPolygonGeometry from 'three-conic-polygon-geometry';
 import { polygonCentroid } from "d3-polygon";
-import { useCountrySelection } from '../CountrySelectionContext';
+import { useCountrySelection } from '../CountrySelectionContext'; // Context for passing selected country to game pages
+import { useDragState } from './GlobeTest'; // Context for dragging state in globetest
 
 //drawing countries on a globe using conical projections of polygons from here: https://github.com/vasturiano/three-conic-polygon-geometry
 
@@ -16,7 +17,7 @@ function CountryPolygons({ geoData, globeRef }) {
     const polygonsRef = useRef();
     const { selectCountry } = useCountrySelection();
 
-    const handleCountrySelect = (countryId) => {//handler for making sure only one country is selectable at a time
+    const handleCountrySelect = (countryId) => {//handler for making sure only one country is selectable at a time and setting selected country context so game page can access selected country
         setSelectedCountry(prevSelected =>
             prevSelected === countryId ? null : countryId
         );
@@ -87,7 +88,6 @@ const Country = memo(function Country({ name, coords, altitude, type, iso, isSel
     const [visible, setVisible] = useState(false);
     
     const countryRef = useRef();
-    
 
     const { color, show, raise } = useMemo(() => ({
         color: isSelected ? 'teal' : (hovered ? 'cyan' : 'purple'),
@@ -177,7 +177,6 @@ const Country = memo(function Country({ name, coords, altitude, type, iso, isSel
                 </mesh>
             ))}
         </group>
-
     )
 
 }, (prevProps, nextProps) => {
