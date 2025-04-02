@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { supabase } from "../SupabaseContext";
 import { useNavigate } from "react-router-dom";
+import { FaArrowLeft } from "react-icons/fa";
 
 /**
  * This outputs a 6 character digit code, which is immediately integrated into the
@@ -104,19 +105,36 @@ function CreateLobby() {
     navigate("/lobbyTest");
   };
 
+  const handleBack = () => navigate("/");
+
   return (
-    <div className="flex flex-col items-center justify-center h-screen bg-gray-100 p-4">
-      <div className="text-4xl font-semibold mb-6">Your Lobby Code:</div>
-      <div className="text-6xl font-extrabold bg-white p-6 rounded-lg shadow-lg border-2 border-gray-300 min-h-[33vh] flex items-center justify-center w-full max-w-md">
-        {joinCode || "Loading..."}
+    <>
+      {/* Back Button in top right */}
+      <div className="absolute top-0 right-0 z-50">
+        <button
+          onClick={handleBack}
+          className="bg-black text-white border border-white rounded-full p-2 hover:bg-white hover:text-black transition-colors"
+        >
+          <FaArrowLeft size={40} />
+        </button>
       </div>
-      <button
-        onClick={handleLeaveLobby}
-        className="mt-8 px-6 py-3 text-2xl bg-red-500 text-white rounded-lg shadow-lg hover:bg-red-600 transition"
-      >
-        Leave Lobby
-      </button>
-    </div>
+      <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-gray-400 to-white p-4">
+        <div className="text-4xl font-semibold mb-6 text-black">
+          Your Lobby Code:
+        </div>
+
+        <div className="text-6xl font-extrabold bg-gradient-to-r from-white to-gray-300 p-6 rounded-lg shadow-lg border-2 border-black min-h-[33vh] flex items-center justify-center w-full max-w-md">
+          {joinCode || "Loading..."}
+        </div>
+
+        <button
+          onClick={handleLeaveLobby}
+          className="mt-8 px-6 py-3 text-2xl bg-black text-white rounded-lg shadow-lg hover:bg-white hover:text-black border-2 border-black transition"
+        >
+          Leave Lobby
+        </button>
+      </div>
+    </>
   );
 }
 
