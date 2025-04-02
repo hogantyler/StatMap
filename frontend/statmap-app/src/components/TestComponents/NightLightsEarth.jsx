@@ -17,7 +17,7 @@ import TestAtmosphere from "./TestAtmosphere";
 // custom shader material for day/night cycle
 function createEarthMaterial(maps, sunDirection = new THREE.Vector3(-2, 0.5, 0).normalize()) {
     const { colorMap, normalMap, specularMap, cloudMap, nightMap } = maps;
-    
+
     const uniforms = {
         dayTexture: { value: colorMap },
         nightTexture: { value: nightMap },
@@ -25,7 +25,7 @@ function createEarthMaterial(maps, sunDirection = new THREE.Vector3(-2, 0.5, 0).
         specularMap: { value: specularMap },
         sunDirection: { value: sunDirection },
     };
-    
+
     const vertexShader = `
         varying vec2 vUv;
         varying vec3 vNormal;
@@ -45,7 +45,7 @@ function createEarthMaterial(maps, sunDirection = new THREE.Vector3(-2, 0.5, 0).
             vPosition = modelPosition.xyz;
         }
     `;
-    
+
     const fragmentShader = `
         uniform sampler2D dayTexture;
         uniform sampler2D nightTexture;
@@ -89,7 +89,7 @@ function createEarthMaterial(maps, sunDirection = new THREE.Vector3(-2, 0.5, 0).
             gl_FragColor = vec4(color, 1.0);
         }
     `;
-    
+
     return new THREE.ShaderMaterial({
         uniforms: uniforms,
         vertexShader: vertexShader,
@@ -102,7 +102,9 @@ function NightLightsEarth(props) {
     // texture loading
     const globeRef = useRef();
     const cloudsRef = useRef();
-
+    const isDraggingRef = useRef(false);
+    const controlsRef = useRef();
+    
     // Toggle performance monitor with key press
     useEffect(() => {
         const handleKeyDown = (e) => {
@@ -114,16 +116,30 @@ function NightLightsEarth(props) {
         window.addEventListener('keydown', handleKeyDown);
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, []);
-    
+
+    // Handlers for OrbitControls drag state
+    const handleDragStart = useCallback(() => {
+        isDraggingRef.current = true;
+        document.body.style.cursor = 'grabbing';
+    }, []);
+
+    const handleDragEnd = useCallback(() => {
+        setTimeout(() => {
+            isDraggingRef.current = false;
+            // console.log("Drag ended (isDraggingRef set to false after 500ms)");
+        }, 200);
+        document.body.style.cursor = 'auto';
+    }, []);
+
     // Add nightMap to the texture loader
     const [colorMap, normalMap, specularMap, cloudMap, displacementMap, nightMap] = useLoader(
         TextureLoader,
         [EarthMap, EarthNormalMap, EarthSpecMap, EarthCloudMap, EarthDisplacementMap, EarthNightMap]
     );
-    
+
     // Sun direction state that can be animated
     const [sunDirection] = useState(() => new THREE.Vector3(-2, 0.5, 1.5).normalize());
-    
+
     useEffect(() => {
         // Configure textures with proper wrapping
         const configureMaps = (maps) => {
@@ -136,10 +152,10 @@ function NightLightsEarth(props) {
                 }
             });
         };
-        
+
         configureMaps([colorMap, normalMap, specularMap, cloudMap, displacementMap, nightMap]);
     }, [colorMap, normalMap, specularMap, cloudMap, displacementMap, nightMap]);
-    
+
     // Create earth material with shader
     const earthMaterial = useMemo(() => {
         if (colorMap && normalMap && specularMap && nightMap) {
@@ -153,9 +169,9 @@ function NightLightsEarth(props) {
         }
         return null;
     }, [colorMap, normalMap, specularMap, cloudMap, nightMap, sunDirection]);
-    
+
     const [showLabel, setShowLabel] = useState(true);
-    
+
     return (
         <div className="relative w-full h-full">
             <div className="absolute top-0 left-0 w-full h-full">
@@ -163,19 +179,23 @@ function NightLightsEarth(props) {
                     camera={{ position: [0, 1, 2], near: 0.01, far: 1000 }}
                     style={{ background: "black", width: "100vw", height: "100vh" }}
                 >
-                    
+
                     <directionalLight position={[sunDirection.x, sunDirection.y, sunDirection.z]} intensity={0.5} />
-                    
+
                     <OrbitControls
+                        ref={controlsRef}
                         enableZoom={true}
                         enableRotate={true}
                         enablePan={false}
                         minDistance={1.05}
                         maxDistance={4}
-                        zoomSpeed={0.5}
-                        rotateSpeed={0.5}
+                        zoomSpeed={0.4}
+                        rotateSpeed={0.4}
+                        // Event handlers to track if globe is being rotated
+                        onStart={handleDragStart}
+                        onEnd={handleDragEnd}
                     />
-                    
+
                     <Stars
                         radius={200}
                         depth={60}
@@ -184,7 +204,7 @@ function NightLightsEarth(props) {
                         saturation={0}
                         fade={true}
                     />
-                    
+
                     <mesh ref={cloudsRef}>
                         <sphereGeometry args={[1.01, 40, 40]} />
                         <meshPhongMaterial
@@ -195,26 +215,26 @@ function NightLightsEarth(props) {
                             side={THREE.DoubleSide}
                         />
                     </mesh>
-                    
+
                     <mesh ref={globeRef} onPointerOver={(e) => e.stopPropagation()} onPointerOut={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
                         <sphereGeometry args={[1, 40, 40]} />
                         {earthMaterial ? (
                             <primitive object={earthMaterial} />
                         ) : (
                             <>
-                                <meshPhongMaterial specularMap={specularMap} depthWrite={false}/>
+                                <meshPhongMaterial specularMap={specularMap} depthWrite={false} />
                                 <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.7} roughness={0.7} />
                             </>
                         )}
                     </mesh>
-                    
+
                     <TestAtmosphere radius={1.02} />
-                    
+
                     <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />
                     <CountryBorders globeRef={globeRef} />
                     <CountryLabels globeRef={globeRef} showLabel={showLabel} />
-                    <ConicGlobe globeRef={globeRef} />
-                    
+                    <ConicGlobe globeRef={globeRef} isDraggingRef={isDraggingRef}/>
+
                     {/* Performance monitor (toggle with 'p' key) */}
                     {showPerformance && <Perf position="top-right" />}
                 </Canvas>
@@ -259,7 +279,7 @@ function CountryBorders({ globeRef }) {
 
     //lines and materials
     useEffect(() => {
-        
+
         if (!geoData || !linesRef.current) return;
 
         //check for existing line and clear
