@@ -1,4 +1,4 @@
-import React,{ useRef, useState, useEffect, useMemo, useCallback } from "react";
+import React,{ useRef, useState, useEffect, useMemo, useCallback, memo } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { OrbitControls, Stars, Stats, Text, Billboard } from "@react-three/drei";
 import * as THREE from "three";
@@ -12,15 +12,15 @@ import EarthTest from "../TestComponents/EarthTest";
  * 
  * @returns A Canvas component that encapsulates all the 3D components including the globe, lights, stars, etc.
  */
-const Globe = React.memo( function Globe(props) {
+const Globe = React.memo(function Globe(props) {
     const [showLabel, setShowLabel] = useState(true);
-    const [showPerformance, setShowPerformance] = useState(false);
+    const [showPerformance, setShowPerformance] = useState(true);
 
     const globeRef = useRef();
     const cloudsRef = useRef();
-
+    const controlsRef = useRef();
+    const linesRef = useRef();
     const isDraggingRef = useRef(false); // For checking if the globe is being rotated
-
     console.log("globe render");
 
     // Toggle performance monitor with key press
@@ -35,6 +35,23 @@ const Globe = React.memo( function Globe(props) {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, []);
 
+    // Handlers for OrbitControls drag state
+    const handleDragStart = useCallback(() => {
+        setTimeout(() => {
+            isDraggingRef.current = !isDraggingRef.current;
+            //console.log("dragStart " + isDraggingRef.current);
+        }, 150);
+        document.body.style.cursor = 'grabbing';
+    }, []);
+
+    const handleDragEnd = useCallback(() => {
+        setTimeout(() => {
+            isDraggingRef.current = !isDraggingRef.current;
+            //console.log("dragEnd " + isDraggingRef.current);
+        }, 150);
+        document.body.style.cursor = 'auto';
+    }, []);
+
     return (
         <div className="relative w-full h-full">
             <div className="absolute top-0 left-0 w-full h-full">
@@ -42,11 +59,11 @@ const Globe = React.memo( function Globe(props) {
                     camera={{ position: [0, 1, 2], near: 0.01, far: 1000 }}
                     style={{ background: "black", width: "100vw", height: "100vh" }}
                 >
-
                     <ambientLight intensity={4} />
                     <directionalLight position={[0, 0, 2]} intensity={7} />
 
                     <OrbitControls
+                        ref={controlsRef}
                         enableZoom={true}
                         enableRotate={true}
                         enablePan={false}
@@ -54,6 +71,9 @@ const Globe = React.memo( function Globe(props) {
                         maxDistance={4}
                         zoomSpeed={0.4}
                         rotateSpeed={0.4}
+                        // Event handlers to track if globe is being rotated
+                        onStart={handleDragStart}
+                        onEnd={handleDragEnd}
                     />
                     <Stars
                         radius={200}
@@ -65,16 +85,12 @@ const Globe = React.memo( function Globe(props) {
                     />
 
                     <EarthTest ref={globeRef} cloudsRef={cloudsRef} />
-
                     <AtmosphereMesh radius={1.02} />
-
-                    {/*<ConicGlobe globeRef={globeRef} /> <CountryBorders globeRef={globeRef} />
-                    <CountryLabels globeRef={globeRef} showLabel={showLabel} /> <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />*/}
                     <ConicGlobe globeRef={globeRef} isDraggingRef={isDraggingRef} />
-                    <CountryBorders globeRef={globeRef} />
+                    <CountryBorders globeRef={globeRef} linesRef={linesRef} />
                     <CountryLabels globeRef={globeRef} showLabel={showLabel} />
-                    <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />
-                    
+                    <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} linesRef={linesRef} />
+
                     {/* Performance monitor (toggle with 'p' key) */}
                     {showPerformance && <Perf position="bottom-right" />}
                 </Canvas>
@@ -83,20 +99,20 @@ const Globe = React.memo( function Globe(props) {
     );
 });
 
-function RotateGlobe({ globeRef, cloudsRef, conicGlobeRef }) {
+function RotateGlobe({ globeRef, cloudsRef, linesRef, conicGlobeRef }) {
     useFrame(({ clock }) => {
         const elapsedTime = clock.getElapsedTime();
-
         globeRef.current.rotation.y = elapsedTime / 70;
+        linesRef.current.rotation.y = elapsedTime / 70
         //conicGlobeRef.current.rotation.y = elapsedTime / 60;
         cloudsRef.current.rotation.y = elapsedTime / 40;
     });
     return null;
 }
 
-function CountryBorders({ globeRef }) {
+function CountryBorders({ globeRef, linesRef }) {
     const [geoData, setGeoData] = useState(null);
-    const linesRef = useRef();
+    //const linesRef = useRef();
 
     console.log("border render");
     useEffect(() => {
@@ -110,12 +126,12 @@ function CountryBorders({ globeRef }) {
             .catch(error => console.error('Error fetching GeoJSON:', error));
     }, []);
 
-    useFrame(() => {
+    {/*useFrame(() => {
         //make the lines follow the globe's rotation
         if (linesRef.current && globeRef.current) {
             linesRef.current.rotation.copy(globeRef.current.rotation);
         }
-    });
+    });*/}
 
     //lines and materials
     useEffect(() => {
@@ -176,7 +192,7 @@ function CountryBorders({ globeRef }) {
     return <group ref={linesRef} />;
 }
 
-function CountryLabels({ globeRef, showLabel }) {
+const CountryLabels = memo(function CountryLabels({ globeRef, showLabel }) {
     const [geoData, setGeoData] = useState(null);
     const labelsRef = useRef();
     const { camera } = useThree();
@@ -374,11 +390,11 @@ function CountryLabels({ globeRef, showLabel }) {
     });
 
     return <group ref={labelsRef}>{labels}</group>; //group of all the texts
-}
+});
 
 
 //function to calculate approximate area of a polygon
-export function calculateApproximateArea(polygon) {
+function calculateApproximateArea(polygon) {
     if (!polygon || polygon.length < 3) {
         return 0;
     }

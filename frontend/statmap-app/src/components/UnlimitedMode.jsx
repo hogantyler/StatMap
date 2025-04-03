@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import HoverDropMenu from "./HoverDropMenu";
 import { FaTimes } from "react-icons/fa";
 import Globe from "./GlobeComponents/Globe";
+//import GlobeTest from "./TestComponents/GlobeTest"; //don't delete used for integration testing. Commented out when not testing
 import Login from "./Login";
 import Modal from "./Modal";
 import Loading from "./Loading";

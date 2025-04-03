@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useMemo, useCallback, memo} from "react";
+import React, { useRef, useState, useEffect, useMemo, useCallback, memo } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { OrbitControls, Stars, Stats, Text, Billboard } from "@react-three/drei";
 import * as THREE from "three";
@@ -12,7 +12,7 @@ import EarthTest from "./EarthTest";
  * 
  * @returns A Canvas component that encapsulates all the 3D components including the globe, lights, stars, etc.
  */
-const GlobeTest = React.memo( function GlobeTest(props) {
+const GlobeTest = React.memo(function GlobeTest(props) {
     const [showLabel, setShowLabel] = useState(true);
     const [showPerformance, setShowPerformance] = useState(true);
 
@@ -37,20 +37,22 @@ const GlobeTest = React.memo( function GlobeTest(props) {
 
     // Handlers for OrbitControls drag state
     const handleDragStart = useCallback(() => {
-        //console.log(isDraggingRef.current);
         setTimeout(() => {
-            isDraggingRef.current = true;
-            // console.log("Drag ended (isDraggingRef set to false after 500ms)");
-        }, 200);
+            isDraggingRef.current = !isDraggingRef.current;
+            console.log("dragStart " + isDraggingRef.current);
+        }, 150);
+        //isDraggingRef.current = true;
+        //console.log("drag true");
         document.body.style.cursor = 'grabbing';
     }, []);
 
     const handleDragEnd = useCallback(() => {
-        //console.log(isDraggingRef.current);
         setTimeout(() => {
-            isDraggingRef.current = false;
-            // console.log("Drag ended (isDraggingRef set to false after 500ms)");
-        }, 200);
+            isDraggingRef.current = !isDraggingRef.current;
+            console.log("dragEnd " + isDraggingRef.current);
+        }, 150);
+        //isDraggingRef.current = false;
+        //console.log("drag false");
         document.body.style.cursor = 'auto';
     }, []);
 
@@ -194,7 +196,7 @@ function CountryBorders({ globeRef, linesRef }) {
     return <group ref={linesRef} />;
 }
 
-const CountryLabels = memo( function CountryLabels({ globeRef, showLabel }) {
+const CountryLabels = memo(function CountryLabels({ globeRef, showLabel }) {
     const [geoData, setGeoData] = useState(null);
     const labelsRef = useRef();
     const { camera } = useThree();
