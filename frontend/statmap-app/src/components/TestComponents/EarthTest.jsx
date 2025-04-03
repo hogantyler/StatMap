@@ -1,6 +1,6 @@
-import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
-import { OrbitControls, Stars, Html, Stats, Text, Billboard } from "@react-three/drei";
-import { useRef, useState, useEffect, Suspense } from "react";
+import { useLoader, useThree } from "@react-three/fiber";
+import { } from "@react-three/drei";
+import { useEffect } from "react";
 import * as THREE from "three";
 import EarthMap from "../../textures/8k_earth.png"
 import EarthNormalMap from "../../textures/earth_normalmap_5400x2700.jpg"
@@ -52,9 +52,9 @@ function EarthTest(props) {
         // Apply settings to all textures
         [colorMap, normalMap, specularMap, cloudMap, displacementMap].forEach(applyTextureSettings);
 
-    }, [colorMap, normalMap, specularMap, cloudMap, displacementMap]);
+    }, [gl.capabilities, colorMap, normalMap, specularMap, cloudMap, displacementMap]);
 
-    console.log("globe render");
+    console.log("earth render");
 
     return (
         <group>
