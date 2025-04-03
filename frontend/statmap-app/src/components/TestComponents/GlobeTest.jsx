@@ -12,7 +12,7 @@ import EarthTest from "./EarthTest";
  * 
  * @returns A Canvas component that encapsulates all the 3D components including the globe, lights, stars, etc.
  */
-function GlobeTest(props) {
+const GlobeTest = React.memo( function GlobeTest(props) {
     const [showLabel, setShowLabel] = useState(true);
     const [showPerformance, setShowPerformance] = useState(true);
 
@@ -21,7 +21,6 @@ function GlobeTest(props) {
     const controlsRef = useRef();
     const linesRef = useRef();
     const isDraggingRef = useRef(false); // For checking if the globe is being rotated
-
     console.log("globe render");
 
     // Toggle performance monitor with key press
@@ -38,66 +37,73 @@ function GlobeTest(props) {
 
     // Handlers for OrbitControls drag state
     const handleDragStart = useCallback(() => {
-        isDraggingRef.current = true;
+        console.log(isDraggingRef.current);
+        setTimeout(() => {
+            isDraggingRef.current = true;
+            // console.log("Drag ended (isDraggingRef set to false after 500ms)");
+        }, 200);
         document.body.style.cursor = 'grabbing';
     }, []);
 
     const handleDragEnd = useCallback(() => {
-        isDraggingRef.current = false;
+        console.log(isDraggingRef.current);
+        setTimeout(() => {
+            isDraggingRef.current = false;
+            // console.log("Drag ended (isDraggingRef set to false after 500ms)");
+        }, 200);
         document.body.style.cursor = 'auto';
     }, []);
 
     return (
-            <div className="relative w-full h-full">
-                <div className="absolute top-0 left-0 w-full h-full">
-                    <Canvas
-                        camera={{ position: [0, 1, 2], near: 0.01, far: 1000 }}
-                        style={{ background: "black", width: "100vw", height: "100vh" }}
-                    >
-                        <ambientLight intensity={4} />
-                        <directionalLight position={[0, 0, 2]} intensity={7} />
+        <div className="relative w-full h-full">
+            <div className="absolute top-0 left-0 w-full h-full">
+                <Canvas
+                    camera={{ position: [0, 1, 2], near: 0.01, far: 1000 }}
+                    style={{ background: "black", width: "100vw", height: "100vh" }}
+                >
+                    <ambientLight intensity={4} />
+                    <directionalLight position={[0, 0, 2]} intensity={7} />
 
-                        <OrbitControls
-                            ref={controlsRef}
-                            enableZoom={true}
-                            enableRotate={true}
-                            enablePan={false}
-                            minDistance={1.05}
-                            maxDistance={4}
-                            zoomSpeed={0.4}
-                            rotateSpeed={0.4}
-                            // Event handlers to track if globe is being rotated
-                            onStart={handleDragStart}
-                            onEnd={handleDragEnd}
-                        />
-                        <Stars
-                            radius={200}
-                            depth={60}
-                            count={5000}
-                            factor={7}
-                            saturation={0}
-                            fade={true}
-                        />
+                    <OrbitControls
+                        ref={controlsRef}
+                        enableZoom={true}
+                        enableRotate={true}
+                        enablePan={false}
+                        minDistance={1.05}
+                        maxDistance={4}
+                        zoomSpeed={0.4}
+                        rotateSpeed={0.4}
+                        // Event handlers to track if globe is being rotated
+                        onStart={handleDragStart}
+                        onEnd={handleDragEnd}
+                    />
+                    <Stars
+                        radius={200}
+                        depth={60}
+                        count={5000}
+                        factor={7}
+                        saturation={0}
+                        fade={true}
+                    />
 
-                        <EarthTest ref={globeRef} cloudsRef={cloudsRef} />
-                        <TestAtmosphere radius={1.02} />
-                        <ConicGlobe globeRef={globeRef} isDraggingRef={isDraggingRef}/>
-                        <CountryBorders globeRef={globeRef} linesRef={linesRef} />
-                        <CountryLabels globeRef={globeRef} showLabel={showLabel} />
-                        <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} linesRef={linesRef} />
+                    <EarthTest ref={globeRef} cloudsRef={cloudsRef} />
+                    <TestAtmosphere radius={1.02} />
+                    <ConicGlobe globeRef={globeRef} isDraggingRef={isDraggingRef} />
+                    <CountryBorders globeRef={globeRef} linesRef={linesRef} />
+                    <CountryLabels globeRef={globeRef} showLabel={showLabel} />
+                    <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} linesRef={linesRef} />
 
-                        {/* Performance monitor (toggle with 'p' key) */}
-                        {showPerformance && <Perf position="bottom-right" />}
-                    </Canvas>
-                </div>
+                    {/* Performance monitor (toggle with 'p' key) */}
+                    {showPerformance && <Perf position="bottom-right" />}
+                </Canvas>
             </div>
+        </div>
     );
-}
+});
 
 function RotateGlobe({ globeRef, cloudsRef, linesRef, conicGlobeRef }) {
     useFrame(({ clock }) => {
         const elapsedTime = clock.getElapsedTime();
-
         globeRef.current.rotation.y = elapsedTime / 70;
         linesRef.current.rotation.y = elapsedTime / 70
         //conicGlobeRef.current.rotation.y = elapsedTime / 60;

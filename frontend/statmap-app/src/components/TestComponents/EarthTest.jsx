@@ -10,7 +10,7 @@ import EarthDisplacementMap from "../../textures/gebco_bathy_2700x1350.jpg"
 import { TextureLoader } from "three";
 
 /**
- * Renders a page with interactive globe with experimetnal features under testing and development.
+ * Renders a mesh with interactive globe with experimetnal features under testing and development.
  * 
  * @returns part of the 3D earth that has to do with texture wrapping and anisotropic filtering and defines three.js/react-three-fiber material
  */

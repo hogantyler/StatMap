@@ -1,6 +1,6 @@
+import React,{ useRef, useState, useEffect, useMemo, useCallback } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { OrbitControls, Stars, Stats, Text, Billboard } from "@react-three/drei";
-import { useRef, useState, useEffect, useMemo, useCallback } from "react";
 import * as THREE from "three";
 import { Perf } from 'r3f-perf'
 import ConicGlobe from "../TestComponents/ConicGlobe";
@@ -12,7 +12,7 @@ import EarthTest from "../TestComponents/EarthTest";
  * 
  * @returns A Canvas component that encapsulates all the 3D components including the globe, lights, stars, etc.
  */
-function Globe(props) {
+const Globe = React.memo( function Globe(props) {
     const [showLabel, setShowLabel] = useState(true);
     const [showPerformance, setShowPerformance] = useState(false);
 
@@ -81,7 +81,7 @@ function Globe(props) {
             </div>
         </div>
     );
-}
+});
 
 function RotateGlobe({ globeRef, cloudsRef, conicGlobeRef }) {
     useFrame(({ clock }) => {

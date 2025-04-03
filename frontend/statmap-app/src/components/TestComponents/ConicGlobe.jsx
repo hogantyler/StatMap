@@ -10,17 +10,19 @@ import { useCountrySelection } from '../CountrySelectionContext'; // Context for
 
 function CountryPolygons({ geoData, globeRef, isDraggingRef }) {
     const [countries, setCountries] = useState([]);
-    const [selectedCountry, setSelectedCountry] = useState(null);
-    const { selectCountry } = useCountrySelection();
+    //const [selectedCountry, setSelectedCountry] = useState(null);
+    const { selectedCountry, selectCountry } = useCountrySelection();
     const polygonsRef = useRef();
 
-    //handler for making sure only one country is selectable at a time and setting selected country context so game page can access selected country
+    // Handler for making sure only one country is selectable at a time and setting selected country context so game page can access selected country
     const handleCountrySelect = (countryId) => {
-        setSelectedCountry(prevSelected =>
+        {/*setSelectedCountry(prevSelected =>
+            prevSelected === countryId ? null : countryId
+        );*/}
+        console.log(`Country selected: ${countryId}`);
+        selectCountry(prevSelected =>
             prevSelected === countryId ? null : countryId
         );
-        console.log(`Country selected: ${countryId}`);
-        selectCountry(countryId);
     };
 
     useEffect(() => {
@@ -132,23 +134,26 @@ const Country = memo(function Country({ name, coords, altitude, type, iso, isSel
     ], [color, show]);
 
     const handleClick = useCallback((event) => {
+        event.stopPropagation();
+
         if (isDraggingRef.current) {
             console.log('Click ignored: dragging');
-            event.stopPropagation();
             return; // Do nothing if dragging
         }
-        event.stopPropagation();
+        
+        document.body.style.cursor = 'pointer';
         onSelect();
         // console.log(`selected on ${name}`);
     }, [onSelect, isDraggingRef]);
 
     const handlePointerOver = useCallback((event) => {
+        event.stopPropagation();
         if (isDraggingRef.current) {
             console.log('Hover ignored: dragging');
-            event.stopPropagation();
+            
             return; // Do nothing if dragging
         }
-        event.stopPropagation();
+
         setHovered(true);
         document.body.style.cursor = 'pointer';
     }, [isDraggingRef]);
