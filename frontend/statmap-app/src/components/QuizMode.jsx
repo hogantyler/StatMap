@@ -23,6 +23,7 @@ const QuizModeContent = () => {
 
   // --- Navigation & Modal States ---
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const navigate = useNavigate();
 
   // --- Functions for Quiz Logic ---
@@ -57,6 +58,29 @@ const QuizModeContent = () => {
   useEffect(() => {
     loadNewFact();
   }, []);
+
+    // Modified handleReportFact to accept a report type parameter
+  const handleReportFact = async (reportType) => {
+    if (!currentFact) return;
+    try {
+      const { error } = await supabase
+        .from("Fact Reports")
+        .insert([
+          {
+            Fact_ID: currentFact.Fact_ID, // Adjust this if your field name is different
+            Report_Type: reportType,
+          },
+        ]);
+      if (error) {
+        console.error("Error reporting fact:", error);
+      } else {
+        alert("Thank you for reporting this fact. We'll review it shortly!");
+      }
+    } catch (err) {
+      console.error("Unexpected error reporting fact:", err);
+    }
+    setIsReportModalOpen(false);
+  };
 
   // Handler for submitting the answer based solely on globe selection
   const handleSubmitAnswer = useCallback(() => {
@@ -205,6 +229,12 @@ const QuizModeContent = () => {
                     Source
                   </a>
                   <button
+                    onClick={() => setIsReportModalOpen(true)}
+                    className="bg-red-600 text-white border border-white rounded-full py-2 px-4 hover:bg-red-500 transition-colors text-sm"
+                  >
+                    Report Fact
+                  </button>
+                  <button
                     onClick={() => {
                       setQuestionFinished(false);
                       handleNextQuestion();
@@ -222,6 +252,40 @@ const QuizModeContent = () => {
         {/* Login Modal */}
         <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
           <Login />
+        </Modal>
+
+        {/* Report Fact Modal */}
+        <Modal isOpen={isReportModalOpen} onClose={() => setIsReportModalOpen(false)}>
+          <div className="p-4">
+            <h2 className="mb-4 text-lg font-bold">Report Fact</h2>
+            <p className="mb-4">Please select a reason for reporting this fact:</p>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => handleReportFact("INCORRECT_INFORMATION")}
+                className="bg-gray-200 rounded py-2 px-4 hover:bg-gray-300 transition-colors"
+              >
+                Incorrect information
+              </button>
+              <button
+                onClick={() => handleReportFact("CLUE_IN_FACT")}
+                className="bg-gray-200 rounded py-2 px-4 hover:bg-gray-300 transition-colors"
+              >
+                Clue in the fact
+              </button>
+              <button
+                onClick={() => handleReportFact("INAPPROPRIATE_CONTENT")}
+                className="bg-gray-200 rounded py-2 px-4 hover:bg-gray-300 transition-colors"
+              >
+                Inappropriate content
+              </button>
+              <button
+                onClick={() => handleReportFact("MULTIPLE_COUNTRIES")}
+                className="bg-gray-200 rounded py-2 px-4 hover:bg-gray-300 transition-colors"
+              >
+                Fact holds true for more than one country
+              </button>
+            </div>
+          </div>
         </Modal>
       </div>
     </Suspense>
