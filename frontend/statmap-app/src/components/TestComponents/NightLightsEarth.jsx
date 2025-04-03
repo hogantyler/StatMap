@@ -236,7 +236,7 @@ function NightLightsEarth(props) {
                     <ConicGlobe globeRef={globeRef} isDraggingRef={isDraggingRef}/>
 
                     {/* Performance monitor (toggle with 'p' key) */}
-                    {showPerformance && <Perf position="top-right" />}
+                    {showPerformance && <Perf position="bottom-right" />}
                 </Canvas>
             </div>
         </div>
