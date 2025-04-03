@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { HiMenu } from "react-icons/hi";
 import { 
@@ -10,6 +10,7 @@ import {
   FaEnvelope 
 } from "react-icons/fa";
 import { FaMapMarkedAlt } from "react-icons/fa";
+import { SupabaseContext } from "./SupabaseContext";
 
 /**
  * Renders a hovered dropdown menu that provides navigation options for the user.
@@ -17,10 +18,10 @@ import { FaMapMarkedAlt } from "react-icons/fa";
  * @param {*} param0 Contains a callback function for sign-in click event
  * @returns {JSX.Element} A dropdown menu trigger
  */
-const HoverDropMenu = ({ onSignInClick }) => {
+const HoverDropMenu = ({ onSignInClick, onAccountPageClick }) => {
   return (
     <div className="group top-1 left-1 m-1 cursor-pointer z-50">
-      <FlyoutLink href="#" FlyoutContent={MenuContent} onSignInClick={onSignInClick}>
+      <FlyoutLink href="#" FlyoutContent={MenuContent} onSignInClick={onSignInClick} onAccountPageClick={onAccountPageClick}>
         <div className="w-18 h-18 flex items-center justify-center bg-black rounded-lg shadow-xl">
           <HiMenu size={72} className="text-white" />
         </div>
@@ -35,7 +36,7 @@ const HoverDropMenu = ({ onSignInClick }) => {
  * @param {*} param0 Contains children elements, link href, flyout content component, and sign-in click event handler
  * @returns {JSX.Element} A link with hover-triggered dropdown content
  */
-const FlyoutLink = ({ children, href, FlyoutContent, onSignInClick }) => {
+const FlyoutLink = ({ children, href, FlyoutContent, onSignInClick, onAccountPageClick }) => {
   const [open, setOpen] = useState(false);
 
   const showFlyout = FlyoutContent && open;
@@ -63,7 +64,7 @@ const FlyoutLink = ({ children, href, FlyoutContent, onSignInClick }) => {
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="absolute top-0 left-0 bg-black text-white shadow-lg rounded-md z-50"
           >
-            <FlyoutContent onSignInClick={onSignInClick} />
+            <FlyoutContent onSignInClick={onSignInClick} onAccountPageClick={onAccountPageClick} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -77,7 +78,29 @@ const FlyoutLink = ({ children, href, FlyoutContent, onSignInClick }) => {
  * @param {*} param0 Contains a callback function for handling sign-in clicks
  * @returns {JSX.Element} A styled menu with various navigation options
  */
-const MenuContent = ({ onSignInClick }) => {
+const MenuContent = ({ onSignInClick, onAccountPageClick }) => {
+  const [account, setAccount] = useState(null);
+
+  const supabase = useContext(SupabaseContext);
+
+  useEffect(() => {
+    async function getAccount() {
+        const tempAccount = await supabase.auth.getUser()
+        if (tempAccount.data.user) {
+          setAccount(tempAccount);
+        }
+    }
+    getAccount()
+  }, [])
+
+  const onSignOutClick = async () => {
+    console.log("sign out clicked")
+    let { error } = await supabase.auth.signOut()
+    if (error) {
+      console.log(error)
+    }
+  }
+  
     return (
       <div className="w-96 bg-black p-9 shadow-xl text-white text-lg space-y-6 rounded-lg">
         <div className="mb-6 space-y-6">
@@ -85,16 +108,46 @@ const MenuContent = ({ onSignInClick }) => {
             <FaMapMarkedAlt className="mr-2 w-6 h-6" />
             STATMAP MENU
           </h3>
-          <button
-            onClick={onSignInClick}
-            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
-          >
-            <div className="flex items-center">
-              <FaSignInAlt className="mr-4 w-6 h-6" />
-              <span>SIGN IN</span>
-            </div>
-            <p className="ml-10 text-sm">Access your account</p>
-          </button>
+
+          {
+            account ?
+              !account.data.user ?
+                <button
+                  onClick={onSignInClick}
+                  className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
+                >
+                  <div className="flex items-center">
+                    <FaSignInAlt className="mr-4 w-6 h-6" />
+                    <span>SIGN IN</span>
+                  </div>
+                  <p className="ml-10 text-sm">Access your account</p>
+                </button>
+                :
+                <button
+                  onClick={onSignOutClick}
+                  className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
+                >
+                  <div className="flex items-center">
+                    <FaSignInAlt className="mr-4 w-6 h-6" />
+                    <span>SIGN OUT</span>
+                  </div>
+                  <p className="ml-10 text-sm">Sign out of your account</p>
+                </button>
+              :
+              <button
+                onClick={onSignInClick}
+                className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
+              >
+                <div className="flex items-center">
+                  <FaSignInAlt className="mr-4 w-6 h-6" />
+                  <span>SIGN IN</span>
+                </div>
+                <p className="ml-10 text-sm">Access your account</p>
+              </button>
+          }
+
+          
+
           <a
             href="#"
             className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
@@ -115,8 +168,8 @@ const MenuContent = ({ onSignInClick }) => {
             </div>
             <p className="ml-10 text-sm">View top players</p>
           </a>
-          <a
-            href="#"
+          <button
+            onClick={onAccountPageClick}
             className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
           >
             <div className="flex items-center">
@@ -124,7 +177,7 @@ const MenuContent = ({ onSignInClick }) => {
               <span>ACCOUNT</span>
             </div>
             <p className="ml-10 text-sm">Manage your profile</p>
-          </a>
+          </button>
           <a
             href="#"
             className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"

@@ -1,28 +1,42 @@
 import React, { useContext, useState } from 'react';
 import { SupabaseContext } from './SupabaseContext';
+import { useDeprecatedAnimatedState } from 'motion/react';
+import { AuthApiError, AuthWeakPasswordError } from '@supabase/supabase-js';
 
 /**
  * Login component for accounts that allows users to enter their credentials and sign in.
  * 
  * @returns {JSX.Element} A login form with email and password fields
  */
-const Login = ({ isOpen, onClose, openSignUp }) => {
+const SignUp = ({ isOpen, onClose }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [displayName, setDisplayName] = useState('');
 
     const supabase = useContext(SupabaseContext);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle login logic here
+        // Handle sign up logic here
         console.log('Email:', email);
         console.log('Password:', password);
-        let { data, error } = await supabase.auth.signInWithPassword({
-          email: email,
-          password: password
+        let { data, error } = await supabase.auth.signUp({
+            email: email,
+            password: password,
+            options: {
+                data: {display_name: displayName}
+            }
         })
-        console.log(data, error);
-        onClose();
+        console.log(data);
+        if (error) {
+            console.log(error);
+            console.log(error.name);
+            console.log(error.name === 'AuthApiError');
+            console.log(error.name === 'AuthWeakPasswordError');
+            console.log(error.code === 'weak_password');
+        }
+        // 422 - password too short
+        // 429 - email already in use
     };
 
     return (
@@ -30,7 +44,20 @@ const Login = ({ isOpen, onClose, openSignUp }) => {
             <div className="w-full max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-lg">
                 <form className="space-y-6" onSubmit={handleSubmit}>
                     <button onClick={onClose}>X</button>
-                    <h5 className="text-xl font-medium text-black">STATMAP SIGN IN</h5>
+                    <h5 className="text-xl font-medium text-black">STATMAP SIGN UP</h5>
+                    <div>
+                        <label htmlFor="display_name" className="block mb-2 text-sm font-medium text-black">Your display name</label>
+                        <input
+                            type="text"
+                            name="display_name"
+                            id="display_name"
+                            className="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            placeholder="john123"
+                            value={displayName}
+                            onChange={(e) => setDisplayName(e.target.value)}
+                            required
+                        />
+                    </div>
                     <div>
                         <label htmlFor="email" className="block mb-2 text-sm font-medium text-black">Your email</label>
                         <input
@@ -57,27 +84,11 @@ const Login = ({ isOpen, onClose, openSignUp }) => {
                             required
                         />
                     </div>
-                    <div className="flex items-start">
-                        <div className="flex items-start">
-                            <div className="flex items-center h-5">
-                                <input
-                                    id="remember"
-                                    type="checkbox"
-                                    className="w-4 h-4 border border-gray-300 rounded-sm bg-white focus:ring-3 focus:ring-blue-600"
-                                />
-                            </div>
-                            <label htmlFor="remember" className="ml-2 text-sm font-medium text-black">Remember me</label>
-                        </div>
-                        <a href="#" className="ml-auto text-sm text-black hover:underline">Lost Password?</a>
-                    </div>
-                    <button type="submit" className="w-full text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Login to your account</button>
-                    <div className="text-sm font-medium text-black">
-                        Not registered? <a onClick={() => {openSignUp()}} className="text-blue-800 hover:underline">Create account</a>
-                    </div>
+                    <button type="submit" className="w-full text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Create account</button>
                 </form>
             </div>
         </div>
     );
 };
 
-export default Login;
+export default SignUp;

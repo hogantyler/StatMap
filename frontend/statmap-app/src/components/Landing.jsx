@@ -6,6 +6,8 @@ import HoverDropMenu from "./HoverDropMenu";
 import Login from "./Login";
 import Modal from "./Modal";
 import { useNavigate } from "react-router-dom";
+import SignUp from "./SignUp";
+import AccountPage from "./AccountPage";
 
 /**
  * Landing page component that provides navigation, game modes, leaderboards, and a help modal.
@@ -13,18 +15,33 @@ import { useNavigate } from "react-router-dom";
  * @returns {JSX.Element} The main landing page layout
  */
 const Landing = () => {
-  const [isModalOpen, setIsModalOpen] = useState(false); //modal for side bar menu
+  const [isSignInModalOpen, setIsSignInModalOpen] = useState(false); //modal for side bar menu
+  const [isSignUpModalOpen, setIsSignUpModalOpen] = useState(false); //modal for side bar menu
   const [isInstructionsModalOpen, setInstructionsModalOpen] = useState(false); //modal for instructions
+  const [isAccountPageOpen, setIsAccountPageOpen] = useState(false); //modal for account page
   const navigate = useNavigate();
   
-  const handleOpenModal = () => {
+  const handleOpenSignInModal = () => {
     console.log("Opening modal");
-    setIsModalOpen(true);
+    setIsSignInModalOpen(true);
   };
+
+  const handleOpenSignUpModal = () => {
+    console.log("Opening modal");
+    setIsSignInModalOpen(false);
+    setIsSignUpModalOpen(true);
+  };
+
+  const handleOpenAccountPageModal = () => {
+    console.log("Opening account page");
+    setIsAccountPageOpen(true);
+  }
 
   const handleCloseModal = () => {
     console.log("Modal close handler called");
-    setIsModalOpen(false);
+    setIsSignInModalOpen(false);
+    setIsSignUpModalOpen(false);
+    setIsAccountPageOpen(false);
   };
 
   //instructions open/close handler
@@ -50,7 +67,7 @@ const Landing = () => {
       className="min-h-screen bg-cover bg-center"
       style={{ backgroundImage: `url(${BlackGlobe})` }}
     >
-      <HoverDropMenu onSignInClick={handleOpenModal} />
+      <HoverDropMenu onSignInClick={handleOpenSignInModal} onAccountPageClick={handleOpenAccountPageModal}/>
 
       <div className="flex flex-col justify-start items-center gap-4 p-4 w-full min-h-screen">
 
@@ -90,8 +107,7 @@ const Landing = () => {
             onClick={() => alert("leaderboard in progress")}>
             VIEW
           </button>
-        </div>
-        
+        </div> 
       </div>
 
 
@@ -106,8 +122,12 @@ const Landing = () => {
       </button>
 
 
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <Login />
+      <Modal isOpen={isSignInModalOpen} onClose={handleCloseModal}>
+        <Login isOpen={isSignInModalOpen} onClose={handleCloseModal} openSignUp={handleOpenSignUpModal} />
+      </Modal>
+
+      <Modal isOpen={isSignUpModalOpen} onClose={handleCloseModal}>
+        <SignUp isOpen={isSignUpModalOpen} onClose={handleCloseModal} />
       </Modal>
 
       {/* Modal for Game Instructions */}
@@ -120,6 +140,11 @@ const Landing = () => {
             Good luck and have fun!
           </p>
         </div>
+      </Modal>
+
+      {/* Modal for accounts page */}
+      <Modal isOpen={isAccountPageOpen} onClose={handleCloseModal}>
+        <AccountPage isOpen={isAccountPageOpen} onClose={handleCloseModal} />
       </Modal>
 
       {/* Question mark icon at the bottom left */}
