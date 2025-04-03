@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect, useMemo, useCallback, createContext, useContext } from "react";
+import React, { useRef, useState, useEffect, useMemo, useCallback, memo} from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { OrbitControls, Stars, Stats, Text, Billboard } from "@react-three/drei";
 import * as THREE from "three";
@@ -37,7 +37,7 @@ const GlobeTest = React.memo( function GlobeTest(props) {
 
     // Handlers for OrbitControls drag state
     const handleDragStart = useCallback(() => {
-        console.log(isDraggingRef.current);
+        //console.log(isDraggingRef.current);
         setTimeout(() => {
             isDraggingRef.current = true;
             // console.log("Drag ended (isDraggingRef set to false after 500ms)");
@@ -46,7 +46,7 @@ const GlobeTest = React.memo( function GlobeTest(props) {
     }, []);
 
     const handleDragEnd = useCallback(() => {
-        console.log(isDraggingRef.current);
+        //console.log(isDraggingRef.current);
         setTimeout(() => {
             isDraggingRef.current = false;
             // console.log("Drag ended (isDraggingRef set to false after 500ms)");
@@ -194,7 +194,7 @@ function CountryBorders({ globeRef, linesRef }) {
     return <group ref={linesRef} />;
 }
 
-function CountryLabels({ globeRef, showLabel }) {
+const CountryLabels = memo( function CountryLabels({ globeRef, showLabel }) {
     const [geoData, setGeoData] = useState(null);
     const labelsRef = useRef();
     const { camera } = useThree();
@@ -392,7 +392,7 @@ function CountryLabels({ globeRef, showLabel }) {
     });
 
     return <group ref={labelsRef}>{labels}</group>; //group of all the texts
-}
+});
 
 
 //function to calculate approximate area of a polygon
