@@ -46,27 +46,25 @@ const Landing = () => {
 
       <div className="flex flex-col justify-start items-center gap-4 p-4 w-full min-h-screen">
         {/* Game Card */}
-        <div className="flex flex-col justify-center items-center gap-2 bg-gradient-to-r from-gray-400 to-white text-black bg-opacity-90 p-4 m-1 mb-4 rounded-lg shadow-lg  mr-4 w-full max-w-[30rem]">
-          <div>
-            <h3 className="text-xl font-semibold py-1">STATMAP</h3>
-          </div>
-          <p className="text-sm py-1">
-            Learn about different countries around the world.
+        <div className="flex flex-col items-center gap-4 bg-white bg-opacity-90 bg-checkered text-black p-6 m-4 rounded-xl shadow-lg w-full max-w-[30rem] border border-gray-300">
+          <h1 className="text-3xl font-serif font-extrabold">STATMAP</h1>
+          <p className="text-base font-serif">
+            Discover fascinating facts about countries around the world.
           </p>
           <button
-            className="bg-black text-white py-2 px-4 rounded-lg hover:bg-white hover:text-black border border-black"
+            className="w-full bg-black text-white font-serif py-2 px-4 rounded-lg border border-black transform hover:scale-105 hover:shadow-lg transition-all duration-150"
             onClick={() => navigate("/quiz")}
           >
             QUIZ
           </button>
           <button
-            className="bg-black text-white py-2 px-4 rounded-lg hover:bg-white hover:text-black border border-black"
+            className="w-full bg-black text-white font-serif py-2 px-4 rounded-lg border border-black transform hover:scale-105 hover:shadow-lg transition-all duration-150"
             onClick={() => navigate("/unlimited")}
           >
             UNLIMITED
           </button>
           <button
-            className="text-white bg-black text-opacity-1 py-2 px-4 rounded-lg hover:text-blue-500"
+            className="w-full bg-black text-white font-serif py-2 px-4 rounded-lg border border-black transform hover:scale-105 hover:shadow-lg transition-all duration-150"
             onClick={() => navigate("/lobbyTest")}
           >
             MULTIPLAYER (COMING SOON)
@@ -74,6 +72,7 @@ const Landing = () => {
         </div>
 
         {/* Leaderboard Card */}
+        {/* Commenting out leaderboard card until implemented
         <div className="flex flex-col justify-center items-center bg-gradient-to-r from-white to-gray-400 p-4 rounded-lg shadow-lg">
           <h3 className="text-xl font-semibold">LEADERBOARDS</h3>
           <p className="text-sm mb-4">View the top players around the world.</p>
@@ -85,22 +84,21 @@ const Landing = () => {
                 className="flex justify-between items-center text-base"
               >
                 <span className="w-6 font-medium">{index + 1}.</span>
-                <span className="flex-1 ml-2 flex items-center gap-2">
-                  <FaUser className="w-4 h-4" /> {/* Adds profile icon */}
-                  {player.name}
+                <span className="flex-1 ml-2 flex items-center gap-2"> */}
+        {/*} <FaUser className="w-4 h-4" /> */} {/* Adds profile icon */}
+        {/*  {player.name}
                 </span>
                 <span className="font-medium">Score: {player.score}</span>
               </div>
             ))}
           </div>
-
           <button
             className=" bg-black text-white py-2 px-4 mt-4 rounded-lg hover:bg-white hover:text-black border border-black"
             onClick={() => alert("leaderboard in progress")}
           >
             VIEW
-          </button>
-        </div>
+          </button> 
+        </div> */}
       </div>
 
 
