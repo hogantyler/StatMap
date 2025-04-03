@@ -46,25 +46,25 @@ const Landing = () => {
 
       <div className="flex flex-col justify-start items-center gap-4 p-4 w-full min-h-screen">
         {/* Game Card */}
-        <div className="flex flex-col items-center gap-4 bg-white bg-opacity-90 bg-checkered text-black p-6 m-4 rounded-xl shadow-lg w-full max-w-[30rem] border border-gray-300">
-          <h1 className="text-3xl font-serif font-extrabold">STATMAP</h1>
-          <p className="text-base font-serif">
+        <div className="flex flex-col items-center gap-4 bg-white bg-opacity-90 text-black p-6 m-4 rounded-xl shadow-lg w-full max-w-[30rem] border border-gray-300">
+          <h1 className="text-3xl font-helvetica font-extrabold">STATMAP</h1>
+          <p className="text-base font-helvetica">
             Discover fascinating facts about countries around the world.
           </p>
           <button
-            className="w-full bg-black text-white font-serif py-2 px-4 rounded-lg border border-black transform hover:scale-105 hover:shadow-lg transition-all duration-150"
+            className="w-full bg-black text-white font-helvetica py-2 px-4 rounded-lg border border-black transform hover:scale-105 hover:shadow-lg transition-all duration-150"
             onClick={() => navigate("/quiz")}
           >
             QUIZ
           </button>
           <button
-            className="w-full bg-black text-white font-serif py-2 px-4 rounded-lg border border-black transform hover:scale-105 hover:shadow-lg transition-all duration-150"
+            className="w-full bg-black text-white font-helvetica py-2 px-4 rounded-lg border border-black transform hover:scale-105 hover:shadow-lg transition-all duration-150"
             onClick={() => navigate("/unlimited")}
           >
             UNLIMITED
           </button>
           <button
-            className="w-full bg-black text-white font-serif py-2 px-4 rounded-lg border border-black transform hover:scale-105 hover:shadow-lg transition-all duration-150"
+            className="w-full bg-black text-white font-helvetica py-2 px-4 rounded-lg border border-black transform hover:scale-105 hover:shadow-lg transition-all duration-150"
             onClick={() => navigate("/lobbyTest")}
           >
             MULTIPLAYER (COMING SOON)
