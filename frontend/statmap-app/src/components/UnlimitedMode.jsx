@@ -30,16 +30,6 @@ function UnlimitedModeContent() {
   const handleOpenModal = useCallback(() => setIsModalOpen(true), []);
   const handleCloseModal = useCallback(() => setIsModalOpen(false), []);
 
-  // Track selected country changes fed from globe component via countryselection context
-  useEffect(() => {
-    if (selectedCountry && selectedCountry !== prevSelectedCountryRef.current && !isAnswered) {
-      prevSelectedCountryRef.current = selectedCountry;
-      console.log(
-        `logging ${selectedCountry} from unlimited mode page`
-      );
-    }
-  }, [selectedCountry, isAnswered]);
-
   // Memoize loadNewFact handler
   const loadNewFact = useCallback(async () => {
     try {
@@ -65,6 +55,7 @@ function UnlimitedModeContent() {
 
   // Handler for submitting the answer based solely on globe selection
   const handleSubmitAnswer = useCallback(() => {
+    if (isAnswered) return; //prevent multiple submits
     if (!selectedCountry) {
       alert("Please select a country on the globe first.");
       return;
@@ -97,9 +88,10 @@ function UnlimitedModeContent() {
         setFeedback(`Incorrect! The correct answer is ${currentFact?.Correct_Country}.`);
         setFeedbackType("incorrect");
       }
+      setIsAnswered(false);
     }
     setQuestionFinished(true);
-  }, [selectedCountry, currentFact, attempts]);
+  }, [isAnswered, selectedCountry, currentFact, attempts]);
 
   const handleBack = useCallback(() => {
     navigate("/");
@@ -125,7 +117,18 @@ function UnlimitedModeContent() {
 
         {/* Overlay Container */}
         <div className="absolute top-0 left-0 w-full flex justify-center items-start mt-5 z-30 pointer-events-none">
-          <div className="bg-white bg-opacity-0 p-4 rounded-xl w-11/12 max-w-3xl pointer-events-auto">
+          <div className="bg-white bg-opacity-0 p-4 rounded-xl w-11/12 max-w-3xl pointer-events-none">
+            {/* When collapsed, show the "Show Fact" button at the absolute top */}
+            {isCollapsed && (
+              <div className="w-full flex justify-center pointer-events-auto mb-2">
+                <button
+                  onClick={() => setIsCollapsed(false)}
+                  className="bg-white text-black rounded-full p-1 hover:bg-green-600 transition-colors"
+                >
+                  Show Fact
+                </button>
+              </div>
+            )}
             {/* COLLAPSIBLE SECTION: Score, Instruction, Fact Box */}
             <div className={`${isCollapsed ? "hidden" : "block"}`}>
               <div className="mb-1 text-center font-bold text-white text-xl">Score: {score}</div>
@@ -143,7 +146,7 @@ function UnlimitedModeContent() {
             <div className="flex justify-center items-center">
               <button
                 onClick={handleSubmitAnswer}
-                className="bg-green-600 text-white border border-white rounded-full py-2 px-6 hover:bg-green-500 transition-colors"
+                className="bg-green-600 text-white border border-white rounded-full py-2 px-6 hover:bg-green-500 transition-colors pointer-events-auto"
               >
                 Submit Answer
               </button>
@@ -151,26 +154,15 @@ function UnlimitedModeContent() {
               {!isCollapsed && (
                 <button
                   onClick={() => setIsCollapsed(true)}
-                  className="ml-4 bg-white text-black rounded-full p-1 hover:bg-green-600 transition-colors"
+                  className="ml-4 bg-white text-black rounded-full p-1 hover:bg-green-600 transition-colors pointer-events-auto"
                 >
                   Hide Fact
                 </button>
               )}
             </div>
-            {/* When fact is collapsed, show the show fact button above the submit answer button */}
-            {isCollapsed && (
-              <div className="flex justify-center items-center mb-4">
-                <button
-                  onClick={() => setIsCollapsed(false)}
-                  className="bg-white text-black rounded-full p-1 hover:bg-green-600 transition-colors"
-                >
-                  Show Fact
-                </button>
-              </div>
-            )}
             {/* Feedback Popup */}
             {feedback && (
-              <div className={`mt-4 p-2 rounded text-center text-sm ${feedbackType === "correct" ? "bg-green-300 text-green-900" : "bg-red-300 text-red-900"}`}>
+              <div className={`mt-4 p-2 rounded text-center text-sm pointer-events-auto ${feedbackType === "correct" ? "bg-green-300 text-green-900" : "bg-red-300 text-red-900"}`}>
                 {feedback}
               </div>
             )}

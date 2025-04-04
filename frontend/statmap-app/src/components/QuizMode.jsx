@@ -20,6 +20,8 @@ const QuizModeContent = () => {
   const [feedbackType, setFeedbackType] = useState(""); // "correct", "incorrect", or "final"
   const [quizComplete, setQuizComplete] = useState(false); // Flag for quiz completion
   const [questionFinished, setQuestionFinished] = useState(false); //for 'next' and 'source' buttons
+  const [isAnswered, setIsAnswered] = useState(false); //to prevent score spamming
+  const [isCollapsed, setIsCollapsed] = useState(false); //making the fact box collapse
 
   // --- Navigation & Modal States ---
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,6 +44,7 @@ const QuizModeContent = () => {
     setAttempts(0);
     setFeedback("");
     setFeedbackType("");
+    setIsAnswered(false);
   };
 
   const handleNextQuestion = () => {
@@ -59,7 +62,7 @@ const QuizModeContent = () => {
     loadNewFact();
   }, []);
 
-    // Modified handleReportFact to accept a report type parameter
+  // Modified handleReportFact to accept a report type parameter
   const handleReportFact = async (reportType) => {
     if (!currentFact) return;
     try {
@@ -84,10 +87,13 @@ const QuizModeContent = () => {
 
   // Handler for submitting the answer based solely on globe selection
   const handleSubmitAnswer = useCallback(() => {
+    if (isAnswered) return; //prevent multiple submits
     if (!selectedCountry) {
       alert("Please select a country on the globe first.");
       return;
     }
+    setIsCollapsed(false); //show fact after submission(if it was hidden)
+    setIsAnswered(true);
     const answer = selectedCountry;
     if (answer.includes(currentFact?.Correct_Country) || currentFact?.Correct_Country.includes(answer)) {
       let points = attempts === 0 ? 1000 : attempts === 1 ? 750 : attempts === 2 ? 500 : 250;
@@ -108,14 +114,16 @@ const QuizModeContent = () => {
         }
         setFeedback(`Incorrect! Try again. ${hint}`);
         setFeedbackType("incorrect");
+        setIsAnswered(false);
         return;
       } else {
         setFeedback(`Incorrect! The correct answer is ${currentFact?.Correct_Country}.`);
         setFeedbackType("incorrect");
       }
+      setIsAnswered(false);
     }
     setQuestionFinished(true);
-  }, [selectedCountry, currentFact, attempts]);
+  }, [isAnswered, selectedCountry, currentFact, attempts]);
 
   // Function to restart the quiz after completion
   const handleRestartQuiz = () => {
@@ -155,8 +163,8 @@ const QuizModeContent = () => {
 
         {/* Quiz Overlay Container */}
         {quizComplete ? (
-          // Final Quiz Popup - restored as before
-          <div className="absolute top-0 left-0 w-full flex justify-center items-center mt-2 z-30 pointer-events-auto">
+          // Final Quiz Popup 
+          <div className="absolute top-0 left-0 w-full flex justify-center items-center mt-2 z-30 pointer-events-none">
             <div className="bg-transparent p-10 rounded-xl w-11/12 max-w-3xl border-2 border-white shadow-xl text-center">
               <div className="mb-6 text-3xl font-bold text-white">Quiz Complete!</div>
               <div className="mb-6 text-2xl text-white">Final Score: {score}</div>
@@ -169,77 +177,94 @@ const QuizModeContent = () => {
             </div>
           </div>
         ) : (
-          // Normal Quiz Content with a wider, reactive container
-          <div className="absolute top-0 left-0 w-full flex justify-center items-start mt-2 z-30 pointer-events-none">
-            <div className="bg-white bg-opacity-0 p-4 rounded-xl w-11/12 max-w-3xl">
-              {/* Question Indicator */}
-              <div className="mb-1 text-center font-bold text-white text-sm">
-                Question: {questionNumber} of 10
+          // Normal Quiz Content with collapsible functionality
+          <div className="absolute top-0 left-0 w-full flex flex-col items-center mt-2 z-30 pointer-events-none transition-all duration-300">
+            {/* When collapsed, show the "Show Fact" button at the absolute top */}
+            {isCollapsed && (
+              <div className="pointer-events-auto mb-2">
+                <button
+                  onClick={() => setIsCollapsed(false)}
+                  className="bg-white text-black rounded-full p-1 hover:bg-green-600 transition-colors"
+                >
+                  Show Fact
+                </button>
               </div>
-              {/* Score Display */}
-              <div className="mb-1 text-center font-bold text-white text-xl">Score: {score}</div>
-              {/* Instruction Text */}
-              <div className="mb-1 text-center text-med text-white">
-                Guess the country based on the fact!
-              </div>
-              {/* Fact Box */}
-              {currentFact && (
-                <div className="mb-2 p-2 border border-white rounded relative">
-                  <p className="text-center font-semibold text-white text-med">
-                    {currentFact.Fact}
-                  </p>
-                </div>
+            )}
+            <div className="bg-white bg-opacity-0 p-4 rounded-xl w-11/12 max-w-3xl pointer-events-none">
+              {/* Collapsible Section: Score, Instruction & Fact Box */}
+              {!isCollapsed && (
+                <>
+                  {/* Question Indicator */}
+                  <div className="mb-1 text-center font-bold text-white text-sm">
+                    Question: {questionNumber} of 10
+                  </div>
+                  {/* Score Display */}
+                  <div className="mb-1 text-center font-bold text-white text-xl">
+                    Score: {score}
+                  </div>
+                  {/* Instruction Text */}
+                  <div className="mb-1 text-center text-white">
+                    Guess the country based on the fact!
+                  </div>
+                  {/* Fact Box */}
+                  {currentFact && (
+                    <div className="mb-2 p-2 border border-white rounded relative">
+                      <p className="text-center font-semibold text-white text-med">
+                        {currentFact.Fact}
+                      </p>
+                    </div>
+                  )}
+                </>
               )}
-              {/* Selected Country Indicator */}
+              {/* Non-collapsible Section */}
               <div className="mb-4 text-center text-white text-sm">
-                Selected Country:{" "}
-                {selectedCountry
-                  ? selectedCountry
-                  : "None"}
+                Selected Country: {selectedCountry ? selectedCountry : "None"}
               </div>
-              {/* Submit Answer Button in green */}
-              <div className="text-center pointer-events-auto">
+              <div className="flex justify-center items-center">
                 <button
                   onClick={handleSubmitAnswer}
-                  className="bg-green-600 text-white border border-white rounded-full py-2 px-4 hover:bg-green-500 transition-colors text-sm"
+                  className="bg-green-600 text-white border border-white rounded-full py-2 px-4 hover:bg-green-500 transition-colors text-sm pointer-events-auto"
                 >
                   Submit Answer
                 </button>
+                {/* When not collapsed, show the Hide Fact button to the right */}
+                {!isCollapsed && (
+                  <button
+                    onClick={() => setIsCollapsed(true)}
+                    className="ml-4 bg-white text-black rounded-full p-1 hover:bg-green-600 transition-colors pointer-events-auto"
+                  >
+                    Hide Fact
+                  </button>
+                )}
               </div>
-              {/* Feedback Popup */}
+              {/* Feedback Popup (always visible if feedback exists) */}
               {feedback && (
                 <div
                   className={`mt-4 p-2 rounded text-center text-sm ${feedbackType === "correct"
-                    ? "bg-green-300 text-green-900"
-                    : "bg-red-300 text-red-900"
-                    } pointer-events-auto`}
+                      ? "bg-green-300 text-green-900"
+                      : "bg-red-300 text-red-900"
+                    } pointer-events-none`}
                 >
                   {feedback}
                 </div>
               )}
               {/* End of Question/Source Popup */}
               {questionFinished && (
-                <div className="flex justify-around mt-4 pointer-events-auto">
+                <div className="flex justify-around mt-4 pointer-events-none">
                   <a
                     href={currentFact.Source}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors text-sm"
+                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors text-sm pointer-events-auto"
                   >
                     Source
                   </a>
-                  <button
-                    onClick={() => setIsReportModalOpen(true)}
-                    className="bg-red-600 text-white border border-white rounded-full py-2 px-4 hover:bg-red-500 transition-colors text-sm"
-                  >
-                    Report Fact
-                  </button>
                   <button
                     onClick={() => {
                       setQuestionFinished(false);
                       handleNextQuestion();
                     }}
-                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors text-sm"
+                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors text-sm pointer-events-auto"
                   >
                     Next
                   </button>
