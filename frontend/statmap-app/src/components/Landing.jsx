@@ -163,7 +163,7 @@ const Landing = () => {
           }
           className="fixed bottom-4 left-6 z-50 focus:outline-none"
         >
-          <BsFillQuestionSquareFill size={50} className="bg-white text-black hover:text-green-600" />
+          <BsFillQuestionSquareFill size={50} className="bg-black text-white text-opacity-75 hover:text-green-600" />
         </button>
       </div>
     </div>
