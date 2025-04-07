@@ -65,7 +65,7 @@ const Landing = () => {
         className="fixed top-4 right-4 z-50 bg-white bg-opacity-80 p-2 rounded-full shadow-lg hover:bg-opacity-100 transition-all duration-150"
         title={use3DGlobe ? "Switch to SVG Globe" : "Switch to 3D Globe"}
       >
-        {use3DGlobe ? <BsImage size={24} /> : <FaGlobe size={24} />}
+        {use3DGlobe ?  <FaGlobe size={24}/> : <BsImage size={24}/>}
         {use3DGlobe ? "3D" : "2D"}
       </button>
 
