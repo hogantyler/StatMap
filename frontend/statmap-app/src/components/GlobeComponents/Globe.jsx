@@ -14,7 +14,7 @@ import EarthTest from "../TestComponents/EarthTest";
  */
 const Globe = React.memo(function Globe(props) {
     const [showLabel, setShowLabel] = useState(true);
-    const [showPerformance, setShowPerformance] = useState(true);
+    const [showPerformance, setShowPerformance] = useState(false);
 
     const globeRef = useRef();
     const cloudsRef = useRef();
