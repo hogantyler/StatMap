@@ -1,10 +1,11 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useState, Suspense } from "react";
 import { FaUser, FaGlobe } from "react-icons/fa"; // Added profile icon import
 import { BsFillQuestionSquareFill, BsImage } from "react-icons/bs"; //question mark icon
 import BlackGlobe from "../black_globe.svg";
 import HoverDropMenu from "./HoverDropMenu";
 import Login from "./Login";
 import Modal from "./Modal";
+import Loading from "./Loading";
 import LandingGlobe from "./LandingGlobe";
 import { useNavigate } from "react-router-dom";
 
@@ -50,7 +51,9 @@ const Landing = () => {
       {/* Position background based on toggle state */}
       <div className="fixed top-0 left-0 w-full h-full z-0">
         {use3DGlobe ? (
-          <LandingGlobe />
+          <Suspense fallback={<Loading />}>
+            <LandingGlobe />
+          </Suspense>
         ) : (
           <div
             className="min-h-screen bg-cover bg-center"
@@ -65,7 +68,7 @@ const Landing = () => {
         className="fixed top-4 right-4 z-50 bg-white bg-opacity-80 p-2 rounded-full shadow-lg hover:bg-opacity-100 transition-all duration-150"
         title={use3DGlobe ? "Switch to SVG Globe" : "Switch to 3D Globe"}
       >
-        {use3DGlobe ?  <FaGlobe size={24}/> : <BsImage size={24}/>}
+        {use3DGlobe ? <FaGlobe size={24} /> : <BsImage size={24} />}
         {use3DGlobe ? "3D" : "2D"}
       </button>
 
