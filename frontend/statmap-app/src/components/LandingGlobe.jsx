@@ -3,7 +3,7 @@ import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { OrbitControls, Stars, Text, Billboard } from "@react-three/drei";
 import * as THREE from "three";
 import { Perf } from 'r3f-perf'
-import ConicGlobe from "./TestComponents/ConicGlobe";
+//import ConicGlobe from "./TestComponents/ConicGlobe";
 import AtmosphereMesh from "./GlobeComponents/AtmosphereMesh";
 import EarthTest from "./TestComponents/EarthTest";
 

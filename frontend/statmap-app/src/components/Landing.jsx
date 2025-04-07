@@ -65,7 +65,7 @@ const Landing = () => {
       {/* Toggle button for switching between globe types */}
       <button
         onClick={toggleGlobeType}
-        className="fixed top-4 right-4 z-50 bg-white bg-opacity-80 p-2 rounded-full shadow-lg hover:bg-opacity-100 transition-all duration-150"
+        className="fixed top-4 right-4 z-50 bg-white bg-opacity-80 p-2 rounded-full shadow-lg hover:bg-opacity-100 transition-all duration-150 transform hover:scale-105 hover:shadow-lg"
         title={use3DGlobe ? "Switch to SVG Globe" : "Switch to 3D Globe"}
       >
         {use3DGlobe ? <FaGlobe size={24} /> : <BsImage size={24} />}
@@ -73,7 +73,7 @@ const Landing = () => {
       </button>
 
       {/* Main content positioned on top of Globe */}
-      <div className="relative z-10 w-full h-full">
+      <div className="relative z-10 w-full h-full ">
         <HoverDropMenu onSignInClick={(e) => handleOpenModal(<Login />)} />
 
         <div className="flex flex-col justify-start items-center gap-4 p-4">
