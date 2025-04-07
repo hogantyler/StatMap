@@ -1,6 +1,6 @@
 // Import dependencies
 import React, { useRef, useEffect, useState, forwardRef, memo, useMemo, useCallback } from 'react';
-import {useFrame} from '@react-three/fiber';
+import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 import ConicPolygonGeometry from 'three-conic-polygon-geometry';
 //import { polygonCentroid } from "d3-polygon";
@@ -10,17 +10,19 @@ import { useCountrySelection } from '../CountrySelectionContext'; // Context for
 
 function CountryPolygons({ geoData, globeRef, isDraggingRef }) {
     const [countries, setCountries] = useState([]);
-    const [selectedCountry, setSelectedCountry] = useState(null);
-    const { selectCountry } = useCountrySelection();
+    //const [selectedCountry, setSelectedCountry] = useState(null);
+    const { selectedCountry, selectCountry } = useCountrySelection();
     const polygonsRef = useRef();
 
-    //handler for making sure only one country is selectable at a time and setting selected country context so game page can access selected country
+    // Handler for making sure only one country is selectable at a time and setting selected country context so game page can access selected country
     const handleCountrySelect = (countryId) => {
-        setSelectedCountry(prevSelected =>
+        {/*setSelectedCountry(prevSelected =>
+            prevSelected === countryId ? null : countryId
+        );*/}
+        console.log(`Country selected: ${countryId}`);
+        selectCountry(prevSelected =>
             prevSelected === countryId ? null : countryId
         );
-        console.log(`Country selected: ${countryId}`);
-        selectCountry(countryId);
     };
 
     useEffect(() => {
@@ -83,7 +85,7 @@ function CountryPolygons({ geoData, globeRef, isDraggingRef }) {
 const Country = memo(function Country({ name, coords, altitude, type, iso, isSelected, onSelect, isDraggingRef }) {
     console.log("country");
     const [hovered, setHovered] = useState(false);
-    
+
     const countryRef = useRef();
 
     const { color, show, raise } = useMemo(() => ({
@@ -132,32 +134,43 @@ const Country = memo(function Country({ name, coords, altitude, type, iso, isSel
     ], [color, show]);
 
     const handleClick = useCallback((event) => {
+        event.stopPropagation();
+
         if (isDraggingRef.current) {
-            console.log('Click ignored: dragging');
-            event.stopPropagation();
+            //console.log('Click ignored: dragging');
             return; // Do nothing if dragging
         }
-        event.stopPropagation();
+
+        document.body.style.cursor = 'pointer';
         onSelect();
         // console.log(`selected on ${name}`);
     }, [onSelect, isDraggingRef]);
 
     const handlePointerOver = useCallback((event) => {
+        event.stopPropagation();
+
         if (isDraggingRef.current) {
-            console.log('Hover ignored: dragging');
-            event.stopPropagation();
+            //console.log('Hover ignored: dragging');
             return; // Do nothing if dragging
         }
-        event.stopPropagation();
-        setHovered(true);
+
         document.body.style.cursor = 'pointer';
+        setHovered(true);
     }, [isDraggingRef]);
 
     const handlePointerOut = useCallback((event) => {
         event.stopPropagation();
+
+        if (isDraggingRef.current && !hovered) {
+            return;
+        }
+        
+        if(!isDraggingRef.current) {
+            document.body.style.cursor = 'auto';
+        }
+        
         setHovered(false);
-        document.body.style.cursor = 'auto';
-    }, []);
+    }, [isDraggingRef, hovered]);
 
     //const edges = new THREE.EdgesGeometry(geometry);
     return (
@@ -181,8 +194,7 @@ const Country = memo(function Country({ name, coords, altitude, type, iso, isSel
 }, (prevProps, nextProps) => {
     //comparison function - only re-render if these conditions change
     return (
-        prevProps.isSelected === nextProps.isSelected &&
-        prevProps.isDraggingRef === nextProps.isDraggingRef
+        prevProps.isSelected === nextProps.isSelected
     );
 });
 

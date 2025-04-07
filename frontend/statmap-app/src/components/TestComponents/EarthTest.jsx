@@ -1,6 +1,6 @@
-import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
-import { OrbitControls, Stars, Html, Stats, Text, Billboard } from "@react-three/drei";
-import { useRef, useState, useEffect, Suspense } from "react";
+import { useLoader, useThree } from "@react-three/fiber";
+import { } from "@react-three/drei";
+import { useEffect } from "react";
 import * as THREE from "three";
 import EarthMap from "../../textures/8k_earth.png"
 import EarthNormalMap from "../../textures/earth_normalmap_5400x2700.jpg"
@@ -10,7 +10,7 @@ import EarthDisplacementMap from "../../textures/gebco_bathy_2700x1350.jpg"
 import { TextureLoader } from "three";
 
 /**
- * Renders a page with interactive globe with experimetnal features under testing and development.
+ * Renders a mesh with interactive globe with experimetnal features under testing and development.
  * 
  * @returns part of the 3D earth that has to do with texture wrapping and anisotropic filtering and defines three.js/react-three-fiber material
  */
@@ -38,7 +38,9 @@ function EarthTest(props) {
             texture.repeat.set(1, 1);
 
             // Apply offset for proper alignment
-            texture.offset.x = (Math.PI / 2) / (2 * Math.PI);
+            if (!props.NoOffSet) {
+                texture.offset.x = (Math.PI / 2) / (2 * Math.PI);
+            }
 
             // Ensure mipmaps are generated for better performance
             texture.generateMipmaps = true;
@@ -52,9 +54,9 @@ function EarthTest(props) {
         // Apply settings to all textures
         [colorMap, normalMap, specularMap, cloudMap, displacementMap].forEach(applyTextureSettings);
 
-    }, [colorMap, normalMap, specularMap, cloudMap, displacementMap]);
+    }, [gl.capabilities, colorMap, normalMap, specularMap, cloudMap, displacementMap]);
 
-    console.log("globe render");
+    console.log("earth render");
 
     return (
         <group>
