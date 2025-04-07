@@ -93,18 +93,8 @@ const MenuContent = ({ onSignInClick }) => {
               <FaSignInAlt className="mr-4 w-6 h-6" />
               <span>SIGN IN</span>
             </div>
-            <p className="ml-10 text-sm">Access your account</p>
+            <p className="ml-10 text-sm">Access Your Account</p>
           </button>
-          <a
-            href="#"
-            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
-          >
-            <div className="flex items-center">
-              <FaGamepad className="mr-4 w-6 h-6" />
-              <span>GAMEPLAY</span>
-            </div>
-            <p className="ml-10 text-sm">Start playing games</p>
-          </a>
           <a
             href="#"
             className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
@@ -113,7 +103,7 @@ const MenuContent = ({ onSignInClick }) => {
               <FaTrophy className="mr-4 w-6 h-6" />
               <span>LEADERBOARDS</span>
             </div>
-            <p className="ml-10 text-sm">View top players</p>
+            <p className="ml-10 text-sm">View Top Players</p>
           </a>
           <a
             href="#"
@@ -123,7 +113,7 @@ const MenuContent = ({ onSignInClick }) => {
               <FaUserCircle className="mr-4 w-6 h-6" />
               <span>ACCOUNT</span>
             </div>
-            <p className="ml-10 text-sm">Manage your profile</p>
+            <p className="ml-10 text-sm">Manage Your Profile</p>
           </a>
           <a
             href="#"
@@ -133,16 +123,16 @@ const MenuContent = ({ onSignInClick }) => {
               <FaCog className="mr-4 w-6 h-6" />
               <span>SETTINGS</span>
             </div>
-            <p className="ml-10 text-sm">Adjust your preferences</p>
+            <p className="ml-10 text-sm">Adjust Your Preferences</p>
           </a>
         </div>
         <button className="group flex flex-col items-center justify-center w-full rounded-lg border-4 border-white px-4 py-2 font-semibold text-lg transition-colors hover:bg-white hover:text-black">
           <div className="mr-4">
           <div className="flex items-center">
             <FaEnvelope className="mr-4 w-6 h-6" />
-            <span>CONTACT US</span>
+            <span>ABOUT US</span>
           </div>
-          <p className="ml-8 text-sm">Get in touch with us</p>
+          <p className="ml-8 text-sm">Learn More About Our Team</p>
           </div>
         </button>
       </div>
