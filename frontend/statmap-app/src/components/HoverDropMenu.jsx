@@ -11,10 +11,12 @@ import {
 } from "react-icons/fa";
 import { FaMapMarkedAlt } from "react-icons/fa";
 import { SupabaseContext } from "./SupabaseContext";
-import Modal from "./Modal";
+import SettingsModal from "./SettingsModal";
+import { playClickSound, playHoverSound } from "../utils/soundUtils";
 import SignIn from "./SignIn";
 import AccountPage from "./AccountPage";
 import SignUp from "./SignUp";
+import Modal from "./Modal";
 
 /**
  * Renders a hovered dropdown menu that provides navigation options for the user.
@@ -108,8 +110,19 @@ const FlyoutLink = ({ children, href, FlyoutContent, onSignInClick, onAccountPag
  */
 const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
   const [account, setAccount] = useState(null);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
   const supabase = useContext(SupabaseContext);
+
+  const handleButtonClick = (callback) => {
+    playClickSound();
+    callback();
+  };
+
+  const handleSettingsClick = () => {
+    playClickSound();
+    setIsSettingsOpen(true);
+  };
 
   async function getAccount() {
     const tempAccount = await supabase.auth.getUser()
@@ -132,18 +145,19 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
   }
   
     return (
-      <div className="w-96 bg-black p-9 shadow-xl text-white text-lg space-y-6 rounded-lg">
-        <div className="mb-6 space-y-6">
-          <h3 className="font-semibold text-xl flex items-center">
-            <FaMapMarkedAlt className="mr-2 w-6 h-6" />
-            STATMAP MENU
-          </h3>
+      <>
+        <div className="w-96 bg-black p-9 shadow-xl text-white text-lg space-y-6 rounded-lg">
+          <div className="mb-6 space-y-6">
+            <h3 className="font-semibold text-xl flex items-center">
+              <FaMapMarkedAlt className="mr-2 w-6 h-6" />
+              STATMAP MENU
+            </h3>
 
-          {
-            account ?
-              !account.data.user ?
+            {account ? (
+              !account.data.user ? (
                 <button
-                  onClick={onSignInClick}
+                  onClick={() => handleButtonClick(onSignInClick)}
+                  onMouseEnter={playHoverSound}
                   className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
                 >
                   <div className="flex items-center">
@@ -152,9 +166,10 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
                   </div>
                   <p className="ml-10 text-sm">Access Your Account</p>
                 </button>
-                :
+              ) : (
                 <button
                   onClick={onSignOutClick}
+                  onMouseEnter={playHoverSound}
                   className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
                 >
                   <div className="flex items-center">
@@ -163,9 +178,11 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
                   </div>
                   <p className="ml-10 text-sm">Sign out of Your Account</p>
                 </button>
-              :
+              )
+            ) : (
               <button
-                onClick={onSignInClick}
+                onClick={() => handleButtonClick(onSignInClick)}
+                onMouseEnter={playHoverSound}
                 className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
               >
                 <div className="flex items-center">
@@ -174,51 +191,62 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
                 </div>
                 <p className="ml-10 text-sm">Access Your Account</p>
               </button>
-          }
+            )}
 
-          
-
-          <a
-            href="#"
-            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
-          >
-            <div className="flex items-center">
-              <FaTrophy className="mr-4 w-6 h-6" />
-              <span>LEADERBOARDS</span>
-            </div>
-            <p className="ml-10 text-sm">View Top Players</p>
-          </a>
+            <a
+              href="#"
+              onMouseEnter={playHoverSound}
+              className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
+            >
+              <div className="flex items-center">
+                <FaTrophy className="mr-4 w-6 h-6" />
+                <span>LEADERBOARDS</span>
+              </div>
+              <p className="ml-10 text-sm">View Top Players</p>
+            </a>
+            <button
+              onClick={() => handleButtonClick(onAccountPageClick)}
+              onMouseEnter={playHoverSound}
+              className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
+            >
+              <div className="flex items-center">
+                <FaUserCircle className="mr-4 w-6 h-6" />
+                <span>ACCOUNT</span>
+              </div>
+              <p className="ml-10 text-sm">Manage Your Profile</p>
+            </button>
+            <button
+              onClick={handleSettingsClick}
+              onMouseEnter={playHoverSound}
+              className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
+            >
+              <div className="flex items-center">
+                <FaCog className="mr-4 w-6 h-6" />
+                <span>SETTINGS</span>
+              </div>
+              <p className="ml-10 text-sm">Adjust Your Preferences</p>
+            </button>
+          </div>
           <button
-            onClick={onAccountPageClick}
-            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
+            onMouseEnter={playHoverSound}
+            onClick={() => playClickSound()}
+            className="group flex flex-col items-center justify-center w-full rounded-lg border-4 border-white px-4 py-2 font-semibold text-lg transition-colors hover:bg-white hover:text-black"
           >
-            <div className="flex items-center">
-              <FaUserCircle className="mr-4 w-6 h-6" />
-              <span>ACCOUNT</span>
+            <div className="mr-4">
+              <div className="flex items-center">
+                <FaEnvelope className="mr-4 w-6 h-6" />
+                <span>ABOUT US</span>
+              </div>
+              <p className="ml-8 text-sm">Learn More About Our Team</p>
             </div>
-            <p className="ml-10 text-sm">Manage Your Profile</p>
           </button>
-          <a
-            href="#"
-            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
-          >
-            <div className="flex items-center">
-              <FaCog className="mr-4 w-6 h-6" />
-              <span>SETTINGS</span>
-            </div>
-            <p className="ml-10 text-sm">Adjust Your Preferences</p>
-          </a>
         </div>
-        <button className="group flex flex-col items-center justify-center w-full rounded-lg border-4 border-white px-4 py-2 font-semibold text-lg transition-colors hover:bg-white hover:text-black">
-          <div className="mr-4">
-          <div className="flex items-center">
-            <FaEnvelope className="mr-4 w-6 h-6" />
-            <span>ABOUT US</span>
-          </div>
-          <p className="ml-8 text-sm">Learn More About Our Team</p>
-          </div>
-        </button>
-      </div>
+
+        <SettingsModal 
+          isOpen={isSettingsOpen} 
+          onClose={() => setIsSettingsOpen(false)} 
+        />
+      </>
     );
   };
   
