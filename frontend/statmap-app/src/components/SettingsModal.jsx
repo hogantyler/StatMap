@@ -1,11 +1,39 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
+import { setGlobalVolume, playClickSound } from '../utils/soundUtils';
 
 const SettingsModal = ({ isOpen, onClose }) => {
-  const [brightness, setBrightness] = useState(100);
-  const [soundLevel, setSoundLevel] = useState(50);
-  const [globeQuality, setGlobeQuality] = useState('medium');
+  const [brightness, setBrightness] = useState(() => {
+    const saved = localStorage.getItem('brightness');
+    return saved ? parseInt(saved) : 100;
+  });
+  const [soundLevel, setSoundLevel] = useState(() => {
+    const saved = localStorage.getItem('soundLevel');
+    return saved ? parseInt(saved) : 50;
+  });
+  const [globeQuality, setGlobeQuality] = useState(() => {
+    const saved = localStorage.getItem('globeQuality');
+    return saved || 'medium';
+  });
+
+  useEffect(() => {
+    setGlobalVolume(soundLevel);
+  }, [soundLevel]);
+
+  const handleSoundChange = (e) => {
+    const newValue = parseInt(e.target.value);
+    setSoundLevel(newValue);
+    setGlobalVolume(newValue);
+  };
+
+  const handleSave = () => {
+    localStorage.setItem('brightness', brightness);
+    localStorage.setItem('soundLevel', soundLevel);
+    localStorage.setItem('globeQuality', globeQuality);
+    playClickSound();
+    onClose();
+  };
 
   if (!isOpen) return null;
 
@@ -45,7 +73,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                   min="0"
                   max="100"
                   value={brightness}
-                  onChange={(e) => setBrightness(e.target.value)}
+                  onChange={(e) => setBrightness(parseInt(e.target.value))}
                   className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
                 />
                 <span className="w-12 text-right">{brightness}%</span>
@@ -61,7 +89,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                   min="0"
                   max="100"
                   value={soundLevel}
-                  onChange={(e) => setSoundLevel(e.target.value)}
+                  onChange={handleSoundChange}
                   className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
                 />
                 <span className="w-12 text-right">{soundLevel}%</span>
@@ -86,9 +114,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
             {/* Save Button */}
             <button
               className="w-full bg-white text-black py-2 px-4 rounded-lg font-semibold hover:bg-gray-200 transition-colors"
-              onClick={() => {
-                onClose();
-              }}
+              onClick={handleSave}
             >
               Save Settings
             </button>

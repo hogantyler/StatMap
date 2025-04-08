@@ -12,6 +12,7 @@ import {
 import { FaMapMarkedAlt } from "react-icons/fa";
 import { SupabaseContext } from "./SupabaseContext";
 import SettingsModal from "./SettingsModal";
+import { playClickSound, playHoverSound } from "../utils/soundUtils";
 
 /**
  * Renders a hovered dropdown menu that provides navigation options for the user.
@@ -85,6 +86,16 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
 
   const supabase = useContext(SupabaseContext);
 
+  const handleButtonClick = (callback) => {
+    playClickSound();
+    callback();
+  };
+
+  const handleSettingsClick = () => {
+    playClickSound();
+    setIsSettingsOpen(true);
+  };
+
   async function getAccount() {
     const tempAccount = await supabase.auth.getUser()
     if (tempAccount.data.user) {
@@ -113,33 +124,11 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
               STATMAP MENU
             </h3>
 
-            {
-              account ?
-                !account.data.user ?
-                  <button
-                    onClick={onSignInClick}
-                    className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
-                  >
-                    <div className="flex items-center">
-                      <FaSignInAlt className="mr-4 w-6 h-6" />
-                      <span>SIGN IN</span>
-                    </div>
-                    <p className="ml-10 text-sm">Access Your Account</p>
-                  </button>
-                  :
-                  <button
-                    onClick={onSignOutClick}
-                    className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
-                  >
-                    <div className="flex items-center">
-                      <FaSignInAlt className="mr-4 w-6 h-6" />
-                      <span>SIGN OUT</span>
-                    </div>
-                    <p className="ml-10 text-sm">Sign out of Your Account</p>
-                  </button>
-                :
+            {account ? (
+              !account.data.user ? (
                 <button
-                  onClick={onSignInClick}
+                  onClick={() => handleButtonClick(onSignInClick)}
+                  onMouseEnter={playHoverSound}
                   className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
                 >
                   <div className="flex items-center">
@@ -148,12 +137,36 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
                   </div>
                   <p className="ml-10 text-sm">Access Your Account</p>
                 </button>
-            }
-
-            
+              ) : (
+                <button
+                  onClick={onSignOutClick}
+                  onMouseEnter={playHoverSound}
+                  className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
+                >
+                  <div className="flex items-center">
+                    <FaSignInAlt className="mr-4 w-6 h-6" />
+                    <span>SIGN OUT</span>
+                  </div>
+                  <p className="ml-10 text-sm">Sign out of Your Account</p>
+                </button>
+              )
+            ) : (
+              <button
+                onClick={() => handleButtonClick(onSignInClick)}
+                onMouseEnter={playHoverSound}
+                className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
+              >
+                <div className="flex items-center">
+                  <FaSignInAlt className="mr-4 w-6 h-6" />
+                  <span>SIGN IN</span>
+                </div>
+                <p className="ml-10 text-sm">Access Your Account</p>
+              </button>
+            )}
 
             <a
               href="#"
+              onMouseEnter={playHoverSound}
               className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
             >
               <div className="flex items-center">
@@ -163,7 +176,8 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
               <p className="ml-10 text-sm">View Top Players</p>
             </a>
             <button
-              onClick={onAccountPageClick}
+              onClick={() => handleButtonClick(onAccountPageClick)}
+              onMouseEnter={playHoverSound}
               className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
             >
               <div className="flex items-center">
@@ -173,7 +187,8 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
               <p className="ml-10 text-sm">Manage Your Profile</p>
             </button>
             <button
-              onClick={() => setIsSettingsOpen(true)}
+              onClick={handleSettingsClick}
+              onMouseEnter={playHoverSound}
               className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
             >
               <div className="flex items-center">
@@ -183,13 +198,17 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
               <p className="ml-10 text-sm">Adjust Your Preferences</p>
             </button>
           </div>
-          <button className="group flex flex-col items-center justify-center w-full rounded-lg border-4 border-white px-4 py-2 font-semibold text-lg transition-colors hover:bg-white hover:text-black">
+          <button
+            onMouseEnter={playHoverSound}
+            onClick={() => playClickSound()}
+            className="group flex flex-col items-center justify-center w-full rounded-lg border-4 border-white px-4 py-2 font-semibold text-lg transition-colors hover:bg-white hover:text-black"
+          >
             <div className="mr-4">
-            <div className="flex items-center">
-              <FaEnvelope className="mr-4 w-6 h-6" />
-              <span>ABOUT US</span>
-            </div>
-            <p className="ml-8 text-sm">Learn More About Our Team</p>
+              <div className="flex items-center">
+                <FaEnvelope className="mr-4 w-6 h-6" />
+                <span>ABOUT US</span>
+              </div>
+              <p className="ml-8 text-sm">Learn More About Our Team</p>
             </div>
           </button>
         </div>
