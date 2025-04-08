@@ -222,6 +222,7 @@ const CountryLabels = memo(function CountryLabels({ globeRef, showLabel }) {
         "Norway": [-5, -3, 0],
         "Croatia": [0, 0.5, 0],
         "Israel": [-0.3, -0.5, 0],
+        "Bosnia and Herzegovina": [0, -0.5, 0],
     }), []);
 
     useEffect(() => {
