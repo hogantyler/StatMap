@@ -38,7 +38,9 @@ function EarthTest(props) {
             texture.repeat.set(1, 1);
 
             // Apply offset for proper alignment
-            texture.offset.x = (Math.PI / 2) / (2 * Math.PI);
+            if (!props.NoOffSet) {
+                texture.offset.x = (Math.PI / 2) / (2 * Math.PI);
+            }
 
             // Ensure mipmaps are generated for better performance
             texture.generateMipmaps = true;

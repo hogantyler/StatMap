@@ -2,13 +2,14 @@ import React, { useContext, useState } from 'react';
 import { SupabaseContext } from './SupabaseContext';
 import { useDeprecatedAnimatedState } from 'motion/react';
 import { AuthApiError, AuthWeakPasswordError } from '@supabase/supabase-js';
+import { BooleanKeyframeTrack } from 'three';
 
 /**
  * Sign In component for accounts that allows users to enter their credentials and sign in.
  * 
  * @returns {JSX.Element} A sign in form with email and password fields
  */
-const SignUp = ({ isOpen, onClose }) => {
+const SignUp = ({ isOpen, onModalClose }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [displayName, setDisplayName] = useState('');
@@ -17,9 +18,6 @@ const SignUp = ({ isOpen, onClose }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle sign up logic here
-        console.log('Email:', email);
-        console.log('Password:', password);
         let { data, error } = await supabase.auth.signUp({
             email: email,
             password: password,
@@ -27,26 +25,40 @@ const SignUp = ({ isOpen, onClose }) => {
                 data: {display_name: displayName}
             }
         })
-        console.log(data);
+        
         if (error) {
-            console.log(error);
-            console.log(error.name);
-            console.log(error.name === 'AuthApiError');
-            console.log(error.name === 'AuthWeakPasswordError');
-            console.log(error.code === 'weak_password');
+            switch (error.name) {
+                case 'AuthApiError':
+                    switch (error.code) {
+                        case 'user_already_exists':
+                            alert("Email already in use");
+                            break;
+                        
+                        default:
+                            alert(error.code);
+                    }
+                    break;
+                
+                case 'AuthWeakPasswordError':
+                    alert("Password Too Weak");
+                    break;
+
+                default:
+                    alert(error.name + ' ' + error.code);
+            }
+        } else {
+            onModalClose();
         }
-        // 422 - password too short
-        // 429 - email already in use
     };
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="w-full max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-lg">
+                <button onClick={onModalClose}>X</button>
                 <form className="space-y-6" onSubmit={handleSubmit}>
-                    <button onClick={onClose}>X</button>
                     <h5 className="text-xl font-medium text-black">STATMAP SIGN UP</h5>
                     <div>
-                        <label htmlFor="display_name" className="block mb-2 text-sm font-medium text-black">Your display name</label>
+                        <label htmlFor="display_name" className="block mb-2 text-sm font-medium text-black">Display Name</label>
                         <input
                             type="text"
                             name="display_name"
@@ -59,7 +71,7 @@ const SignUp = ({ isOpen, onClose }) => {
                         />
                     </div>
                     <div>
-                        <label htmlFor="email" className="block mb-2 text-sm font-medium text-black">Your email</label>
+                        <label htmlFor="email" className="block mb-2 text-sm font-medium text-black">Email</label>
                         <input
                             type="email"
                             name="email"
@@ -72,7 +84,7 @@ const SignUp = ({ isOpen, onClose }) => {
                         />
                     </div>
                     <div>
-                        <label htmlFor="password" className="block mb-2 text-sm font-medium text-black">Your password</label>
+                        <label htmlFor="password" className="block mb-2 text-sm font-medium text-black">Password</label>
                         <input
                             type="password"
                             name="password"

@@ -6,7 +6,7 @@ import { SupabaseContext } from './SupabaseContext';
  * 
  * @returns {JSX.Element} A login form with email and password fields
  */
-const SignIn = ({ isOpen, onClose, openSignUp }) => {
+const SignIn = ({ isOpen, onSignUpClick, onModalClose }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -14,21 +14,37 @@ const SignIn = ({ isOpen, onClose, openSignUp }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log('Email:', email);
-        console.log('Password:', password);
         let { data, error } = await supabase.auth.signInWithPassword({
           email: email,
           password: password
         })
-        console.log(data, error);
-        onClose();
+
+        if (error) {
+            switch (error.name) {
+                case 'AuthApiError':
+                    switch (error.code) {
+                        case 'invalid_credentials':
+                            alert("Your email or password is incorrect");
+                            break;
+
+                        default:
+                            alert(error.code);
+                    }
+                    break;
+                
+                default:
+                    alert(error.name + ' ' + error.code);
+            }
+        } else {
+            onModalClose();
+        }
     };
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="w-full max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-lg">
+                <button onClick={onModalClose}>X</button>
                 <form className="space-y-6" onSubmit={handleSubmit}>
-                    <button onClick={onClose}>X</button>
                     <h5 className="text-xl font-medium text-black">STATMAP SIGN IN</h5>
                     <div>
                         <label htmlFor="email" className="block mb-2 text-sm font-medium text-black">Your email</label>
@@ -68,7 +84,7 @@ const SignIn = ({ isOpen, onClose, openSignUp }) => {
                     </div> */}
                     <button type="submit" className="w-full text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign In to your account</button>
                     <div className="text-sm font-medium text-black">
-                        Not registered? <button onClick={() => openSignUp()} className="text-blue-800 hover:underline">Create account</button>
+                        Not registered? <button onClick={() => onSignUpClick()} className="text-blue-800 hover:underline">Create account</button>
                     </div>
                 </form>
             </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import { HashRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
+//import LandingTest from "./components/TestComponents/LandingTest.jsx" // Uncomment this line to use the test component. Recommend not to remove until final version is released
 import Landing from "./components/Landing";
 import QuizMode from "./components/QuizMode";
 import UnlimitedMode from "./components/UnlimitedMode";
