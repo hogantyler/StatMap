@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Globe from "./GlobeComponents/Globe";
 import HoverDropMenu from "./HoverDropMenu";
 import Modal from "./Modal";
-import Login from "./Login";
+import SignIn from "./SignIn";
 import { FaTimes } from "react-icons/fa";
 import Loading from "./Loading"
 import { supabase } from "./SupabaseContext";
@@ -274,9 +274,9 @@ const QuizModeContent = () => {
           </div>
         )}
 
-        {/* Login Modal */}
+        {/* SignIn Modal */}
         <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-          <Login />
+          <SignIn />
         </Modal>
 
         {/* Report Fact Modal */}

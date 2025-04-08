@@ -1,0 +1,95 @@
+import React, { useContext, useState } from 'react';
+import { SupabaseContext } from './SupabaseContext';
+
+/**
+ * Sign In component for accounts that allows users to enter their credentials and sign in.
+ * 
+ * @returns {JSX.Element} A login form with email and password fields
+ */
+const SignIn = ({ isOpen, onSignUpClick, onModalClose }) => {
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+
+    const supabase = useContext(SupabaseContext);
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        let { data, error } = await supabase.auth.signInWithPassword({
+          email: email,
+          password: password
+        })
+
+        if (error) {
+            switch (error.name) {
+                case 'AuthApiError':
+                    switch (error.code) {
+                        case 'invalid_credentials':
+                            alert("Your email or password is incorrect");
+                            break;
+
+                        default:
+                            alert(error.code);
+                    }
+                    break;
+                
+                default:
+                    alert(error.name + ' ' + error.code);
+            }
+        } else {
+            onModalClose();
+        }
+    };
+
+    return (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="w-full max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-lg">
+                <button onClick={onModalClose}>X</button>
+                <form className="space-y-6" onSubmit={handleSubmit}>
+                    <h5 className="text-xl font-medium text-black">STATMAP SIGN IN</h5>
+                    <div>
+                        <label htmlFor="email" className="block mb-2 text-sm font-medium text-black">Your email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            id="email"
+                            className="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            placeholder="name@company.com"
+                            value={email}
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                    </div>
+                    <div>
+                        <label htmlFor="password" className="block mb-2 text-sm font-medium text-black">Your password</label>
+                        <input
+                            type="password"
+                            name="password"
+                            id="password"
+                            placeholder="••••••••"
+                            className="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                    </div>
+                    {/* <div className="flex items-start">
+                        <div className="flex items-center h-5">
+                            <input
+                                id="remember"
+                                type="checkbox"
+                                className="w-4 h-4 border border-gray-300 rounded-sm bg-white focus:ring-3 focus:ring-blue-600"
+                            />
+                        </div>
+                        <label htmlFor="remember" className="ml-2 text-sm font-medium text-black">Remember me</label>
+                    </div> */}
+                    <button type="submit" className="w-full text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign In to your account</button>
+                    <div className="text-sm font-medium text-black">
+                        Not registered? <button onClick={() => onSignUpClick()} className="text-blue-800 hover:underline">Create account</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    );
+};
+
+export default SignIn;

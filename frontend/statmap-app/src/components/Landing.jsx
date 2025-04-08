@@ -3,11 +3,13 @@ import { FaUser, FaGlobe } from "react-icons/fa"; // Added profile icon import
 import { BsFillQuestionSquareFill, BsImage } from "react-icons/bs"; //question mark icon
 import BlackGlobe from "../black_globe.svg";
 import HoverDropMenu from "./HoverDropMenu";
-import Login from "./Login";
+import SignIn from "./SignIn";
 import Modal from "./Modal";
 import Loading from "./Loading";
 import LandingGlobe from "./LandingGlobe";
 import { useNavigate } from "react-router-dom";
+import SignUp from "./SignUp";
+import AccountPage from "./AccountPage";
 
 /**
  * Landing page component that provides navigation, game modes, leaderboards, and a help modal.
@@ -74,7 +76,7 @@ const Landing = () => {
 
       {/* Main content positioned on top of Globe */}
       <div className="relative z-10 w-full h-full ">
-        <HoverDropMenu onSignInClick={(e) => handleOpenModal(<Login />)} />
+        <HoverDropMenu onSignInClick={(e) => handleOpenModal(<SignIn onSignUpClick={(e) => handleOpenModal(<SignUp onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/>)} onAccountPageClick={(e) => handleOpenModal(<AccountPage onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/>
 
         <div className="flex flex-col justify-start items-center gap-4 p-4">
           {/* Game Card */}

@@ -1,4 +1,4 @@
-import React,{ useRef, useState, useEffect, useMemo, useCallback, memo } from "react";
+import React, { useRef, useState, useEffect, useMemo, useCallback, memo } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { OrbitControls, Stars, Stats, Text, Billboard } from "@react-three/drei";
 import * as THREE from "three";
@@ -36,19 +36,33 @@ const Globe = React.memo(function Globe(props) {
     }, []);
 
     // Handlers for OrbitControls drag state
-    const handleDragStart = useCallback(() => {
+    const handleDragStart = useCallback((event) => {
+        if (event?.nativeEvent?.pointerType === 'touch') {
+            // console.log("Touch drag start detected, ignoring handler logic.");
+            isDraggingRef.current = !isDraggingRef.current;
+            return; // Exit early for touch events
+        }
         setTimeout(() => {
             isDraggingRef.current = !isDraggingRef.current;
             //console.log("dragStart " + isDraggingRef.current);
         }, 150);
+        //isDraggingRef.current = true;
+        //console.log("drag true");
         document.body.style.cursor = 'grabbing';
     }, []);
 
-    const handleDragEnd = useCallback(() => {
+    const handleDragEnd = useCallback((event) => {
+        if (event?.nativeEvent?.pointerType === 'touch') {
+            // console.log("Touch drag stop detected, ignoring handler logic.");
+            isDraggingRef.current = !isDraggingRef.current;
+            return; // Exit early for touch events
+        }
         setTimeout(() => {
             isDraggingRef.current = !isDraggingRef.current;
             //console.log("dragEnd " + isDraggingRef.current);
         }, 150);
+        //isDraggingRef.current = false;
+        //console.log("drag false");
         document.body.style.cursor = 'auto';
     }, []);
 
@@ -102,10 +116,10 @@ const Globe = React.memo(function Globe(props) {
 function RotateGlobe({ globeRef, cloudsRef, linesRef, conicGlobeRef }) {
     useFrame(({ clock }) => {
         const elapsedTime = clock.getElapsedTime();
-        globeRef.current.rotation.y = elapsedTime / 70;
-        linesRef.current.rotation.y = elapsedTime / 70
+        globeRef.current.rotation.y = linesRef.current.rotation.y = elapsedTime / 80;
+        //linesRef.current.rotation.y = elapsedTime / 80
         //conicGlobeRef.current.rotation.y = elapsedTime / 60;
-        cloudsRef.current.rotation.y = elapsedTime / 40;
+        cloudsRef.current.rotation.y = elapsedTime / 50;
     });
     return null;
 }
@@ -202,8 +216,11 @@ const CountryLabels = memo(function CountryLabels({ globeRef, showLabel }) {
 
     //country label offsets for manual adjustments
     const countryOffsets = useMemo(() => ({
-        "United States of America": [0, 0, 0],
-        "Norway": [0, 0, 0]
+        "Russia": [-40, 0, 0],
+        "Norway": [-5, -3, 0],
+        "Croatia": [0, 0.5, 0],
+        "Israel": [-0.3, -0.5, 0],
+        "Bosnia and Herzegovina": [0, -0.5, 0],
     }), []);
 
     useEffect(() => {
@@ -338,6 +355,12 @@ const CountryLabels = memo(function CountryLabels({ globeRef, showLabel }) {
 
 
         if (centroid && shouldShowLabel(countryName, countryArea)) {
+            // Apply offsets in degrees
+            if(countryOffsets[countryName]) {
+                centroid[0] += countryOffsets[countryName][0];
+                centroid[1] += countryOffsets[countryName][1];
+            }
+
             // Convert centroid to 3D position
             const lon = THREE.MathUtils.degToRad(centroid[0]);
             const lat = THREE.MathUtils.degToRad(centroid[1]);
@@ -346,16 +369,7 @@ const CountryLabels = memo(function CountryLabels({ globeRef, showLabel }) {
             let y = radius * Math.sin(lat);
             let z = radius * Math.cos(lat) * Math.cos(lon);
 
-
-            if (countryOffsets[countryName]) {
-                const [offsetX, offsetY, offsetZ] = countryOffsets[countryName];
-                x += offsetX;
-                y += offsetY;
-                z += offsetZ;
-            }
-
-
-            const fontSize = visibleCountriesBySize.has(countryName) ? 0.03 : 0.02;
+            const fontSize = visibleCountriesBySize.has(countryName) ? 0.03 :(countryArea < 6 ? 0.01 : 0.02);
 
             const scaleFactor = Math.max(0.4, cameraDistance * 0.2);
 

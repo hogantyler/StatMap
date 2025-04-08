@@ -3,7 +3,7 @@ import { FaGlobe } from "react-icons/fa";
 import { BsFillQuestionSquareFill, BsImage } from "react-icons/bs";
 import BlackGlobe from "../../black_globe.svg";
 import HoverDropMenu from "../HoverDropMenu";
-import Login from "../Login";
+import SignIn from "../SignIn";
 import Modal from "../Modal";
 import { useNavigate } from "react-router-dom";
 import LandingGlobe from "../LandingGlobe";

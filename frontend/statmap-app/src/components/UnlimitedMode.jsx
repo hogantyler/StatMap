@@ -4,7 +4,7 @@ import HoverDropMenu from "./HoverDropMenu";
 import { FaTimes } from "react-icons/fa";
 import Globe from "./GlobeComponents/Globe";
 //import GlobeTest from "./TestComponents/GlobeTest"; //don't delete used for integration testing. Commented out when not testing
-import Login from "./Login";
+import SignIn from "./SignIn";
 import Modal from "./Modal";
 import Loading from "./Loading";
 import { supabase } from "./SupabaseContext";
@@ -192,7 +192,7 @@ function UnlimitedModeContent() {
         </div>
 
         <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-          <Login />
+          <SignIn />
         </Modal>
 
         {/* Globe Canvas */}
