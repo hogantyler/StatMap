@@ -216,7 +216,7 @@ const CountryLabels = memo(function CountryLabels({ globeRef, showLabel }) {
 
     //country label offsets for manual adjustments
     const countryOffsets = useMemo(() => ({
-        "United States of America": [0, 0, 0],
+        "Russia": [-40, 0, 0],
         "Norway": [-5, -3, 0]
     }), []);
 
@@ -366,7 +366,7 @@ const CountryLabels = memo(function CountryLabels({ globeRef, showLabel }) {
             let y = radius * Math.sin(lat);
             let z = radius * Math.cos(lat) * Math.cos(lon);
 
-            const fontSize = visibleCountriesBySize.has(countryName) ? 0.03 :(countryArea < 5 ? 0.01 : 0.02);
+            const fontSize = visibleCountriesBySize.has(countryName) ? 0.03 :(countryArea < 6 ? 0.01 : 0.02);
 
             const scaleFactor = Math.max(0.4, cameraDistance * 0.2);
 
