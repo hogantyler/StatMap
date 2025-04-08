@@ -36,23 +36,33 @@ const GlobeTest = React.memo(function GlobeTest(props) {
     }, []);
 
     // Handlers for OrbitControls drag state
-    const handleDragStart = useCallback(() => {
-        {/*setTimeout(() => {
+    const handleDragStart = useCallback((event) => {
+        if (event?.nativeEvent?.pointerType === 'touch') {
+            // console.log("Touch drag start detected, ignoring handler logic.");
+            isDraggingRef.current = !isDraggingRef.current;
+            return; // Exit early for touch events
+        }
+        setTimeout(() => {
             isDraggingRef.current = !isDraggingRef.current;
             console.log("dragStart " + isDraggingRef.current);
-        }, 150);*/}
-        isDraggingRef.current = true;
-        console.log("drag true");
+        }, 150);
+        //isDraggingRef.current = true;
+        //console.log("drag true");
         document.body.style.cursor = 'grabbing';
     }, []);
 
-    const handleDragEnd = useCallback(() => {
-        {/*setTimeout(() => {
+    const handleDragEnd = useCallback((event) => {
+        if (event?.nativeEvent?.pointerType === 'touch') {
+            // console.log("Touch drag stop detected, ignoring handler logic.");
+            isDraggingRef.current = !isDraggingRef.current;
+            return; // Exit early for touch events
+        }
+        setTimeout(() => {
             isDraggingRef.current = !isDraggingRef.current;
             console.log("dragEnd " + isDraggingRef.current);
-        }, 150);*/}
-        isDraggingRef.current = false;
-        console.log("drag false");
+        }, 150);
+        //isDraggingRef.current = false;
+        //console.log("drag false");
         document.body.style.cursor = 'auto';
     }, []);
 

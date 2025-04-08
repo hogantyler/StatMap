@@ -1,4 +1,4 @@
-import React,{ useRef, useState, useEffect, useMemo, useCallback, memo } from "react";
+import React, { useRef, useState, useEffect, useMemo, useCallback, memo } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { OrbitControls, Stars, Stats, Text, Billboard } from "@react-three/drei";
 import * as THREE from "three";
@@ -35,18 +35,36 @@ const Globe = React.memo(function Globe(props) {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, []);
 
-   // Handlers for OrbitControls drag state
-       const handleDragStart = useCallback(() => {
-           isDraggingRef.current = true;
-           //console.log("drag true");
-           document.body.style.cursor = 'grabbing';
-       }, []);
-   
-       const handleDragEnd = useCallback(() => {
-           isDraggingRef.current = false;
-           //console.log("drag false");
-           document.body.style.cursor = 'auto';
-       }, []);
+    // Handlers for OrbitControls drag state
+    const handleDragStart = useCallback((event) => {
+        if (event?.nativeEvent?.pointerType === 'touch') {
+            // console.log("Touch drag start detected, ignoring handler logic.");
+            isDraggingRef.current = !isDraggingRef.current;
+            return; // Exit early for touch events
+        }
+        setTimeout(() => {
+            isDraggingRef.current = !isDraggingRef.current;
+            //console.log("dragStart " + isDraggingRef.current);
+        }, 150);
+        //isDraggingRef.current = true;
+        //console.log("drag true");
+        document.body.style.cursor = 'grabbing';
+    }, []);
+
+    const handleDragEnd = useCallback((event) => {
+        if (event?.nativeEvent?.pointerType === 'touch') {
+            // console.log("Touch drag stop detected, ignoring handler logic.");
+            isDraggingRef.current = !isDraggingRef.current;
+            return; // Exit early for touch events
+        }
+        setTimeout(() => {
+            isDraggingRef.current = !isDraggingRef.current;
+            //console.log("dragEnd " + isDraggingRef.current);
+        }, 150);
+        //isDraggingRef.current = false;
+        //console.log("drag false");
+        document.body.style.cursor = 'auto';
+    }, []);
 
     return (
         <div className="relative w-full h-full">
