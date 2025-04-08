@@ -1,18 +1,18 @@
-import React, { useRef, useState, useEffect, useMemo, useCallback, memo } from "react";
+import React,{ useRef, useState, useEffect, useMemo, useCallback, memo } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { OrbitControls, Stars, Stats, Text, Billboard } from "@react-three/drei";
 import * as THREE from "three";
 import { Perf } from 'r3f-perf'
-import ConicGlobe from "./ConicGlobe";
-import TestAtmosphere from "./TestAtmosphere";
-import EarthTest from "./EarthTest";
+import ConicGlobe from "../TestComponents/ConicGlobe";
+import AtmosphereMesh from "./AtmosphereMesh";
+import EarthTest from "../TestComponents/EarthTest";
 
 /**
  * Ultimate graphical component containing canvas which encapsulates all the 3D graphical webgl/three.js/react-three-fiber components.
  * 
  * @returns A Canvas component that encapsulates all the 3D components including the globe, lights, stars, etc.
  */
-const GlobeTest = React.memo(function GlobeTest(props) {
+const Globe = React.memo(function Globe(props) {
     const [showLabel, setShowLabel] = useState(true);
     const [showPerformance, setShowPerformance] = useState(true);
 
@@ -39,20 +39,16 @@ const GlobeTest = React.memo(function GlobeTest(props) {
     const handleDragStart = useCallback(() => {
         setTimeout(() => {
             isDraggingRef.current = !isDraggingRef.current;
-            console.log("dragStart " + isDraggingRef.current);
+            //console.log("dragStart " + isDraggingRef.current);
         }, 150);
-        //isDraggingRef.current = true;
-        //console.log("drag true");
         document.body.style.cursor = 'grabbing';
     }, []);
 
     const handleDragEnd = useCallback(() => {
         setTimeout(() => {
             isDraggingRef.current = !isDraggingRef.current;
-            console.log("dragEnd " + isDraggingRef.current);
+            //console.log("dragEnd " + isDraggingRef.current);
         }, 150);
-        //isDraggingRef.current = false;
-        //console.log("drag false");
         document.body.style.cursor = 'auto';
     }, []);
 
@@ -89,7 +85,7 @@ const GlobeTest = React.memo(function GlobeTest(props) {
                     />
 
                     <EarthTest ref={globeRef} cloudsRef={cloudsRef} />
-                    <TestAtmosphere radius={1.02} />
+                    <AtmosphereMesh radius={1.02} />
                     <ConicGlobe globeRef={globeRef} isDraggingRef={isDraggingRef} />
                     <CountryBorders globeRef={globeRef} linesRef={linesRef} />
                     <CountryLabels globeRef={globeRef} showLabel={showLabel} />
@@ -414,4 +410,4 @@ function calculateApproximateArea(polygon) {
     return Math.abs(area / 2);
 }
 
-export default GlobeTest;
+export default Globe;

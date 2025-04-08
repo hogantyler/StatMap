@@ -4,9 +4,9 @@ import { useDeprecatedAnimatedState } from 'motion/react';
 import { AuthApiError, AuthWeakPasswordError } from '@supabase/supabase-js';
 
 /**
- * Login component for accounts that allows users to enter their credentials and sign in.
+ * Sign In component for accounts that allows users to enter their credentials and sign in.
  * 
- * @returns {JSX.Element} A login form with email and password fields
+ * @returns {JSX.Element} A sign in form with email and password fields
  */
 const SignUp = ({ isOpen, onClose }) => {
     const [email, setEmail] = useState('');

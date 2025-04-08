@@ -18,10 +18,10 @@ import { SupabaseContext } from "./SupabaseContext";
  * @param {*} param0 Contains a callback function for sign-in click event
  * @returns {JSX.Element} A dropdown menu trigger
  */
-const HoverDropMenu = ({ onSignInClick, onAccountPageClick }) => {
+const HoverDropMenu = ({ onSignInClick, onSignUpClick, onAccountPageClick, onModalClose }) => {
   return (
     <div className="group top-1 left-1 m-1 cursor-pointer z-50">
-      <FlyoutLink href="#" FlyoutContent={MenuContent} onSignInClick={onSignInClick} onAccountPageClick={onAccountPageClick}>
+      <FlyoutLink href="#" FlyoutContent={FlyoutContent} onSignInClick={onSignInClick} onSignUpClick={onSignUpClick} onAccountPageClick={onAccountPageClick} onModalClose={onModalClose}>
         <div className="w-18 h-18 flex items-center justify-center bg-black rounded-lg shadow-xl">
           <HiMenu size={72} className="text-white" />
         </div>
@@ -36,7 +36,7 @@ const HoverDropMenu = ({ onSignInClick, onAccountPageClick }) => {
  * @param {*} param0 Contains children elements, link href, flyout content component, and sign-in click event handler
  * @returns {JSX.Element} A link with hover-triggered dropdown content
  */
-const FlyoutLink = ({ children, href, FlyoutContent, onSignInClick, onAccountPageClick }) => {
+const FlyoutLink = ({ children, href, FlyoutContent, onSignInClick, onSignUpClick, onAccountPageClick, onModalClose }) => {
   const [open, setOpen] = useState(false);
 
   const showFlyout = FlyoutContent && open;
@@ -64,7 +64,7 @@ const FlyoutLink = ({ children, href, FlyoutContent, onSignInClick, onAccountPag
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="absolute top-0 left-0 bg-black text-white shadow-lg rounded-md z-50"
           >
-            <FlyoutContent onSignInClick={onSignInClick} onAccountPageClick={onAccountPageClick} />
+            <FlyoutContent onSignInClick={onSignInClick} onSignUpClick={onSignUpClick} onAccountPageClick={onAccountPageClick} onModalCose={onModalClose} />
           </motion.div>
         )}
       </AnimatePresence>
@@ -78,7 +78,7 @@ const FlyoutLink = ({ children, href, FlyoutContent, onSignInClick, onAccountPag
  * @param {*} param0 Contains a callback function for handling sign-in clicks
  * @returns {JSX.Element} A styled menu with various navigation options
  */
-const MenuContent = ({ onSignInClick, onAccountPageClick }) => {
+const FlyoutContent = ({ onSignInClick, onSignUpClick, onAccountPageClick, onModalClose }) => {
   const [account, setAccount] = useState(null);
 
   const supabase = useContext(SupabaseContext);
@@ -97,7 +97,7 @@ const MenuContent = ({ onSignInClick, onAccountPageClick }) => {
     console.log("sign out clicked")
     let { error } = await supabase.auth.signOut()
     if (error) {
-      console.log(error)
+      alert(error)
     }
   }
   

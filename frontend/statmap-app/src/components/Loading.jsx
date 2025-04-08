@@ -6,9 +6,9 @@ function Loading() {
     return (
         <div className="flex items-center justify-center h-screen bg-black w-screen">
             <div className="relative">
-                <div class="animate-bounce">
-                    <div class="h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-600"></div>
-                    <div class="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-700 animate-spin">
+                <div className="animate-bounce">
+                    <div className="h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-600"></div>
+                    <div className="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-700 animate-spin">
                     </div>
                 </div>
 

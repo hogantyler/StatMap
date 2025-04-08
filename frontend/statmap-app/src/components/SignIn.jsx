@@ -2,11 +2,11 @@ import React, { useContext, useState } from 'react';
 import { SupabaseContext } from './SupabaseContext';
 
 /**
- * Login component for accounts that allows users to enter their credentials and sign in.
+ * Sign In component for accounts that allows users to enter their credentials and sign in.
  * 
  * @returns {JSX.Element} A login form with email and password fields
  */
-const Login = ({ isOpen, onClose, openSignUp }) => {
+const SignIn = ({ isOpen, onClose, openSignUp }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -14,7 +14,6 @@ const Login = ({ isOpen, onClose, openSignUp }) => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        // Handle login logic here
         console.log('Email:', email);
         console.log('Password:', password);
         let { data, error } = await supabase.auth.signInWithPassword({
@@ -57,22 +56,19 @@ const Login = ({ isOpen, onClose, openSignUp }) => {
                             required
                         />
                     </div>
-                    <div className="flex items-start">
-                        <div className="flex items-start">
-                            <div className="flex items-center h-5">
-                                <input
-                                    id="remember"
-                                    type="checkbox"
-                                    className="w-4 h-4 border border-gray-300 rounded-sm bg-white focus:ring-3 focus:ring-blue-600"
-                                />
-                            </div>
-                            <label htmlFor="remember" className="ml-2 text-sm font-medium text-black">Remember me</label>
+                    {/* <div className="flex items-start">
+                        <div className="flex items-center h-5">
+                            <input
+                                id="remember"
+                                type="checkbox"
+                                className="w-4 h-4 border border-gray-300 rounded-sm bg-white focus:ring-3 focus:ring-blue-600"
+                            />
                         </div>
-                        <a href="#" className="ml-auto text-sm text-black hover:underline">Lost Password?</a>
-                    </div>
-                    <button type="submit" className="w-full text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Login to your account</button>
+                        <label htmlFor="remember" className="ml-2 text-sm font-medium text-black">Remember me</label>
+                    </div> */}
+                    <button type="submit" className="w-full text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign In to your account</button>
                     <div className="text-sm font-medium text-black">
-                        Not registered? <a onClick={() => {openSignUp()}} className="text-blue-800 hover:underline">Create account</a>
+                        Not registered? <button onClick={() => openSignUp()} className="text-blue-800 hover:underline">Create account</button>
                     </div>
                 </form>
             </div>
@@ -80,4 +76,4 @@ const Login = ({ isOpen, onClose, openSignUp }) => {
     );
 };
 
-export default Login;
+export default SignIn;

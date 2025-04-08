@@ -1,50 +1,30 @@
-import React, { useState, useEffect, Suspense } from "react";
+import React, { useState, useEffect, Suspense, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import Globe from "./Globe";
+import Globe from "./GlobeComponents/Globe";
 import HoverDropMenu from "./HoverDropMenu";
 import Modal from "./Modal";
-import Login from "./Login";
-import { FaArrowLeft } from "react-icons/fa";
-import Select from "react-select";
+import SignIn from "./SignIn";
+import { FaTimes } from "react-icons/fa";
 import Loading from "./Loading"
 import { supabase } from "./SupabaseContext";
+import { CountrySelectionProvider, useCountrySelection } from "./CountrySelectionContext";
 
-const QuizMode = () => {
+const QuizModeContent = () => {
   // --- Quiz Logic States ---
-  const [selectedOption, setSelectedOption] = useState(null);
+  const { selectedCountry } = useCountrySelection();
   const [currentFact, setCurrentFact] = useState(null);
   const [attempts, setAttempts] = useState(0);
   const [score, setScore] = useState(0);
   const [questionNumber, setQuestionNumber] = useState(1); // Question counter
   const [feedback, setFeedback] = useState("");
   const [feedbackType, setFeedbackType] = useState(""); // "correct", "incorrect", or "final"
-  const [isAnswered, setIsAnswered] = useState(false);
   const [quizComplete, setQuizComplete] = useState(false); // Flag for quiz completion
   const [questionFinished, setQuestionFinished] = useState(false); //for 'next' and 'source' buttons
-  const [countryOptions, setCountryOptions] = useState([]);
-
-  useEffect(() => {
-    async function fetchCountries() {
-      const { data, error } = await supabase.from("api_country").select();
-      if (error) {
-        console.error("Error fetching countries:", error);
-      } else if (data) {
-        const options = data.map(item => ({
-          value: item.Country,
-          label: item.Country,
-        }));
-        setCountryOptions(options);
-      }
-    }
-    fetchCountries();
-  }, []);
 
   // --- Navigation & Modal States ---
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const navigate = useNavigate();
-
-  // --- Globe Background Setup (using existing Globe component) ---
-  // (Globe component is imported and used below.)
 
   // --- Functions for Quiz Logic ---
   const loadNewFact = async () => {
@@ -60,10 +40,8 @@ const QuizMode = () => {
     }
     // Reset other states for the new question
     setAttempts(0);
-    setSelectedOption(null);
     setFeedback("");
     setFeedbackType("");
-    setIsAnswered(false);
   };
 
   const handleNextQuestion = () => {
@@ -81,20 +59,41 @@ const QuizMode = () => {
     loadNewFact();
   }, []);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (isAnswered || !selectedOption) return;
-    setIsAnswered(true);
-    if (selectedOption.value === currentFact.Correct_Country) {
-      let points = 0;
-      if (attempts === 0) points = 1000;
-      else if (attempts === 1) points = 750;
-      else if (attempts === 2) points = 500;
-      else if (attempts === 3) points = 250;
+    // Modified handleReportFact to accept a report type parameter
+  const handleReportFact = async (reportType) => {
+    if (!currentFact) return;
+    try {
+      const { error } = await supabase
+        .from("Fact Reports")
+        .insert([
+          {
+            Fact_ID: currentFact.Fact_ID, // Adjust this if your field name is different
+            Report_Type: reportType,
+          },
+        ]);
+      if (error) {
+        console.error("Error reporting fact:", error);
+      } else {
+        alert("Thank you for reporting this fact. We'll review it shortly!");
+      }
+    } catch (err) {
+      console.error("Unexpected error reporting fact:", err);
+    }
+    setIsReportModalOpen(false);
+  };
+
+  // Handler for submitting the answer based solely on globe selection
+  const handleSubmitAnswer = useCallback(() => {
+    if (!selectedCountry) {
+      alert("Please select a country on the globe first.");
+      return;
+    }
+    const answer = selectedCountry;
+    if (answer.includes(currentFact?.Correct_Country) || currentFact?.Correct_Country.includes(answer)) {
+      let points = attempts === 0 ? 1000 : attempts === 1 ? 750 : attempts === 2 ? 500 : 250;
       setScore((prev) => prev + points);
       setFeedback("Correct!");
       setFeedbackType("correct");
-      setQuestionFinished(true)
     } else {
       if (attempts < 3) {
         const newAttempts = attempts + 1;
@@ -109,19 +108,16 @@ const QuizMode = () => {
         }
         setFeedback(`Incorrect! Try again. ${hint}`);
         setFeedbackType("incorrect");
-        setIsAnswered(false);
+        return;
       } else {
-        setFeedback(
-          `Incorrect! The correct answer is ${currentFact.Correct_Country}.`
-        );
+        setFeedback(`Incorrect! The correct answer is ${currentFact?.Correct_Country}.`);
         setFeedbackType("incorrect");
-        setQuestionFinished(true);
       }
     }
-    setSelectedOption(null);
-  };
+    setQuestionFinished(true);
+  }, [selectedCountry, currentFact, attempts]);
 
-  // NEW: Function to restart the quiz after completion
+  // Function to restart the quiz after completion
   const handleRestartQuiz = () => {
     setQuizComplete(false);
     setQuestionNumber(1);
@@ -146,9 +142,9 @@ const QuizMode = () => {
         <div className="absolute top-0 right-0 z-50">
           <button
             onClick={handleBack}
-            className="bg-black text-white border border-white rounded-full p-2 hover:bg-white hover:text-black transition-colors"
+            className="text-white rounded-full p-2 hover:text-red-600 transition-colors"
           >
-            <FaArrowLeft size={40} />
+            <FaTimes size={50} />
           </button>
         </div>
 
@@ -158,13 +154,11 @@ const QuizMode = () => {
         </div>
 
         {/* Quiz Overlay Container */}
-        <div className="absolute top-0 left-0 w-full flex justify-center items-start mt-2 z-30">
-          {quizComplete ? (
-            // Final Quiz Popup
+        {quizComplete ? (
+          // Final Quiz Popup - restored as before
+          <div className="absolute top-0 left-0 w-full flex justify-center items-center mt-2 z-30 pointer-events-auto">
             <div className="bg-transparent p-10 rounded-xl w-11/12 max-w-3xl border-2 border-white shadow-xl text-center">
-              <div className="mb-6 text-3xl font-bold text-white">
-                Quiz Complete!
-              </div>
+              <div className="mb-6 text-3xl font-bold text-white">Quiz Complete!</div>
               <div className="mb-6 text-2xl text-white">Final Score: {score}</div>
               <button
                 onClick={handleRestartQuiz}
@@ -173,139 +167,138 @@ const QuizMode = () => {
                 Restart Quiz
               </button>
             </div>
-          ) : (
-            // Normal Quiz Content
-            <div className="bg-transparent p-6 rounded-xl w-11/12 max-w-3xl border border-white shadow-lg">
-              <div className="mb-2 text-center font-bold text-white text-med">
+          </div>
+        ) : (
+          // Normal Quiz Content with a wider, reactive container
+          <div className="absolute top-0 left-0 w-full flex justify-center items-start mt-2 z-30 pointer-events-none">
+            <div className="bg-white bg-opacity-0 p-4 rounded-xl w-11/12 max-w-3xl">
+              {/* Question Indicator */}
+              <div className="mb-1 text-center font-bold text-white text-sm">
                 Question: {questionNumber} of 10
               </div>
-              <div className="mb-4 text-center font-bold text-white text-lg">
-                Score: {score}
-              </div>
-              <div className="mb-4 text-center text-med text-white">
+              {/* Score Display */}
+              <div className="mb-1 text-center font-bold text-white text-xl">Score: {score}</div>
+              {/* Instruction Text */}
+              <div className="mb-1 text-center text-med text-white">
                 Guess the country based on the fact!
               </div>
               {/* Fact Box */}
               {currentFact && (
-                <div className="mb-6 p-4 border border-white rounded relative">
-                  <p className="text-center font-semibold text-white">
+                <div className="mb-2 p-2 border border-white rounded relative">
+                  <p className="text-center font-semibold text-white text-med">
                     {currentFact.Fact}
                   </p>
                 </div>
               )}
+              {/* Selected Country Indicator */}
+              <div className="mb-4 text-center text-white text-sm">
+                Selected Country:{" "}
+                {selectedCountry
+                  ? selectedCountry
+                  : "None"}
+              </div>
+              {/* Submit Answer Button in green */}
+              <div className="text-center pointer-events-auto">
+                <button
+                  onClick={handleSubmitAnswer}
+                  className="bg-green-600 text-white border border-white rounded-full py-2 px-4 hover:bg-green-500 transition-colors text-sm"
+                >
+                  Submit Answer
+                </button>
+              </div>
               {/* Feedback Popup */}
               {feedback && (
                 <div
-                  className={`mb-4 p-2 rounded text-center ${feedbackType === "correct"
+                  className={`mt-4 p-2 rounded text-center text-sm ${feedbackType === "correct"
                     ? "bg-green-300 text-green-900"
-                    : feedbackType === "final"
-                      ? "bg-blue-300 text-blue-900"
-                      : "bg-red-300 text-red-900"
-                    }`}
+                    : "bg-red-300 text-red-900"
+                    } pointer-events-auto`}
                 >
                   {feedback}
                 </div>
               )}
               {/* End of Question/Source Popup */}
               {questionFinished && (
-                <div className="flex justify-around mt-4">
+                <div className="flex justify-around mt-4 pointer-events-auto">
                   <a
                     href={currentFact.Source}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
+                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors text-sm"
                   >
                     Source
                   </a>
                   <button
-                    onClick={() => { setQuestionFinished(false); handleNextQuestion(); }}
-                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
+                    onClick={() => setIsReportModalOpen(true)}
+                    className="bg-red-600 text-white border border-white rounded-full py-2 px-4 hover:bg-red-500 transition-colors text-sm"
+                  >
+                    Report Fact
+                  </button>
+                  <button
+                    onClick={() => {
+                      setQuestionFinished(false);
+                      handleNextQuestion();
+                    }}
+                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors text-sm"
                   >
                     Next
                   </button>
                 </div>
               )}
-              {/* Country Selection Form */}
-              <form onSubmit={handleSubmit}>
-                <div className="text-center">
-                  <div className="mb-2 inline-block text-left max-w-xs w-full">
-                    <label
-                      htmlFor="countrySelect"
-                      className="font-bold block mb-2 text-white"
-                    >
-                      Select a country:
-                    </label>
-                    <Select
-                      id="countrySelect"
-                      options={countryOptions}
-                      value={selectedOption}
-                      onChange={setSelectedOption}
-                      placeholder="-- Search/Choose a country --"
-                      styles={{
-                        control: (provided, state) => ({
-                          ...provided,
-                          backgroundColor: "transparent",
-                          border: "1px solid white",
-                          boxShadow: state.isFocused ? "0 0 0 1px white" : provided.boxShadow,
-                          "&:hover": {
-                            border: "1px solid white",
-                          },
-                        }),
-                        input: (provided) => ({
-                          ...provided,
-                          color: "white", // Typed text is white
-                        }),
-                        singleValue: (provided) => ({
-                          ...provided,
-                          color: "white",
-                        }),
-                        placeholder: (provided) => ({
-                          ...provided,
-                          color: "white",
-                        }),
-                        menu: (provided) => ({
-                          ...provided,
-                          backgroundColor: "transparent",
-                          border: "1px solid white",
-                        }),
-                        option: (provided, state) => ({
-                          ...provided,
-                          backgroundColor: state.isSelected
-                            ? "rgba(255,255,255,0.3)"
-                            : state.isFocused
-                              ? "rgba(255,255,255,0.2)"
-                              : "transparent",
-                          color: "white",
-                          "&:hover": {
-                            backgroundColor: "rgba(255,255,255,0.2)",
-                          },
-                        }),
-                      }}
-                    />
-                  </div>
-                </div>
-
-                <div className="text-center">
-                  <button
-                    type="submit"
-                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors"
-                  >
-                    Submit
-                  </button>
-                  
-                </div>
-              </form>
             </div>
-          )}
-        </div>
+          </div>
+        )}
 
-        {/* Login Modal */}
+        {/* SignIn Modal */}
         <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-          <Login />
+          <SignIn />
+        </Modal>
+
+        {/* Report Fact Modal */}
+        <Modal isOpen={isReportModalOpen} onClose={() => setIsReportModalOpen(false)}>
+          <div className="p-4">
+            <h2 className="mb-4 text-lg font-bold">Report Fact</h2>
+            <p className="mb-4">Please select a reason for reporting this fact:</p>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => handleReportFact("INCORRECT_INFORMATION")}
+                className="bg-gray-200 rounded py-2 px-4 hover:bg-gray-300 transition-colors"
+              >
+                Incorrect information
+              </button>
+              <button
+                onClick={() => handleReportFact("CLUE_IN_FACT")}
+                className="bg-gray-200 rounded py-2 px-4 hover:bg-gray-300 transition-colors"
+              >
+                Clue in the fact
+              </button>
+              <button
+                onClick={() => handleReportFact("INAPPROPRIATE_CONTENT")}
+                className="bg-gray-200 rounded py-2 px-4 hover:bg-gray-300 transition-colors"
+              >
+                Inappropriate content
+              </button>
+              <button
+                onClick={() => handleReportFact("MULTIPLE_COUNTRIES")}
+                className="bg-gray-200 rounded py-2 px-4 hover:bg-gray-300 transition-colors"
+              >
+                Fact holds true for more than one country
+              </button>
+            </div>
+          </div>
         </Modal>
       </div>
     </Suspense>
   );
 };
+
+// Wrapping the component with the country selection context provider
+function QuizMode() {
+  return (
+    <CountrySelectionProvider>
+      <QuizModeContent />
+    </CountrySelectionProvider>
+  );
+}
 
 export default QuizMode;

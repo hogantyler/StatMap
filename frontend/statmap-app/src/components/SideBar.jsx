@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+import React, { useState } from "react"; 
+
+//a simple side bar prototype. Currently not used. Kept for potential future use.
 const SideBar = () => {
     return (
         <div className="fixed top-0 left-0 h-screen w-16 m-0
