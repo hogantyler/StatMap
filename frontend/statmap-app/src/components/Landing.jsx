@@ -17,23 +17,23 @@ import AccountPage from "./AccountPage";
  * @returns {JSX.Element} The main landing page layout
  */
 const Landing = () => {
-  const [modalContent, setModalContent] = useState(null); //modal content decides what is shown when modal is open
-  const [isModalOpen, setIsModalOpen] = useState(false); //state of whether the modal is open or closed
+  // const [modalContent, setModalContent] = useState(null); //modal content decides what is shown when modal is open
+  // const [isModalOpen, setIsModalOpen] = useState(false); //state of whether the modal is open or closed
   const [use3DGlobe, setUse3DGlobe] = useState(true); //state of whether to use the 3D globe or not for background image of landing page
   const NoOffSet = true; //used to determine if the globe should be offset or not for LandingGlobe component
   const navigate = useNavigate();
 
-  const handleOpenModal = (content) => {
-    //takes component, html, etc as content to display when the modal is open
-    setModalContent(content);
-    setIsModalOpen(true);
-  };
+  // const handleOpenModal = (content) => {
+  //   //takes component, html, etc as content to display when the modal is open
+  //   setModalContent(content);
+  //   setIsModalOpen(true);
+  // };
 
-  const handleCloseModal = () => {
-    //closes the modal and resets the content to null
-    setIsModalOpen(false);
-    setModalContent(null);
-  };
+  // const handleCloseModal = () => {
+  //   //closes the modal and resets the content to null
+  //   setIsModalOpen(false);
+  //   setModalContent(null);
+  // };
 
   // toggleGlobeType is a function that toggles between 3D globe and 2D BlackGlobe svg for background of landing page
   const toggleGlobeType = () => {
@@ -76,7 +76,8 @@ const Landing = () => {
 
       {/* Main content positioned on top of Globe */}
       <div className="relative z-10 w-full h-full ">
-        <HoverDropMenu onSignInClick={(e) => handleOpenModal(<SignIn onSignUpClick={(e) => handleOpenModal(<SignUp onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/>)} onAccountPageClick={(e) => handleOpenModal(<AccountPage onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/>
+        {/* <HoverDropMenu onSignInClick={(e) => handleOpenModal(<SignIn onSignUpClick={(e) => handleOpenModal(<SignUp onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/>)} onAccountPageClick={(e) => handleOpenModal(<AccountPage onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/> */}
+        <HoverDropMenu />
 
         <div className="flex flex-col justify-start items-center gap-4 p-4">
           {/* Game Card */}
@@ -144,11 +145,11 @@ const Landing = () => {
         </button>
 
         {/* Modal compoent that gets opened when handleOpenModal is called and displays the passed content */}
-        <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        {/* <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
           {modalContent}
-        </Modal>
+        </Modal> */}
 
-        <button //calls modal to open and passes the instructions as content to display
+        {/* <button //calls modal to open and passes the instructions as content to display
           onClick={() =>
             handleOpenModal(
               <div className="w-full max-w-sm p-6 bg-white rounded-lg shadow-lg">
@@ -166,7 +167,7 @@ const Landing = () => {
           className="fixed bottom-4 left-6 z-50 focus:outline-none"
         >
           <BsFillQuestionSquareFill size={50} className="bg-black text-white text-opacity-75 hover:text-green-600" />
-        </button>
+        </button> */}
       </div>
     </div>
   );

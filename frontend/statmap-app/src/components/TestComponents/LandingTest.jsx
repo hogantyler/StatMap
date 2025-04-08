@@ -4,6 +4,8 @@ import { BsFillQuestionSquareFill, BsImage } from "react-icons/bs";
 import BlackGlobe from "../../black_globe.svg";
 import HoverDropMenu from "../HoverDropMenu";
 import SignIn from "../SignIn";
+import SignUp from "./SignUp";
+import AccountPage from "./AccountPage";
 import Modal from "../Modal";
 import { useNavigate } from "react-router-dom";
 import LandingGlobe from "../LandingGlobe";
@@ -68,7 +70,7 @@ const LandingTestContent = () => {
 
             {/* Main content positioned on top of Globe */}
             <div className="relative z-10 w-full h-full">
-                <HoverDropMenu onSignInClick={(e) => handleOpenModal(<Login />)} />
+                <HoverDropMenu onSignInClick={(e) => handleOpenModal(<SignIn onSignUpClick={(e) => handleOpenModal(<SignUp onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/>)} onAccountPageClick={(e) => handleOpenModal(<AccountPage onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/>
 
                 <div className="flex flex-col justify-start items-center gap-4 p-4">
                     {/* Game Card */}

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Globe from "./GlobeComponents/Globe";
 import HoverDropMenu from "./HoverDropMenu";
 import Modal from "./Modal";
-import SignIn from "./SignIn";
+// import SignIn from "./SignIn";
 import { FaTimes } from "react-icons/fa";
 import Loading from "./Loading"
 import { supabase } from "./SupabaseContext";
@@ -22,9 +22,10 @@ const QuizModeContent = () => {
   const [questionFinished, setQuestionFinished] = useState(false); //for 'next' and 'source' buttons
   const [isAnswered, setIsAnswered] = useState(false); //to prevent score spamming
   const [isCollapsed, setIsCollapsed] = useState(false); //making the fact box collapse
+  const [questionsCorrect, setQuestionsCorrect] = useState(0);
 
   // --- Navigation & Modal States ---
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -54,8 +55,25 @@ const QuizModeContent = () => {
     } else {
       //Instead of auto-reset, mark quiz complete to show final popup
       setQuizComplete(true);
+      submitGameResult();
     }
   };
+
+  const submitGameResult = async () => {
+    const user = await supabase.auth.getUser();
+    if (user) {
+      if (user.data.user.id) {
+        const { data, error } = await supabase
+        .from('Game Logs')
+        .insert([
+          { User_ID:  user.data.user.id, Mode: "Quiz", Score: score, Num_Correct: questionsCorrect, Num_Questions: 10},
+        ])
+        .select()
+        console.log(data);
+        console.log(error);
+      }
+    }
+  }
 
   // Load initial fact on mount:
   useEffect(() => {
@@ -100,6 +118,7 @@ const QuizModeContent = () => {
       setScore((prev) => prev + points);
       setFeedback("Correct!");
       setFeedbackType("correct");
+      setQuestionsCorrect(questionsCorrect + 1);
     } else {
       if (attempts < 3) {
         const newAttempts = attempts + 1;
@@ -135,8 +154,8 @@ const QuizModeContent = () => {
     setFeedbackType("");
   };
 
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
+  // const handleOpenModal = () => setIsModalOpen(true);
+  // const handleCloseModal = () => setIsModalOpen(false);
   const handleBack = () => navigate("/");
 
   return (
@@ -158,7 +177,8 @@ const QuizModeContent = () => {
 
         {/* Hover Menu in top left */}
         <div className="absolute top-0 left-0 z-50">
-          <HoverDropMenu onSignInClick={handleOpenModal} />
+          {/* <HoverDropMenu onSignInClick={handleOpenModal} /> */}
+          <HoverDropMenu />
         </div>
 
         {/* Quiz Overlay Container */}
@@ -275,9 +295,9 @@ const QuizModeContent = () => {
         )}
 
         {/* SignIn Modal */}
-        <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        {/* <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
           <SignIn />
-        </Modal>
+        </Modal> */}
 
         {/* Report Fact Modal */}
         <Modal isOpen={isReportModalOpen} onClose={() => setIsReportModalOpen(false)}>

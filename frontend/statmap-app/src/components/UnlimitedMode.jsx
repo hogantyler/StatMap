@@ -5,6 +5,8 @@ import { FaTimes } from "react-icons/fa";
 import Globe from "./GlobeComponents/Globe";
 //import GlobeTest from "./TestComponents/GlobeTest"; //don't delete used for integration testing. Commented out when not testing
 import SignIn from "./SignIn";
+import SignUp from "./SignUp";
+import AccountPage from "./AccountPage";
 import Modal from "./Modal";
 import Loading from "./Loading";
 import { supabase } from "./SupabaseContext";
@@ -112,7 +114,8 @@ function UnlimitedModeContent() {
 
         {/* Hover Menu */}
         <div className="absolute top-0 left-0 z-50">
-          <HoverDropMenu onSignInClick={handleOpenModal} />
+          {/* <HoverDropMenu onSignInClick={(e) => handleOpenModal(<SignIn onSignUpClick={(e) => handleOpenModal(<SignUp onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/>)} onAccountPageClick={(e) => handleOpenModal(<AccountPage onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/> */}
+          <HoverDropMenu />
         </div>
 
         {/* Overlay Container */}
@@ -191,9 +194,9 @@ function UnlimitedModeContent() {
           </div>
         </div>
 
-        <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        {/* <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
           <SignIn />
-        </Modal>
+        </Modal> */}
 
         {/* Globe Canvas */}
         <Globe />

@@ -52,11 +52,10 @@ const SignUp = ({ isOpen, onModalClose }) => {
     };
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="w-full max-w-sm p-6 bg-white border border-gray-200 rounded-lg shadow-lg">
-                <button onClick={onModalClose}>X</button>
+            <div className="">
+                {/* <button onClick={onModalClose}>X</button> */}
                 <form className="space-y-6" onSubmit={handleSubmit}>
-                    <h5 className="text-xl font-medium text-black">STATMAP SIGN UP</h5>
+                    <h5 className="text-xl font-medium text-black mx-auto px-[75px]">STATMAP SIGN UP</h5>
                     <div>
                         <label htmlFor="display_name" className="block mb-2 text-sm font-medium text-black">Display Name</label>
                         <input
@@ -99,7 +98,6 @@ const SignUp = ({ isOpen, onModalClose }) => {
                     <button type="submit" className="w-full text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Create account</button>
                 </form>
             </div>
-        </div>
     );
 };
 

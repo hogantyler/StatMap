@@ -11,6 +11,10 @@ import {
 } from "react-icons/fa";
 import { FaMapMarkedAlt } from "react-icons/fa";
 import { SupabaseContext } from "./SupabaseContext";
+import Modal from "./Modal";
+import SignIn from "./SignIn";
+import AccountPage from "./AccountPage";
+import SignUp from "./SignUp";
 
 /**
  * Renders a hovered dropdown menu that provides navigation options for the user.
@@ -19,13 +23,37 @@ import { SupabaseContext } from "./SupabaseContext";
  * @returns {JSX.Element} A dropdown menu trigger
  */
 const HoverDropMenu = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
+  const [modalContent, setModalContent] = useState(null); //modal content decides what is shown when modal is open
+  const [isModalOpen, setIsModalOpen] = useState(false); //state of whether the modal is open or closed
+
+  const handleOpenModal = (content) => {
+    //takes component, html, etc as content to display when the modal is open
+    setModalContent(content);
+    setIsModalOpen(true);
+  };
+
+  const handleCloseModal = () => {
+    //closes the modal and resets the content to null
+    setIsModalOpen(false);
+    setModalContent(null);
+  };
+
   return (
     <div className="group top-1 left-1 m-1 cursor-pointer z-50">
-      <FlyoutLink href="#" FlyoutContent={FlyoutContent} onSignInClick={onSignInClick} onAccountPageClick={onAccountPageClick} onModalClose={onModalClose}>
+      <FlyoutLink href="#" FlyoutContent={FlyoutContent}
+        onSignInClick={(e) => handleOpenModal(<SignIn onSignUpClick={(e) => handleOpenModal(<SignUp onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/>)}
+        onAccountPageClick={(e) => handleOpenModal(<AccountPage onModalClose={handleCloseModal}/>)}
+        onModalClose={handleCloseModal}
+      >
         <div className="w-18 h-18 flex items-center justify-center bg-black rounded-lg shadow-xl">
           <HiMenu size={72} className="text-white" />
         </div>
       </FlyoutLink>
+      
+      {/* Modal compoent that gets opened when handleOpenModal is called and displays the passed content */}
+      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        {modalContent}
+      </Modal>
     </div>
   );
 };
@@ -88,7 +116,7 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
     if (tempAccount.data.user) {
       setAccount(tempAccount);
     }
-}
+  }
 
   useEffect(() => {
     getAccount()
@@ -98,8 +126,9 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
     let { error } = await supabase.auth.signOut();
     if (error) {
       alert(error);
+    } else {
+      setAccount(null);
     }
-    getAccount();
   }
   
     return (
