@@ -118,10 +118,10 @@ const GlobeTest = React.memo(function GlobeTest(props) {
 function RotateGlobe({ globeRef, cloudsRef, linesRef, conicGlobeRef }) {
     useFrame(({ clock }) => {
         const elapsedTime = clock.getElapsedTime();
-        globeRef.current.rotation.y = elapsedTime / 70;
-        linesRef.current.rotation.y = elapsedTime / 70
+        globeRef.current.rotation.y = linesRef.current.rotation.y = elapsedTime / 80;
+        //linesRef.current.rotation.y = elapsedTime / 80
         //conicGlobeRef.current.rotation.y = elapsedTime / 60;
-        cloudsRef.current.rotation.y = elapsedTime / 40;
+        cloudsRef.current.rotation.y = elapsedTime / 50;
     });
     return null;
 }
