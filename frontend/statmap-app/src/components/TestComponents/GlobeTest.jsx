@@ -42,20 +42,14 @@ const GlobeTest = React.memo(function GlobeTest(props) {
             isDraggingRef.current = !isDraggingRef.current;
             return; // Exit early for touch events
         }
-
-        const isRotationStart = event.nativeEvent?.button === 0 && event.nativeEvent?.pointerType === 'mouse';
-
-        if (isRotationStart) {
-            setTimeout(() => {
-                isDraggingRef.current = !isDraggingRef.current;
-                console.log("dragStart " + isDraggingRef.current);
-            }, 150);
-            //isDraggingRef.current = true;
-            //console.log("drag true");
-            document.body.style.cursor = 'grabbing';
-        }
         
-        
+        setTimeout(() => {
+            isDraggingRef.current = !isDraggingRef.current;
+            console.log("dragStart " + isDraggingRef.current);
+        }, 150);
+        //isDraggingRef.current = true;
+        //console.log("drag true");
+        document.body.style.cursor = 'grabbing';
     }, []);
 
     const handleDragEnd = useCallback((event) => {
@@ -64,18 +58,14 @@ const GlobeTest = React.memo(function GlobeTest(props) {
             isDraggingRef.current = !isDraggingRef.current;
             return; // Exit early for touch events
         }
-
-        const isRotationStart = event.nativeEvent?.button === 0 && event.nativeEvent?.pointerType === 'mouse';
-
-        if (isRotationStart) {
-            setTimeout(() => {
-                isDraggingRef.current = !isDraggingRef.current;
-                console.log("dragEnd " + isDraggingRef.current);
-            }, 150);
-            //isDraggingRef.current = true;
-            //console.log("drag true");
-            document.body.style.cursor = 'grabbing';
-        }
+        
+        setTimeout(() => {
+            isDraggingRef.current = !isDraggingRef.current;
+            console.log("dragEnd " + isDraggingRef.current);
+        }, 150);
+        //isDraggingRef.current = false;
+        //console.log("drag false");
+        document.body.style.cursor = 'auto';
     }, []);
 
     return (
