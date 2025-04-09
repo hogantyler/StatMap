@@ -3,11 +3,14 @@ import { useNavigate } from "react-router-dom";
 import Globe from "./GlobeComponents/Globe";
 import HoverDropMenu from "./HoverDropMenu";
 import Modal from "./Modal";
-import SignIn from "./SignIn";
+// import SignIn from "./SignIn";
 import { FaTimes } from "react-icons/fa";
-import Loading from "./Loading"
+import Loading from "./Loading";
 import { supabase } from "./SupabaseContext";
-import { CountrySelectionProvider, useCountrySelection } from "./CountrySelectionContext";
+import {
+  CountrySelectionProvider,
+  useCountrySelection,
+} from "./CountrySelectionContext";
 
 const QuizModeContent = () => {
   // --- Quiz Logic States ---
@@ -22,16 +25,17 @@ const QuizModeContent = () => {
   const [questionFinished, setQuestionFinished] = useState(false); //for 'next' and 'source' buttons
   const [isAnswered, setIsAnswered] = useState(false); //to prevent score spamming
   const [isCollapsed, setIsCollapsed] = useState(false); //making the fact box collapse
+  const [questionsCorrect, setQuestionsCorrect] = useState(0);
 
   // --- Navigation & Modal States ---
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  // const [isModalOpen, setIsModalOpen] = useState(false);
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const navigate = useNavigate();
 
   // --- Functions for Quiz Logic ---
   const loadNewFact = async () => {
     try {
-      const { data, error } = await supabase.rpc('random_fact');
+      const { data, error } = await supabase.rpc("random_fact");
       if (error) {
         console.error("Error fetching fact:", error);
         return;
@@ -54,6 +58,29 @@ const QuizModeContent = () => {
     } else {
       //Instead of auto-reset, mark quiz complete to show final popup
       setQuizComplete(true);
+      submitGameResult();
+    }
+  };
+
+  const submitGameResult = async () => {
+    const user = await supabase.auth.getUser();
+    if (user) {
+      if (user.data.user.id) {
+        const { data, error } = await supabase
+          .from("Game Logs")
+          .insert([
+            {
+              User_ID: user.data.user.id,
+              Mode: "Quiz",
+              Score: score,
+              Num_Correct: questionsCorrect,
+              Num_Questions: 10,
+            },
+          ])
+          .select();
+        console.log(data);
+        console.log(error);
+      }
     }
   };
 
@@ -66,14 +93,12 @@ const QuizModeContent = () => {
   const handleReportFact = async (reportType) => {
     if (!currentFact) return;
     try {
-      const { error } = await supabase
-        .from("Fact Reports")
-        .insert([
-          {
-            Fact_ID: currentFact.Fact_ID, // Adjust this if your field name is different
-            Report_Type: reportType,
-          },
-        ]);
+      const { error } = await supabase.from("Fact Reports").insert([
+        {
+          Fact_ID: currentFact.Fact_ID, // Adjust this if your field name is different
+          Report_Type: reportType,
+        },
+      ]);
       if (error) {
         console.error("Error reporting fact:", error);
       } else {
@@ -95,11 +120,22 @@ const QuizModeContent = () => {
     setIsCollapsed(false); //show fact after submission(if it was hidden)
     setIsAnswered(true);
     const answer = selectedCountry;
-    if (answer.includes(currentFact?.Correct_Country) || currentFact?.Correct_Country.includes(answer)) {
-      let points = attempts === 0 ? 1000 : attempts === 1 ? 750 : attempts === 2 ? 500 : 250;
+    if (
+      answer.includes(currentFact?.Correct_Country) ||
+      currentFact?.Correct_Country.includes(answer)
+    ) {
+      let points =
+        attempts === 0
+          ? 1000
+          : attempts === 1
+          ? 750
+          : attempts === 2
+          ? 500
+          : 250;
       setScore((prev) => prev + points);
       setFeedback("Correct!");
       setFeedbackType("correct");
+      setQuestionsCorrect(questionsCorrect + 1);
     } else {
       if (attempts < 3) {
         const newAttempts = attempts + 1;
@@ -117,7 +153,9 @@ const QuizModeContent = () => {
         setIsAnswered(false);
         return;
       } else {
-        setFeedback(`Incorrect! The correct answer is ${currentFact?.Correct_Country}.`);
+        setFeedback(
+          `Incorrect! The correct answer is ${currentFact?.Correct_Country}.`
+        );
         setFeedbackType("incorrect");
       }
       setIsAnswered(false);
@@ -135,8 +173,8 @@ const QuizModeContent = () => {
     setFeedbackType("");
   };
 
-  const handleOpenModal = () => setIsModalOpen(true);
-  const handleCloseModal = () => setIsModalOpen(false);
+  // const handleOpenModal = () => setIsModalOpen(true);
+  // const handleCloseModal = () => setIsModalOpen(false);
   const handleBack = () => navigate("/");
 
   return (
@@ -158,16 +196,21 @@ const QuizModeContent = () => {
 
         {/* Hover Menu in top left */}
         <div className="absolute top-0 left-0 z-50">
-          <HoverDropMenu onSignInClick={handleOpenModal} />
+          {/* <HoverDropMenu onSignInClick={handleOpenModal} /> */}
+          <HoverDropMenu />
         </div>
 
         {/* Quiz Overlay Container */}
         {quizComplete ? (
-          // Final Quiz Popup 
+          // Final Quiz Popup
           <div className="absolute top-0 left-0 w-full flex justify-center items-center mt-2 z-30 pointer-events-none">
             <div className="bg-transparent p-10 rounded-xl w-11/12 max-w-3xl border-2 border-white shadow-xl text-center">
-              <div className="mb-6 text-3xl font-bold text-white">Quiz Complete!</div>
-              <div className="mb-6 text-2xl text-white">Final Score: {score}</div>
+              <div className="mb-6 text-3xl font-bold text-white">
+                Quiz Complete!
+              </div>
+              <div className="mb-6 text-2xl text-white">
+                Final Score: {score}
+              </div>
               <button
                 onClick={handleRestartQuiz}
                 className="bg-black text-white border border-white rounded-full py-3 px-6 hover:bg-white hover:text-black transition-colors text-lg"
@@ -240,10 +283,11 @@ const QuizModeContent = () => {
               {/* Feedback Popup (always visible if feedback exists) */}
               {feedback && (
                 <div
-                  className={`mt-4 p-2 rounded text-center text-sm ${feedbackType === "correct"
+                  className={`mt-4 p-2 rounded text-center text-sm ${
+                    feedbackType === "correct"
                       ? "bg-green-300 text-green-900"
                       : "bg-red-300 text-red-900"
-                    } pointer-events-none`}
+                  } pointer-events-none`}
                 >
                   {feedback}
                 </div>
@@ -260,6 +304,12 @@ const QuizModeContent = () => {
                     Source
                   </a>
                   <button
+                    onClick={() => setIsReportModalOpen(true)}
+                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors text-sm pointer-events-auto"
+                  >
+                    Report Fact
+                  </button>
+                  <button
                     onClick={() => {
                       setQuestionFinished(false);
                       handleNextQuestion();
@@ -275,15 +325,20 @@ const QuizModeContent = () => {
         )}
 
         {/* SignIn Modal */}
-        <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        {/* <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
           <SignIn />
-        </Modal>
+        </Modal> */}
 
         {/* Report Fact Modal */}
-        <Modal isOpen={isReportModalOpen} onClose={() => setIsReportModalOpen(false)}>
+        <Modal
+          isOpen={isReportModalOpen}
+          onClose={() => setIsReportModalOpen(false)}
+        >
           <div className="p-4">
             <h2 className="mb-4 text-lg font-bold">Report Fact</h2>
-            <p className="mb-4">Please select a reason for reporting this fact:</p>
+            <p className="mb-4">
+              Please select a reason for reporting this fact:
+            </p>
             <div className="flex flex-col gap-2">
               <button
                 onClick={() => handleReportFact("INCORRECT_INFORMATION")}

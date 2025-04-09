@@ -10,21 +10,26 @@ import GlobeModeTestPart2 from "./components/TestComponents/GlobeModeTestPart2.j
 import LobbyTest from "./components/TestComponents/LobbyTest.jsx";
 import CreateLobby from "./components/TestComponents/CreateLobby.jsx";
 import { SupabaseContext, supabase } from "./components/SupabaseContext.jsx";
-
+import { LobbyProvider } from "./components/TestComponents/LobbyContext";
 function App() {
   return (
     <Router>
-      <SupabaseContext.Provider value={supabase}>
-        <Routes>
-          <Route path="/" element={<Landing />} />
-          <Route path="/quiz" element={<QuizMode />} />
-          <Route path="/unlimited" element={<UnlimitedMode />} />
-          <Route path="/globeModeTest" element={<GlobeModeTest />} />
-          <Route path="/globeModeTestPart2" element={<GlobeModeTestPart2 />} />
-          <Route path="/lobbyTest" element={<LobbyTest></LobbyTest>} />
-          <Route path="/createLobby" element={<CreateLobby></CreateLobby>} />
-        </Routes>
-      </SupabaseContext.Provider>
+      <LobbyProvider>
+        <SupabaseContext.Provider value={supabase}>
+          <Routes>
+            <Route path="/" element={<Landing />} />
+            <Route path="/quiz" element={<QuizMode />} />
+            <Route path="/unlimited" element={<UnlimitedMode />} />
+            <Route path="/globeModeTest" element={<GlobeModeTest />} />
+            <Route
+              path="/globeModeTestPart2"
+              element={<GlobeModeTestPart2 />}
+            />
+            <Route path="/lobbyTest" element={<LobbyTest></LobbyTest>} />
+            <Route path="/createLobby" element={<CreateLobby></CreateLobby>} />
+          </Routes>
+        </SupabaseContext.Provider>
+      </LobbyProvider>
     </Router>
   );
 }

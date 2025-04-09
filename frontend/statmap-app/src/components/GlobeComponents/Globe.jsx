@@ -35,34 +35,40 @@ const Globe = React.memo(function Globe(props) {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, []);
 
+
+    function hasTouchSupport() {
+        return ('maxTouchPoints' in navigator && navigator.maxTouchPoints > 0);
+    }
+
+    // To check if the device supports touch events
+    const supportsTouch = useMemo(() => hasTouchSupport(), []);
+
     // Handlers for OrbitControls drag state
     const handleDragStart = useCallback((event) => {
-        if (event?.nativeEvent?.pointerType === 'touch') {
-            // console.log("Touch drag start detected, ignoring handler logic.");
+        if (supportsTouch) {
+            //console.log("Touch drag start detected, ignoring handler logic.");
             isDraggingRef.current = !isDraggingRef.current;
             return; // Exit early for touch events
         }
+
         setTimeout(() => {
             isDraggingRef.current = !isDraggingRef.current;
             //console.log("dragStart " + isDraggingRef.current);
         }, 150);
-        //isDraggingRef.current = true;
-        //console.log("drag true");
         document.body.style.cursor = 'grabbing';
     }, []);
 
     const handleDragEnd = useCallback((event) => {
-        if (event?.nativeEvent?.pointerType === 'touch') {
-            // console.log("Touch drag stop detected, ignoring handler logic.");
+        if (supportsTouch) {
+            //console.log("Touch drag stop detected, ignoring handler logic.");
             isDraggingRef.current = !isDraggingRef.current;
             return; // Exit early for touch events
         }
+
         setTimeout(() => {
             isDraggingRef.current = !isDraggingRef.current;
             //console.log("dragEnd " + isDraggingRef.current);
         }, 150);
-        //isDraggingRef.current = false;
-        //console.log("drag false");
         document.body.style.cursor = 'auto';
     }, []);
 
@@ -356,7 +362,7 @@ const CountryLabels = memo(function CountryLabels({ globeRef, showLabel }) {
 
         if (centroid && shouldShowLabel(countryName, countryArea)) {
             // Apply offsets in degrees
-            if(countryOffsets[countryName]) {
+            if (countryOffsets[countryName]) {
                 centroid[0] += countryOffsets[countryName][0];
                 centroid[1] += countryOffsets[countryName][1];
             }
@@ -369,7 +375,7 @@ const CountryLabels = memo(function CountryLabels({ globeRef, showLabel }) {
             let y = radius * Math.sin(lat);
             let z = radius * Math.cos(lat) * Math.cos(lon);
 
-            const fontSize = visibleCountriesBySize.has(countryName) ? 0.03 :(countryArea < 6 ? 0.01 : 0.02);
+            const fontSize = visibleCountriesBySize.has(countryName) ? 0.03 : (countryArea < 6 ? 0.01 : 0.02);
 
             const scaleFactor = Math.max(0.4, cameraDistance * 0.2);
 
