@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.c335e2a7.css",
-    "main.js": "/static/js/main.21aa9a51.js",
+    "main.css": "/static/css/main.00bdf725.css",
+    "main.js": "/static/js/main.58d1c21c.js",
     "static/js/952.553d8c6b.chunk.js": "/static/js/952.553d8c6b.chunk.js",
     "static/js/453.8207fe03.chunk.js": "/static/js/453.8207fe03.chunk.js",
     "static/media/8k_earth.png": "/static/media/8k_earth.e816d19d3a0f47c9169f.png",
@@ -12,13 +12,13 @@
     "static/media/gebco_bathy_2700x1350.jpg": "/static/media/gebco_bathy_2700x1350.46dc6f48e5b929de2ffe.jpg",
     "static/media/black_globe.svg": "/static/media/black_globe.11ed65579c11797c5b2b3941e7516669.svg",
     "index.html": "/index.html",
-    "main.c335e2a7.css.map": "/static/css/main.c335e2a7.css.map",
-    "main.21aa9a51.js.map": "/static/js/main.21aa9a51.js.map",
+    "main.00bdf725.css.map": "/static/css/main.00bdf725.css.map",
+    "main.58d1c21c.js.map": "/static/js/main.58d1c21c.js.map",
     "952.553d8c6b.chunk.js.map": "/static/js/952.553d8c6b.chunk.js.map",
     "453.8207fe03.chunk.js.map": "/static/js/453.8207fe03.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.c335e2a7.css",
-    "static/js/main.21aa9a51.js"
+    "static/css/main.00bdf725.css",
+    "static/js/main.58d1c21c.js"
   ]
 }
