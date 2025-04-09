@@ -23,6 +23,7 @@ function UnlimitedModeContent() {
   const [questionFinished, setQuestionFinished] = useState(false); // for 'next' and 'source' buttons
   const [isCollapsed, setIsCollapsed] = useState(false); //making the fact box collapse
   const navigate = useNavigate();
+  const [isReportModalOpen, setIsReportModalOpen] = useState(false);
 
   // Retrieve selected country from context
   const { selectedCountry } = useCountrySelection();
@@ -94,6 +95,27 @@ function UnlimitedModeContent() {
     }
     setQuestionFinished(true);
   }, [isAnswered, selectedCountry, currentFact, attempts]);
+
+  // Modified handleReportFact to accept a report type parameter
+  const handleReportFact = async (reportType) => {
+    if (!currentFact) return;
+    try {
+      const { error } = await supabase.from("Fact Reports").insert([
+        {
+          Fact_ID: currentFact.Fact_ID, // Adjust this if your field name is different
+          Report_Type: reportType,
+        },
+      ]);
+      if (error) {
+        console.error("Error reporting fact:", error);
+      } else {
+        alert("Thank you for reporting this fact. We'll review it shortly!");
+      }
+    } catch (err) {
+      console.error("Unexpected error reporting fact:", err);
+    }
+    setIsReportModalOpen(false);
+  };
 
   const handleBack = useCallback(() => {
     navigate("/");
@@ -181,6 +203,12 @@ function UnlimitedModeContent() {
                   Source
                 </a>
                 <button
+                    onClick={() => setIsReportModalOpen(true)}
+                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors text-sm pointer-events-auto"
+                  >
+                    Report Fact
+                  </button>
+                <button
                   onClick={() => {
                     setQuestionFinished(false);
                     loadNewFact();
@@ -197,6 +225,45 @@ function UnlimitedModeContent() {
         {/* <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
           <SignIn />
         </Modal> */}
+        
+        {/* Report Fact Modal */}
+        <Modal
+          isOpen={isReportModalOpen}
+          onClose={() => setIsReportModalOpen(false)}
+        >
+          <div className="p-4">
+            <h2 className="mb-4 text-lg font-bold">Report Fact</h2>
+            <p className="mb-4">
+              Please select a reason for reporting this fact:
+            </p>
+            <div className="flex flex-col gap-2">
+              <button
+                onClick={() => handleReportFact("INCORRECT_INFORMATION")}
+                className="bg-gray-200 rounded py-2 px-4 hover:bg-gray-300 transition-colors"
+              >
+                Incorrect information
+              </button>
+              <button
+                onClick={() => handleReportFact("CLUE_IN_FACT")}
+                className="bg-gray-200 rounded py-2 px-4 hover:bg-gray-300 transition-colors"
+              >
+                Clue in the fact
+              </button>
+              <button
+                onClick={() => handleReportFact("INAPPROPRIATE_CONTENT")}
+                className="bg-gray-200 rounded py-2 px-4 hover:bg-gray-300 transition-colors"
+              >
+                Inappropriate content
+              </button>
+              <button
+                onClick={() => handleReportFact("MULTIPLE_COUNTRIES")}
+                className="bg-gray-200 rounded py-2 px-4 hover:bg-gray-300 transition-colors"
+              >
+                Fact holds true for more than one country
+              </button>
+            </div>
+          </div>
+        </Modal>
 
         {/* Globe Canvas */}
         <Globe />
