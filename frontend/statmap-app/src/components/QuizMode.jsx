@@ -304,6 +304,12 @@ const QuizModeContent = () => {
                     Source
                   </a>
                   <button
+                    onClick={() => setIsReportModalOpen(true)}
+                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors text-sm pointer-events-auto"
+                  >
+                    Report Fact
+                  </button>
+                  <button
                     onClick={() => {
                       setQuestionFinished(false);
                       handleNextQuestion();
