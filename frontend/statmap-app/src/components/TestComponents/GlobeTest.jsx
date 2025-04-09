@@ -35,14 +35,21 @@ const GlobeTest = React.memo(function GlobeTest(props) {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, []);
 
+    function hasTouchSupport() {
+        return ('maxTouchPoints' in navigator && navigator.maxTouchPoints > 0);
+    }
+
+    // To check if the device supports touch events
+    const supportsTouch = useMemo(() => hasTouchSupport(), []);
+
     // Handlers for OrbitControls drag state
     const handleDragStart = useCallback((event) => {
-        if (event?.nativeEvent?.pointerType === 'touch') {
-            // console.log("Touch drag start detected, ignoring handler logic.");
+        if (supportsTouch) {
+            console.log("Touch drag start detected, ignoring handler logic.");
             isDraggingRef.current = !isDraggingRef.current;
             return; // Exit early for touch events
         }
-        
+
         setTimeout(() => {
             isDraggingRef.current = !isDraggingRef.current;
             console.log("dragStart " + isDraggingRef.current);
@@ -53,12 +60,12 @@ const GlobeTest = React.memo(function GlobeTest(props) {
     }, []);
 
     const handleDragEnd = useCallback((event) => {
-        if (event?.nativeEvent?.pointerType === 'touch') {
-            // console.log("Touch drag stop detected, ignoring handler logic.");
+        if (supportsTouch) {
+            console.log("Touch drag stop detected, ignoring handler logic.");
             isDraggingRef.current = !isDraggingRef.current;
             return; // Exit early for touch events
         }
-        
+
         setTimeout(() => {
             isDraggingRef.current = !isDraggingRef.current;
             console.log("dragEnd " + isDraggingRef.current);
@@ -357,9 +364,9 @@ const CountryLabels = memo(function CountryLabels({ globeRef, showLabel }) {
 
 
         if (centroid && shouldShowLabel(countryName, countryArea)) {
-            console.log(countryName, centroid, countryArea);
+            //console.log(countryName, centroid, countryArea);
 
-            if(countryOffsets[countryName]) {
+            if (countryOffsets[countryName]) {
                 centroid[0] += countryOffsets[countryName][0];
                 centroid[1] += countryOffsets[countryName][1];
             }
