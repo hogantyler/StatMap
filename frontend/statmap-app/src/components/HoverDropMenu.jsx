@@ -1,13 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { HiMenu } from "react-icons/hi";
-import { 
-  FaSignInAlt, 
-  FaGamepad, 
-  FaTrophy, 
-  FaUserCircle, 
-  FaCog, 
-  FaEnvelope 
+import {
+  FaSignInAlt,
+  FaGamepad,
+  FaTrophy,
+  FaUserCircle,
+  FaCog,
+  FaEnvelope
 } from "react-icons/fa";
 import { FaMapMarkedAlt } from "react-icons/fa";
 import { SupabaseContext } from "./SupabaseContext";
@@ -43,15 +43,15 @@ const HoverDropMenu = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
   return (
     <div className="group top-1 left-1 m-1 cursor-pointer z-50">
       <FlyoutLink href="#" FlyoutContent={FlyoutContent}
-        onSignInClick={(e) => handleOpenModal(<SignIn onSignUpClick={(e) => handleOpenModal(<SignUp onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/>)}
-        onAccountPageClick={(e) => handleOpenModal(<AccountPage onModalClose={handleCloseModal}/>)}
+        onSignInClick={(e) => handleOpenModal(<SignIn onSignUpClick={(e) => handleOpenModal(<SignUp onModalClose={handleCloseModal} />)} onModalClose={handleCloseModal} />)}
+        onAccountPageClick={(e) => handleOpenModal(<AccountPage onModalClose={handleCloseModal} />)}
         onModalClose={handleCloseModal}
       >
         <div className="w-18 h-18 flex items-center justify-center bg-black rounded-lg shadow-xl">
           <HiMenu size={72} className="text-white" />
         </div>
       </FlyoutLink>
-      
+
       {/* Modal compoent that gets opened when handleOpenModal is called and displays the passed content */}
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         {modalContent}
@@ -143,43 +143,18 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
       setAccount(null);
     }
   }
-  
-    return (
-      <>
-        <div className="w-96 bg-black p-9 shadow-xl text-white text-lg space-y-6 rounded-lg">
-          <div className="mb-6 space-y-6">
-            <h3 className="font-semibold text-xl flex items-center">
-              <FaMapMarkedAlt className="mr-2 w-6 h-6" />
-              STATMAP MENU
-            </h3>
 
-            {account ? (
-              !account.data.user ? (
-                <button
-                  onClick={() => handleButtonClick(onSignInClick)}
-                  onMouseEnter={playHoverSound}
-                  className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
-                >
-                  <div className="flex items-center">
-                    <FaSignInAlt className="mr-4 w-6 h-6" />
-                    <span>SIGN IN</span>
-                  </div>
-                  <p className="ml-10 text-sm">Access Your Account</p>
-                </button>
-              ) : (
-                <button
-                  onClick={onSignOutClick}
-                  onMouseEnter={playHoverSound}
-                  className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
-                >
-                  <div className="flex items-center">
-                    <FaSignInAlt className="mr-4 w-6 h-6" />
-                    <span>SIGN OUT</span>
-                  </div>
-                  <p className="ml-10 text-sm">Sign out of Your Account</p>
-                </button>
-              )
-            ) : (
+  return (
+    <>
+      <div className="w-96 bg-black p-9 shadow-xl text-white text-lg space-y-6 rounded-lg">
+        <div className="mb-6 space-y-6">
+          <h3 className="font-semibold text-xl flex items-center">
+            <FaMapMarkedAlt className="mr-2 w-6 h-6" />
+            STATMAP MENU
+          </h3>
+
+          {account ? (
+            !account.data.user ? (
               <button
                 onClick={() => handleButtonClick(onSignInClick)}
                 onMouseEnter={playHoverSound}
@@ -191,63 +166,88 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
                 </div>
                 <p className="ml-10 text-sm">Access Your Account</p>
               </button>
-            )}
+            ) : (
+              <button
+                onClick={onSignOutClick}
+                onMouseEnter={playHoverSound}
+                className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
+              >
+                <div className="flex items-center">
+                  <FaSignInAlt className="mr-4 w-6 h-6" />
+                  <span>SIGN OUT</span>
+                </div>
+                <p className="ml-10 text-sm">Sign out of Your Account</p>
+              </button>
+            )
+          ) : (
+            <button
+              onClick={() => handleButtonClick(onSignInClick)}
+              onMouseEnter={playHoverSound}
+              className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
+            >
+              <div className="flex items-center">
+                <FaSignInAlt className="mr-4 w-6 h-6" />
+                <span>SIGN IN</span>
+              </div>
+              <p className="ml-10 text-sm">Access Your Account</p>
+            </button>
+          )}
 
-            <a
-              href="#"
-              onMouseEnter={playHoverSound}
-              className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
-            >
-              <div className="flex items-center">
-                <FaTrophy className="mr-4 w-6 h-6" />
-                <span>LEADERBOARDS</span>
-              </div>
-              <p className="ml-10 text-sm">View Top Players</p>
-            </a>
-            <button
-              onClick={() => handleButtonClick(onAccountPageClick)}
-              onMouseEnter={playHoverSound}
-              className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
-            >
-              <div className="flex items-center">
-                <FaUserCircle className="mr-4 w-6 h-6" />
-                <span>ACCOUNT</span>
-              </div>
-              <p className="ml-10 text-sm">Manage Your Profile</p>
-            </button>
-            <button
-              onClick={handleSettingsClick}
-              onMouseEnter={playHoverSound}
-              className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
-            >
-              <div className="flex items-center">
-                <FaCog className="mr-4 w-6 h-6" />
-                <span>SETTINGS</span>
-              </div>
-              <p className="ml-10 text-sm">Adjust Your Preferences</p>
-            </button>
-          </div>
-          <button
+          <a
+            href="#"
             onMouseEnter={playHoverSound}
-            onClick={() => playClickSound()}
-            className="group flex flex-col items-center justify-center w-full rounded-lg border-4 border-white px-4 py-2 font-semibold text-lg transition-colors hover:bg-white hover:text-black"
+            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
           >
-            <div className="mr-4">
-              <div className="flex items-center">
-                <FaEnvelope className="mr-4 w-6 h-6" />
-                <span>ABOUT US</span>
-              </div>
-              <p className="ml-8 text-sm">Learn More About Our Team</p>
+            <div className="flex items-center">
+              <FaTrophy className="mr-4 w-6 h-6" />
+              <span>LEADERBOARDS</span>
             </div>
+            <p className="ml-10 text-sm">View Top Players</p>
+          </a>
+          <button
+            onClick={() => handleButtonClick(onAccountPageClick)}
+            onMouseEnter={playHoverSound}
+            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
+          >
+            <div className="flex items-center">
+              <FaUserCircle className="mr-4 w-6 h-6" />
+              <span>ACCOUNT</span>
+            </div>
+            <p className="ml-10 text-sm">Manage Your Profile</p>
+          </button>
+          <button
+            onClick={handleSettingsClick}
+            onMouseEnter={playHoverSound}
+            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
+          >
+            <div className="flex items-center">
+              <FaCog className="mr-4 w-6 h-6" />
+              <span>SETTINGS</span>
+            </div>
+            <p className="ml-10 text-sm">Adjust Your Preferences</p>
           </button>
         </div>
+        <button
+          onMouseEnter={playHoverSound}
+          onClick={() => playClickSound()}
+          className="group flex flex-col items-center justify-center w-full rounded-lg border-4 border-white px-4 py-2 font-semibold text-lg transition-colors hover:bg-white hover:text-black"
+        >
+          <div className="mr-4">
+            <div className="flex items-center">
+              <FaEnvelope className="mr-12 w-6 h-6" />
+              <span>ABOUT US</span>
+            </div>
+            <p className="ml-8 text-sm">Learn More About Our Team</p>
+          </div>
+        </button>
+      </div>
 
-        <SettingsModal 
-          isOpen={isSettingsOpen} 
-          onClose={() => setIsSettingsOpen(false)} 
-        />
-      </>
-    );
-  };
-  
-  export default HoverDropMenu;
+      <SettingsModal
+        isOpen={isSettingsOpen}
+        onClose={() => setIsSettingsOpen(false)}
+      />
+    </>
+  );
+};
+
+export default HoverDropMenu;
