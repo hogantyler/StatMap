@@ -14,6 +14,7 @@ const defaultSettings = {
   textColor: '#FFFFFF',       // Default white
   borderColor: '#336699',     // Default blue
   showClouds: true,           // Toggle: true/false
+  globeBackGround: true,      // Toggle: true/false
 };
 
 // Create a provider component
