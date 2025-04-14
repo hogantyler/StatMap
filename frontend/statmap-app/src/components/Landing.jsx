@@ -10,6 +10,7 @@ import LandingGlobe from "./LandingGlobe";
 import { useNavigate } from "react-router-dom";
 import SignUp from "./SignUp";
 import AccountPage from "./AccountPage";
+import { SupabaseContext } from "./SupabaseContext";
 
 /**
  * Landing page component that provides navigation, game modes, leaderboards, and a help modal.

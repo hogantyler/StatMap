@@ -17,6 +17,7 @@ import SignIn from "./SignIn";
 import AccountPage from "./AccountPage";
 import SignUp from "./SignUp";
 import Modal from "./Modal";
+import Leaderboard from "./Leaderboard";
 
 /**
  * Renders a hovered dropdown menu that provides navigation options for the user.
@@ -46,6 +47,7 @@ const HoverDropMenu = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
         onSignInClick={(e) => handleOpenModal(<SignIn onSignUpClick={(e) => handleOpenModal(<SignUp onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/>)}
         onAccountPageClick={(e) => handleOpenModal(<AccountPage onModalClose={handleCloseModal}/>)}
         onModalClose={handleCloseModal}
+        onLeaderboardClick={(e) => handleOpenModal(<Leaderboard onModalClose={handleCloseModal}/>)}
       >
         <div className="w-18 h-18 flex items-center justify-center bg-black rounded-lg shadow-xl">
           <HiMenu size={72} className="text-white" />
@@ -66,7 +68,7 @@ const HoverDropMenu = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
  * @param {*} param0 Contains children elements, link href, flyout content component, and sign-in click event handler
  * @returns {JSX.Element} A link with hover-triggered dropdown content
  */
-const FlyoutLink = ({ children, href, FlyoutContent, onSignInClick, onAccountPageClick, onModalClose }) => {
+const FlyoutLink = ({ children, href, FlyoutContent, onSignInClick, onAccountPageClick, onModalClose, onLeaderboardClick }) => {
   const [open, setOpen] = useState(false);
 
   const showFlyout = FlyoutContent && open;
@@ -94,7 +96,7 @@ const FlyoutLink = ({ children, href, FlyoutContent, onSignInClick, onAccountPag
             transition={{ duration: 0.3, ease: "easeOut" }}
             className="absolute top-0 left-0 bg-black text-white shadow-lg rounded-md z-50"
           >
-            <FlyoutContent onSignInClick={onSignInClick} onAccountPageClick={onAccountPageClick} onModalCose={onModalClose} />
+            <FlyoutContent onSignInClick={onSignInClick} onAccountPageClick={onAccountPageClick} onModalCose={onModalClose} onLeaderboardClick={onLeaderboardClick}/>
           </motion.div>
         )}
       </AnimatePresence>
@@ -108,7 +110,7 @@ const FlyoutLink = ({ children, href, FlyoutContent, onSignInClick, onAccountPag
  * @param {*} param0 Contains a callback function for handling sign-in clicks
  * @returns {JSX.Element} A styled menu with various navigation options
  */
-const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
+const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose, onLeaderboardClick }) => {
   const [account, setAccount] = useState(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
 
@@ -193,8 +195,8 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
               </button>
             )}
 
-            <a
-              href="#"
+            <button
+              onClick={() => handleButtonClick(onLeaderboardClick)}
               onMouseEnter={playHoverSound}
               className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
             >
@@ -203,7 +205,7 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose }) => {
                 <span>LEADERBOARDS</span>
               </div>
               <p className="ml-10 text-sm">View Top Players</p>
-            </a>
+            </button>
             <button
               onClick={() => handleButtonClick(onAccountPageClick)}
               onMouseEnter={playHoverSound}

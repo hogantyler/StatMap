@@ -26,6 +26,10 @@ const QuizModeContent = () => {
   const [isAnswered, setIsAnswered] = useState(false); //to prevent score spamming
   const [isCollapsed, setIsCollapsed] = useState(false); //making the fact box collapse
   const [questionsCorrect, setQuestionsCorrect] = useState(0);
+  const [hintOneUsed, setHintOneUsed] = useState(0);
+  const [hintTwoUsed, setHintTwoUsed] = useState(0);
+  const [hintThreeUsed, setHintThreeUsed] = useState(0);
+  const [startTime, setStartTime] = useState(new Date());
 
   // --- Navigation & Modal States ---
   // const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,7 +44,7 @@ const QuizModeContent = () => {
         console.error("Error fetching fact:", error);
         return;
       }
-      setCurrentFact(data);
+      setCurrentFact(data[0]);
     } catch (err) {
       console.error("Unexpected error:", err);
     }
@@ -65,21 +69,43 @@ const QuizModeContent = () => {
   const submitGameResult = async () => {
     const user = await supabase.auth.getUser();
     if (user) {
-      if (user.data.user.id) {
-        const { data, error } = await supabase
-          .from("Game Logs")
-          .insert([
-            {
-              User_ID: user.data.user.id,
-              Mode: "Quiz",
-              Score: score,
-              Num_Correct: questionsCorrect,
-              Num_Questions: 10,
-            },
-          ])
-          .select();
-        console.log(data);
-        console.log(error);
+      if (user.data.user && user.data.user.id) {
+        console.log({
+                User_ID: user.data.user.id,
+                Display_Name: user.data.user.user_metadata.display_name,
+                Mode: "Quiz",
+                Score: score,
+                Num_Correct: questionsCorrect,
+                Num_Questions: 10,
+                Hint_One_Used: hintOneUsed,
+                Hint_Two_Used: hintTwoUsed,
+                Hint_Three_Used: hintThreeUsed,
+                Start_Time: startTime,
+                End_time: new Date(),
+              })
+        // const { data, error } = await supabase
+        //   .from("Game Logs")
+        //   .insert([
+        //     {
+        //       User_ID: user.data.user.id,
+        //       Display_Name: user.data.user.user_metadata.display_name,
+        //       Mode: "Quiz",
+        //       Score: score,
+        //       Num_Correct: questionsCorrect,
+        //       Num_Questions: 10,
+        //       Hint_One_Used: hintOneUsed,
+        //       Hint_Two_Used: hintTwoUsed,
+        //       Hint_Three_Used: hintThreeUsed,
+        //       Start_Time: startTime,
+        //       End_time: new Date(),
+        //     },
+        //   ])
+        //   .select();
+
+        // if (error) {
+        //   console.log(error);
+        //   alert("An error occurred, unable to save score");
+        // }
       }
     }
   };
@@ -135,7 +161,7 @@ const QuizModeContent = () => {
       setScore((prev) => prev + points);
       setFeedback("Correct!");
       setFeedbackType("correct");
-      setQuestionsCorrect(questionsCorrect + 1);
+      setQuestionsCorrect((prev) => prev + 1);
     } else {
       if (attempts < 3) {
         const newAttempts = attempts + 1;
@@ -143,10 +169,13 @@ const QuizModeContent = () => {
         let hint = "";
         if (newAttempts === 1) {
           hint = `Hint: Continent - ${currentFact.CC_Continent}`;
+          setHintOneUsed((prev) => prev + 1);
         } else if (newAttempts === 2) {
           hint = `Hint: Continent - ${currentFact.CC_Continent}, Capital - ${currentFact.CC_Capital}`;
+          setHintTwoUsed((prev) => prev + 1);
         } else if (newAttempts === 3) {
           hint = `Hint: Continent - ${currentFact.CC_Continent}, Capital - ${currentFact.CC_Capital}, Abbreviation - ${currentFact.CC_Abbrev}`;
+          setHintThreeUsed((prev) => prev + 1);
         }
         setFeedback(`Incorrect! Try again. ${hint}`);
         setFeedbackType("incorrect");

@@ -10,7 +10,7 @@ const AccountPage = ({ isOpen, onModalClose }) => {
     async function getAccount() {
         const tempAccount = await supabase.auth.getUser();
         setAccount(tempAccount);
-        // console.log(tempAccount)
+        console.log(tempAccount)
 
         if (tempAccount && tempAccount.data.user) {
             getGameLogs(tempAccount.data.user.id);
@@ -22,6 +22,7 @@ const AccountPage = ({ isOpen, onModalClose }) => {
         .from('Game Logs')
         .select("*")
         .eq('User_ID', user_id)
+        .limit(10)
 
         if (error) {
             alert(error)
