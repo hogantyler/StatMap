@@ -52,17 +52,17 @@ const SignUp = ({ isOpen, onModalClose }) => {
     };
 
     return (
-            <div className="">
+            <div className="text-white bg-black">
                 {/* <button onClick={onModalClose}>X</button> */}
                 <form className="space-y-6" onSubmit={handleSubmit}>
-                    <h5 className="text-xl font-medium text-black mx-auto px-[75px]">STATMAP SIGN UP</h5>
+                    <h5 className="text-2xl font-bold  mx-auto px-[75px]">STATMAP SIGN UP</h5>
                     <div>
-                        <label htmlFor="display_name" className="block mb-2 text-sm font-medium text-black">Display Name</label>
+                        <label htmlFor="display_name" className="block mb-2 text-sm font-medium ">Display Name</label>
                         <input
                             type="text"
                             name="display_name"
                             id="display_name"
-                            className="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            className="bg-gray-800 border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                             placeholder="john123"
                             value={displayName}
                             onChange={(e) => setDisplayName(e.target.value)}
@@ -70,12 +70,12 @@ const SignUp = ({ isOpen, onModalClose }) => {
                         />
                     </div>
                     <div>
-                        <label htmlFor="email" className="block mb-2 text-sm font-medium text-black">Email</label>
+                        <label htmlFor="email" className="block mb-2 text-sm font-medium ">Email</label>
                         <input
                             type="email"
                             name="email"
                             id="email"
-                            className="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            className="bg-gray-800 border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                             placeholder="name@company.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
@@ -83,13 +83,13 @@ const SignUp = ({ isOpen, onModalClose }) => {
                         />
                     </div>
                     <div>
-                        <label htmlFor="password" className="block mb-2 text-sm font-medium text-black">Password</label>
+                        <label htmlFor="password" className="block mb-2 text-sm font-medium ">Password</label>
                         <input
                             type="password"
                             name="password"
                             id="password"
                             placeholder="••••••••"
-                            className="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                            className="bg-gray-800 border border-gray-300  text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required

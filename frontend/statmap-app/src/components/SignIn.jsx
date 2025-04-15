@@ -41,17 +41,17 @@ const SignIn = ({ isOpen, onSignUpClick, onModalClose }) => {
     };
 
     return (
-        <div className="">
+        <div className="bg-black text-white">
             {/* <button onClick={onModalClose}>X</button> */}
             <form className="space-y-6" onSubmit={handleSubmit}>
-                <h5 className="text-xl font-medium text-black mx-auto px-[75px]">STATMAP SIGN IN</h5>
+                <h5 className="text-2xl font-bold mx-auto px-[75px]">STATMAP SIGN IN</h5>
                 <div>
-                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-black">Your email</label>
+                    <label htmlFor="email" className="block mb-2 text-sm font-medium">Your email</label>
                     <input
                         type="email"
                         name="email"
                         id="email"
-                        className="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        className="bg-gray-800 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         placeholder="name@company.com"
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
@@ -59,13 +59,13 @@ const SignIn = ({ isOpen, onSignUpClick, onModalClose }) => {
                     />
                 </div>
                 <div>
-                    <label htmlFor="password" className="block mb-2 text-sm font-medium text-black">Your password</label>
+                    <label htmlFor="password" className="block mb-2 text-sm font-medium">Your password</label>
                     <input
                         type="password"
                         name="password"
                         id="password"
                         placeholder="••••••••"
-                        className="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        className="bg-gray-800 border border-gray-300 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
@@ -82,7 +82,7 @@ const SignIn = ({ isOpen, onSignUpClick, onModalClose }) => {
                     <label htmlFor="remember" className="ml-2 text-sm font-medium text-black">Remember me</label>
                 </div> */}
                 <button type="submit" className="w-full text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Sign In to your account</button>
-                <div className="text-sm font-medium text-black">
+                <div className="text-sm font-medium text-center">
                     Not registered? <button onClick={() => onSignUpClick()} className="text-blue-800 hover:underline">Create account</button>
                 </div>
             </form>
