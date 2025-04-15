@@ -18,7 +18,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
     return saved || 'medium';
   });
   const [showAdvanced, setShowAdvanced] = useState(false);
-  
+
   const { graphicsSettings, updateSetting, updateSettings } = useGraphicsSettings();
 
   // Define quality presets
@@ -56,7 +56,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
   // Function to check if current settings match any preset
   const getCurrentPreset = () => {
     for (const [preset, settings] of Object.entries(qualityPresets)) {
-      const matches = Object.entries(settings).every(([key, value]) => 
+      const matches = Object.entries(settings).every(([key, value]) =>
         graphicsSettings[key] === value
       );
       if (matches) return preset;
@@ -119,12 +119,14 @@ const SettingsModal = ({ isOpen, onClose }) => {
         >
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-2xl font-bold">Settings</h2>
-            <button
-              onClick={onClose}
-              className="text-white hover:text-gray-300"
-            >
-              <FaTimes size={24} />
-            </button>
+            <div className="top-0 right-0 z-0">
+              <button
+                onClick={onClose}
+                className="text-white rounded-full p-2 hover:text-red-600 transition-colors"
+              >
+                <FaTimes size={30} />
+              </button>
+            </div>
           </div>
 
           <div className="space-y-6 max-h-[70vh] overflow-y-auto pr-2">

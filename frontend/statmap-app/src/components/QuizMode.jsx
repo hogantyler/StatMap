@@ -236,7 +236,7 @@ const QuizModeContent = () => {
               </div>
               <button
                 onClick={handleRestartQuiz}
-                className="bg-black text-white border border-white rounded-full py-3 px-6 hover:bg-white hover:text-black transition-colors text-lg"
+                className="bg-black text-white border border-white rounded-full py-3 px-6 hover:bg-white hover:text-black transition-colors text-lg pointer-events-auto"
               >
                 Restart Quiz
               </button>
