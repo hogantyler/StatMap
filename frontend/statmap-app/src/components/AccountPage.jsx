@@ -1,5 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { SupabaseContext } from './SupabaseContext';
+import { FaTimes } from 'react-icons/fa';
 
 const AccountPage = ({ isOpen, onModalClose }) => {
     const [account, setAccount] = useState(null);
@@ -19,10 +20,10 @@ const AccountPage = ({ isOpen, onModalClose }) => {
 
     async function getGameLogs(user_id) {
         let { data, error } = await supabase
-        .from('Game Logs')
-        .select("*")
-        .eq('User_ID', user_id)
-        .limit(10)
+            .from('Game Logs')
+            .select("*")
+            .eq('User_ID', user_id)
+            .limit(10)
 
         if (error) {
             alert(error)
@@ -36,6 +37,7 @@ const AccountPage = ({ isOpen, onModalClose }) => {
     }, [])
 
     return (
+        <div>
             <div className="text-white bg-black">
                 {/* <button onClick={onModalClose}>X</button> */}
                 <h5 className="text-2xl font-bold text-center">Account Page</h5>
@@ -55,16 +57,13 @@ const AccountPage = ({ isOpen, onModalClose }) => {
                                     <div>
                                         <p className="text-xl font-semibold underline">Account Stats</p>
                                         <p>Games played</p>
-                                        <p>average score</p>
-                                        <p>total time played</p>
-                                        <p>correct percentage</p>
-                                        <p>correct / total</p>
+                                        <p>Average Score</p>
+                                        <p>Total Time Played</p>
+                                        <p>Correct Percentage</p>
+                                        <p>Correct / Total</p>
                                     </div>
                                     <div>
-                                        <p>Display Name: {account.data.user.user_metadata.display_name}</p>
-                                        <p>Email: {account.data.user.user_metadata.email}</p>
-                                        <p>Email Verified: {String(account.data.user.user_metadata.email_verified)}</p>
-                                        <p>Created On: {(new Date(account.data.user.created_at)).toLocaleDateString()}</p>
+                                        <p>Other Stuff</p>
                                     </div>
                                 </div>
                                 <br />
@@ -112,13 +111,13 @@ const AccountPage = ({ isOpen, onModalClose }) => {
                                     </div>
                                 </div>
                             </div>
-                            :
-                            <p>Sign In To View Your Account</p>
                         :
                         <p>Sign In To View Your Account</p>
+                    :
+                    <p>Sign In To View Your Account</p>
                 }
-                
             </div>
+        </div>
     );
 };
 

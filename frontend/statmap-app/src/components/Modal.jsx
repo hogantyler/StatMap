@@ -1,4 +1,5 @@
 import React, {useRef, useEffect} from "react";
+import { FaTimes } from "react-icons/fa";
 
 /**
  * Modal component that displays account login/sign up
@@ -30,12 +31,14 @@ const Modal = ({ isOpen, onClose, children }) => {
   return ( //background div that detects clicks outside the modal and calls closing modal function
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div ref={modalRef} className="flex justify-center items-center p-6 bg-black rounded-lg shadow-lg relative border border-white">
-        <button
-          onClick={onClose}
-          className="absolute top-2 right-2 text-white"
-        >
-          &times;
-        </button>
+        <div className="absolute top-0 right-0 z-0">
+            <button
+                onClick={onClose}
+                className="text-white rounded-full p-2 hover:text-red-600 transition-colors"
+            >
+                <FaTimes size={30} />
+            </button>
+        </div>
         {children}
       </div>
     </div>

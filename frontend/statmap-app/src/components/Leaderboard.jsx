@@ -1,8 +1,9 @@
 import { useContext, useEffect, useState } from "react";
 import { SupabaseContext } from "./SupabaseContext";
+import { FaTimes } from "react-icons/fa";
 
 
-const Leaderboard = () => {
+const Leaderboard = ({ onModalClose }) => {
 
     const supabase = useContext(SupabaseContext);
     const [topFive, setTopFive] = useState([]);
@@ -14,7 +15,7 @@ const Leaderboard = () => {
             .from('Game Logs')
             .select('*')
             .limit(5)
-            .order('Score', {ascending: false})
+            .order('Score', { ascending: false })
 
         setTopFive(data);
     }
@@ -48,7 +49,7 @@ const Leaderboard = () => {
                     </thead>
                     <tbody className="">
                         {
-                            topFive ? 
+                            topFive ?
                                 topFive.map((score) => {
                                     return (
                                         <tr key={score.Game_ID}>

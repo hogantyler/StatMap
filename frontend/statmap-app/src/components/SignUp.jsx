@@ -3,6 +3,7 @@ import { SupabaseContext } from './SupabaseContext';
 import { useDeprecatedAnimatedState } from 'motion/react';
 import { AuthApiError, AuthWeakPasswordError } from '@supabase/supabase-js';
 import { BooleanKeyframeTrack } from 'three';
+import { FaTimes } from 'react-icons/fa';
 
 /**
  * Sign In component for accounts that allows users to enter their credentials and sign in.
@@ -22,10 +23,10 @@ const SignUp = ({ isOpen, onModalClose }) => {
             email: email,
             password: password,
             options: {
-                data: {display_name: displayName}
+                data: { display_name: displayName }
             }
         })
-        
+
         if (error) {
             switch (error.name) {
                 case 'AuthApiError':
@@ -33,12 +34,12 @@ const SignUp = ({ isOpen, onModalClose }) => {
                         case 'user_already_exists':
                             alert("Email already in use");
                             break;
-                        
+
                         default:
                             alert(error.code);
                     }
                     break;
-                
+
                 case 'AuthWeakPasswordError':
                     alert("Password Too Weak");
                     break;
@@ -52,6 +53,7 @@ const SignUp = ({ isOpen, onModalClose }) => {
     };
 
     return (
+        <div>
             <div className="text-white bg-black">
                 {/* <button onClick={onModalClose}>X</button> */}
                 <form className="space-y-6" onSubmit={handleSubmit}>
@@ -98,6 +100,7 @@ const SignUp = ({ isOpen, onModalClose }) => {
                     <button type="submit" className="w-full text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Create account</button>
                 </form>
             </div>
+        </div>
     );
 };
 
