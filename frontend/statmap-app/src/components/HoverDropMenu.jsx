@@ -18,6 +18,8 @@ import AccountPage from "./AccountPage";
 import SignUp from "./SignUp";
 import Modal from "./Modal";
 import Leaderboard from "./Leaderboard";
+import { useNavigate } from "react-router-dom";
+
 
 /**
  * Renders a hovered dropdown menu that provides navigation options for the user.
@@ -113,6 +115,8 @@ const FlyoutLink = ({ children, href, FlyoutContent, onSignInClick, onAccountPag
 const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose, onLeaderboardClick }) => {
   const [account, setAccount] = useState(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  const navigate = useNavigate();
+
 
   const supabase = useContext(SupabaseContext);
 
@@ -239,15 +243,17 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose, onLead
         </div>
         
         <button
-          onClick={() => playClickSound()}
+          onClick={() => {
+            playClickSound();
+            navigate("/about");
+          }}
           className="group flex flex-col items-center justify-center w-full rounded-lg border-4 border-white px-4 py-2 font-semibold text-lg transition-colors hover:bg-white hover:text-black"
         >
           <div className="mr-4">
             <div className="flex items-center">
-              <FaEnvelope className="mr-12 w-6 h-6" />
-              <span>ABOUT US</span>
+              <span className="ml-16">ABOUT US</span>
             </div>
-            <p className="ml-8 text-sm">Learn More About Our Team</p>
+            <p className="ml-6 text-sm">Learn More About Our Team</p>
           </div>
         </button>
       </div>

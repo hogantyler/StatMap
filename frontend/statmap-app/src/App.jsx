@@ -12,6 +12,7 @@ import CreateLobby from "./components/TestComponents/CreateLobby.jsx";
 import { SupabaseContext, supabase } from "./components/SupabaseContext.jsx";
 import { LobbyProvider } from "./components/TestComponents/LobbyContext";
 import { GraphicsContextProvider } from './components/GraphicsContext';
+import AboutUs from "./components/AboutUs";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
               />
               <Route path="/lobbyTest" element={<LobbyTest></LobbyTest>} />
               <Route path="/createLobby" element={<CreateLobby></CreateLobby>} />
+              <Route path="/about" element={<AboutUs />} />
             </Routes>
           </SupabaseContext.Provider>
         </LobbyProvider>
