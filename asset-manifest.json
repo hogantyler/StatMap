@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/static/css/main.316cf4ea.css",
-    "main.js": "/static/js/main.7c4a24ab.js",
+    "main.css": "/static/css/main.2f1b1dbd.css",
+    "main.js": "/static/js/main.9d22f46f.js",
     "static/js/952.553d8c6b.chunk.js": "/static/js/952.553d8c6b.chunk.js",
     "static/js/453.8207fe03.chunk.js": "/static/js/453.8207fe03.chunk.js",
     "static/media/8k_earth.png": "/static/media/8k_earth.e816d19d3a0f47c9169f.png",
@@ -10,15 +10,15 @@
     "static/media/8k_earth_specular_map.jpg": "/static/media/8k_earth_specular_map.7b4efa59933b470e3776.jpg",
     "static/media/earth-nightmap-4k.jpg": "/static/media/earth-nightmap-4k.5d73403b00aefe60cbad.jpg",
     "static/media/gebco_bathy_2700x1350.jpg": "/static/media/gebco_bathy_2700x1350.46dc6f48e5b929de2ffe.jpg",
-    "static/media/black_globe.svg": "/static/media/black_globe.11ed65579c11797c5b2b3941e7516669.svg",
+    "static/media/black_globe.svg": "/static/media/black_globe.027aa18dc81b16a1305fd74e5c33ae12.svg",
     "index.html": "/index.html",
-    "main.316cf4ea.css.map": "/static/css/main.316cf4ea.css.map",
-    "main.7c4a24ab.js.map": "/static/js/main.7c4a24ab.js.map",
+    "main.2f1b1dbd.css.map": "/static/css/main.2f1b1dbd.css.map",
+    "main.9d22f46f.js.map": "/static/js/main.9d22f46f.js.map",
     "952.553d8c6b.chunk.js.map": "/static/js/952.553d8c6b.chunk.js.map",
     "453.8207fe03.chunk.js.map": "/static/js/453.8207fe03.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.316cf4ea.css",
-    "static/js/main.7c4a24ab.js"
+    "static/css/main.2f1b1dbd.css",
+    "static/js/main.9d22f46f.js"
   ]
 }
