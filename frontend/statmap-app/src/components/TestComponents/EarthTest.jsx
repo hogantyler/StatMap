@@ -75,7 +75,7 @@ function EarthTest(props) {
             <mesh ref={props.ref} onPointerOver={(e) => e.stopPropagation()} onPointerOut={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
                 <sphereGeometry args={[1, 40, 40]} />
                 {/*<meshPhongMaterial specularMap={specularMap} />*/}
-                <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.7} roughness={0.7} specularIntensityMap={specularMap}/>
+                <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0} roughness={0.8} specularIntensityMap={specularMap}/>
             </mesh>
         </group>
     );
