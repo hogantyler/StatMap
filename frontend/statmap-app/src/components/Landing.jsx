@@ -6,7 +6,7 @@ import HoverDropMenu from "./HoverDropMenu";
 import SignIn from "./SignIn";
 import Modal from "./Modal";
 import Loading from "./Loading";
-import LandingGlobe from "./LandingGlobe";
+import LandingGlobe from "./GlobeComponents/LandingGlobe";
 import { useNavigate } from "react-router-dom";
 import SignUp from "./SignUp";
 import AccountPage from "./AccountPage";
