@@ -25,7 +25,7 @@ export const GraphicsContextProvider = ({ children }) => {
     return savedSettings ? JSON.parse(savedSettings) : defaultSettings;
   });
 
-  // Save settings to localStorage whenever they change
+  //save settings to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('graphicsSettings', JSON.stringify(graphicsSettings));
   }, [graphicsSettings]);
