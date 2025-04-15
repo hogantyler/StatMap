@@ -9,6 +9,8 @@ const LobbyTest = () => {
   const [joinCode, setJoinCode] = useState("");
   const [lobbyId, setLobbyId] = useState(null);
   const [userId, setUserId] = useState(null);
+  const [playerCount, setPlayerCount] = useState(0);
+  const [userIsHost, setUserIsHost] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -17,8 +19,8 @@ const LobbyTest = () => {
       error: authError,
     } = await supabase.auth.getUser();
 
-    if (!user) {
-      console.error("User is not authenticated!");
+    if (authError || !user) {
+      alert("You must be logged in to join a lobby.");
       return;
     }
     setUserId(user.id);
@@ -83,6 +85,8 @@ const LobbyTest = () => {
       .subscribe();
 
     setLobbyId(lobby.id);
+    setPlayerCount(updatedPlayerCount);
+    setUserIsHost(updatedPlayerCount === 1); // assumes first to join is host
   }
 
   const handleBack = () => {
@@ -165,7 +169,7 @@ const LobbyTest = () => {
       })
       .on("broadcast", { event: "start_game" }, (payload) => {
         console.log("Start game received:", payload);
-        navigate("/quiz");
+        navigate("/multiplayer");
       })
       .on("UPDATE", { schema: "public", table: "Lobbies" }, (payload) => {
         console.log("Lobby updated:", payload.new);
@@ -181,12 +185,28 @@ const LobbyTest = () => {
     };
   }, [lobbyId]);
 
+  const startGameInLobby = async () => {
+    const { data: fact, error } = await supabase.rpc("random_fact");
+    if (error) return console.error("Error fetching question:", error);
+
+    await supabase
+      .from("Lobbies")
+      .update({ current_question: fact, question_number: 1 })
+      .eq("id", lobbyId);
+
+    await supabase.channel(`lobby_${joinCode}`).send({
+      type: "broadcast",
+      event: "start_game",
+      payload: {},
+    });
+  };
+
   return !lobbyId ? (
     <>
       <div className="absolute top-0 right-0 z-50">
         <button
           onClick={handleBack}
-          className="text-black border border-white rounded-full p-2 hover:text-red-600 transition-colors"
+          className="text-black rounded-full p-2 hover:text-red-600 transition-colors"
         >
           <FaTimes size={50} />
         </button>
@@ -198,12 +218,8 @@ const LobbyTest = () => {
         >
           Create Lobby
         </button>
-
         <div className="bg-gradient-to-r from-white to-gray-300 p-8 rounded-lg shadow-lg border-2 border-black w-full max-w-md text-center">
-          <form
-            onSubmit={joinLobbyByCode}
-            className="flex flex-col items-center"
-          >
+          <form onSubmit={joinLobbyByCode} className="flex flex-col items-center">
             <input
               type="text"
               value={joinCode}
@@ -224,13 +240,31 @@ const LobbyTest = () => {
     </>
   ) : (
     <>
-      <div>Join Code: {joinCode}</div>
-      <button
-        onClick={handleBack}
-        className="px-6 py-3 text-2xl bg-black text-white rounded-lg shadow-lg hover:bg-white hover:text-black border-2 border-black transition"
-      >
-        Leave Lobby
-      </button>
+      <div className="absolute top-0 right-0 z-50">
+        <button
+          onClick={handleBack}
+          className="text-black rounded-full p-2 hover:text-red-600 transition-colors"
+        >
+          <FaTimes size={50} />
+        </button>
+      </div>
+      <div className="flex flex-col items-center justify-center min-h-screen bg-white text-black">
+        <h2 className="text-2xl mb-4">Join Code: {joinCode}</h2>
+        <button
+          onClick={handleBack}
+          className="mb-4 px-6 py-3 text-2xl bg-black text-white rounded-lg shadow-lg hover:bg-white hover:text-black border-2 border-black transition"
+        >
+          Leave Lobby
+        </button>
+        {userIsHost && (
+          <button
+            onClick={startGameInLobby}
+            className="px-6 py-3 text-2xl bg-green-600 text-white rounded-lg shadow-lg hover:bg-white hover:text-green-600 border-2 border-green-600 transition"
+          >
+            Start Game
+          </button>
+        )}
+      </div>
     </>
   );
 };

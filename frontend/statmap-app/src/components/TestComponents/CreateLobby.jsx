@@ -149,7 +149,7 @@ function CreateLobby() {
         })
         .on("broadcast", { event: "start_game" }, (payload) => {
           console.log("Start game");
-          navigate("/quiz");
+          navigate("/multiplayer");
         })
         .on(
           "postgres_changes",
