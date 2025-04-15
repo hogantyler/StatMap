@@ -4,8 +4,8 @@ import { OrbitControls, Stars, Text, Billboard } from "@react-three/drei";
 import * as THREE from "three";
 import { Perf } from 'r3f-perf'
 //import ConicGlobe from "./TestComponents/ConicGlobe";
-import AtmosphereMesh from "./GlobeComponents/AtmosphereMesh";
-import EarthTest from "./TestComponents/EarthTest";
+import AtmosphereMesh from "./AtmosphereMesh";
+import EarthTest from "../TestComponents/EarthTest";
 
 /**
  * For showing 3D globe background on landing page
@@ -60,15 +60,15 @@ const LandingGlobe = React.memo(function LandingGlobe(props) {
                     camera={{ position: [1, 1, 0], near: 0.01, far: 1000 }}
                     style={{ background: "black", width: "100vw", height: "100vh" }}
                 >
-                    <ambientLight intensity={4} />
-                    <directionalLight position={[0, 0, 2]} intensity={7} />
+                    <ambientLight intensity={0.5} />
+                    <directionalLight position={[1, 1, 3]} intensity={2} />
 
                     <OrbitControls
                         ref={controlsRef}
                         enableZoom={true}
                         enableRotate={true}
                         enablePan={false}
-                        minDistance={1.05}
+                        minDistance={1.02}
                         maxDistance={4}
                         zoomSpeed={0.4}
                         rotateSpeed={0.4}
