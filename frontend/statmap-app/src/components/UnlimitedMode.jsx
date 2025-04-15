@@ -11,6 +11,7 @@ import Modal from "./Modal";
 import Loading from "./Loading";
 import { supabase } from "./SupabaseContext";
 import { CountrySelectionProvider, useCountrySelection } from "./CountrySelectionContext";
+import { playClickSound } from "../utils/soundUtils";
 
 function UnlimitedModeContent() {
   const [isModalOpen, setIsModalOpen] = useState(false); // modal for side bar menu
@@ -58,6 +59,7 @@ function UnlimitedModeContent() {
 
   // Handler for submitting the answer based solely on globe selection
   const handleSubmitAnswer = useCallback(() => {
+    playClickSound();
     if (isAnswered) return; //prevent multiple submits
     if (!selectedCountry) {
       alert("Please select a country on the globe first.");
@@ -98,6 +100,7 @@ function UnlimitedModeContent() {
 
   // Modified handleReportFact to accept a report type parameter
   const handleReportFact = async (reportType) => {
+    playClickSound();
     if (!currentFact) return;
     try {
       const { error } = await supabase.from("Fact Reports").insert([
@@ -118,6 +121,7 @@ function UnlimitedModeContent() {
   };
 
   const handleBack = useCallback(() => {
+    playClickSound();
     navigate("/");
   }, [navigate]);
 
@@ -147,7 +151,10 @@ function UnlimitedModeContent() {
             {isCollapsed && (
               <div className="w-full flex justify-center pointer-events-auto mb-2">
                 <button
-                  onClick={() => setIsCollapsed(false)}
+                  onClick={() => {
+                    playClickSound();
+                    setIsCollapsed(false);
+                  }}
                   className="bg-white text-black rounded-full p-1 hover:bg-green-600 transition-colors"
                 >
                   Show Fact
@@ -178,7 +185,10 @@ function UnlimitedModeContent() {
               {/* When fact is expanded, place the hide fact button to the right */}
               {!isCollapsed && (
                 <button
-                  onClick={() => setIsCollapsed(true)}
+                  onClick={() => {
+                    playClickSound();
+                    setIsCollapsed(true);
+                  }}
                   className="ml-4 bg-white text-black rounded-full p-1 hover:bg-green-600 transition-colors pointer-events-auto"
                 >
                   Hide Fact
@@ -203,13 +213,17 @@ function UnlimitedModeContent() {
                   Source
                 </a>
                 <button
-                    onClick={() => setIsReportModalOpen(true)}
-                    className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors text-sm pointer-events-auto"
-                  >
-                    Report Fact
-                  </button>
+                  onClick={() => {
+                    playClickSound();
+                    setIsReportModalOpen(true);
+                  }}
+                  className="bg-black text-white border border-white rounded-full py-2 px-4 hover:bg-white hover:text-black transition-colors text-sm"
+                >
+                  Report Fact
+                </button>
                 <button
                   onClick={() => {
+                    playClickSound();
                     setQuestionFinished(false);
                     loadNewFact();
                   }}
@@ -229,7 +243,10 @@ function UnlimitedModeContent() {
         {/* Report Fact Modal */}
         <Modal
           isOpen={isReportModalOpen}
-          onClose={() => setIsReportModalOpen(false)}
+          onClose={() => {
+            playClickSound();
+            setIsReportModalOpen(false);
+          }}
         >
           <div className="p-4">
             <h2 className="mb-4 text-lg font-bold">Report Fact</h2>

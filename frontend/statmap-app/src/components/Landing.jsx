@@ -6,11 +6,12 @@ import HoverDropMenu from "./HoverDropMenu";
 import SignIn from "./SignIn";
 import Modal from "./Modal";
 import Loading from "./Loading";
-import LandingGlobe from "./LandingGlobe";
+import LandingGlobe from "./GlobeComponents/LandingGlobe";
 import { useNavigate } from "react-router-dom";
 import SignUp from "./SignUp";
 import AccountPage from "./AccountPage";
 import { useGraphicsSettings } from "./GraphicsContext";
+import { playClickSound } from "../utils/soundUtils";
 
 /**
  * Landing page component that provides navigation, game modes, leaderboards, and a help modal.
@@ -19,24 +20,23 @@ import { useGraphicsSettings } from "./GraphicsContext";
  */
 const Landing = () => {
   // const [modalContent, setModalContent] = useState(null); //modal content decides what is shown when modal is open
-  // const [isModalOpen, setIsModalOpen] = useState(false); //state of whether the modal is open or closed
-  //const [use3DGlobe, setUse3DGlobe] = useState(true); //state of whether to use the 3D globe or not for background image of landing page
   const { graphicsSettings, updateSettings } = useGraphicsSettings();
   const use3DGlobe = graphicsSettings.globeBackGround; //use3DGlobe is set to the value of globeBackGround in the graphicsSettings context
   
   const navigate = useNavigate();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
 
-  // const handleOpenModal = (content) => {
-  //   //takes component, html, etc as content to display when the modal is open
-  //   setModalContent(content);
-  //   setIsModalOpen(true);
-  // };
+  const handleOpenModal = (content) => {
+    playClickSound();
+    setModalContent(content);
+    setIsModalOpen(true);
+  };
 
-  // const handleCloseModal = () => {
-  //   //closes the modal and resets the content to null
-  //   setIsModalOpen(false);
-  //   setModalContent(null);
-  // };
+  const handleCloseModal = () => {
+    playClickSound();
+    setIsModalOpen(false);
+  };
 
   // toggleGlobeType is a function that toggles between 3D globe and 2D BlackGlobe svg for background of landing page
   const toggleGlobeType = () => {
@@ -92,19 +92,28 @@ const Landing = () => {
             </p>
             <button
               className="w-full bg-black text-white font-helvetica py-2 px-4 rounded-lg border border-black transform hover:scale-105 hover:shadow-lg transition-all duration-150"
-              onClick={() => navigate("/quiz")}
+              onClick={() => {
+                playClickSound();
+                navigate("/quiz");
+              }}
             >
               QUIZ
             </button>
             <button
               className="w-full bg-black text-white font-helvetica py-2 px-4 rounded-lg border border-black transform hover:scale-105 hover:shadow-lg transition-all duration-150"
-              onClick={() => navigate("/unlimited")}
+              onClick={() => {
+                playClickSound();
+                navigate("/unlimited");
+              }}
             >
               UNLIMITED
             </button>
             <button
               className="w-full bg-black text-white font-helvetica py-2 px-4 rounded-lg border border-black transform hover:scale-105 hover:shadow-lg transition-all duration-150"
-              onClick={() => navigate("/lobbyTest")}
+              onClick={() => {
+                playClickSound();
+                navigate("/lobbyTest");
+              }}
             >
               MULTIPLAYER (COMING SOON)
             </button>
@@ -149,9 +158,9 @@ const Landing = () => {
         </button>
 
         {/* Modal compoent that gets opened when handleOpenModal is called and displays the passed content */}
-        {/* <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+        <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
           {modalContent}
-        </Modal> */}
+        </Modal>
 
         {/* <button //calls modal to open and passes the instructions as content to display
           onClick={() =>

@@ -1,5 +1,6 @@
 import React, { useContext, useState } from 'react';
 import { SupabaseContext } from './SupabaseContext';
+import { FaTimes } from 'react-icons/fa';
 
 /**
  * Sign In component for accounts that allows users to enter their credentials and sign in.
@@ -15,8 +16,8 @@ const SignIn = ({ isOpen, onSignUpClick, onModalClose }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         let { data, error } = await supabase.auth.signInWithPassword({
-          email: email,
-          password: password
+            email: email,
+            password: password
         })
 
         if (error) {
@@ -31,7 +32,7 @@ const SignIn = ({ isOpen, onSignUpClick, onModalClose }) => {
                             alert(error.code);
                     }
                     break;
-                
+
                 default:
                     alert(error.name + ' ' + error.code);
             }
@@ -42,7 +43,14 @@ const SignIn = ({ isOpen, onSignUpClick, onModalClose }) => {
 
     return (
         <div className="">
-            {/* <button onClick={onModalClose}>X</button> */}
+            <div className="absolute top-0 right-0 z-0">
+                <button
+                    onClick={onModalClose}
+                    className="text-black rounded-full p-2 hover:text-red-600 transition-colors"
+                >
+                    <FaTimes size={30} />
+                </button>
+            </div>
             <form className="space-y-6" onSubmit={handleSubmit}>
                 <h5 className="text-xl font-medium text-black mx-auto px-[75px]">STATMAP SIGN IN</h5>
                 <div>

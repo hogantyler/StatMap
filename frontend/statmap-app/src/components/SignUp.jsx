@@ -3,6 +3,7 @@ import { SupabaseContext } from './SupabaseContext';
 import { useDeprecatedAnimatedState } from 'motion/react';
 import { AuthApiError, AuthWeakPasswordError } from '@supabase/supabase-js';
 import { BooleanKeyframeTrack } from 'three';
+import { FaTimes } from 'react-icons/fa';
 
 /**
  * Sign In component for accounts that allows users to enter their credentials and sign in.
@@ -22,10 +23,10 @@ const SignUp = ({ isOpen, onModalClose }) => {
             email: email,
             password: password,
             options: {
-                data: {display_name: displayName}
+                data: { display_name: displayName }
             }
         })
-        
+
         if (error) {
             switch (error.name) {
                 case 'AuthApiError':
@@ -33,12 +34,12 @@ const SignUp = ({ isOpen, onModalClose }) => {
                         case 'user_already_exists':
                             alert("Email already in use");
                             break;
-                        
+
                         default:
                             alert(error.code);
                     }
                     break;
-                
+
                 case 'AuthWeakPasswordError':
                     alert("Password Too Weak");
                     break;
@@ -52,52 +53,59 @@ const SignUp = ({ isOpen, onModalClose }) => {
     };
 
     return (
-            <div className="">
-                {/* <button onClick={onModalClose}>X</button> */}
-                <form className="space-y-6" onSubmit={handleSubmit}>
-                    <h5 className="text-xl font-medium text-black mx-auto px-[75px]">STATMAP SIGN UP</h5>
-                    <div>
-                        <label htmlFor="display_name" className="block mb-2 text-sm font-medium text-black">Display Name</label>
-                        <input
-                            type="text"
-                            name="display_name"
-                            id="display_name"
-                            className="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="john123"
-                            value={displayName}
-                            onChange={(e) => setDisplayName(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="email" className="block mb-2 text-sm font-medium text-black">Email</label>
-                        <input
-                            type="email"
-                            name="email"
-                            id="email"
-                            className="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            placeholder="name@company.com"
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <div>
-                        <label htmlFor="password" className="block mb-2 text-sm font-medium text-black">Password</label>
-                        <input
-                            type="password"
-                            name="password"
-                            id="password"
-                            placeholder="••••••••"
-                            className="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            required
-                        />
-                    </div>
-                    <button type="submit" className="w-full text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Create account</button>
-                </form>
+        <div className="">
+            <div className="absolute top-0 right-0 z-0">
+                <button
+                    onClick={onModalClose}
+                    className="text-black rounded-full p-2 hover:text-red-600 transition-colors"
+                >
+                    <FaTimes size={30} />
+                </button>
             </div>
+            <form className="space-y-6" onSubmit={handleSubmit}>
+                <h5 className="text-xl font-medium text-black mx-auto px-[75px]">STATMAP SIGN UP</h5>
+                <div>
+                    <label htmlFor="display_name" className="block mb-2 text-sm font-medium text-black">Display Name</label>
+                    <input
+                        type="text"
+                        name="display_name"
+                        id="display_name"
+                        className="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        placeholder="john123"
+                        value={displayName}
+                        onChange={(e) => setDisplayName(e.target.value)}
+                        required
+                    />
+                </div>
+                <div>
+                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-black">Email</label>
+                    <input
+                        type="email"
+                        name="email"
+                        id="email"
+                        className="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        placeholder="name@company.com"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        required
+                    />
+                </div>
+                <div>
+                    <label htmlFor="password" className="block mb-2 text-sm font-medium text-black">Password</label>
+                    <input
+                        type="password"
+                        name="password"
+                        id="password"
+                        placeholder="••••••••"
+                        className="bg-white border border-gray-300 text-black text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        required
+                    />
+                </div>
+                <button type="submit" className="w-full text-white bg-black hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center">Create account</button>
+            </form>
+        </div>
     );
 };
 

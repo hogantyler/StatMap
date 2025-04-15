@@ -11,6 +11,7 @@ import {
   CountrySelectionProvider,
   useCountrySelection,
 } from "./CountrySelectionContext";
+import { playClickSound } from "../utils/soundUtils";
 
 const QuizModeContent = () => {
   // --- Quiz Logic States ---
@@ -26,6 +27,10 @@ const QuizModeContent = () => {
   const [isAnswered, setIsAnswered] = useState(false); //to prevent score spamming
   const [isCollapsed, setIsCollapsed] = useState(false); //making the fact box collapse
   const [questionsCorrect, setQuestionsCorrect] = useState(0);
+  const [hintOneUsed, setHintOneUsed] = useState(0);
+  const [hintTwoUsed, setHintTwoUsed] = useState(0);
+  const [hintThreeUsed, setHintThreeUsed] = useState(0);
+  const [startTime, setStartTime] = useState(new Date());
 
   // --- Navigation & Modal States ---
   // const [isModalOpen, setIsModalOpen] = useState(false);
@@ -65,21 +70,30 @@ const QuizModeContent = () => {
   const submitGameResult = async () => {
     const user = await supabase.auth.getUser();
     if (user) {
-      if (user.data.user.id) {
+      if (user.data.user && user.data.user.id) {
         const { data, error } = await supabase
           .from("Game Logs")
           .insert([
             {
               User_ID: user.data.user.id,
+              Display_Name: user.data.user.user_metadata.display_name,
               Mode: "Quiz",
               Score: score,
               Num_Correct: questionsCorrect,
               Num_Questions: 10,
+              Hint_One_Used: hintOneUsed,
+              Hint_Two_Used: hintTwoUsed,
+              Hint_Three_Used: hintThreeUsed,
+              Start_Time: String(startTime),
+              End_Time: String(new Date()),
             },
           ])
           .select();
-        console.log(data);
-        console.log(error);
+
+        if (error) {
+          console.log(error);
+          alert("An error occurred, unable to save score");
+        }
       }
     }
   };
@@ -112,6 +126,7 @@ const QuizModeContent = () => {
 
   // Handler for submitting the answer based solely on globe selection
   const handleSubmitAnswer = useCallback(() => {
+    playClickSound();
     if (isAnswered) return; //prevent multiple submits
     if (!selectedCountry) {
       alert("Please select a country on the globe first.");
@@ -135,7 +150,7 @@ const QuizModeContent = () => {
       setScore((prev) => prev + points);
       setFeedback("Correct!");
       setFeedbackType("correct");
-      setQuestionsCorrect(questionsCorrect + 1);
+      setQuestionsCorrect((prev) => prev + 1);
     } else {
       if (attempts < 3) {
         const newAttempts = attempts + 1;
@@ -143,10 +158,13 @@ const QuizModeContent = () => {
         let hint = "";
         if (newAttempts === 1) {
           hint = `Hint: Continent - ${currentFact.CC_Continent}`;
+          setHintOneUsed((prev) => prev + 1);
         } else if (newAttempts === 2) {
           hint = `Hint: Continent - ${currentFact.CC_Continent}, Capital - ${currentFact.CC_Capital}`;
+          setHintTwoUsed((prev) => prev + 1);
         } else if (newAttempts === 3) {
           hint = `Hint: Continent - ${currentFact.CC_Continent}, Capital - ${currentFact.CC_Capital}, Abbreviation - ${currentFact.CC_Abbrev}`;
+          setHintThreeUsed((prev) => prev + 1);
         }
         setFeedback(`Incorrect! Try again. ${hint}`);
         setFeedbackType("incorrect");
@@ -165,9 +183,11 @@ const QuizModeContent = () => {
 
   // Function to restart the quiz after completion
   const handleRestartQuiz = () => {
+    playClickSound();
     setQuizComplete(false);
     setQuestionNumber(1);
     setScore(0);
+    setQuestionsCorrect(0);
     loadNewFact();
     setFeedback("");
     setFeedbackType("");
@@ -175,7 +195,10 @@ const QuizModeContent = () => {
 
   // const handleOpenModal = () => setIsModalOpen(true);
   // const handleCloseModal = () => setIsModalOpen(false);
-  const handleBack = () => navigate("/");
+  const handleBack = () => {
+    playClickSound();
+    navigate("/");
+  };
 
   return (
     //suspense for loading screen
@@ -213,7 +236,7 @@ const QuizModeContent = () => {
               </div>
               <button
                 onClick={handleRestartQuiz}
-                className="bg-black text-white border border-white rounded-full py-3 px-6 hover:bg-white hover:text-black transition-colors text-lg"
+                className="bg-black text-white border border-white rounded-full py-3 px-6 hover:bg-white hover:text-black transition-colors text-lg pointer-events-auto"
               >
                 Restart Quiz
               </button>
@@ -226,7 +249,10 @@ const QuizModeContent = () => {
             {isCollapsed && (
               <div className="pointer-events-auto mb-2">
                 <button
-                  onClick={() => setIsCollapsed(false)}
+                  onClick={() => {
+                    playClickSound();
+                    setIsCollapsed(false);
+                  }}
                   className="bg-white text-black rounded-full p-1 hover:bg-green-600 transition-colors"
                 >
                   Show Fact
@@ -273,7 +299,10 @@ const QuizModeContent = () => {
                 {/* When not collapsed, show the Hide Fact button to the right */}
                 {!isCollapsed && (
                   <button
-                    onClick={() => setIsCollapsed(true)}
+                    onClick={() => {
+                      playClickSound();
+                      setIsCollapsed(true);
+                    }}
                     className="ml-4 bg-white text-black rounded-full p-1 hover:bg-green-600 transition-colors pointer-events-auto"
                   >
                     Hide Fact

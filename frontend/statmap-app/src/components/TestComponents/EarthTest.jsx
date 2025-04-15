@@ -7,7 +7,9 @@ import EarthNormalMap from "../../textures/earth_normalmap_5400x2700.jpg"
 import EarthSpecMap from "../../textures/8k_earth_specular_map.jpg"
 import EarthCloudMap from "../../textures/cloud_texture.jpg"
 import EarthDisplacementMap from "../../textures/gebco_bathy_2700x1350.jpg"
+import EarthNightMap from "../../textures/earth-nightmap-4k.jpg"
 import { TextureLoader } from "three";
+import { useGraphicsSettings } from "../GraphicsContext";
 
 /**
  * Renders a mesh with interactive globe with experimetnal features under testing and development.
@@ -15,6 +17,9 @@ import { TextureLoader } from "three";
  * @returns part of the 3D earth that has to do with texture wrapping and anisotropic filtering and defines three.js/react-three-fiber material
  */
 function EarthTest(props) {
+    const { graphicsSettings } = useGraphicsSettings();
+    const spherePolygonCount = graphicsSettings.polygonCount;
+
     // Texture loading
     // const earthRef = useRef();
     const [colorMap, normalMap, specularMap, cloudMap, displacementMap] = useLoader(
@@ -61,19 +66,20 @@ function EarthTest(props) {
     return (
         <group>
             <mesh ref={props.cloudsRef}>
-                <sphereGeometry args={[1.01, 40, 40]} />
+                <sphereGeometry args={[1.01, spherePolygonCount, spherePolygonCount]} />
                 <meshPhongMaterial
                     map={cloudMap}
-                    opacity={0.4}
+                    opacity={0.7}
                     depthWrite={false}
                     transparent={true}
-                    side={THREE.DoubleSide}
+                    side={THREE.FrontSide}
+                    blending={THREE.AdditiveBlending}
                 />
             </mesh>
             <mesh ref={props.ref} onPointerOver={(e) => e.stopPropagation()} onPointerOut={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
-                <sphereGeometry args={[1, 40, 40]} />
-                <meshPhongMaterial specularMap={specularMap} />
-                <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.7} roughness={0.7} />
+                <sphereGeometry args={[1, spherePolygonCount, spherePolygonCount]} />
+                {/*<meshPhongMaterial specularMap={specularMap} />*/}
+                <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0} roughness={0.8} specularIntensityMap={specularMap}/>
             </mesh>
         </group>
     );

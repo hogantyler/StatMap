@@ -15,7 +15,7 @@ const defaultSettings = {
   borderColor: '#336699',     // Default blue
   showClouds: true,           // Toggle: true/false
   globeBackGround: true,      // Toggle: true/false
-};
+}; 
 
 // Create a provider component
 export const GraphicsContextProvider = ({ children }) => {
@@ -25,7 +25,7 @@ export const GraphicsContextProvider = ({ children }) => {
     return savedSettings ? JSON.parse(savedSettings) : defaultSettings;
   });
 
-  // Save settings to localStorage whenever they change
+  //save settings to localStorage whenever they change
   useEffect(() => {
     localStorage.setItem('graphicsSettings', JSON.stringify(graphicsSettings));
   }, [graphicsSettings]);

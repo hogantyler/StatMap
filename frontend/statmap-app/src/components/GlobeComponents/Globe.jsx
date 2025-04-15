@@ -79,15 +79,15 @@ const Globe = React.memo(function Globe(props) {
                     camera={{ position: [0, 1, 2], near: 0.01, far: 1000 }}
                     style={{ background: "black", width: "100vw", height: "100vh" }}
                 >
-                    <ambientLight intensity={4} />
-                    <directionalLight position={[0, 0, 2]} intensity={7} />
+                    <ambientLight intensity={0.5} />
+                    <directionalLight position={[0, 0, 4]} intensity={2} />
 
                     <OrbitControls
                         ref={controlsRef}
                         enableZoom={true}
                         enableRotate={true}
                         enablePan={false}
-                        minDistance={1.05}
+                        minDistance={1.02}
                         maxDistance={4}
                         zoomSpeed={0.4}
                         rotateSpeed={0.4}
@@ -163,7 +163,7 @@ function CountryBorders({ globeRef, linesRef }) {
             linesRef.current.remove(linesRef.current.children[0]);
         }
 
-        const radius = 1.005; //set radius so it's on top of globle
+        const radius = 1.001; //set radius so it's on top of globle
 
         geoData.features.forEach((feature, featureIndex) => { //gets the coordinates of the countries in te geojson data
             let coordinates = [];

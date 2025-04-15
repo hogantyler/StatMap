@@ -9,9 +9,11 @@ import GlobeModeTest from "./components/TestComponents/GlobeModeTest";
 import GlobeModeTestPart2 from "./components/TestComponents/GlobeModeTestPart2.jsx";
 import LobbyTest from "./components/TestComponents/LobbyTest.jsx";
 import CreateLobby from "./components/TestComponents/CreateLobby.jsx";
+import MultiplayerGameScreen from "./components/MultiplayerGameScreen.jsx";
 import { SupabaseContext, supabase } from "./components/SupabaseContext.jsx";
 import { LobbyProvider } from "./components/TestComponents/LobbyContext";
 import { GraphicsContextProvider } from './components/GraphicsContext';
+import AboutUs from "./components/AboutUs";
 
 function App() {
   return (
@@ -30,6 +32,8 @@ function App() {
               />
               <Route path="/lobbyTest" element={<LobbyTest></LobbyTest>} />
               <Route path="/createLobby" element={<CreateLobby></CreateLobby>} />
+              <Route path="/about" element={<AboutUs />} />
+              <Route path="/multiplayer" element={<MultiplayerGameScreen/>}/>
             </Routes>
           </SupabaseContext.Provider>
         </LobbyProvider>
