@@ -44,7 +44,7 @@ const QuizModeContent = () => {
         console.error("Error fetching fact:", error);
         return;
       }
-      setCurrentFact(data[0]);
+      setCurrentFact(data);
     } catch (err) {
       console.error("Unexpected error:", err);
     }
@@ -70,42 +70,29 @@ const QuizModeContent = () => {
     const user = await supabase.auth.getUser();
     if (user) {
       if (user.data.user && user.data.user.id) {
-        console.log({
-                User_ID: user.data.user.id,
-                Display_Name: user.data.user.user_metadata.display_name,
-                Mode: "Quiz",
-                Score: score,
-                Num_Correct: questionsCorrect,
-                Num_Questions: 10,
-                Hint_One_Used: hintOneUsed,
-                Hint_Two_Used: hintTwoUsed,
-                Hint_Three_Used: hintThreeUsed,
-                Start_Time: startTime,
-                End_time: new Date(),
-              })
-        // const { data, error } = await supabase
-        //   .from("Game Logs")
-        //   .insert([
-        //     {
-        //       User_ID: user.data.user.id,
-        //       Display_Name: user.data.user.user_metadata.display_name,
-        //       Mode: "Quiz",
-        //       Score: score,
-        //       Num_Correct: questionsCorrect,
-        //       Num_Questions: 10,
-        //       Hint_One_Used: hintOneUsed,
-        //       Hint_Two_Used: hintTwoUsed,
-        //       Hint_Three_Used: hintThreeUsed,
-        //       Start_Time: startTime,
-        //       End_time: new Date(),
-        //     },
-        //   ])
-        //   .select();
+        const { data, error } = await supabase
+          .from("Game Logs")
+          .insert([
+            {
+              User_ID: user.data.user.id,
+              Display_Name: user.data.user.user_metadata.display_name,
+              Mode: "Quiz",
+              Score: score,
+              Num_Correct: questionsCorrect,
+              Num_Questions: 10,
+              Hint_One_Used: hintOneUsed,
+              Hint_Two_Used: hintTwoUsed,
+              Hint_Three_Used: hintThreeUsed,
+              Start_Time: String(startTime),
+              End_Time: String(new Date()),
+            },
+          ])
+          .select();
 
-        // if (error) {
-        //   console.log(error);
-        //   alert("An error occurred, unable to save score");
-        // }
+        if (error) {
+          console.log(error);
+          alert("An error occurred, unable to save score");
+        }
       }
     }
   };

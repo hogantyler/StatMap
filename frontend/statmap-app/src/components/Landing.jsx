@@ -10,7 +10,7 @@ import LandingGlobe from "./LandingGlobe";
 import { useNavigate } from "react-router-dom";
 import SignUp from "./SignUp";
 import AccountPage from "./AccountPage";
-import { SupabaseContext } from "./SupabaseContext";
+import { useGraphicsSettings } from "./GraphicsContext";
 
 /**
  * Landing page component that provides navigation, game modes, leaderboards, and a help modal.
@@ -20,8 +20,10 @@ import { SupabaseContext } from "./SupabaseContext";
 const Landing = () => {
   // const [modalContent, setModalContent] = useState(null); //modal content decides what is shown when modal is open
   // const [isModalOpen, setIsModalOpen] = useState(false); //state of whether the modal is open or closed
-  const [use3DGlobe, setUse3DGlobe] = useState(true); //state of whether to use the 3D globe or not for background image of landing page
-  const NoOffSet = true; //used to determine if the globe should be offset or not for LandingGlobe component
+  //const [use3DGlobe, setUse3DGlobe] = useState(true); //state of whether to use the 3D globe or not for background image of landing page
+  const { graphicsSettings, updateSettings } = useGraphicsSettings();
+  const use3DGlobe = graphicsSettings.globeBackGround; //use3DGlobe is set to the value of globeBackGround in the graphicsSettings context
+  
   const navigate = useNavigate();
 
   // const handleOpenModal = (content) => {
@@ -38,7 +40,8 @@ const Landing = () => {
 
   // toggleGlobeType is a function that toggles between 3D globe and 2D BlackGlobe svg for background of landing page
   const toggleGlobeType = () => {
-    setUse3DGlobe(prev => !prev);
+    //setUse3DGlobe(prev => !prev);
+    updateSettings({ globeBackGround: !use3DGlobe });
   };
 
   const [leaderboard] = useState([

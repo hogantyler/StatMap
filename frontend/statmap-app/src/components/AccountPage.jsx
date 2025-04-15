@@ -57,10 +57,15 @@ const AccountPage = ({ isOpen, onModalClose }) => {
                                         <table className="min-w-full divide-y divide-gray-200 border border-gray-300 rounded-lg">
                                             <thead className="bg-gray-100">
                                                 <tr>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mode</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Correct Questions</th>
-                                                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Questions</th>
+                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mode</th>
+                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
+                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Correct Questions</th>
+                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Questions</th>
+                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hint One Used</th>
+                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hint Two Used</th>
+                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Hint Three Used</th>
+                                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Game Duration</th>
                                                 </tr>
                                             </thead>
                                             <tbody className="bg-white divide-y divide-gray-200">
@@ -68,10 +73,19 @@ const AccountPage = ({ isOpen, onModalClose }) => {
                                                     gameLogs.map((game) => {
                                                         return (
                                                             <tr key={game.Game_ID}>
+                                                                <td className="px-6 py-4 whitespace-nowrap">{(new Date(game.Start_Time)).toLocaleDateString()}</td>
                                                                 <td className="px-6 py-4 whitespace-nowrap">{game.Mode}</td>
                                                                 <td className="px-6 py-4 whitespace-nowrap">{game.Score}</td>
                                                                 <td className="px-6 py-4 whitespace-nowrap">{game.Num_Correct}</td>
                                                                 <td className="px-6 py-4 whitespace-nowrap">{game.Num_Questions}</td>
+                                                                <td className="px-6 py-4 whitespace-nowrap">{game.Hint_One_Used}</td>
+                                                                <td className="px-6 py-4 whitespace-nowrap">{game.Hint_Two_Used}</td>
+                                                                <td className="px-6 py-4 whitespace-nowrap">{game.Hint_Three_Used}</td>
+                                                                <td className="px-6 py-4 whitespace-nowrap">
+                                                                    {(new Date(game.End_Time).getHours()) - (new Date(game.Start_Time).getHours()) != 0 ? (new Date(game.End_Time).getHours()) - (new Date(game.Start_Time).getHours()) + " Hours " : ""}
+                                                                    {(new Date(game.End_Time).getMinutes()) - (new Date(game.Start_Time).getMinutes()) != 0 ? (new Date(game.End_Time).getMinutes()) - (new Date(game.Start_Time).getMinutes()) + " Minutes " : ""}
+                                                                    {(new Date(game.End_Time).getSeconds()) - (new Date(game.Start_Time).getSeconds()) != 0 ? (new Date(game.End_Time).getSeconds()) - (new Date(game.Start_Time).getSeconds()) + " Seconds" : ""}
+                                                                </td>
                                                             </tr>
                                                         )
                                                     })

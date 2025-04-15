@@ -7,6 +7,7 @@ import EarthNormalMap from "../../textures/earth_normalmap_5400x2700.jpg"
 import EarthSpecMap from "../../textures/8k_earth_specular_map.jpg"
 import EarthCloudMap from "../../textures/cloud_texture.jpg"
 import EarthDisplacementMap from "../../textures/gebco_bathy_2700x1350.jpg"
+import EarthNightMap from "../../textures/earth-nightmap-4k.jpg"
 import { TextureLoader } from "three";
 
 /**
@@ -64,16 +65,17 @@ function EarthTest(props) {
                 <sphereGeometry args={[1.01, 40, 40]} />
                 <meshPhongMaterial
                     map={cloudMap}
-                    opacity={0.4}
+                    opacity={0.7}
                     depthWrite={false}
                     transparent={true}
-                    side={THREE.DoubleSide}
+                    side={THREE.FrontSide}
+                    blending={THREE.AdditiveBlending}
                 />
             </mesh>
             <mesh ref={props.ref} onPointerOver={(e) => e.stopPropagation()} onPointerOut={(e) => e.stopPropagation()} onClick={(e) => e.stopPropagation()}>
                 <sphereGeometry args={[1, 40, 40]} />
-                <meshPhongMaterial specularMap={specularMap} />
-                <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.7} roughness={0.7} />
+                {/*<meshPhongMaterial specularMap={specularMap} />*/}
+                <meshStandardMaterial map={colorMap} normalMap={normalMap} metalness={0.7} roughness={0.7} specularIntensityMap={specularMap}/>
             </mesh>
         </group>
     );
