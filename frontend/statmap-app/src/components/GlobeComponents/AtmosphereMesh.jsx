@@ -1,5 +1,6 @@
 //this code is changed version of atmopheric effect code found here: https://github.com/bobbyroe/earth-with-react-three-fiber/blob/main/src/App.jsx
 import * as THREE from "three";
+import { useGraphicsSettings } from "../GraphicsContext";
 
 function getFresnelShaderArgs({ rimHex = 0x0088ff, facingHex = 0x000000 } = {}) {
   const uniforms = {
@@ -60,10 +61,13 @@ function AtmosphereMesh({
   facingHex = "#87CEEB", // Slightly darker blue for the facing
   radius = 2.03,
 }) {
+  const { graphicsSettings } = useGraphicsSettings();
+  const spherePolygonCount = graphicsSettings.polygonCount;
+
   const args = getFresnelShaderArgs({ rimHex, facingHex });
   return (
     <mesh>
-      <icosahedronGeometry args={[radius, 32]} />
+      <icosahedronGeometry args={[radius, spherePolygonCount]} />
       <shaderMaterial {...args} />
     </mesh>
   );
