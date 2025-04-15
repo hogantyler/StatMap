@@ -12,7 +12,7 @@ import {
 import { FaMapMarkedAlt } from "react-icons/fa";
 import { SupabaseContext } from "./SupabaseContext";
 import SettingsModal from "./SettingsModal";
-import { playClickSound, playHoverSound } from "../utils/soundUtils";
+import { playClickSound } from "../utils/soundUtils";
 import SignIn from "./SignIn";
 import AccountPage from "./AccountPage";
 import SignUp from "./SignUp";
@@ -161,7 +161,6 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose, onLead
               !account.data.user ? (
                 <button
                   onClick={() => handleButtonClick(onSignInClick)}
-                  onMouseEnter={playHoverSound}
                   className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
                 >
                   <div className="flex items-center">
@@ -176,7 +175,6 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose, onLead
               (
                 <button
                   onClick={onSignOutClick}
-                  onMouseEnter={playHoverSound}
                   className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
                 >
                   <div className="flex items-center">
@@ -192,7 +190,6 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose, onLead
             (
               <button
                 onClick={() => handleButtonClick(onSignInClick)}
-                onMouseEnter={playHoverSound}
                 className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
               >
                 <div className="flex items-center">
@@ -207,7 +204,6 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose, onLead
             {/* Open Leaderboard */}
             <button
               onClick={() => handleButtonClick(onLeaderboardClick)}
-              onMouseEnter={playHoverSound}
               className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
             >
               <div className="flex items-center">
@@ -220,7 +216,6 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose, onLead
             {/* Open Account Page */}
             <button
               onClick={() => handleButtonClick(onAccountPageClick)}
-              onMouseEnter={playHoverSound}
               className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
             >
               <div className="flex items-center">
@@ -233,7 +228,6 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose, onLead
             {/* Open Settings Page */}
             <button
               onClick={handleSettingsClick}
-              onMouseEnter={playHoverSound}
               className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
             >
               <div className="flex items-center">
@@ -245,7 +239,6 @@ const FlyoutContent = ({ onSignInClick, onAccountPageClick, onModalClose, onLead
         </div>
         
         <button
-          onMouseEnter={playHoverSound}
           onClick={() => playClickSound()}
           className="group flex flex-col items-center justify-center w-full rounded-lg border-4 border-white px-4 py-2 font-semibold text-lg transition-colors hover:bg-white hover:text-black"
         >

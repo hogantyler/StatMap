@@ -15,7 +15,7 @@ const defaultSettings = {
   borderColor: '#336699',     // Default blue
   showClouds: true,           // Toggle: true/false
   globeBackGround: true,      // Toggle: true/false
-};
+}; 
 
 // Create a provider component
 export const GraphicsContextProvider = ({ children }) => {

@@ -11,6 +11,7 @@ import {
   CountrySelectionProvider,
   useCountrySelection,
 } from "./CountrySelectionContext";
+import { playClickSound } from "../utils/soundUtils";
 
 const QuizModeContent = () => {
   // --- Quiz Logic States ---
@@ -125,6 +126,7 @@ const QuizModeContent = () => {
 
   // Handler for submitting the answer based solely on globe selection
   const handleSubmitAnswer = useCallback(() => {
+    playClickSound();
     if (isAnswered) return; //prevent multiple submits
     if (!selectedCountry) {
       alert("Please select a country on the globe first.");
@@ -181,9 +183,11 @@ const QuizModeContent = () => {
 
   // Function to restart the quiz after completion
   const handleRestartQuiz = () => {
+    playClickSound();
     setQuizComplete(false);
     setQuestionNumber(1);
     setScore(0);
+    setQuestionsCorrect(0);
     loadNewFact();
     setFeedback("");
     setFeedbackType("");
@@ -191,7 +195,10 @@ const QuizModeContent = () => {
 
   // const handleOpenModal = () => setIsModalOpen(true);
   // const handleCloseModal = () => setIsModalOpen(false);
-  const handleBack = () => navigate("/");
+  const handleBack = () => {
+    playClickSound();
+    navigate("/");
+  };
 
   return (
     //suspense for loading screen
@@ -242,7 +249,10 @@ const QuizModeContent = () => {
             {isCollapsed && (
               <div className="pointer-events-auto mb-2">
                 <button
-                  onClick={() => setIsCollapsed(false)}
+                  onClick={() => {
+                    playClickSound();
+                    setIsCollapsed(false);
+                  }}
                   className="bg-white text-black rounded-full p-1 hover:bg-green-600 transition-colors"
                 >
                   Show Fact
@@ -289,7 +299,10 @@ const QuizModeContent = () => {
                 {/* When not collapsed, show the Hide Fact button to the right */}
                 {!isCollapsed && (
                   <button
-                    onClick={() => setIsCollapsed(true)}
+                    onClick={() => {
+                      playClickSound();
+                      setIsCollapsed(true);
+                    }}
                     className="ml-4 bg-white text-black rounded-full p-1 hover:bg-green-600 transition-colors pointer-events-auto"
                   >
                     Hide Fact
