@@ -111,7 +111,11 @@ function CreateLobby() {
 
     const { data, error } = await supabase
       .from("Lobbies")
-      .insert([{ join_code: newJoinCode, player_count: 1 }])
+      .insert([{
+        join_code: newJoinCode,
+        player_count: 1,
+        host_id: user.id
+      }])
       .select();
 
     if (error) {
