@@ -41,7 +41,7 @@ function CreateLobby() {
   const leaveLobby = async (id) => {
     if (!id) return;
     const user = await supabase.auth.getUser();
-    console.log(user.data.user.id);
+    // console.log(user.data.user.id);
 
     try {
       // Check if lobby exists
@@ -139,7 +139,6 @@ function CreateLobby() {
       },
     ]);
 
-
     // join the realtime channel for this specific lobby for this player
     const newChannel = supabase
       .channel(`lobby_${newJoinCode}`)
@@ -177,7 +176,9 @@ function CreateLobby() {
 
   useEffect(() => {
     const checkLoginAndCreateLobby = async () => {
-      const { data: { user } } = await supabase.auth.getUser();
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
       if (user) createLobby();
     };
 
@@ -276,7 +277,10 @@ function CreateLobby() {
         </>
       )}
       {showSignInModal && (
-        <Modal isOpen={showSignInModal} onClose={() => setShowSignInModal(false)}>
+        <Modal
+          isOpen={showSignInModal}
+          onClose={() => setShowSignInModal(false)}
+        >
           <SignIn
             onModalClose={() => setShowSignInModal(false)}
             onSignUpClick={() => {
@@ -291,7 +295,10 @@ function CreateLobby() {
         </Modal>
       )}
       {showSignUpModal && (
-        <Modal isOpen={showSignUpModal} onClose={() => setShowSignUpModal(false)}>
+        <Modal
+          isOpen={showSignUpModal}
+          onClose={() => setShowSignUpModal(false)}
+        >
           <SignUp
             onModalClose={() => setShowSignUpModal(false)}
             onSuccessfulSignUp={async () => {
@@ -301,7 +308,6 @@ function CreateLobby() {
           />
         </Modal>
       )}
-
     </>
   );
 }

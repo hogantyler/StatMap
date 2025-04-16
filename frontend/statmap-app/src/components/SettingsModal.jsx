@@ -5,21 +5,30 @@ import { setGlobalVolume, playClickSound } from '../utils/soundUtils';
 import { useGraphicsSettings } from './GraphicsContext';
 
 const SettingsModal = ({ isOpen, onClose }) => {
-  const [brightness, setBrightness] = useState(() => {
+  // Temporary state for unsaved changes
+  const [tempBrightness, setTempBrightness] = useState(() => {
     const saved = localStorage.getItem('brightness');
     return saved ? parseInt(saved) : 100;
   });
-  const [soundLevel, setSoundLevel] = useState(() => {
+  const [tempSoundLevel, setTempSoundLevel] = useState(() => {
     const saved = localStorage.getItem('soundLevel');
     return saved ? parseInt(saved) : 50;
   });
-  const [globeQuality, setGlobeQuality] = useState(() => {
+  const [tempGlobeQuality, setTempGlobeQuality] = useState(() => {
     const saved = localStorage.getItem('globeQuality');
     return saved || 'medium';
   });
+  const [tempGraphicsSettings, setTempGraphicsSettings] = useState({});
   const [showAdvanced, setShowAdvanced] = useState(false);
 
   const { graphicsSettings, updateSetting, updateSettings } = useGraphicsSettings();
+
+  // Initialize temporary graphics settings when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setTempGraphicsSettings({ ...graphicsSettings });
+    }
+  }, [isOpen, graphicsSettings]);
 
   // Define quality presets
   const qualityPresets = {
@@ -57,39 +66,35 @@ const SettingsModal = ({ isOpen, onClose }) => {
   const getCurrentPreset = () => {
     for (const [preset, settings] of Object.entries(qualityPresets)) {
       const matches = Object.entries(settings).every(([key, value]) =>
-        graphicsSettings[key] === value
+        tempGraphicsSettings[key] === value
       );
       if (matches) return preset;
     }
     return 'custom';
   };
 
-  // Update preset when graphics settings change
+  // Update preset when temporary graphics settings change
   useEffect(() => {
-    setGlobeQuality(getCurrentPreset());
-  }, [graphicsSettings]);
+    setTempGlobeQuality(getCurrentPreset());
+  }, [tempGraphicsSettings]);
 
   // Handle preset change
   const handlePresetChange = (preset) => {
     if (preset === 'custom') return;
-    updateSettings(qualityPresets[preset]);
-    setGlobeQuality(preset);
-  };
-
-  useEffect(() => {
-    setGlobalVolume(soundLevel);
-  }, [soundLevel]);
-
-  const handleSoundChange = (e) => {
-    const newValue = parseInt(e.target.value);
-    setSoundLevel(newValue);
-    setGlobalVolume(newValue);
+    setTempGraphicsSettings(qualityPresets[preset]);
+    setTempGlobeQuality(preset);
   };
 
   const handleSave = () => {
-    localStorage.setItem('brightness', brightness);
-    localStorage.setItem('soundLevel', soundLevel);
-    localStorage.setItem('globeQuality', globeQuality);
+    // Apply all settings
+    setGlobalVolume(tempSoundLevel);
+    updateSettings(tempGraphicsSettings);
+    
+    // Save to localStorage
+    localStorage.setItem('brightness', tempBrightness);
+    localStorage.setItem('soundLevel', tempSoundLevel);
+    localStorage.setItem('globeQuality', tempGlobeQuality);
+    
     playClickSound();
     onClose();
   };
@@ -138,11 +143,11 @@ const SettingsModal = ({ isOpen, onClose }) => {
                   type="range"
                   min="0"
                   max="100"
-                  value={brightness}
-                  onChange={(e) => setBrightness(parseInt(e.target.value))}
+                  value={tempBrightness}
+                  onChange={(e) => setTempBrightness(parseInt(e.target.value))}
                   className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
                 />
-                <span className="w-12 text-right">{brightness}%</span>
+                <span className="w-12 text-right">{tempBrightness}%</span>
               </div>
             </div>
 
@@ -154,11 +159,11 @@ const SettingsModal = ({ isOpen, onClose }) => {
                   type="range"
                   min="0"
                   max="100"
-                  value={soundLevel}
-                  onChange={handleSoundChange}
+                  value={tempSoundLevel}
+                  onChange={(e) => setTempSoundLevel(parseInt(e.target.value))}
                   className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
                 />
-                <span className="w-12 text-right">{soundLevel}%</span>
+                <span className="w-12 text-right">{tempSoundLevel}%</span>
               </div>
             </div>
 
@@ -166,7 +171,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
             <div>
               <label className="block text-lg mb-2">Globe Quality</label>
               <select
-                value={globeQuality}
+                value={tempGlobeQuality}
                 onChange={(e) => handlePresetChange(e.target.value)}
                 className="w-full p-2 bg-gray-800 rounded border border-gray-700 text-white"
               >
@@ -198,11 +203,14 @@ const SettingsModal = ({ isOpen, onClose }) => {
                         type="range"
                         min="20"
                         max="100"
-                        value={graphicsSettings.polygonCount}
-                        onChange={(e) => updateSetting('polygonCount', parseInt(e.target.value))}
+                        value={tempGraphicsSettings.polygonCount}
+                        onChange={(e) => setTempGraphicsSettings(prev => ({
+                          ...prev,
+                          polygonCount: parseInt(e.target.value)
+                        }))}
                         className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
                       />
-                      <span className="w-12 text-right">{graphicsSettings.polygonCount}</span>
+                      <span className="w-12 text-right">{tempGraphicsSettings.polygonCount}</span>
                     </div>
                   </div>
 
@@ -214,11 +222,14 @@ const SettingsModal = ({ isOpen, onClose }) => {
                         type="range"
                         min="0"
                         max="16"
-                        value={graphicsSettings.anisotropicFiltering}
-                        onChange={(e) => updateSetting('anisotropicFiltering', parseInt(e.target.value))}
+                        value={tempGraphicsSettings.anisotropicFiltering}
+                        onChange={(e) => setTempGraphicsSettings(prev => ({
+                          ...prev,
+                          anisotropicFiltering: parseInt(e.target.value)
+                        }))}
                         className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
                       />
-                      <span className="w-12 text-right">{graphicsSettings.anisotropicFiltering}x</span>
+                      <span className="w-12 text-right">{tempGraphicsSettings.anisotropicFiltering}x</span>
                     </div>
                   </div>
 
@@ -230,11 +241,14 @@ const SettingsModal = ({ isOpen, onClose }) => {
                         type="range"
                         min="0"
                         max="100"
-                        value={graphicsSettings.globeBrightness}
-                        onChange={(e) => updateSetting('globeBrightness', parseInt(e.target.value))}
+                        value={tempGraphicsSettings.globeBrightness}
+                        onChange={(e) => setTempGraphicsSettings(prev => ({
+                          ...prev,
+                          globeBrightness: parseInt(e.target.value)
+                        }))}
                         className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
                       />
-                      <span className="w-12 text-right">{graphicsSettings.globeBrightness}%</span>
+                      <span className="w-12 text-right">{tempGraphicsSettings.globeBrightness}%</span>
                     </div>
                   </div>
 
@@ -246,11 +260,14 @@ const SettingsModal = ({ isOpen, onClose }) => {
                         type="range"
                         min="0"
                         max="100"
-                        value={graphicsSettings.rotationSpeed}
-                        onChange={(e) => updateSetting('rotationSpeed', parseInt(e.target.value))}
+                        value={tempGraphicsSettings.rotationSpeed}
+                        onChange={(e) => setTempGraphicsSettings(prev => ({
+                          ...prev,
+                          rotationSpeed: parseInt(e.target.value)
+                        }))}
                         className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer"
                       />
-                      <span className="w-12 text-right">{graphicsSettings.rotationSpeed}%</span>
+                      <span className="w-12 text-right">{tempGraphicsSettings.rotationSpeed}%</span>
                     </div>
                   </div>
 
@@ -259,8 +276,11 @@ const SettingsModal = ({ isOpen, onClose }) => {
                     <label className="block text-sm mb-1">Text Color</label>
                     <input
                       type="color"
-                      value={graphicsSettings.textColor}
-                      onChange={(e) => updateSetting('textColor', e.target.value)}
+                      value={tempGraphicsSettings.textColor}
+                      onChange={(e) => setTempGraphicsSettings(prev => ({
+                        ...prev,
+                        textColor: e.target.value
+                      }))}
                       onClick={(e) => e.stopPropagation()}
                       onMouseDown={(e) => e.stopPropagation()}
                       className="w-full h-8 bg-gray-800 rounded border border-gray-700"
@@ -272,8 +292,11 @@ const SettingsModal = ({ isOpen, onClose }) => {
                     <label className="block text-sm mb-1">Border Color</label>
                     <input
                       type="color"
-                      value={graphicsSettings.borderColor}
-                      onChange={(e) => updateSetting('borderColor', e.target.value)}
+                      value={tempGraphicsSettings.borderColor}
+                      onChange={(e) => setTempGraphicsSettings(prev => ({
+                        ...prev,
+                        borderColor: e.target.value
+                      }))}
                       onClick={(e) => e.stopPropagation()}
                       onMouseDown={(e) => e.stopPropagation()}
                       className="w-full h-8 bg-gray-800 rounded border border-gray-700"
@@ -285,8 +308,11 @@ const SettingsModal = ({ isOpen, onClose }) => {
                     <label className="block text-sm">Show Clouds</label>
                     <input
                       type="checkbox"
-                      checked={graphicsSettings.showClouds}
-                      onChange={(e) => updateSetting('showClouds', e.target.checked)}
+                      checked={tempGraphicsSettings.showClouds}
+                      onChange={(e) => setTempGraphicsSettings(prev => ({
+                        ...prev,
+                        showClouds: e.target.checked
+                      }))}
                       className="w-4 h-4 text-blue-600 bg-gray-700 border-gray-600 rounded focus:ring-blue-500"
                     />
                   </div>

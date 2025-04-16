@@ -128,13 +128,13 @@ const QuizModeContent = () => {
   const handleSubmitAnswer = useCallback(() => {
     playClickSound();
     if (isAnswered) return; //prevent multiple submits
-    if (!selectedCountry) {
+    if (!selectedCountry.name) {
       alert("Please select a country on the globe first.");
       return;
     }
     setIsCollapsed(false); //show fact after submission(if it was hidden)
     setIsAnswered(true);
-    const answer = selectedCountry;
+    const answer = selectedCountry.name;
     if (
       answer.includes(currentFact?.Correct_Country) ||
       currentFact?.Correct_Country.includes(answer)
@@ -287,7 +287,7 @@ const QuizModeContent = () => {
               )}
               {/* Non-collapsible Section */}
               <div className="mb-4 text-center text-white text-sm">
-                Selected Country: {selectedCountry ? selectedCountry : "None"}
+                Selected Country: {selectedCountry.name ? selectedCountry.name : "None"}
               </div>
               <div className="flex justify-center items-center">
                 <button

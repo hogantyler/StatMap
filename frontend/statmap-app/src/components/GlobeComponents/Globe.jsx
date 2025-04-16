@@ -6,6 +6,7 @@ import { Perf } from 'r3f-perf'
 import ConicGlobe from "../TestComponents/ConicGlobe";
 import AtmosphereMesh from "./AtmosphereMesh";
 import EarthTest from "../TestComponents/EarthTest";
+import geoDataUrl from '../../data/simpleCountries.geojson'; // Import the url/path to the geojson file
 
 /**
  * Ultimate graphical component containing canvas which encapsulates all the 3D graphical webgl/three.js/react-three-fiber components.
@@ -15,6 +16,7 @@ import EarthTest from "../TestComponents/EarthTest";
 const Globe = React.memo(function Globe(props) {
     const [showLabel, setShowLabel] = useState(true);
     const [showPerformance, setShowPerformance] = useState(false);
+    const [geoData, setGeoData] = useState(null);
 
     const globeRef = useRef();
     const cloudsRef = useRef();
@@ -22,6 +24,25 @@ const Globe = React.memo(function Globe(props) {
     const linesRef = useRef();
     const isDraggingRef = useRef(false); // For checking if the globe is being rotated
     console.log("globe render");
+
+    // Fetching the GeoJSON data using the imported URL
+    useEffect(() => {
+        //console.log(testCountries);
+        fetch(geoDataUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                //console.log("Fetched GeoJSON data:", data);
+                setGeoData(data);
+            })
+            .catch(error => {
+                console.error('Error fetching local GeoJSON:', error);
+            });
+    }, []);
 
     // Toggle performance monitor with key press
     useEffect(() => {
@@ -56,7 +77,7 @@ const Globe = React.memo(function Globe(props) {
             //console.log("dragStart " + isDraggingRef.current);
         }, 150);
         document.body.style.cursor = 'grabbing';
-    }, []);
+    }, [supportsTouch]);
 
     const handleDragEnd = useCallback((event) => {
         if (supportsTouch) {
@@ -70,7 +91,7 @@ const Globe = React.memo(function Globe(props) {
             //console.log("dragEnd " + isDraggingRef.current);
         }, 150);
         document.body.style.cursor = 'auto';
-    }, []);
+    }, [supportsTouch]);
 
     return (
         <div className="relative w-full h-full">
@@ -106,9 +127,11 @@ const Globe = React.memo(function Globe(props) {
 
                     <EarthTest ref={globeRef} cloudsRef={cloudsRef} />
                     <AtmosphereMesh radius={1.02} />
-                    <ConicGlobe globeRef={globeRef} isDraggingRef={isDraggingRef} />
-                    <CountryBorders globeRef={globeRef} linesRef={linesRef} />
-                    <CountryLabels globeRef={globeRef} showLabel={showLabel} />
+
+                    <ConicGlobe globeRef={globeRef} isDraggingRef={isDraggingRef} geoData={geoData} />
+                    <CountryBorders globeRef={globeRef} linesRef={linesRef} geoData={geoData} />
+                    <CountryLabels globeRef={globeRef} showLabel={showLabel} geoData={geoData} />
+
                     <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} linesRef={linesRef} />
 
                     {/* Performance monitor (toggle with 'p' key) */}
@@ -130,12 +153,13 @@ function RotateGlobe({ globeRef, cloudsRef, linesRef, conicGlobeRef }) {
     return null;
 }
 
-function CountryBorders({ globeRef, linesRef }) {
-    const [geoData, setGeoData] = useState(null);
+function CountryBorders({ globeRef, linesRef, geoData }) {
+    //const [geoData, setGeoData] = useState(null);
     //const linesRef = useRef();
 
     console.log("border render");
-    useEffect(() => {
+
+    /*useEffect(() => {
         //gets geosjason data
         //https://raw.githubusercontent.com/vasturiano/three-conic-polygon-geometry/refs/heads/master/example/geojson/ne_110m_admin_0_countries.geojson
         fetch('https://raw.githubusercontent.com/vasturiano/three-conic-polygon-geometry/refs/heads/master/example/geojson/ne_110m_admin_0_countries.geojson')
@@ -144,14 +168,14 @@ function CountryBorders({ globeRef, linesRef }) {
                 setGeoData(data);
             })
             .catch(error => console.error('Error fetching GeoJSON:', error));
-    }, []);
+    }, []);*/
 
-    {/*useFrame(() => {
+    /*useFrame(() => {
         //make the lines follow the globe's rotation
         if (linesRef.current && globeRef.current) {
             linesRef.current.rotation.copy(globeRef.current.rotation);
         }
-    });*/}
+    });*/
 
     //lines and materials
     useEffect(() => {
@@ -212,8 +236,8 @@ function CountryBorders({ globeRef, linesRef }) {
     return <group ref={linesRef} />;
 }
 
-const CountryLabels = memo(function CountryLabels({ globeRef, showLabel }) {
-    const [geoData, setGeoData] = useState(null);
+const CountryLabels = memo(function CountryLabels({ globeRef, showLabel, geoData }) {
+    //const [geoData, setGeoData] = useState(null);
     const labelsRef = useRef();
     const { camera } = useThree();
     const [cameraDistance, setCameraDistance] = useState(0);
@@ -229,7 +253,7 @@ const CountryLabels = memo(function CountryLabels({ globeRef, showLabel }) {
         "Bosnia and Herzegovina": [0, -0.5, 0],
     }), []);
 
-    useEffect(() => {
+    /*useEffect(() => {
         console.log('labels fetching');
         //this is simpler more performant geojson: https://raw.githubusercontent.com/vasturiano/three-conic-polygon-geometry/refs/heads/master/example/geojson/ne_110m_admin_0_countries.geojson
         //this is more complex geojson: https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson
@@ -239,7 +263,7 @@ const CountryLabels = memo(function CountryLabels({ globeRef, showLabel }) {
                 setGeoData(data);
             })
             .catch(error => console.error('Error fetching GeoJSON:', error));
-    }, []);
+    }, []);*/
 
     useFrame(() => {
         if (labelsRef.current && globeRef.current) {

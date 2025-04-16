@@ -104,7 +104,7 @@ function NightLightsEarth(props) {
     const cloudsRef = useRef();
     const isDraggingRef = useRef(false);
     const controlsRef = useRef();
-    
+
     // Toggle performance monitor with key press
     useEffect(() => {
         const handleKeyDown = (e) => {
@@ -233,7 +233,7 @@ function NightLightsEarth(props) {
                     <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />
                     <CountryBorders globeRef={globeRef} />
                     <CountryLabels globeRef={globeRef} showLabel={showLabel} />
-                    <ConicGlobe globeRef={globeRef} isDraggingRef={isDraggingRef}/>
+                    <ConicGlobe globeRef={globeRef} isDraggingRef={isDraggingRef} />
 
                     {/* Performance monitor (toggle with 'p' key) */}
                     {showPerformance && <Perf position="bottom-right" />}

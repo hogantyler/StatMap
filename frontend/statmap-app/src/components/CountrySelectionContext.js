@@ -9,11 +9,11 @@ const CountrySelectionContext = createContext();
 
 // Create a provider component
 export const CountrySelectionProvider = ({ children }) => {
-  const [selectedCountry, setSelectedCountry] = useState(null);
+  const [selectedCountry, setSelectedCountry] = useState({ name: null, code: null });
 
   // Function to update the selected country
-  const selectCountry = (countryName) => {
-    setSelectedCountry(countryName);
+  const selectCountry = (newCountry) => {
+    setSelectedCountry(newCountry);
   };
 
   // Value object that will be passed to consumer components
