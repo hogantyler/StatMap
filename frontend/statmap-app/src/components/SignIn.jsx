@@ -7,7 +7,7 @@ import { FaTimes } from 'react-icons/fa';
  * 
  * @returns {JSX.Element} A login form with email and password fields
  */
-const SignIn = ({ isOpen, onSignUpClick, onModalClose }) => {
+const SignIn = ({ isOpen, onSignUpClick, onModalClose, onSuccessfulLogin }) => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
 
@@ -38,6 +38,7 @@ const SignIn = ({ isOpen, onSignUpClick, onModalClose }) => {
             }
         } else {
             onModalClose();
+            if (onSuccessfulLogin) onSuccessfulLogin();
         }
     };
 
