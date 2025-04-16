@@ -242,14 +242,14 @@ useEffect(() => {
   const handleSubmitAnswer = useCallback(() => {
     playClickSound();
     if (!currentFact || timer <= 0) return;
-    if (!selectedCountry) {
+    if (!selectedCountry.name) {
       alert("Select a country");
       return;
     }
 
     const correct =
-      selectedCountry.includes(currentFact.Correct_Country) ||
-      currentFact.Correct_Country.includes(selectedCountry);
+      selectedCountry.name.includes(currentFact.Correct_Country) ||
+      currentFact.Correct_Country.includes(selectedCountry.name);
     let pts = [1000, 750, 500, 250][attempts] || 250;
 
     if (correct) {
@@ -280,7 +280,7 @@ useEffect(() => {
       .from("Players")
       .update({ score: score + pts, last_answered: questionNumber })
       .eq("id", userId);
-  }, [selectedCountry, currentFact, attempts, score, questionNumber, timer, userId]);
+  }, [selectedCountry.name, currentFact, attempts, score, questionNumber, timer, userId]);
 
   const handleBack = async () => {
     playClickSound();
@@ -365,7 +365,7 @@ useEffect(() => {
                 </div>
               )}
               <div className="mb-2 text-center text-white text-sm">
-                Selected Country: {selectedCountry || "None"}
+                Selected Country: {selectedCountry.name || "None"}
               </div>
               <div className="flex justify-center items-center mb-4">
                 <button
