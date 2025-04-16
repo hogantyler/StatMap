@@ -15,14 +15,15 @@ function CountryPolygons({ geoData, globeRef, isDraggingRef }) {
     const polygonsRef = useRef();
 
     // Handler for making sure only one country is selectable at a time and setting selected country context so game page can access selected country
-    const handleCountrySelect = (countryId) => {
+    const handleCountrySelect = (country) => {
         {/*setSelectedCountry(prevSelected =>
             prevSelected === countryId ? null : countryId
         );*/}
-        console.log(`Country selected: ${countryId}`);
         selectCountry(prevSelected =>
-            prevSelected === countryId ? null : countryId
+            prevSelected.code === country.code ? { name: null, code: null } : { name: country.name, code: country.code }
         );
+        console.log(`Selected country: ${country.name} (${country.code})`);
+
     };
 
     useEffect(() => {
@@ -35,8 +36,9 @@ function CountryPolygons({ geoData, globeRef, isDraggingRef }) {
             const polygons = [geometry.coordinates];
             const countryName = properties.ADMIN;
             const iso_a3 = properties.ISO_A3;
+            const adm0_a3 = properties.ADM0_A3;
             const alt = 1.003; // Height/altitude 1.003
-            //console.log(countryName, iso_a3);
+            //console.log(countryName, iso_a3, adm0_a3);
 
             polygons.forEach((coords, index) => {
                 //console.log(newNames)
@@ -44,7 +46,7 @@ function CountryPolygons({ geoData, globeRef, isDraggingRef }) {
                 //const mesh = new THREE.Mesh(geometry, materials);
                 //newMeshes.push(mesh);
 
-                newCountries.push({ name: countryName, coords: coords, altitude: alt, id: `${countryName}-${index}`, iso: iso_a3, type: geometry.type });
+                newCountries.push({ name: countryName, coords: coords, altitude: alt, id: `${adm0_a3}-${index}`, adm: adm0_a3, iso: iso_a3, type: geometry.type });
             });
         });
         console.log('loading polygons');
@@ -71,8 +73,8 @@ function CountryPolygons({ geoData, globeRef, isDraggingRef }) {
                         altitude={country.altitude}
                         type={country.type}
                         iso={country.iso}
-                        isSelected={selectedCountry === country.name}
-                        onSelect={() => handleCountrySelect(country.name)}
+                        isSelected={selectedCountry.code === country.adm}
+                        onSelect={() => handleCountrySelect({ name: country.name, code: country.adm })}
                         isDraggingRef={isDraggingRef}
                     />
                 ))}
@@ -84,9 +86,11 @@ function CountryPolygons({ geoData, globeRef, isDraggingRef }) {
 
 const Country = memo(function Country({ name, coords, altitude, type, iso, isSelected, onSelect, isDraggingRef }) {
     console.log("country");
-    const [hovered, setHovered] = useState(false);
 
+    const [hovered, setHovered] = useState(false);
     const countryRef = useRef();
+
+    //console.log(isSelected, hovered);
 
     const { color, show, raise } = useMemo(() => ({
         color: isSelected ? 'teal' : (hovered ? 'cyan' : 'purple'),
@@ -164,11 +168,11 @@ const Country = memo(function Country({ name, coords, altitude, type, iso, isSel
         if (isDraggingRef.current && !hovered) {
             return;
         }
-        
-        if(!isDraggingRef.current) {
+
+        if (!isDraggingRef.current) {
             document.body.style.cursor = 'auto';
         }
-        
+
         setHovered(false);
     }, [isDraggingRef, hovered]);
 
@@ -198,18 +202,22 @@ const Country = memo(function Country({ name, coords, altitude, type, iso, isSel
     );
 });
 
-function ConicGlobe({ globeRef, isDraggingRef }) {
-    const [geoData, setGeoData] = useState(null);
+function ConicGlobe({ globeRef, isDraggingRef, geoData }) {
+    //const [geoData, setGeoData] = useState(null);
+
     //https://raw.githubusercontent.com/vasturiano/three-conic-polygon-geometry/refs/heads/master/example/geojson/ne_110m_admin_0_countries.geojson
     // Load GeoJSON data
-    useEffect(() => {
+
+    /*useEffect(() => {
         fetch('https://raw.githubusercontent.com/vasturiano/three-conic-polygon-geometry/refs/heads/master/example/geojson/ne_110m_admin_0_countries.geojson')
             .then(res => res.json())
             .then(data => setGeoData(data))
             .catch(err => console.error('Error loading GeoJSON:', err));
-        console.log('fetch');
+        console.log('conic fetch');
         //console.log(geoData);
-    }, []);
+    }, []);*/
+
+
     console.log('conicglobe');
     //console.log(geoData)
 
