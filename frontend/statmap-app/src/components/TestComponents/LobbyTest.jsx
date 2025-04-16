@@ -3,6 +3,9 @@ import { Form, Button } from "react-bootstrap";
 import { supabase } from "../SupabaseContext";
 import { FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import SignIn from "../SignIn";
+import SignUp from "../SignUp";
+import Modal from "../Modal";
 
 const LobbyTest = () => {
   const navigate = useNavigate();
@@ -11,6 +14,9 @@ const LobbyTest = () => {
   const [userId, setUserId] = useState(null);
   const [playerCount, setPlayerCount] = useState(0);
   const [userIsHost, setUserIsHost] = useState(false);
+  const [showSignInModal, setShowSignInModal] = useState(false);
+  const [showSignUpModal, setShowSignUpModal] = useState(false);
+
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -20,7 +26,7 @@ const LobbyTest = () => {
     } = await supabase.auth.getUser();
 
     if (authError || !user) {
-      alert("You must be logged in to join a lobby.");
+      alert("You must be signed in to join a lobby.");
       return;
     }
     setUserId(user.id);
@@ -236,7 +242,37 @@ const LobbyTest = () => {
             </button>
           </form>
         </div>
+        <button
+          onClick={() => setShowSignInModal(true)}
+          className="mt-4 px-6 py-3 text-lg bg-black text-white rounded-lg shadow-lg hover:bg-white hover:text-black border-2 border-black transition"
+        >
+          SIGN IN / SIGN UP
+        </button>
+
       </div>
+      {
+        showSignInModal && (
+          <Modal isOpen={showSignInModal} onClose={() => setShowSignInModal(false)}>
+            <SignIn
+              onModalClose={() => setShowSignInModal(false)}
+              onSignUpClick={() => {
+                setShowSignInModal(false);
+                setShowSignUpModal(true);
+              }}
+            />
+          </Modal>
+        )
+      }
+
+      {
+        showSignUpModal && (
+          <Modal isOpen={showSignUpModal} onClose={() => setShowSignUpModal(false)}>
+            <SignUp
+              onModalClose={() => setShowSignUpModal(false)}
+            />
+          </Modal>
+        )
+      }
     </>
   ) : (
     <>
