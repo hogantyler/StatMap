@@ -1,7 +1,7 @@
 import React, { useState, useEffect, Suspense, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import HoverDropMenu from "./HoverDropMenu";
-import { X, AlertTriangle, ArrowRight, ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
+import { X, AlertTriangle, ArrowRight, ChevronDown, ChevronUp, ExternalLink, User } from "lucide-react";
 import Globe from "./GlobeComponents/Globe";
 //import GlobeTest from "./TestComponents/GlobeTest"; //don't delete used for integration testing. Commented out when not testing
 import SignIn from "./SignIn";
@@ -250,46 +250,35 @@ function UnlimitedModeContent() {
         </Modal> */}
 
         {/* Report Fact Modal */}
-        <Modal
-          isOpen={isReportModalOpen}
-          onClose={() => {
-            playClickSound();
-            setIsReportModalOpen(false);
-          }}
-        >
-          <div className="p-4">
-            <h2 className="mb-4 text-lg font-bold text-white">Report Fact</h2>
-            <p className="mb-4 text-white/70">
-              Please select a reason for reporting this fact:
-            </p>
-            <div className="flex flex-col gap-2">
-              <button
-                onClick={() => handleReportFact("INCORRECT_INFORMATION")}
-                className="bg-zinc-800/50 text-white/70 rounded py-2 px-4 hover:bg-zinc-700/50 hover:text-white transition-colors"
-              >
-                Incorrect information
-              </button>
-              <button
-                onClick={() => handleReportFact("CLUE_IN_FACT")}
-                className="bg-zinc-800/50 text-white/70 rounded py-2 px-4 hover:bg-zinc-700/50 hover:text-white transition-colors"
-              >
-                Clue in the fact
-              </button>
-              <button
-                onClick={() => handleReportFact("INAPPROPRIATE_CONTENT")}
-                className="bg-zinc-800/50 text-white/70 rounded py-2 px-4 hover:bg-zinc-700/50 hover:text-white transition-colors"
-              >
-                Inappropriate content
-              </button>
-              <button
-                onClick={() => handleReportFact("MULTIPLE_COUNTRIES")}
-                className="bg-zinc-800/50 text-white/70 rounded py-2 px-4 hover:bg-zinc-700/50 hover:text-white transition-colors"
-              >
-                Fact holds true for more than one country
-              </button>
-            </div>
-          </div>
-        </Modal>
+                      <Modal isOpen={isReportModalOpen} onClose={() => setIsReportModalOpen(false)} title={"Report"} icon={User} iconColor={"sky"}>
+                        <p className="text-white/70 mb-4">Please select a reason for reporting this fact:</p>
+                        <div className="space-y-2">
+                          <button
+                            onClick={() => handleReportFact("INCORRECT_INFORMATION")}
+                            className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-left px-4 py-3 rounded-md transition-colors"
+                          >
+                            Incorrect information
+                          </button>
+                          <button
+                            onClick={() => handleReportFact("CLUE_IN_FACT")}
+                            className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-left px-4 py-3 rounded-md transition-colors"
+                          >
+                            Clue in the fact
+                          </button>
+                          <button
+                            onClick={() => handleReportFact("INAPPROPRIATE_CONTENT")}
+                            className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-left px-4 py-3 rounded-md transition-colors"
+                          >
+                            Inappropriate content
+                          </button>
+                          <button
+                            onClick={() => handleReportFact("MULTIPLE_COUNTRIES")}
+                            className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-left px-4 py-3 rounded-md transition-colors"
+                          >
+                            Fact holds true for more than one country
+                          </button>
+                        </div>
+                      </Modal>
       </div>
     </Suspense>
   );
