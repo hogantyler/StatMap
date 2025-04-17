@@ -32,19 +32,19 @@ const Leaderboard = ({ onModalClose }) => {
     }, [])
 
     return (
-        <div className="py-5 text-white bg-black">
+        <div className="py-5 text-white bg-black w-full">
             <h5 className="text-3xl font-bold text-center">Leaderboard</h5>
             <br />
             {/* Quiz Mode High Score */}
             <div>
                 <p className="text-xl font-semibold">Quiz Mode High Score</p>
-                <table className="min-w-full divide-y rounded-lg">
+                <table className="divide-y rounded-lg w-full">
                     <thead className="">
                         <tr>
-                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
-                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
-                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Correct Questions</th>
-                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Date Achieved</th>
+                            <th className="px-1 md:px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
+                            <th className="px-1 md:px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Score</th>
+                            <th className="px-1 md:px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Correct Questions</th>
+                            <th className="px-1 md:px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Date Achieved</th>
                         </tr>
                     </thead>
                     <tbody className="">
@@ -53,10 +53,10 @@ const Leaderboard = ({ onModalClose }) => {
                                 topFive.map((score) => {
                                     return (
                                         <tr key={score.Game_ID}>
-                                            <td className="px-6 py-2 text-center whitespace-nowrap">{score.Display_Name}</td>
-                                            <td className="px-6 py-2 text-center whitespace-nowrap">{score.Score}</td>
-                                            <td className="px-6 py-2 text-center whitespace-nowrap">{score.Num_Correct}</td>
-                                            <td className="px-6 py-2 text-center whitespace-nowrap">{(new Date(score.End_Time)).toLocaleDateString()}</td>
+                                            <td className="px-1 md:px-6 py-2 text-center whitespace-nowrap">{score.Display_Name}</td>
+                                            <td className="px-1 md:px-6 py-2 text-center whitespace-nowrap">{score.Score}</td>
+                                            <td className="px-1 md:px-6 py-2 text-center whitespace-nowrap">{score.Num_Correct}</td>
+                                            <td className="px-1 md:px-6 py-2 text-center whitespace-nowrap">{(new Date(score.End_Time)).toLocaleDateString()}</td>
                                         </tr>
                                     )
                                 })
@@ -73,9 +73,9 @@ const Leaderboard = ({ onModalClose }) => {
                 <table className="min-w-full divide-y rounded-lg">
                     <thead className="">
                         <tr>
-                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
-                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Average Score</th>
-                            <th className="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Games Played</th>
+                            <th className="px-1 md:px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Username</th>
+                            <th className="px-1 md:px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Average Score</th>
+                            <th className="px-1 md:px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Games Played</th>
                         </tr>
                     </thead>
                     <tbody className="">
@@ -84,9 +84,9 @@ const Leaderboard = ({ onModalClose }) => {
                                 avgScore.map((record) => {
                                     return (
                                         <tr key={record.User_ID}>
-                                            <td className="px-6 py-2 text-center whitespace-nowrap">{record.Display_Name}</td>
-                                            <td className="px-6 py-2 text-center whitespace-nowrap">{record.Average_Score}</td>
-                                            <td className="px-6 py-2 text-center whitespace-nowrap">{record.Total_Games_Played}</td>
+                                            <td className="px-1 md:px-6 py-2 text-center whitespace-nowrap">{record.Display_Name}</td>
+                                            <td className="px-1 md:px-6 py-2 text-center whitespace-nowrap">{record.Average_Score}</td>
+                                            <td className="px-1 md:px-6 py-2 text-center whitespace-nowrap">{record.Total_Games_Played}</td>
                                         </tr>
                                     )
                                 })
