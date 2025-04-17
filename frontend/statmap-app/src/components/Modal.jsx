@@ -30,7 +30,7 @@ const Modal = ({ isOpen, onClose, children }) => {
 
   return ( //background div that detects clicks outside the modal and calls closing modal function
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div ref={modalRef} className="flex justify-center items-center p-6 bg-black rounded-lg shadow-lg relative border border-white w-[95%] md:w-auto">
+      <div ref={modalRef} className="flex justify-center items-center bg-zinc-900/95 backdrop-blur-md border border-white/10 p-4 shadow-xl text-white rounded-lg relative w-[95%] md:w-auto">
         <div className="absolute top-0 left-0 z-0">
             <button
                 onClick={onClose}
