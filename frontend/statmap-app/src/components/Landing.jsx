@@ -110,7 +110,7 @@ const Landing = () => {
 
       {/* Main content */}
       <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
-        <div className="fixed top-2 left-2 z-50">
+        <div className="fixed top-0 left-0 z-50">
           <HoverDropMenu />
         </div>
 
@@ -214,7 +214,7 @@ const Landing = () => {
               )}
               onMouseEnter={() => setHoveredMode("multiplayer")}
               onMouseLeave={() => setHoveredMode(null)}
-              onClick={() => handleNavigate("/lobbyTest")}
+              //onClick={() => handleNavigate("/lobbyTest")}
             >
               <div
                 className={cn(

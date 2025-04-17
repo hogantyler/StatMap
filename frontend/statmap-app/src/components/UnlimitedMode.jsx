@@ -136,14 +136,14 @@ function UnlimitedModeContent() {
         {/* Back Button in top right */}
         <button
           onClick={handleBack}
-          className="absolute top-1 right-1 md:top-2 md:right-2 z-50 bg-zinc-900/80 border border-white/10 p-2 rounded-full text-white/70 hover:text-red-400 hover:bg-zinc-800/80 transition-all duration-200"
+          className="absolute top-6 right-6 z-50 bg-zinc-900/80 border border-white/10 p-2 rounded-full text-white/70 hover:text-red-400 hover:bg-zinc-800/80 transition-all duration-200"
           title="Return to Home"
         >
           <X size={20} />
         </button>
 
         {/* Hover Menu in top left */}
-        <div className="absolute top-1 left-1 md:top-2 md:left-2 z-50">
+        <div className="absolute top-0 left-0 z-50">
           {/* <HoverDropMenu onSignInClick={(e) => handleOpenModal(
           <SignIn onSignUpClick={(e) => handleOpenModal(<SignUp onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/>)} 
           onAccountPageClick={(e) => handleOpenModal(<AccountPage onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/> */}
