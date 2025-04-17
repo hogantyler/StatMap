@@ -110,8 +110,8 @@ const Landing = () => {
         title={use3DGlobe ? "Switch to SVG Globe" : "Switch to 3D Globe"}
       >
         <div className="flex items-center gap-2">
-          {use3DGlobe ? <Globe size={16} /> : <ImageIcon size={16} />}
-          <span className="text-sm font-medium">{use3DGlobe ? "3D" : "2D"}</span>
+          {use3DGlobe ?  <ImageIcon size={16} /> : <Globe size={16}/> }
+          <span className="text-sm font-medium">{use3DGlobe ? "2D" : "3D"}</span>
         </div>
       </button>
 
