@@ -141,11 +141,12 @@ const Landing = () => {
             <motion.div
               variants={itemVariants}
               className={cn(
-                "group relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300",
+                "group relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300 pointer-events-auto cursor-pointer",
                 hoveredMode === "quiz" ? "bg-zinc-900/80" : "bg-zinc-900/40",
               )}
               onMouseEnter={() => setHoveredMode("quiz")}
               onMouseLeave={() => setHoveredMode(null)}
+              onClick={() => handleNavigate("/quiz")}
             >
               <div
                 className={cn(
@@ -154,10 +155,7 @@ const Landing = () => {
                 )}
               />
 
-              <button
-                className="w-full p-6 flex items-center justify-between text-left"
-                onClick={() => handleNavigate("/quiz")}
-              >
+              <div className="w-full p-6 flex items-center justify-between text-left">
                 <div>
                   <h2 className="text-2xl font-medium text-white">Quiz Mode</h2>
                   <p className="text-white/60 mt-1 max-w-md">Test your knowledge with geography challenges</p>
@@ -170,18 +168,19 @@ const Landing = () => {
                 >
                   <ArrowRight size={18} />
                 </div>
-              </button>
+              </div>
             </motion.div>
 
             {/* Unlimited Mode */}
             <motion.div
               variants={itemVariants}
               className={cn(
-                "group relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300",
+                "group relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300 pointer-events-auto cursor-pointer",
                 hoveredMode === "unlimited" ? "bg-zinc-900/80" : "bg-zinc-900/40",
               )}
               onMouseEnter={() => setHoveredMode("unlimited")}
               onMouseLeave={() => setHoveredMode(null)}
+              onClick={() => handleNavigate("/unlimited")}
             >
               <div
                 className={cn(
@@ -190,10 +189,7 @@ const Landing = () => {
                 )}
               />
 
-              <button
-                className="w-full p-6 flex items-center justify-between text-left"
-                onClick={() => handleNavigate("/unlimited")}
-              >
+              <div className="w-full p-6 flex items-center justify-between text-left">
                 <div>
                   <h2 className="text-2xl font-medium text-white">Unlimited</h2>
                   <p className="text-white/60 mt-1 max-w-md">Endless exploration of global statistics</p>
@@ -206,18 +202,19 @@ const Landing = () => {
                 >
                   <ArrowRight size={18} />
                 </div>
-              </button>
+              </div>
             </motion.div>
 
             {/* Multiplayer Mode */}
             <motion.div
               variants={itemVariants}
               className={cn(
-                "group relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300",
+                "group relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300 pointer-events-auto cursor-pointer",
                 hoveredMode === "multiplayer" ? "bg-zinc-900/80" : "bg-zinc-900/40",
               )}
               onMouseEnter={() => setHoveredMode("multiplayer")}
               onMouseLeave={() => setHoveredMode(null)}
+              onClick={() => handleNavigate("/lobbyTest")}
             >
               <div
                 className={cn(
@@ -245,7 +242,7 @@ const Landing = () => {
                 >
                   <ArrowRight size={18} />
                 </div>
-              </button>
+              </div>
             </motion.div>
           </motion.div>
         </div>
