@@ -47,11 +47,15 @@ const Landing = () => {
   const use3DGlobe = graphicsSettings.globeBackGround;
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalIcon, setModalIcon] = useState(null);
   const [modalContent, setModalContent] = useState(null);
   const [hoveredMode, setHoveredMode] = useState(null);
 
-  const handleOpenModal = (content) => {
+  const handleOpenModal = ({ title, icon, content }) => {
     playClickSound();
+    setModalTitle(title);
+    setModalIcon(icon);
     setModalContent(content);
     setIsModalOpen(true);
   };
@@ -252,16 +256,19 @@ const Landing = () => {
           className="fixed bottom-6 left-6 z-50 focus:outline-none bg-zinc-900/80 border border-white/10 p-2 rounded-full text-white/70 hover:text-white hover:bg-zinc-800/80 transition-all duration-200"
           onClick={() =>
             handleOpenModal(
-              <div className="w-full max-w-sm p-6 bg-white rounded-lg shadow-lg">
-                <h2 className="text-xl font-semibold mb-2">Game Instructions</h2>
-                <p className="text-sm">
-                  Welcome to STATMAP! To play the game, you will be presented with
-                  a fact or statistic about a country from our custom database.
-                  Your task is to choose the correct country on the interactive globe.
-                  The game tests your knowledge of global geography and
-                  country-specific facts. Good luck and have fun!
-                </p>
-              </div>
+              {
+                title: "Game Instructions",
+                icon: HelpCircle,
+                content: (
+                  <p className="text-sm">
+                    Welcome to STATMAP! To play the game, you will be presented with
+                    a fact or statistic about a country from our custom database.
+                    Your task is to choose the correct country on the interactive globe.
+                    The game tests your knowledge of global geography and
+                    country-specific facts. Good luck and have fun!
+                  </p>
+                ),
+              }
             )
           }
         >
@@ -270,7 +277,11 @@ const Landing = () => {
       </div>
 
       {/* Modal component */}
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+      <Modal 
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        title={modalTitle}
+        icon={modalIcon}>
         {modalContent}
       </Modal>
     </div>
