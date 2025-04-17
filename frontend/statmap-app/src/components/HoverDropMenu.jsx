@@ -1,10 +1,13 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useEffect, useContext, useCallback } from "react"
 import { AnimatePresence, motion } from "framer-motion"
 import { Menu, LogIn, LogOut, Trophy, User, Settings, Info, ChevronRight } from "lucide-react"
 import SettingsModal from "./SettingsModal"
 import { playClickSound } from "../utils/soundUtils"
 import { SupabaseContext } from "./SupabaseContext"
 import { useNavigate } from "react-router-dom"
+import Leaderboard from "./Leaderboard"
+import AccountPage from "./AccountPage"
+import SignIn from "./SignIn"
 
 const Modal = ({ isOpen, onClose, children }) => {
   if (!isOpen) return null
@@ -40,16 +43,16 @@ export default function HoverDropMenu() {
     setModalContent(null)
   }
 
-  async function getAccount() {
+  const getAccount = useCallback(async () => {
     const tempAccount = await supabase.auth.getUser()
     if (tempAccount.data.user) {
       setAccount(tempAccount)
     }
-  }
+  }, [supabase])
 
   useEffect(() => {
     getAccount()
-  }, [])
+  }, [getAccount])
 
   const onSignOutClick = async () => {
     const { error } = await supabase.auth.signOut()
@@ -75,9 +78,9 @@ export default function HoverDropMenu() {
       <FlyoutLink
         FlyoutContent={() => (
           <FlyoutContent
-            onSignInClick={() => handleOpenModal(<div>SignIn Component</div>)}
-            onAccountPageClick={() => handleOpenModal(<div>Account Page Component</div>)}
-            onLeaderboardClick={() => handleOpenModal(<div>Leaderboard Component</div>)}
+            onSignInClick={() => handleOpenModal(<SignIn onModalClose={handleCloseModal} />)}
+            onAccountPageClick={() => handleOpenModal(<AccountPage onModalClose={handleCloseModal} />)}
+            onLeaderboardClick={() => handleOpenModal(<Leaderboard onModalClose={handleCloseModal} />)}
             account={account}
             onSignOutClick={onSignOutClick}
             handleSettingsClick={handleSettingsClick}
