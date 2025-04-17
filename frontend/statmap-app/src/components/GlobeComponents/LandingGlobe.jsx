@@ -1,4 +1,4 @@
-import React,{ useRef, useState, useEffect, useMemo, useCallback, memo } from "react";
+import React, { useRef, useState, useEffect, useMemo, useCallback, memo } from "react";
 import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
 import { OrbitControls, Stars, Text, Billboard } from "@react-three/drei";
 import * as THREE from "three";
@@ -13,15 +13,15 @@ import EarthTest from "../TestComponents/EarthTest";
  * @returns A Canvas component that encapsulates 3D components including the earth, lights, stars, etc.
  */
 const LandingGlobe = React.memo(function LandingGlobe(props) {
-    
+
     const [showPerformance, setShowPerformance] = useState(false);
     const NoOffSet = true;
 
     const globeRef = useRef();
     const cloudsRef = useRef();
     const controlsRef = useRef();
-    
-    console.log("globe render");
+
+    console.log("landing globe render");
 
     // Toggle performance monitor with key press
     useEffect(() => {
@@ -41,11 +41,12 @@ const LandingGlobe = React.memo(function LandingGlobe(props) {
         <div className="relative w-full h-full">
             <div className="absolute top-0 left-0 w-full h-full">
                 <Canvas
-                    camera={{ position: [1, 1, 0], near: 0.01, far: 1000 }}
+                    gl={{ antialias: false }}
+                    camera={{ position: [0, 0.75, 1.5], near: 0.01, far: 1000 }}
                     style={{ background: "black", width: "100vw", height: "100vh" }}
                 >
                     <ambientLight intensity={0.5} />
-                    <directionalLight position={[1, 1, 3]} intensity={2} />
+                    <directionalLight position={[-30, 0, 5]} intensity={1} />
 
                     <OrbitControls
                         ref={controlsRef}
@@ -66,7 +67,7 @@ const LandingGlobe = React.memo(function LandingGlobe(props) {
                         fade={true}
                     />
 
-                    <EarthTest ref={globeRef} cloudsRef={cloudsRef} NoOffSet={NoOffSet} />
+                    <EarthTest globeRef={globeRef} cloudsRef={cloudsRef} NoOffSet={NoOffSet} />
                     <AtmosphereMesh radius={1.02} />
                     <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />
 

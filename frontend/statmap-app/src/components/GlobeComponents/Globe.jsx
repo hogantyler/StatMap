@@ -97,11 +97,12 @@ const Globe = React.memo(function Globe(props) {
         <div className="relative w-full h-full">
             <div className="absolute top-0 left-0 w-full h-full">
                 <Canvas
+                    gl={{ antialias: false }}
                     camera={{ position: [0, 1, 2], near: 0.01, far: 1000 }}
                     style={{ background: "black", width: "100vw", height: "100vh" }}
                 >
                     <ambientLight intensity={0.5} />
-                    <directionalLight position={[0, 0, 4]} intensity={2} />
+                    <directionalLight position={[-30, 0, 5]} intensity={1} />
 
                     <OrbitControls
                         ref={controlsRef}
@@ -125,7 +126,7 @@ const Globe = React.memo(function Globe(props) {
                         fade={true}
                     />
 
-                    <EarthTest ref={globeRef} cloudsRef={cloudsRef} />
+                    <EarthTest globeRef={globeRef} cloudsRef={cloudsRef} />
                     <AtmosphereMesh radius={1.02} />
 
                     <ConicGlobe globeRef={globeRef} isDraggingRef={isDraggingRef} geoData={geoData} />
