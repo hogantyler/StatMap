@@ -1,24 +1,25 @@
 {
   "files": {
-    "main.css": "/static/css/main.7263f3ea.css",
-    "main.js": "/static/js/main.d3d1ebba.js",
+    "main.css": "/static/css/main.f9cdcee5.css",
+    "main.js": "/static/js/main.9b4cce01.js",
     "static/js/952.553d8c6b.chunk.js": "/static/js/952.553d8c6b.chunk.js",
     "static/js/453.8207fe03.chunk.js": "/static/js/453.8207fe03.chunk.js",
     "static/media/8k_earth.png": "/static/media/8k_earth.e816d19d3a0f47c9169f.png",
+    "static/media/8k_earthNightMap.jpg": "/static/media/8k_earthNightMap.08aaf9da39ec5d1a2bdc.jpg",
     "static/media/earth_normalmap_5400x2700.jpg": "/static/media/earth_normalmap_5400x2700.a89e965a888b69746fb1.jpg",
     "static/media/cloud_texture.jpg": "/static/media/cloud_texture.62c0c5867db2699de411.jpg",
     "static/media/8k_earth_specular_map.jpg": "/static/media/8k_earth_specular_map.7b4efa59933b470e3776.jpg",
-    "static/media/earth-nightmap-4k.jpg": "/static/media/earth-nightmap-4k.5d73403b00aefe60cbad.jpg",
+    "static/media/simpleCountries.geojson": "/static/media/simpleCountries.677acc2f5c9d6a9da423.geojson",
     "static/media/gebco_bathy_2700x1350.jpg": "/static/media/gebco_bathy_2700x1350.46dc6f48e5b929de2ffe.jpg",
     "static/media/black_globe.svg": "/static/media/black_globe.11ed65579c11797c5b2b3941e7516669.svg",
     "index.html": "/index.html",
-    "main.7263f3ea.css.map": "/static/css/main.7263f3ea.css.map",
-    "main.d3d1ebba.js.map": "/static/js/main.d3d1ebba.js.map",
+    "main.f9cdcee5.css.map": "/static/css/main.f9cdcee5.css.map",
+    "main.9b4cce01.js.map": "/static/js/main.9b4cce01.js.map",
     "952.553d8c6b.chunk.js.map": "/static/js/952.553d8c6b.chunk.js.map",
     "453.8207fe03.chunk.js.map": "/static/js/453.8207fe03.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.7263f3ea.css",
-    "static/js/main.d3d1ebba.js"
+    "static/css/main.f9cdcee5.css",
+    "static/js/main.9b4cce01.js"
   ]
 }
