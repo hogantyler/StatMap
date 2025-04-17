@@ -4,6 +4,7 @@ import { SupabaseContext } from './SupabaseContext';
 const AccountPage = ({ isOpen, onModalClose }) => {
     const [account, setAccount] = useState(null);
     const [gameLogs, setGameLogs] = useState([]);
+    const [accountStats, setAccountStats] = useState(null);
 
     const supabase = useContext(SupabaseContext);
 
@@ -14,6 +15,7 @@ const AccountPage = ({ isOpen, onModalClose }) => {
 
         if (tempAccount && tempAccount.data.user) {
             getGameLogs(tempAccount.data.user.id);
+            getAccountStats(tempAccount.data.user.id);
         }
     }
 
@@ -28,6 +30,16 @@ const AccountPage = ({ isOpen, onModalClose }) => {
             alert(error)
         } else {
             setGameLogs(data);
+        }
+    }
+
+    async function getAccountStats(user_id) {
+        let { data, error } = await supabase.rpc('account_stats', { user_id: String(user_id) });
+
+        if (error) {
+            alert(error)
+        } else {
+            setAccountStats(data[0]);
         }
     }
 
@@ -55,14 +67,22 @@ const AccountPage = ({ isOpen, onModalClose }) => {
                                     </div>
                                     <div className="col-span-3 sm:col-span-1">
                                         <p className="text-xl font-semibold underline">Account Stats</p>
-                                        <p>Games played</p>
-                                        <p>Average Score</p>
-                                        <p>Total Time Played</p>
-                                        <p>Correct Percentage</p>
-                                        <p>Correct / Total</p>
+                                        {
+                                            accountStats ?
+                                            <>
+                                                <p>Games played: {accountStats.Total_Games_Played}</p>
+                                                <p>Average Score: {accountStats.Avg_Score}</p>
+                                                <p>Total Correct: {accountStats.Total_Correct}</p>
+                                                <p>Total Questions: {accountStats.Total_Questions}</p>
+                                                <p>Correct %: {(accountStats.Total_Correct / accountStats.Total_Questions).toFixed(2)}</p>
+                                            </>
+                                            :
+                                            <></>
+                                        }
                                     </div>
                                     <div className="col-span-3 sm:col-span-1">
-                                        <p>Other Stuff</p>
+                                        <p className="text-xl font-semibold underline">Account Management</p>
+                                        <p>Reset Password Coming Soon</p>
                                     </div>
                                 </div>
                                 <br />
