@@ -79,7 +79,7 @@ const Landing = () => {
   ]);
 
   return (
-    <div className="relative w-full h-full bg-black">
+    <div className="relative w-full h-full">
       {/* Background with overlay */}
       <div className="fixed top-0 left-0 w-full h-full z-0">
         {use3DGlobe ? (
@@ -88,9 +88,16 @@ const Landing = () => {
           </Suspense>
         ) : (
           <div
-            className="min-h-screen bg-cover bg-center bg-black"
-            style={{ backgroundImage: `url(${BlackGlobe})` }}
-          />
+            className="min-h-screen bg-black"
+          >
+            <div
+              className="min-h-screen bg-cover bg-center opacity-30"
+              style={{
+                backgroundImage: `url(${BlackGlobe})`,
+                filter: 'invert(100%)'
+              }}
+            />
+          </div>
         )}
         {/* Subtle gradient overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
@@ -116,7 +123,7 @@ const Landing = () => {
 
         <div className="max-w-screen-md w-full px-6 py-12">
           {/* Modern title section */}
-          <motion.div 
+          <motion.div
             className="mb-16 text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -131,7 +138,7 @@ const Landing = () => {
           </motion.div>
 
           {/* Modern menu options */}
-          <motion.div 
+          <motion.div
             className="space-y-3"
             variants={containerVariants}
             initial="hidden"
@@ -251,7 +258,7 @@ const Landing = () => {
         </div>
 
         {/* Help button */}
-        <button 
+        <button
           className="fixed bottom-6 left-6 z-50 focus:outline-none bg-zinc-900/80 border border-white/10 p-2 rounded-full text-white/70 hover:text-white hover:bg-zinc-800/80 transition-all duration-200"
           onClick={() =>
             handleOpenModal(
