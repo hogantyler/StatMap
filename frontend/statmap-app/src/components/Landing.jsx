@@ -242,7 +242,7 @@ const Landing = () => {
                 >
                   <ArrowRight size={18} />
                 </div>
-              </div>
+              </button>
             </motion.div>
           </motion.div>
         </div>
