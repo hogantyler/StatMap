@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext, useCallback } from "react"
 import { AnimatePresence, motion } from "framer-motion"
-import { Menu, LogIn, LogOut, Trophy, User, Settings, Info, ChevronRight } from "lucide-react"
+import { Menu, LogIn, LogOut, Trophy, User, Settings, Info, ChevronRight, X } from "lucide-react"
 import SettingsModal from "./SettingsModal"
 import { playClickSound } from "../utils/soundUtils"
 import { SupabaseContext } from "./SupabaseContext"
@@ -9,23 +9,52 @@ import Leaderboard from "./Leaderboard"
 import AccountPage from "./AccountPage"
 import SignIn from "./SignIn"
 
-const Modal = ({ isOpen, onClose, children }) => {
+const Modal = ({ isOpen, onClose, children, title, icon: Icon, iconColor = "amber" }) => {
   if (!isOpen) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-zinc-900 p-6 rounded-lg max-w-md w-full">
-        <button onClick={onClose} className="absolute top-4 right-4 text-white/60 hover:text-white">
-          &times;
-        </button>
-        {children}
-      </div>
-    </div>
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) {
+            onClose()
+          }
+        }}
+      >
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          className="bg-zinc-900/90 border border-white/10 text-white p-6 rounded-lg w-full max-w-xl shadow-2xl"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center gap-3">
+              <div className={`w-10 h-10 rounded-full bg-${iconColor}-500/10 flex items-center justify-center text-${iconColor}-400`}>
+                <Icon size={20} />
+              </div>
+              <h2 className="text-2xl font-bold">{title}</h2>
+            </div>
+            <button onClick={onClose} className="text-white/60 hover:text-white rounded-full p-2 transition-colors">
+              <X size={24} />
+            </button>
+          </div>
+          {children}
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
   )
 }
 
 export default function HoverDropMenu() {
   const [modalContent, setModalContent] = useState(null)
+  const [modalTitle, setModalTitle] = useState("")
+  const [modalIcon, setModalIcon] = useState(null)
+  const [modalIconColor, setModalIconColor] = useState("amber")
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [account, setAccount] = useState(null)
   const [isSettingsOpen, setIsSettingsOpen] = useState(false)
@@ -33,8 +62,11 @@ export default function HoverDropMenu() {
   const supabase = useContext(SupabaseContext)
   const navigate = useNavigate()
 
-  const handleOpenModal = (content) => {
+  const handleOpenModal = (content, title, icon, iconColor = "amber") => {
     setModalContent(content)
+    setModalTitle(title)
+    setModalIcon(icon)
+    setModalIconColor(iconColor)
     setIsModalOpen(true)
   }
 
@@ -78,9 +110,9 @@ export default function HoverDropMenu() {
       <FlyoutLink
         FlyoutContent={() => (
           <FlyoutContent
-            onSignInClick={() => handleOpenModal(<SignIn onModalClose={handleCloseModal} />)}
-            onAccountPageClick={() => handleOpenModal(<AccountPage onModalClose={handleCloseModal} />)}
-            onLeaderboardClick={() => handleOpenModal(<Leaderboard onModalClose={handleCloseModal} />)}
+            onSignInClick={() => handleOpenModal(<SignIn onModalClose={handleCloseModal} />, "Sign In", LogIn, "sky")}
+            onAccountPageClick={() => handleOpenModal(<AccountPage onModalClose={handleCloseModal} />, "Account", User, "emerald")}
+            onLeaderboardClick={() => handleOpenModal(<Leaderboard onModalClose={handleCloseModal} />, "Leaderboard", Trophy, "indigo")}
             account={account}
             onSignOutClick={onSignOutClick}
             handleSettingsClick={handleSettingsClick}
@@ -95,7 +127,13 @@ export default function HoverDropMenu() {
         </div>
       </FlyoutLink>
 
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={handleCloseModal}
+        title={modalTitle}
+        icon={modalIcon}
+        iconColor={modalIconColor}
+      >
         {modalContent}
       </Modal>
 
