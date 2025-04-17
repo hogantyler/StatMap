@@ -80,16 +80,16 @@ const Landing = () => {
 
   return (
     <div className="relative w-full h-full">
-      {/* Background with overlay */}
+      {/* Background with overlay - KEY CHANGE: pointer-events-none on overlay, not on globe */}
       <div className="fixed top-0 left-0 w-full h-full z-0">
         {use3DGlobe ? (
           <Suspense fallback={<Loading />}>
-            <LandingGlobe />
+            <div className="w-full h-full">
+              <LandingGlobe />
+            </div>
           </Suspense>
         ) : (
-          <div
-            className="min-h-screen bg-black"
-          >
+          <div className="min-h-screen bg-black">
             <div
               className="min-h-screen bg-cover bg-center opacity-30"
               style={{
@@ -99,8 +99,8 @@ const Landing = () => {
             />
           </div>
         )}
-        {/* Subtle gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
+        {/* Subtle gradient overlay - KEY CHANGE: pointer-events-none */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent pointer-events-none" />
       </div>
 
       {/* Toggle button */}
@@ -115,16 +115,16 @@ const Landing = () => {
         </div>
       </button>
 
-      {/* Main content */}
-      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
-        <div className="absolute top-0 left-0  z-50">
+      {/* Main content - KEY CHANGE: pointer-events-none and auto for specific elements */}
+      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center pointer-events-none">
+        <div className="absolute top-0 left-0 z-50 pointer-events-auto">
           <HoverDropMenu />
         </div>
 
         <div className="max-w-screen-md w-full px-6 py-12">
           {/* Modern title section */}
           <motion.div
-            className="mb-16 text-center"
+            className="mb-16 text-center pointer-events-none"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -137,7 +137,7 @@ const Landing = () => {
             </p>
           </motion.div>
 
-          {/* Modern menu options */}
+          {/* Modern menu options - KEY CHANGE: pointer-events-auto for interactive elements */}
           <motion.div
             className="space-y-3"
             variants={containerVariants}
@@ -148,7 +148,7 @@ const Landing = () => {
             <motion.div
               variants={itemVariants}
               className={cn(
-                "group relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300",
+                "group relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300 pointer-events-auto",
                 hoveredMode === "quiz" ? "bg-zinc-900/80" : "bg-zinc-900/40",
               )}
               onMouseEnter={() => setHoveredMode("quiz")}
@@ -171,7 +171,7 @@ const Landing = () => {
                 </div>
                 <div
                   className={cn(
-                    "h-10 w-10 rounded-full flex items-center justify-center bg-sky-500/20 text-sky-400 transition-all duration-300 transform",
+                    "h-10 w-10 min-w-10 rounded-full flex items-center justify-center bg-sky-500/20 text-sky-400 transition-all duration-300 transform",
                     hoveredMode === "quiz" ? "translate-x-0" : "translate-x-2 opacity-70",
                   )}
                 >
@@ -184,7 +184,7 @@ const Landing = () => {
             <motion.div
               variants={itemVariants}
               className={cn(
-                "group relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300",
+                "group relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300 pointer-events-auto",
                 hoveredMode === "unlimited" ? "bg-zinc-900/80" : "bg-zinc-900/40",
               )}
               onMouseEnter={() => setHoveredMode("unlimited")}
@@ -207,7 +207,7 @@ const Landing = () => {
                 </div>
                 <div
                   className={cn(
-                    "h-10 w-10 rounded-full flex items-center justify-center bg-indigo-500/20 text-indigo-400 transition-all duration-300 transform",
+                    "h-10 w-10 min-w-10 rounded-full flex items-center justify-center bg-indigo-500/20 text-indigo-400 transition-all duration-300 transform",
                     hoveredMode === "unlimited" ? "translate-x-0" : "translate-x-2 opacity-70",
                   )}
                 >
@@ -220,7 +220,7 @@ const Landing = () => {
             <motion.div
               variants={itemVariants}
               className={cn(
-                "group relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300",
+                "group relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300 pointer-events-auto",
                 hoveredMode === "multiplayer" ? "bg-zinc-900/80" : "bg-zinc-900/40",
               )}
               onMouseEnter={() => setHoveredMode("multiplayer")}
@@ -246,7 +246,7 @@ const Landing = () => {
                 </div>
                 <div
                   className={cn(
-                    "h-10 w-10 rounded-full flex items-center justify-center bg-emerald-500/20 text-emerald-400 transition-all duration-300 transform",
+                    "h-10 w-10 min-w-10 rounded-full flex items-center justify-center bg-emerald-500/20 text-emerald-400 transition-all duration-300 transform",
                     hoveredMode === "multiplayer" ? "translate-x-0" : "translate-x-2 opacity-70",
                   )}
                 >
@@ -257,9 +257,9 @@ const Landing = () => {
           </motion.div>
         </div>
 
-        {/* Help button */}
+        {/* Help button - KEY CHANGE: pointer-events-auto */}
         <button
-          className="fixed bottom-6 left-6 z-50 focus:outline-none bg-zinc-900/80 border border-white/10 p-2 rounded-full text-white/70 hover:text-white hover:bg-zinc-800/80 transition-all duration-200"
+          className="fixed bottom-6 left-6 z-50 focus:outline-none bg-zinc-900/80 border border-white/10 p-2 rounded-full text-white/70 hover:text-white hover:bg-zinc-800/80 transition-all duration-200 pointer-events-auto"
           onClick={() =>
             handleOpenModal(
               <div className="w-full max-w-sm p-6 bg-white rounded-lg shadow-lg">
@@ -285,7 +285,7 @@ const Landing = () => {
       </Modal>
 
       <button
-        className="fixed bottom-1 right-1 text-opacity-0 text-transparent py-2 px-4 mt-40 rounded-lg hover:text-blue-500"
+        className="fixed bottom-1 right-1 text-opacity-0 text-transparent py-2 px-4 mt-40 rounded-lg hover:text-blue-500 pointer-events-auto"
         onClick={() => navigate("/globeModeTest")}
       >
         GlobeModeTest
