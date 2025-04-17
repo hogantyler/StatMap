@@ -3,9 +3,10 @@ import { useNavigate } from "react-router-dom";
 import Globe from "./GlobeComponents/Globe";
 import HoverDropMenu from "./HoverDropMenu";
 import Modal from "./Modal";
-import { X, AlertTriangle, ArrowRight, ChevronDown, ChevronUp, ExternalLink } from "lucide-react";
+import { X, AlertTriangle, ArrowRight, ChevronDown, ChevronUp, ExternalLink, User } from "lucide-react";
 import Loading from "./Loading";
 import { supabase } from "./SupabaseContext";
+
 import {
   CountrySelectionProvider,
   useCountrySelection,
@@ -333,7 +334,7 @@ const QuizModeContent = () => {
               )}
 
               {/* Report Fact Modal */}
-              <Modal isOpen={isReportModalOpen} onClose={() => setIsReportModalOpen(false)}>
+              <Modal isOpen={isReportModalOpen} onClose={() => setIsReportModalOpen(false)} title={"Report"} icon={User} iconColor={"sky"}>
                 <p className="text-white/70 mb-4">Please select a reason for reporting this fact:</p>
                 <div className="space-y-2">
                   <button
