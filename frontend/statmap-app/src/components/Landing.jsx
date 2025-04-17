@@ -74,8 +74,8 @@ const Landing = () => {
         className="fixed top-4 right-4 z-50 bg-white bg-opacity-80 p-2 rounded-full shadow-lg hover:bg-opacity-100 transition-all duration-150 transform hover:scale-105 hover:shadow-lg"
         title={use3DGlobe ? "Switch to SVG Globe" : "Switch to 3D Globe"}
       >
-        {use3DGlobe ? <FaGlobe size={24} /> : <BsImage size={24} />}
-        {use3DGlobe ? "3D" : "2D"}
+        {use3DGlobe ?  <BsImage size={24} /> : <FaGlobe size={24} />}
+        {use3DGlobe ? "2D" : "3D"}
       </button>
 
       {/* Main content positioned on top of Globe */}
