@@ -44,7 +44,7 @@ const HoverDropMenu = () => {
   };
 
   return (
-    <div className="group absolute top-6 left-6 z-50">
+    <div className="group absolute top-0 left-0 md:top-3 md:left-3 z-50">
       <FlyoutLink
         FlyoutContent={() => (
           <FlyoutContent
@@ -64,6 +64,7 @@ const HoverDropMenu = () => {
             onLeaderboardClick={() =>
               handleOpenModal(<Leaderboard onModalClose={handleCloseModal} />)
             }
+            onSettingsClick={() => setIsSettingsOpen(true)}
           />
         )}
       >
@@ -128,6 +129,7 @@ const FlyoutContent = ({
   onSignInClick,
   onAccountPageClick,
   onLeaderboardClick,
+  onSettingsClick,
 }) => {
   const [account, setAccount] = useState(null);
   const [isSettingsOpen, setIsSettingsOpen] = useState(false);
@@ -258,7 +260,7 @@ const FlyoutContent = ({
 
           {/* Settings Button */}
           <button
-            onClick={handleSettingsClick}
+            onClick={onSettingsClick}
             className="group w-full flex items-center justify-between p-2 rounded-md hover:bg-white/10 transition-colors"
           >
             <div className="flex items-center gap-3">
