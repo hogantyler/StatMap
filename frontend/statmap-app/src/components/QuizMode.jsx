@@ -233,8 +233,8 @@ const QuizModeContent = () => {
           </div>
         ) : (
           // Quiz Content
-          <div className="absolute inset-x-0 bottom-2 flex flex-col items-center z-30">
-            <div className="max-w-md w-full px-2 mt-2">
+          <div className="absolute inset-x-0 bottom-2 flex flex-col items-center z-30 pointer-events-none">
+            <div className="max-w-md w-full px-2 mt-2 pointer-events-auto">
               {/* Progress, Score, and Fact Box */}
               <div className="bg-zinc-900/40 backdrop-blur-sm border border-white/10 rounded-lg overflow-hidden mb-2">
                 <div className="flex justify-between items-center p-2">
@@ -288,83 +288,82 @@ const QuizModeContent = () => {
                 </div>
               </div>
 
-{/* Feedback Box */}
-{feedback && (
-  <div
-    className={`mt-2 p-2 rounded-lg border backdrop-blur-sm flex flex-col items-center justify-center min-w-0 text-center ${
-      feedbackType === "correct"
-        ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
-        : "bg-red-500/20 border-red-500/30 text-red-400"
-    }`}
-    style={{ wordWrap: "break-word", whiteSpace: "normal" }}
-  >
-    <p className="text-sm">{feedback}</p>
-    {/* Buttons directly under the feedback banner */}
-    {questionFinished && (
-      <div className="grid grid-cols-3 gap-0 w-full mt-2">
-        <a
-          href={currentFact.Source}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-zinc-900/60 backdrop-blur-sm border border-white/10 text-white/70 hover:text-white hover:bg-zinc-800/60 transition-colors text-sm flex items-center justify-center py-2"
-        >
-          <ExternalLink size={14} />
-          <span>Source</span>
-        </a>
-        <button
-          onClick={() => setIsReportModalOpen(true)}
-          className="bg-zinc-900/60 backdrop-blur-sm border border-white/10 text-white/70 hover:text-white hover:bg-zinc-800/60 transition-colors text-sm flex items-center justify-center py-2"
-        >
-          <AlertTriangle size={14} />
-          <span>Report</span>
-        </button>
-        <button
-          onClick={() => {
-            setQuestionFinished(false);
-            handleNextQuestion();
-          }}
-          className="bg-sky-500/50 text-sky-400 border border-sky-500/60 hover:bg-sky-500/60 transition-colors text-sm font-medium flex items-center justify-center py-2"
-        >
-          <ArrowRight size={14} />
-          <span>Next</span>
-        </button>
-      </div>
-    )}
-  </div>
-)}
+              {/* Feedback Box */}
+              {feedback && (
+                <div
+                  className={`mt-2 p-2 rounded-lg border backdrop-blur-sm flex flex-col items-center justify-center min-w-0 text-center ${feedbackType === "correct"
+                      ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
+                      : "bg-red-500/20 border-red-500/30 text-red-400"
+                    }`}
+                  style={{ wordWrap: "break-word", whiteSpace: "normal" }}
+                >
+                  <p className="text-sm">{feedback}</p>
+                  {/* Buttons directly under the feedback banner */}
+                  {questionFinished && (
+                    <div className="grid grid-cols-3 gap-0 w-full mt-2">
+                      <a
+                        href={currentFact.Source}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="bg-zinc-900/60 backdrop-blur-sm border border-white/10 text-white/70 hover:text-white hover:bg-zinc-800/60 transition-colors text-sm flex items-center justify-center py-2"
+                      >
+                        <ExternalLink size={14} />
+                        <span>Source</span>
+                      </a>
+                      <button
+                        onClick={() => setIsReportModalOpen(true)}
+                        className="bg-zinc-900/60 backdrop-blur-sm border border-white/10 text-white/70 hover:text-white hover:bg-zinc-800/60 transition-colors text-sm flex items-center justify-center py-2"
+                      >
+                        <AlertTriangle size={14} />
+                        <span>Report</span>
+                      </button>
+                      <button
+                        onClick={() => {
+                          setQuestionFinished(false);
+                          handleNextQuestion();
+                        }}
+                        className="bg-sky-500/50 text-sky-400 border border-sky-500/60 hover:bg-sky-500/60 transition-colors text-sm font-medium flex items-center justify-center py-2"
+                      >
+                        <ArrowRight size={14} />
+                        <span>Next</span>
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )}
 
-        {/* Report Fact Modal */}
-        <Modal isOpen={isReportModalOpen} onClose={() => setIsReportModalOpen(false)}>
-          <p className="text-white/70 mb-4">Please select a reason for reporting this fact:</p>
-          <div className="space-y-2">
-            <button
-              onClick={() => handleReportFact("INCORRECT_INFORMATION")}
-              className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-left px-4 py-3 rounded-md transition-colors"
-            >
-              Incorrect information
-            </button>
-            <button
-              onClick={() => handleReportFact("CLUE_IN_FACT")}
-              className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-left px-4 py-3 rounded-md transition-colors"
-            >
-              Clue in the fact
-            </button>
-            <button
-              onClick={() => handleReportFact("INAPPROPRIATE_CONTENT")}
-              className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-left px-4 py-3 rounded-md transition-colors"
-            >
-              Inappropriate content
-            </button>
-            <button
-              onClick={() => handleReportFact("MULTIPLE_COUNTRIES")}
-              className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-left px-4 py-3 rounded-md transition-colors"
-            >
-              Fact holds true for more than one country
-            </button>
+              {/* Report Fact Modal */}
+              <Modal isOpen={isReportModalOpen} onClose={() => setIsReportModalOpen(false)}>
+                <p className="text-white/70 mb-4">Please select a reason for reporting this fact:</p>
+                <div className="space-y-2">
+                  <button
+                    onClick={() => handleReportFact("INCORRECT_INFORMATION")}
+                    className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-left px-4 py-3 rounded-md transition-colors"
+                  >
+                    Incorrect information
+                  </button>
+                  <button
+                    onClick={() => handleReportFact("CLUE_IN_FACT")}
+                    className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-left px-4 py-3 rounded-md transition-colors"
+                  >
+                    Clue in the fact
+                  </button>
+                  <button
+                    onClick={() => handleReportFact("INAPPROPRIATE_CONTENT")}
+                    className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-left px-4 py-3 rounded-md transition-colors"
+                  >
+                    Inappropriate content
+                  </button>
+                  <button
+                    onClick={() => handleReportFact("MULTIPLE_COUNTRIES")}
+                    className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-left px-4 py-3 rounded-md transition-colors"
+                  >
+                    Fact holds true for more than one country
+                  </button>
+                </div>
+              </Modal>
+            </div>
           </div>
-        </Modal>
-      </div>
-    </div>
         )}
       </div>
     </Suspense>

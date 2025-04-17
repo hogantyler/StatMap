@@ -151,8 +151,8 @@ function UnlimitedModeContent() {
         </div>
 
         {/* UI Container - Moved to bottom of screen */}
-        <div className="absolute inset-x-0 bottom-2 flex flex-col items-center z-30">
-          <div className="max-w-sm w-full px-2">
+        <div className="absolute inset-x-0 bottom-2 flex flex-col items-center z-30 pointer-events-none">
+          <div className="max-w-sm w-full px-2 pointer-events-auto">
             {/* Score and Collapsible Fact Box */}
             <div className="bg-zinc-900/40 backdrop-blur-sm border border-white/10 rounded-lg overflow-hidden mb-2">
               {/* Header with Score and Toggle */}
