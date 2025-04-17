@@ -187,14 +187,14 @@ const QuizModeContent = () => {
         {/* Back Button in top right */}
         <button
           onClick={handleBack}
-          className="absolute top-0 right-0 md:top-2 md:right-2 z-50 bg-zinc-900/80 border border-white/10 p-2 rounded-full text-white/70 hover:text-red-400 hover:bg-zinc-800/80 transition-all duration-200"
+          className="absolute top-1 right-1 md:top-2 md:right-2 z-50 bg-zinc-900/80 border border-white/10 p-2 rounded-full text-white/70 hover:text-red-400 hover:bg-zinc-800/80 transition-all duration-200"
           title="Return to Home"
         >
           <X size={20} />
         </button>
 
         {/* Hover Menu in top left */}
-        <div className="absolute top-0 left-0 md:top-2 md:left-2 z-50">
+        <div className="absolute top-1 left-1 md:top-2 md:left-2 z-50">
           <HoverDropMenu />
         </div>
 
@@ -233,7 +233,7 @@ const QuizModeContent = () => {
           </div>
         ) : (
           // Quiz Content
-          <div className="absolute inset-x-0 top-0 flex flex-col items-center z-30">
+          <div className="absolute inset-x-0 bottom-2 flex flex-col items-center z-30">
             <div className="max-w-md w-full px-2 mt-2">
               {/* Progress, Score, and Fact Box */}
               <div className="bg-zinc-900/40 backdrop-blur-sm border border-white/10 rounded-lg overflow-hidden mb-2">
@@ -256,7 +256,7 @@ const QuizModeContent = () => {
                       }}
                       className="text-white/60 hover:text-white"
                     >
-                      {isCollapsed ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
+                      {isCollapsed ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                     </button>
                   </div>
                 </div>

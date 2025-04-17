@@ -136,20 +136,22 @@ function UnlimitedModeContent() {
         {/* Back Button in top right */}
         <button
           onClick={handleBack}
-          className="absolute top-0 right-0 md:top-2 md:right-2 z-50 bg-zinc-900/80 border border-white/10 p-2 rounded-full text-white/70 hover:text-red-400 hover:bg-zinc-800/80 transition-all duration-200"
+          className="absolute top-1 right-1 md:top-2 md:right-2 z-50 bg-zinc-900/80 border border-white/10 p-2 rounded-full text-white/70 hover:text-red-400 hover:bg-zinc-800/80 transition-all duration-200"
           title="Return to Home"
         >
           <X size={20} />
         </button>
 
         {/* Hover Menu in top left */}
-        <div className="absolute top-0 left-0 md:top-2 md:left-2 z-50">
-          {/* <HoverDropMenu onSignInClick={(e) => handleOpenModal(<SignIn onSignUpClick={(e) => handleOpenModal(<SignUp onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/>)} onAccountPageClick={(e) => handleOpenModal(<AccountPage onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/> */}
+        <div className="absolute top-1 left-1 md:top-2 md:left-2 z-50">
+          {/* <HoverDropMenu onSignInClick={(e) => handleOpenModal(
+          <SignIn onSignUpClick={(e) => handleOpenModal(<SignUp onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/>)} 
+          onAccountPageClick={(e) => handleOpenModal(<AccountPage onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/> */}
           <HoverDropMenu />
         </div>
 
-        {/* Fact Box and Feedback */}
-        <div className="absolute inset-x-0 top-4 flex flex-col items-center z-30">
+        {/* UI Container - Moved to bottom of screen */}
+        <div className="absolute inset-x-0 bottom-2 flex flex-col items-center z-30">
           <div className="max-w-sm w-full px-2">
             {/* Score and Collapsible Fact Box */}
             <div className="bg-zinc-900/40 backdrop-blur-sm border border-white/10 rounded-lg overflow-hidden mb-2">
@@ -166,7 +168,7 @@ function UnlimitedModeContent() {
                   }}
                   className="text-white/60 hover:text-white"
                 >
-                  {isCollapsed ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
+                  {isCollapsed ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
                 </button>
               </div>
 
@@ -201,8 +203,8 @@ function UnlimitedModeContent() {
             {feedback && (
               <div
                 className={`mt-2 p-2 rounded-lg border backdrop-blur-sm flex flex-col items-center justify-center min-w-0 text-center ${feedbackType === "correct"
-                    ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
-                    : "bg-red-500/20 border-red-500/30 text-red-400"
+                  ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
+                  : "bg-red-500/20 border-red-500/30 text-red-400"
                   }`}
                 style={{ wordWrap: "break-word", whiteSpace: "normal" }}
               >
