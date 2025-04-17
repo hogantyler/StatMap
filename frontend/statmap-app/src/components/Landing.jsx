@@ -110,7 +110,7 @@ const Landing = () => {
         title={use3DGlobe ? "Switch to SVG Globe" : "Switch to 3D Globe"}
       >
         <div className="flex items-center gap-2">
-          {use3DGlobe ?  <ImageIcon size={16} /> : <Globe size={16}/> }
+          {use3DGlobe ? <ImageIcon size={16} /> : <Globe size={16} />}
           <span className="text-sm font-medium">{use3DGlobe ? "2D" : "3D"}</span>
         </div>
       </button>
@@ -260,11 +260,12 @@ const Landing = () => {
         {/* Help button - KEY CHANGE: pointer-events-auto */}
         <button
           className="fixed bottom-6 left-6 z-50 focus:outline-none bg-zinc-900/80 border border-white/10 p-2 rounded-full text-white/70 hover:text-white hover:bg-zinc-800/80 transition-all duration-200 pointer-events-auto"
+          // Replace the help button onClick handler with this updated version
           onClick={() =>
             handleOpenModal(
-              <div className="w-full max-w-sm p-6 bg-white rounded-lg shadow-lg">
-                <h2 className="text-xl font-semibold mb-2">Game Instructions</h2>
-                <p className="text-sm">
+              <div className="w-full max-w-sm p-6 bg-zinc-900 border border-white/10 rounded-lg shadow-lg">
+                <h2 className="text-xl font-semibold mb-2 text-white">Game Instructions</h2>
+                <p className="text-sm text-white/70">
                   Welcome to STATMAP! To play the game, you will be presented with
                   a fact or statistic about a country from our custom database.
                   Your task is to choose the correct country on the interactive globe.
