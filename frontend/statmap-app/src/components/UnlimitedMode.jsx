@@ -69,7 +69,7 @@ function UnlimitedModeContent() {
     setIsCollapsed(false); //show fact after submission(if it was hidden)
     setIsAnswered(true);
     const answer = selectedCountry.name || "";
-    if (answer.includes(currentFact?.Correct_Country) || currentFact?.Correct_Country.includes(answer)) {
+    if (answer.code == currentFact?.Correct_Country.CC_Abbrev) {
       let points = attempts === 0 ? 1000 : attempts === 1 ? 750 : attempts === 2 ? 500 : 250;
       setScore((prev) => prev + points);
       setFeedback("Correct!");
