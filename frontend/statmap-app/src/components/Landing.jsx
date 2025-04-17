@@ -79,53 +79,45 @@ const Landing = () => {
   ]);
 
   return (
-    <div className="relative w-full h-full">
-      {/* Background with overlay - KEY CHANGE: pointer-events-none on overlay, not on globe */}
+    <div className="relative w-full h-full bg-black">
+      {/* Background with overlay */}
       <div className="fixed top-0 left-0 w-full h-full z-0">
         {use3DGlobe ? (
           <Suspense fallback={<Loading />}>
-            <div className="w-full h-full">
-              <LandingGlobe />
-            </div>
+            <LandingGlobe />
           </Suspense>
         ) : (
-          <div className="min-h-screen bg-black">
-            <div
-              className="min-h-screen bg-cover bg-center opacity-30"
-              style={{
-                backgroundImage: `url(${BlackGlobe})`,
-                filter: 'invert(100%)'
-              }}
-            />
-          </div>
+          <div
+            className="min-h-screen bg-cover bg-center bg-black"
+            style={{ backgroundImage: `url(${BlackGlobe})` }}
+          />
         )}
-        {/* Subtle gradient overlay - KEY CHANGE: pointer-events-none */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent pointer-events-none" />
+        {/* Subtle gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
       </div>
 
       {/* Toggle button */}
       <button
         onClick={toggleGlobeType}
-        className="absolute top-1 right-1 md:top-2 md:right-2 z-50 bg-zinc-900/80 border border-white/10 px-3 py-2 rounded-full text-white/70 hover:text-white hover:bg-zinc-800/80 transition-all duration-200"
+        className="fixed top-6 right-6 z-50 bg-zinc-900/80 border border-white/10 px-3 py-2 rounded-full text-white/70 hover:text-white hover:bg-zinc-800/80 transition-all duration-200"
         title={use3DGlobe ? "Switch to SVG Globe" : "Switch to 3D Globe"}
       >
         <div className="flex items-center gap-2">
-          {use3DGlobe ? <ImageIcon size={16} /> : <Globe size={16} />}
-          <span className="text-sm font-medium">{use3DGlobe ? "2D" : "3D"}</span>
+          {use3DGlobe ? <Globe size={16} /> : <ImageIcon size={16} />}
+          <span className="text-sm font-medium">{use3DGlobe ? "3D" : "2D"}</span>
         </div>
       </button>
 
-      {/* Main content - KEY CHANGE: pointer-events-none and auto for specific elements */}
-      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center pointer-events-none">
-
-        <div className="absolute top-1 left-1 md:top-2 md:left-2 z-50 pointer-events-auto">
+      {/* Main content */}
+      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
+        <div className="fixed top-2 left-2 z-50">
           <HoverDropMenu />
         </div>
 
         <div className="max-w-screen-md w-full px-6 py-12">
           {/* Modern title section */}
-          <motion.div
-            className="mb-16 text-center pointer-events-none"
+          <motion.div 
+            className="mb-16 text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -138,8 +130,8 @@ const Landing = () => {
             </p>
           </motion.div>
 
-          {/* Modern menu options - KEY CHANGE: pointer-events-auto for interactive elements */}
-          <motion.div
+          {/* Modern menu options */}
+          <motion.div 
             className="space-y-3"
             variants={containerVariants}
             initial="hidden"
@@ -149,7 +141,7 @@ const Landing = () => {
             <motion.div
               variants={itemVariants}
               className={cn(
-                "group relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300 pointer-events-auto",
+                "group relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300",
                 hoveredMode === "quiz" ? "bg-zinc-900/80" : "bg-zinc-900/40",
               )}
               onMouseEnter={() => setHoveredMode("quiz")}
@@ -172,7 +164,7 @@ const Landing = () => {
                 </div>
                 <div
                   className={cn(
-                    "h-10 w-10 min-w-10 rounded-full flex items-center justify-center bg-sky-500/20 text-sky-400 transition-all duration-300 transform",
+                    "h-10 w-10 rounded-full flex items-center justify-center bg-sky-500/20 text-sky-400 transition-all duration-300 transform",
                     hoveredMode === "quiz" ? "translate-x-0" : "translate-x-2 opacity-70",
                   )}
                 >
@@ -185,7 +177,7 @@ const Landing = () => {
             <motion.div
               variants={itemVariants}
               className={cn(
-                "group relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300 pointer-events-auto",
+                "group relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300",
                 hoveredMode === "unlimited" ? "bg-zinc-900/80" : "bg-zinc-900/40",
               )}
               onMouseEnter={() => setHoveredMode("unlimited")}
@@ -208,7 +200,7 @@ const Landing = () => {
                 </div>
                 <div
                   className={cn(
-                    "h-10 w-10 min-w-10 rounded-full flex items-center justify-center bg-indigo-500/20 text-indigo-400 transition-all duration-300 transform",
+                    "h-10 w-10 rounded-full flex items-center justify-center bg-indigo-500/20 text-indigo-400 transition-all duration-300 transform",
                     hoveredMode === "unlimited" ? "translate-x-0" : "translate-x-2 opacity-70",
                   )}
                 >
@@ -221,7 +213,7 @@ const Landing = () => {
             <motion.div
               variants={itemVariants}
               className={cn(
-                "group relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300 pointer-events-auto",
+                "group relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300",
                 hoveredMode === "multiplayer" ? "bg-zinc-900/80" : "bg-zinc-900/40",
               )}
               onMouseEnter={() => setHoveredMode("multiplayer")}
@@ -236,7 +228,7 @@ const Landing = () => {
 
               <button
                 className="w-full p-6 flex items-center justify-between text-left"
-                onClick={() => handleNavigate("/lobbyTest")}
+                onClick={() => alert("Multiplayer is still in development. Check back soon!")/*handleNavigate("/lobbyTest")*/}
               >
                 <div>
                   <h2 className="text-2xl font-medium text-white">Multiplayer</h2>
@@ -247,7 +239,7 @@ const Landing = () => {
                 </div>
                 <div
                   className={cn(
-                    "h-10 w-10 min-w-10 rounded-full flex items-center justify-center bg-emerald-500/20 text-emerald-400 transition-all duration-300 transform",
+                    "h-10 w-10 rounded-full flex items-center justify-center bg-emerald-500/20 text-emerald-400 transition-all duration-300 transform",
                     hoveredMode === "multiplayer" ? "translate-x-0" : "translate-x-2 opacity-70",
                   )}
                 >
@@ -258,15 +250,14 @@ const Landing = () => {
           </motion.div>
         </div>
 
-        {/* Help button - KEY CHANGE: pointer-events-auto */}
-        <button
-          className="fixed bottom-6 left-6 z-50 focus:outline-none bg-zinc-900/80 border border-white/10 p-2 rounded-full text-white/70 hover:text-white hover:bg-zinc-800/80 transition-all duration-200 pointer-events-auto"
-          // Replace the help button onClick handler with this updated version
+        {/* Help button */}
+        <button 
+          className="fixed bottom-6 left-6 z-50 focus:outline-none bg-zinc-900/80 border border-white/10 p-2 rounded-full text-white/70 hover:text-white hover:bg-zinc-800/80 transition-all duration-200"
           onClick={() =>
             handleOpenModal(
-              <div className="w-full max-w-sm p-6 bg-zinc-900 border border-white/10 rounded-lg shadow-lg">
-                <h2 className="text-xl font-semibold mb-2 text-white">Game Instructions</h2>
-                <p className="text-sm text-white/70">
+              <div className="w-full max-w-sm p-6 bg-white rounded-lg shadow-lg">
+                <h2 className="text-xl font-semibold mb-2">Game Instructions</h2>
+                <p className="text-sm">
                   Welcome to STATMAP! To play the game, you will be presented with
                   a fact or statistic about a country from our custom database.
                   Your task is to choose the correct country on the interactive globe.
@@ -285,13 +276,6 @@ const Landing = () => {
       <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
         {modalContent}
       </Modal>
-
-      <button
-        className="fixed bottom-1 right-1 text-opacity-0 text-transparent py-2 px-4 mt-40 rounded-lg hover:text-blue-500 pointer-events-auto"
-        onClick={() => navigate("/globeModeTest")}
-      >
-        GlobeModeTest
-      </button>
     </div>
   );
 };
