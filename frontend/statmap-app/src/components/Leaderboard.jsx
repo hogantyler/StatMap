@@ -94,7 +94,7 @@ const Leaderboard = ({ onModalClose }) => {
     <div className="relative w-full text-white mx-3 border border-transparent rounded-xl">
       {/* Main content */}
       <div className="relative z-10 w-full flex flex-col items-center justify-center px-4 sm:px-6">
-        <motion.div
+        {/* <motion.div
           className="my-4 text-center"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -103,7 +103,7 @@ const Leaderboard = ({ onModalClose }) => {
           <p className="mt-4 text-white text-4xl font-bold sm:text-xl max-w-md mx-auto">
             Global Leaderboards
           </p>
-        </motion.div>
+        </motion.div> */}
 
         <div className="w-full max-w-4xl">
           {/* Tab navigation */}

@@ -111,7 +111,7 @@ const AccountPage = ({ isOpen, onModalClose }) => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
         >
-          <div className="bg-zinc-900/60 border border-white/10 rounded-lg p-8 backdrop-blur-sm">
+          <div className="bg-zinc-900/60 rounded-lg p-8 backdrop-blur-sm">
             <User className="w-16 h-16 mx-auto mb-4 text-white/30" />
             <h2 className="text-xl font-medium text-white mb-2">
               Sign In Required
@@ -127,14 +127,14 @@ const AccountPage = ({ isOpen, onModalClose }) => {
 
   return (
     <div className="w-full max-w-4xl mx-auto px-4 text-white">
-      <motion.div
+      {/* <motion.div
         className="my-4 text-center"
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
       >
         <p className="mt-2 text-white text-3xl font-bold">Account Dashboard</p>
-      </motion.div>
+      </motion.div> */}
 
       {/* Tab navigation */}
       <motion.div

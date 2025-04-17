@@ -49,7 +49,7 @@ const SignUp = ({ isOpen, onModalClose, onSuccessfulSignUp }) => {
       }
     } else {
       onModalClose();
-      if (onSuccessfulSignUp) onSuccessfulSignUp();
+      onSuccessfulSignUp();
     }
   };
 
@@ -58,9 +58,9 @@ const SignUp = ({ isOpen, onModalClose, onSuccessfulSignUp }) => {
       <div className="text-white">
         {/* <button onClick={onModalClose}>X</button> */}
         <form className="space-y-6" onSubmit={handleSubmit}>
-          <h5 className="text-2xl font-bold  mx-auto px-[75px]">
+          {/* <h5 className="text-2xl font-bold  mx-auto px-[75px]">
             STATMAP SIGN UP
-          </h5>
+          </h5> */}
           <div>
             <label
               htmlFor="display_name"

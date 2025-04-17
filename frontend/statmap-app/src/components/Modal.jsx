@@ -1,48 +1,44 @@
-import React, {useRef, useEffect} from "react";
-import { FaTimes } from "react-icons/fa";
+import React, {  } from "react"
+import { AnimatePresence, motion } from "framer-motion"
+import { X } from "lucide-react"
 
-/**
- * Modal component that displays account login/sign up
- * 
- * @param {*} param0 Object containing isOpen (boolean), onClose (function), and children (JSX content)
- * @returns {JSX.Element|null} The modal if open, otherwise null
- */
-const Modal = ({ isOpen, onClose, children }) => {
-  const modalRef = useRef(null);
+export default function Modal ({ isOpen, onClose, children, title, icon: Icon, iconColor = "amber" }) {
+  if (!isOpen) return null
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (modalRef.current && !modalRef.current.contains(event.target)) { //checks if the click is outside the modal
-        onClose();
-      }
-    };
-
-    if (isOpen) {
-      document.addEventListener("mousedown", handleClickOutside); //adds event listener to detect clicks outside the modal
-    }
-
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside); //cleans up the event listener when the modal is closed
-    };
-  }, [isOpen, onClose]);
-
-  if (!isOpen) return null; //if the modal is not open, return null to not render anything
-
-  return ( //background div that detects clicks outside the modal and calls closing modal function
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div ref={modalRef} className="flex justify-center items-center bg-zinc-900/95 backdrop-blur-md border border-white/10 p-4 shadow-xl text-white rounded-lg relative w-[95%] md:w-auto">
-        <div className="absolute top-0 left-0 z-0">
-            <button
-                onClick={onClose}
-                className="text-white rounded-full p-2 hover:text-red-600 transition-colors"
-            >
-                <FaTimes size={30} />
+  return (
+    <AnimatePresence>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50"
+        onClick={(e) => {
+          if (e.target === e.currentTarget) {
+            onClose()
+          }
+        }}
+      >
+        <motion.div
+          initial={{ scale: 0.9, opacity: 0 }}
+          animate={{ scale: 1, opacity: 1 }}
+          exit={{ scale: 0.9, opacity: 0 }}
+          className="bg-zinc-900/90 border border-white/10 text-white p-6 rounded-lg w-full max-w-3xl shadow-2xl max-h-[90%] overflow-y-scroll"
+          onClick={(e) => e.stopPropagation()}
+        >
+          <div className="flex justify-between items-center mb-6">
+            <div className="flex items-center gap-3">
+              <div className={`w-10 h-10 rounded-full bg-${iconColor}-500/10 flex items-center justify-center text-${iconColor}-400`}>
+                <Icon size={20} />
+              </div>
+              <h2 className="text-2xl font-bold">{title}</h2>
+            </div>
+            <button onClick={onClose} className="text-white/60 hover:text-white rounded-full p-2 transition-colors">
+              <X size={24} />
             </button>
-        </div>
-        {children}
-      </div>
-    </div>
-  );
-};
-
-export default Modal;
+          </div>
+          {children}
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  )
+}

@@ -38,16 +38,16 @@ const SignIn = ({ isOpen, onSignUpClick, onModalClose, onSuccessfulLogin }) => {
       }
     } else {
       onModalClose();
-      if (onSuccessfulLogin) onSuccessfulLogin();
+      onSuccessfulLogin();
     }
   };
 
   return (
     <div className="text-white">
       <form className="space-y-6" onSubmit={handleSubmit}>
-        <h5 className="text-2xl font-bold mx-auto px-[75px]">
+        {/* <h5 className="text-2xl font-bold mx-auto px-[75px]">
           STATMAP SIGN IN
-        </h5>
+        </h5> */}
         <div>
           <label htmlFor="email" className="block mb-2 text-sm font-medium">
             Your email
