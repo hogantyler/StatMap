@@ -127,8 +127,8 @@ const QuizModeContent = () => {
     }
     setIsCollapsed(false);
     setIsAnswered(true);
-    const answer = selectedCountry.name;
-    if (answer.code == currentFact?.Correct_Country.CC_Abbrev) {
+    const answer = selectedCountry;
+    if (answer.code === currentFact?.CC_Abbrev) {
       const points = attempts === 0 ? 1000 : attempts === 1 ? 750 : attempts === 2 ? 500 : 250;
       setScore((prev) => prev + points);
       setFeedback("Correct!");
@@ -232,23 +232,22 @@ const QuizModeContent = () => {
             </div>
           </div>
         ) : (
-          // Normal Quiz Content with collapsible functionality
-          <div className="absolute inset-x-0 top-10 flex flex-col items-center z-30">
-            <div className="max-w-xl w-full px-4">
-              {/* Combined Progress, Score, and Fact Box */}
-              <div className="bg-zinc-900/40 backdrop-blur-sm border border-white/10 rounded-lg overflow-hidden mb-3">
-                {/* Header with Question Number, Score, and Toggle */}
-                <div className="flex justify-between items-center p-3">
-                  <div className="flex items-center gap-2">
-                    <div className="text-white/70 text-sm">Question</div>
-                    <div className="bg-zinc-800 text-white px-2 py-1 rounded text-sm font-medium">
+          // Quiz Content
+          <div className="absolute inset-x-0 top-0 flex flex-col items-center z-30">
+            <div className="max-w-md w-full px-2 mt-2">
+              {/* Progress, Score, and Fact Box */}
+              <div className="bg-zinc-900/40 backdrop-blur-sm border border-white/10 rounded-lg overflow-hidden mb-2">
+                <div className="flex justify-between items-center p-2">
+                  <div className="flex items-center gap-1">
+                    <div className="text-white/70 text-xs">Question</div>
+                    <div className="bg-zinc-800 text-white px-1 py-0.5 rounded text-xs font-medium">
                       {questionNumber} / 10
                     </div>
                   </div>
-                  <div className="flex items-center gap-4">
-                    <div className="flex items-center gap-2">
-                      <div className="text-white/70 text-sm">Score</div>
-                      <div className="bg-zinc-800 text-white px-3 py-1 rounded text-sm font-medium">{score}</div>
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-center gap-1">
+                      <div className="text-white/70 text-xs">Score</div>
+                      <div className="bg-zinc-800 text-white px-2 py-0.5 rounded text-xs font-medium">{score}</div>
                     </div>
                     <button
                       onClick={() => {
@@ -257,87 +256,82 @@ const QuizModeContent = () => {
                       }}
                       className="text-white/60 hover:text-white"
                     >
-                      {isCollapsed ? <ChevronDown size={18} /> : <ChevronUp size={18} />}
+                      {isCollapsed ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
                     </button>
                   </div>
                 </div>
 
                 {/* Collapsible Fact Content */}
                 {!isCollapsed && currentFact && (
-                  <div className="p-3 border-t border-white/10">
-                    <div className="flex items-center gap-2 mb-2">
-                      <div className="font-medium text-white">Country Fact</div>
+                  <div className="p-2 border-t border-white/10">
+                    <div className="flex items-center gap-1 mb-1">
+                      <div className="font-medium text-white text-sm">Country Fact</div>
                     </div>
-                    <p className="text-white/90 text-base leading-relaxed">{currentFact.Fact}</p>
+                    <p className="text-white/90 text-sm leading-relaxed">{currentFact.Fact}</p>
                   </div>
                 )}
               </div>
 
               {/* Selected Country and Submit */}
-              <div className="mt-3 bg-zinc-900/60 backdrop-blur-sm border border-white/10 rounded-lg p-3">
-                <div className="flex flex-col gap-4">
+              <div className="mt-2 bg-zinc-900/60 backdrop-blur-sm border border-white/10 rounded-lg p-2">
+                <div className="flex flex-col gap-2">
                   <div className="flex justify-between items-center">
-                    <div className="text-white/70">Selected Country</div>
-                    <div className="text-white font-medium">{selectedCountry.name || "None"}</div>
+                    <div className="text-white/70 text-sm">Selected Country</div>
+                    <div className="text-white font-medium text-sm">{selectedCountry.name || "None"}</div>
                   </div>
-
                   <button
                     onClick={handleSubmitAnswer}
-                    className="w-full bg-emerald-500/50 text-emerald-400 border border-emerald-500/60 rounded-lg py-2 px-4 hover:bg-emerald-500/60 transition-colors font-medium flex items-center justify-center gap-2"
+                    className="w-full bg-emerald-500/50 text-emerald-400 border border-emerald-500/60 rounded-lg py-1.5 px-3 hover:bg-emerald-500/60 transition-colors font-medium flex items-center justify-center gap-2 text-sm"
                   >
                     Submit Answer
                   </button>
                 </div>
               </div>
 
-              {/* Feedback Box */}
-              {feedback && (
-                <div
-                  className={cn(
-                    "mt-3 p-2 rounded-lg border backdrop-blur-sm flex items-center justify-between min-w-0",
-                    feedbackType === "correct"
-                      ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
-                      : "bg-red-500/20 border-red-500/30 text-red-400",
-                  )}
-                >
-                  <p className="text-sm overflow-hidden text-ellipsis whitespace-nowrap">{feedback}</p>
-                </div>
-              )}
-
-              {/* End of Question Actions */}
-              {questionFinished && (
-                <div className="mt-3 grid grid-cols-3 gap-3">
-                  <a
-                    href={currentFact.Source}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="bg-zinc-900/60 backdrop-blur-sm border border-white/10 rounded-lg py-2 px-3 text-white/70 hover:text-white hover:bg-zinc-800/60 transition-colors text-sm flex items-center justify-center gap-1"
-                  >
-                    <ExternalLink size={14} />
-                    <span>Source</span>
-                  </a>
-                  <button
-                    onClick={() => setIsReportModalOpen(true)}
-                    className="bg-zinc-900/60 backdrop-blur-sm border border-white/10 rounded-lg py-2 px-3 text-white/70 hover:text-white hover:bg-zinc-800/60 transition-colors text-sm flex items-center justify-center gap-1"
-                  >
-                    <AlertTriangle size={14} />
-                    <span>Report</span>
-                  </button>
-                  <button
-                    onClick={() => {
-                      setQuestionFinished(false);
-                      handleNextQuestion();
-                    }}
-                    className="bg-sky-500/50 text-sky-400 border border-sky-500/60 rounded-lg py-2 px-3 hover:bg-sky-500/60 transition-colors text-sm font-medium flex items-center justify-center gap-1"
-                  >
-                    <ArrowRight size={14} />
-                    <span>Next</span>
-                  </button>
-                </div>
-              )}
-            </div>
-          </div>
-        )}
+{/* Feedback Box */}
+{feedback && (
+  <div
+    className={`mt-2 p-2 rounded-lg border backdrop-blur-sm flex flex-col items-center justify-center min-w-0 text-center ${
+      feedbackType === "correct"
+        ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
+        : "bg-red-500/20 border-red-500/30 text-red-400"
+    }`}
+    style={{ wordWrap: "break-word", whiteSpace: "normal" }}
+  >
+    <p className="text-sm">{feedback}</p>
+    {/* Buttons directly under the feedback banner */}
+    {questionFinished && (
+      <div className="grid grid-cols-3 gap-0 w-full mt-2">
+        <a
+          href={currentFact.Source}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-zinc-900/60 backdrop-blur-sm border border-white/10 text-white/70 hover:text-white hover:bg-zinc-800/60 transition-colors text-sm flex items-center justify-center py-2"
+        >
+          <ExternalLink size={14} />
+          <span>Source</span>
+        </a>
+        <button
+          onClick={() => setIsReportModalOpen(true)}
+          className="bg-zinc-900/60 backdrop-blur-sm border border-white/10 text-white/70 hover:text-white hover:bg-zinc-800/60 transition-colors text-sm flex items-center justify-center py-2"
+        >
+          <AlertTriangle size={14} />
+          <span>Report</span>
+        </button>
+        <button
+          onClick={() => {
+            setQuestionFinished(false);
+            handleNextQuestion();
+          }}
+          className="bg-sky-500/50 text-sky-400 border border-sky-500/60 hover:bg-sky-500/60 transition-colors text-sm font-medium flex items-center justify-center py-2"
+        >
+          <ArrowRight size={14} />
+          <span>Next</span>
+        </button>
+      </div>
+    )}
+  </div>
+)}
 
         {/* Report Fact Modal */}
         <Modal isOpen={isReportModalOpen} onClose={() => setIsReportModalOpen(false)}>
@@ -369,6 +363,9 @@ const QuizModeContent = () => {
             </button>
           </div>
         </Modal>
+      </div>
+    </div>
+        )}
       </div>
     </Suspense>
   );
