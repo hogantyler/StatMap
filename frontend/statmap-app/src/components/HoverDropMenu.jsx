@@ -44,7 +44,7 @@ const HoverDropMenu = () => {
   };
 
   return (
-    <div className="group absolute top-0 left-0 md:top-1 md:left-1 z-50">
+    <div className="group absolute top-0 left-0 z-50">
       <FlyoutLink
         FlyoutContent={() => (
           <FlyoutContent

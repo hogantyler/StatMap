@@ -117,7 +117,8 @@ const Landing = () => {
 
       {/* Main content - KEY CHANGE: pointer-events-none and auto for specific elements */}
       <div className="relative z-10 w-full h-full flex flex-col items-center justify-center pointer-events-none">
-        <div className="absolute top-1 left-1 z-50 pointer-events-auto">
+
+        <div className="absolute top-1 left-1 md:top-2 md:left-2 z-50 pointer-events-auto">
           <HoverDropMenu />
         </div>
 

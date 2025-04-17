@@ -194,7 +194,7 @@ const QuizModeContent = () => {
         </button>
 
         {/* Hover Menu in top left */}
-        <div className="absolute top-0 left-0 z-50">
+        <div className="absolute top-0 left-0 md:top-2 md:left-2 z-50">
           <HoverDropMenu />
         </div>
 
