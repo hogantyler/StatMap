@@ -99,7 +99,7 @@ const Landing = () => {
       {/* Toggle button */}
       <button
         onClick={toggleGlobeType}
-        className="fixed top-6 right-6 z-50 bg-zinc-900/80 border border-white/10 px-3 py-2 rounded-full text-white/70 hover:text-white hover:bg-zinc-800/80 transition-all duration-200"
+        className="absolute top-0 right-0 md:top-2 md:right-2 z-50 bg-zinc-900/80 border border-white/10 px-3 py-2 rounded-full text-white/70 hover:text-white hover:bg-zinc-800/80 transition-all duration-200"
         title={use3DGlobe ? "Switch to SVG Globe" : "Switch to 3D Globe"}
       >
         <div className="flex items-center gap-2">
@@ -110,7 +110,7 @@ const Landing = () => {
 
       {/* Main content */}
       <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
-        <div className="absolute top-6 left-6 z-50">
+        <div className="absolute top-0 left-0  z-50">
           <HoverDropMenu />
         </div>
 
