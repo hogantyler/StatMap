@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { supabase } from "../SupabaseContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
 import SignIn from "../SignIn";
 import SignUp from "../SignUp";
@@ -28,6 +28,8 @@ function CreateLobby() {
   const [showSignInModal, setShowSignInModal] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const navigatingToMultiplayer = useRef(false);
 
   // generate 6 character code (thanks gpt)
   const generateJoinCode = () => {
@@ -111,11 +113,13 @@ function CreateLobby() {
 
     const { data, error } = await supabase
       .from("Lobbies")
-      .insert([{
-        join_code: newJoinCode,
-        player_count: 1,
-        host_id: user.id
-      }])
+      .insert([
+        {
+          join_code: newJoinCode,
+          player_count: 1,
+          host_id: user.id,
+        },
+      ])
       .select();
 
     if (error) {
@@ -192,10 +196,15 @@ function CreateLobby() {
 
     return () => {
       const currentId = localStorage.getItem("currentLobbyId");
-      leaveLobby(currentId);
-      localStorage.removeItem("currentLobbyId");
+      if (!navigatingToMultiplayer.current && currentId) {
+        leaveLobby(currentId);
+        localStorage.removeItem("currentLobbyId");
+      } else {
+        console.log("Skipping lobby leave due to navigation to /multiplayer");
+      }
     };
   }, []);
+
   // runs once on mount
 
   // button goes back to landing
@@ -208,11 +217,13 @@ function CreateLobby() {
   const handleBack = () => navigate("/");
 
   const handleStart = async () => {
+    navigatingToMultiplayer.current = true;
     await supabase.channel(`lobby_${joinCode}`).send({
       type: "broadcast",
       event: "start_game",
       payload: { message: "Let's go!" },
     });
+    navigate("/multiplayer");
   };
 
   return (
