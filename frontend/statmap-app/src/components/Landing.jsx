@@ -91,9 +91,16 @@ const Landing = () => {
             <LandingGlobe />
           ) : (
             <div
-              className="min-h-screen bg-cover bg-center bg-black"
-              style={{ backgroundImage: `url(${BlackGlobe})` }}
-            />
+              className="min-h-screen bg-black"
+            >
+              <div
+                className="min-h-screen bg-cover bg-center opacity-30"
+                style={{
+                  backgroundImage: `url(${BlackGlobe})`,
+                  filter: 'invert(100%)'
+                }}
+              />
+            </div>
           )}
           {/* Subtle gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
