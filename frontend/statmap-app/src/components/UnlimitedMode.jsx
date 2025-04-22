@@ -26,6 +26,8 @@ function UnlimitedModeContent() {
   const [isCollapsed, setIsCollapsed] = useState(false); //making the fact box collapse
   const navigate = useNavigate();
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
+  const [typingDone, setTypingDone] = useState(false);
+  const [assetsLoaded, setAssetsLoaded] = useState(false);
 
   // Retrieve selected country from context
   const { selectedCountry } = useCountrySelection();
@@ -124,163 +126,178 @@ function UnlimitedModeContent() {
 
   const handleBack = useCallback(() => {
     playClickSound();
-    navigate("/");
+    navigate("/", {
+      state: {
+        loadingMessage: "Returning to main menu..."
+      }
+    });
   }, [navigate]);
 
+  useEffect(() => {
+    // Simulate a delay to mimic loading assets (or wait on real setup)
+    const loadAssets = async () => {
+      await new Promise((res) => setTimeout(res, 1000));
+      setAssetsLoaded(true);
+    };
+    loadAssets();
+  }, []);
+
+  if (!typingDone || !assetsLoaded) {
+    return <Loading message="Loading unlimited mode... select your guess on the globe." onComplete={() => setTypingDone(true)} />;
+  }
+
   return (
-    <Suspense fallback={<Loading />}>
-      <div className="relative min-h-screen w-full">
-        {/* Globe Background */}
-        <Globe />
+    <div className="relative min-h-screen w-full">
+      {/* Globe Background */}
+      <Globe />
 
-        {/* Back Button in top right */}
-        <button
-          onClick={handleBack}
-          className="absolute top-6 right-6 z-50 bg-zinc-900/80 border border-white/10 p-2 rounded-full text-white/70 hover:text-red-400 hover:bg-zinc-800/80 transition-all duration-200"
-          title="Return to Home"
-        >
-          <X size={20} />
-        </button>
+      {/* Back Button in top right */}
+      <button
+        onClick={handleBack}
+        className="absolute top-6 right-6 z-50 bg-zinc-900/80 border border-blue-500 p-2 rounded-full text-white/70 hover:text-red-400 hover:bg-zinc-800/80 transition-all duration-200"
+        title="Return to Home"
+      >
+        <X size={20} />
+      </button>
 
-        {/* Hover Menu in top left */}
-        <div className="absolute top-0 left-0 z-50">
-          {/* <HoverDropMenu onSignInClick={(e) => handleOpenModal(
+      {/* Hover Menu in top left */}
+      <div className="absolute top-0 left-0 z-50">
+        {/* <HoverDropMenu onSignInClick={(e) => handleOpenModal(
           <SignIn onSignUpClick={(e) => handleOpenModal(<SignUp onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/>)} 
           onAccountPageClick={(e) => handleOpenModal(<AccountPage onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/> */}
-          <HoverDropMenu />
-        </div>
+        <HoverDropMenu />
+      </div>
 
-        {/* UI Container - Moved to bottom of screen */}
-        <div className="absolute inset-x-0 bottom-2 flex flex-col items-center z-30 pointer-events-none">
-          <div className="max-w-sm w-full px-2 pointer-events-auto">
-            {/* Score and Collapsible Fact Box */}
-            <div className="bg-zinc-900/40 backdrop-blur-sm border border-white/10 rounded-lg overflow-hidden mb-2">
-              {/* Header with Score and Toggle */}
-              <div className="flex justify-between items-center p-2">
-                <div className="flex items-center gap-1">
-                  <div className="text-white/70 text-xs">Score</div>
-                  <div className="bg-zinc-800 text-white px-2 py-1 rounded text-xs font-medium">{score}</div>
-                </div>
-                <button
-                  onClick={() => {
-                    playClickSound();
-                    setIsCollapsed(!isCollapsed);
-                  }}
-                  className="text-white/60 hover:text-white"
-                >
-                  {isCollapsed ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
-                </button>
+      {/* UI Container - Moved to bottom of screen */}
+      <div className="absolute inset-x-0 bottom-2 flex flex-col items-center z-30 pointer-events-none">
+        <div className="max-w-sm w-full px-2 pointer-events-auto">
+          {/* Score and Collapsible Fact Box */}
+          <div className="bg-zinc-900/40 backdrop-blur-sm border border-white/10 rounded-lg overflow-hidden mb-2">
+            {/* Header with Score and Toggle */}
+            <div className="flex justify-between items-center p-2">
+              <div className="flex items-center gap-1">
+                <div className="text-white/70 text-xs">Score</div>
+                <div className="bg-zinc-800 text-white px-2 py-1 rounded text-xs font-medium">{score}</div>
               </div>
-
-              {/* Collapsible Fact Content */}
-              {!isCollapsed && currentFact && (
-                <div className="p-2 border-t border-white/10">
-                  <div className="flex items-center gap-1 mb-1">
-                    <div className="font-medium text-white text-sm">Country Fact</div>
-                  </div>
-                  <p className="text-white/90 text-sm leading-relaxed">{currentFact.Fact}</p>
-                </div>
-              )}
-            </div>
-
-            {/* Submit Button */}
-            <div className="mt-2 bg-zinc-900/60 backdrop-blur-sm border border-white/10 rounded-lg p-2">
-              <div className="flex flex-col gap-2">
-                <div className="flex justify-between items-center">
-                  <div className="text-white/70 text-sm">Selected Country</div>
-                  <div className="text-white font-medium text-sm">{selectedCountry.name || "None"}</div>
-                </div>
-                <button
-                  onClick={handleSubmitAnswer}
-                  className="w-full bg-emerald-500/50 text-emerald-400 border border-emerald-500/60 rounded-lg py-1.5 px-3 hover:bg-emerald-500/60 transition-colors font-medium flex items-center justify-center gap-2 text-sm"
-                >
-                  Submit Answer
-                </button>
-              </div>
-            </div>
-
-            {/* Feedback Box */}
-            {feedback && (
-              <div
-                className={`mt-2 p-2 rounded-lg border backdrop-blur-sm flex flex-col items-center justify-center min-w-0 text-center ${feedbackType === "correct"
-                  ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
-                  : "bg-red-500/20 border-red-500/30 text-red-400"
-                  }`}
-                style={{ wordWrap: "break-word", whiteSpace: "normal" }}
+              <button
+                onClick={() => {
+                  playClickSound();
+                  setIsCollapsed(!isCollapsed);
+                }}
+                className="text-white/60 hover:text-white"
               >
-                <p className="text-sm">{feedback}</p>
-                {/* Buttons directly under the feedback banner */}
-                {questionFinished && (
-                  <div className="grid grid-cols-3 gap-0 w-full mt-2">
-                    <a
-                      href={currentFact.Source}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="bg-zinc-900/60 backdrop-blur-sm border border-white/10 text-white/70 hover:text-white hover:bg-zinc-800/60 transition-colors text-sm flex items-center justify-center py-2"
-                    >
-                      <ExternalLink size={14} />
-                      <span>Source</span>
-                    </a>
-                    <button
-                      onClick={() => setIsReportModalOpen(true)}
-                      className="bg-zinc-900/60 backdrop-blur-sm border border-white/10 text-white/70 hover:text-white hover:bg-zinc-800/60 transition-colors text-sm flex items-center justify-center py-2"
-                    >
-                      <AlertTriangle size={14} />
-                      <span>Report</span>
-                    </button>
-                    <button
-                      onClick={() => {
-                        setQuestionFinished(false);
-                        loadNewFact();
-                      }}
-                      className="bg-sky-500/50 text-sky-400 border border-sky-500/60 hover:bg-sky-500/60 transition-colors text-sm font-medium flex items-center justify-center py-2"
-                    >
-                      <ArrowRight size={14} />
-                      <span>Next</span>
-                    </button>
-                  </div>
-                )}
+                {isCollapsed ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+              </button>
+            </div>
+
+            {/* Collapsible Fact Content */}
+            {!isCollapsed && currentFact && (
+              <div className="p-2 border-t border-white/10">
+                <div className="flex items-center gap-1 mb-1">
+                  <div className="font-medium text-white text-sm">Country Fact</div>
+                </div>
+                <p className="text-white/90 text-sm leading-relaxed">{currentFact.Fact}</p>
               </div>
             )}
           </div>
-        </div>
 
-        {/* <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
+          {/* Submit Button */}
+          <div className="mt-2 bg-zinc-900/60 backdrop-blur-sm border border-white/10 rounded-lg p-2">
+            <div className="flex flex-col gap-2">
+              <div className="flex justify-between items-center">
+                <div className="text-white/70 text-sm">Selected Country</div>
+                <div className="text-white font-medium text-sm">{selectedCountry.name || "None"}</div>
+              </div>
+              <button
+                onClick={handleSubmitAnswer}
+                className="w-full bg-emerald-500/50 text-emerald-400 border border-emerald-500/60 rounded-lg py-1.5 px-3 hover:bg-emerald-500/60 transition-colors font-medium flex items-center justify-center gap-2 text-sm"
+              >
+                Submit Answer
+              </button>
+            </div>
+          </div>
+
+          {/* Feedback Box */}
+          {feedback && (
+            <div
+              className={`mt-2 p-2 rounded-lg border backdrop-blur-sm flex flex-col items-center justify-center min-w-0 text-center ${feedbackType === "correct"
+                ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
+                : "bg-red-500/20 border-red-500/30 text-red-400"
+                }`}
+              style={{ wordWrap: "break-word", whiteSpace: "normal" }}
+            >
+              <p className="text-sm">{feedback}</p>
+              {/* Buttons directly under the feedback banner */}
+              {questionFinished && (
+                <div className="grid grid-cols-3 gap-0 w-full mt-2">
+                  <a
+                    href={currentFact.Source}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-zinc-900/60 backdrop-blur-sm border border-white/10 text-white/70 hover:text-white hover:bg-zinc-800/60 transition-colors text-sm flex items-center justify-center py-2"
+                  >
+                    <ExternalLink size={14} />
+                    <span>Source</span>
+                  </a>
+                  <button
+                    onClick={() => setIsReportModalOpen(true)}
+                    className="bg-zinc-900/60 backdrop-blur-sm border border-white/10 text-white/70 hover:text-white hover:bg-zinc-800/60 transition-colors text-sm flex items-center justify-center py-2"
+                  >
+                    <AlertTriangle size={14} />
+                    <span>Report</span>
+                  </button>
+                  <button
+                    onClick={() => {
+                      setQuestionFinished(false);
+                      loadNewFact();
+                    }}
+                    className="bg-sky-500/50 text-sky-400 border border-sky-500/60 hover:bg-sky-500/60 transition-colors text-sm font-medium flex items-center justify-center py-2"
+                  >
+                    <ArrowRight size={14} />
+                    <span>Next</span>
+                  </button>
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
           <SignIn />
         </Modal> */}
 
-        {/* Report Fact Modal */}
-                      <Modal isOpen={isReportModalOpen} onClose={() => setIsReportModalOpen(false)} title={"Report"} icon={User} iconColor={"sky"}>
-                        <p className="text-white/70 mb-4">Please select a reason for reporting this fact:</p>
-                        <div className="space-y-2">
-                          <button
-                            onClick={() => handleReportFact("INCORRECT_INFORMATION")}
-                            className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-left px-4 py-3 rounded-md transition-colors"
-                          >
-                            Incorrect information
-                          </button>
-                          <button
-                            onClick={() => handleReportFact("CLUE_IN_FACT")}
-                            className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-left px-4 py-3 rounded-md transition-colors"
-                          >
-                            Clue in the fact
-                          </button>
-                          <button
-                            onClick={() => handleReportFact("INAPPROPRIATE_CONTENT")}
-                            className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-left px-4 py-3 rounded-md transition-colors"
-                          >
-                            Inappropriate content
-                          </button>
-                          <button
-                            onClick={() => handleReportFact("MULTIPLE_COUNTRIES")}
-                            className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-left px-4 py-3 rounded-md transition-colors"
-                          >
-                            Fact holds true for more than one country
-                          </button>
-                        </div>
-                      </Modal>
-      </div>
-    </Suspense>
+      {/* Report Fact Modal */}
+      <Modal isOpen={isReportModalOpen} onClose={() => setIsReportModalOpen(false)} title={"Report"} icon={User} iconColor={"sky"}>
+        <p className="text-white/70 mb-4">Please select a reason for reporting this fact:</p>
+        <div className="space-y-2">
+          <button
+            onClick={() => handleReportFact("INCORRECT_INFORMATION")}
+            className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-left px-4 py-3 rounded-md transition-colors"
+          >
+            Incorrect information
+          </button>
+          <button
+            onClick={() => handleReportFact("CLUE_IN_FACT")}
+            className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-left px-4 py-3 rounded-md transition-colors"
+          >
+            Clue in the fact
+          </button>
+          <button
+            onClick={() => handleReportFact("INAPPROPRIATE_CONTENT")}
+            className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-left px-4 py-3 rounded-md transition-colors"
+          >
+            Inappropriate content
+          </button>
+          <button
+            onClick={() => handleReportFact("MULTIPLE_COUNTRIES")}
+            className="w-full bg-zinc-800 hover:bg-zinc-700 text-white text-left px-4 py-3 rounded-md transition-colors"
+          >
+            Fact holds true for more than one country
+          </button>
+        </div>
+      </Modal>
+    </div>
   );
 }
 
