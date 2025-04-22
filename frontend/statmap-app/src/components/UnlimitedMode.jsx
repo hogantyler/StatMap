@@ -154,7 +154,7 @@ function UnlimitedModeContent() {
       {/* Back Button in top right */}
       <button
         onClick={handleBack}
-        className="absolute top-6 right-6 z-50 bg-zinc-900/80 border border-blue-500 p-2 rounded-full text-white/70 hover:text-red-400 hover:bg-zinc-800/80 transition-all duration-200"
+        className="absolute top-6 right-6 z-50 bg-zinc-900/80 border border-red-400 p-2 rounded-full text-white/70 hover:text-red-400 hover:bg-zinc-800/80 transition-all duration-200"
         title="Return to Home"
       >
         <X size={20} />

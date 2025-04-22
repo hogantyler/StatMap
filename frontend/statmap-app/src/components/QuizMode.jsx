@@ -185,6 +185,7 @@ const QuizModeContent = () => {
     });
   };
 
+  //load assets while animating the loading screen
   useEffect(() => {
     // Simulate a delay to mimic loading assets (or wait on real setup)
     const loadAssets = async () => {
@@ -194,6 +195,7 @@ const QuizModeContent = () => {
     loadAssets();
   }, []);
 
+  //show loading screen until done animating and assets are loaded
   if (!typingDone || !assetsLoaded) {
     return <Loading message="Loading quiz mode... select your guess on the globe." onComplete={() => setTypingDone(true)} />;
   }
@@ -206,7 +208,7 @@ const QuizModeContent = () => {
       {/* Back Button in top right */}
       <button
         onClick={handleBack}
-        className="absolute top-6 right-6 z-50 bg-zinc-900/80 border p-2 rounded-full text-white/70 border-blue-500 hover:text-red-400 hover:bg-zinc-800/80 transition-all duration-200"
+        className="absolute top-6 right-6 z-50 bg-zinc-900/80 border p-2 rounded-full text-white/70 border-red-400 hover:text-red-400 hover:bg-zinc-800/80 transition-all duration-200"
         title="Return to Home"
       >
         <X size={20} />

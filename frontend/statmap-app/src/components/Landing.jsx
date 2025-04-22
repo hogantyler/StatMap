@@ -55,8 +55,7 @@ const Landing = () => {
   const [typingDone, setTypingDone] = useState(false);
   const [assetsLoaded, setAssetsLoaded] = useState(false);
 
-
-
+  //logic for giving right loading screen message
   const location = useLocation();
   const loadingMessage =
   location.state?.loadingMessage ||
@@ -92,6 +91,7 @@ const Landing = () => {
     { name: "CapitalWhiz", score: 810 },
   ]);
 
+  //attempting to load assets in background while loading screen is running
   useEffect(() => {
     // Simulate a delay to mimic loading assets (or wait on real setup)
     const loadAssets = async () => {
@@ -100,7 +100,7 @@ const Landing = () => {
     };
     loadAssets();
   }, []);
-
+  //show loading screen until assets are loaded and animation is done
   if (!typingDone || !assetsLoaded) {
     return <Loading message={loadingMessage} onComplete={() => setTypingDone(true)} />;
   }
