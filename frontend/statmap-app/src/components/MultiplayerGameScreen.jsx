@@ -57,16 +57,19 @@ const MultiplayerGameScreenContent = () => {
 
   const removePlayerAndCleanupLobby = async () => {
     if (!lobbyId || !userId) return;
+    if (isHost) {
+      handleDisbandLobby();
+    } else {
+      await supabase.from("Players").delete().eq("id", userId);
 
-    await supabase.from("Players").delete().eq("id", userId);
+      const { data: remaining } = await supabase
+        .from("Players")
+        .select("id")
+        .eq("lobby_id", lobbyId);
 
-    const { data: remaining } = await supabase
-      .from("Players")
-      .select("id")
-      .eq("lobby_id", lobbyId);
-
-    if (remaining.length === 0) {
-      await supabase.from("Lobbies").delete().eq("id", lobbyId);
+      if (remaining.length === 0) {
+        await supabase.from("Lobbies").delete().eq("id", lobbyId);
+      }
     }
   };
   useEffect(() => {
@@ -159,6 +162,19 @@ const MultiplayerGameScreenContent = () => {
           setIsCollapsed(false);
         }
       )
+      // Add this in the same broadcast subscription that handles 'disband_lobby'
+      .on("broadcast", { event: "restart_quiz" }, () => {
+        // Reset local state to get fresh lobby data and re-enter the game screen
+        setScore(0);
+        setAttempts(0);
+        setFeedback("");
+        setFeedbackType("");
+        setQuizComplete(false);
+        setShowLeaderboard(false);
+        setIsCollapsed(false);
+        // You could optionally reload the page or re-fetch lobby state here
+        navigate("/multiplayer");
+      })
       .subscribe();
 
     return () => supabase.removeChannel(chan);
@@ -327,6 +343,38 @@ const MultiplayerGameScreenContent = () => {
     navigate("/"); // then navigate away
   };
 
+  useEffect(() => {
+    if (!lobbyId || !userId) return;
+
+    const channel = supabase
+      .channel(`lobby_${lobbyId}_broadcast`)
+      .on("broadcast", { event: "disband_lobby" }, async () => {
+        await supabase.from("Players").delete().eq("id", userId);
+        navigate("/");
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [lobbyId, userId]);
+
+  const handleDisbandLobby = async () => {
+    if (!lobbyId) return;
+
+    // broadcast to disband lobby
+    await supabase.channel(`lobby_${lobbyId}_broadcast`).send({
+      type: "broadcast",
+      event: "disband_lobby",
+      payload: { message: "Lobby is being disbanded." },
+    });
+
+    await supabase.from("Players").delete().eq("id", userId);
+    await supabase.from("Lobbies").delete().eq("id", lobbyId);
+
+    navigate("/");
+  };
+
   return (
     <Suspense fallback={<Loading />}>
       <div className="relative min-h-screen w-full">
@@ -361,25 +409,55 @@ const MultiplayerGameScreenContent = () => {
               {isHost ? (
                 <div className="space-x-4">
                   <button
-                    onClick={() =>
-                      supabase
+                    onClick={async () => {
+                      playClickSound();
+
+                      // get the new q's
+                      const arr = [];
+                      for (let i = 0; i < 10; i++) {
+                        const { data } = await supabase.rpc("random_fact");
+                        if (data) arr.push(data);
+                      }
+
+                      // reset questions and timer
+                      await supabase
                         .from("Lobbies")
                         .update({
+                          questions: arr,
                           question_number: 1,
                           question_started_at: new Date().toISOString(),
-                          questions: questions,
                         })
-                        .eq("id", lobbyId)
-                    }
+                        .eq("id", lobbyId);
+
+                      // reset player progress
+                      await supabase
+                        .from("Players")
+                        .update({
+                          score: 0,
+                          last_answered: 0,
+                        })
+                        .eq("lobby_id", lobbyId);
+
+                      // broadcast to all players
+                      await supabase
+                        .channel(`lobby_${lobbyId}_broadcast`)
+                        .send({
+                          type: "broadcast",
+                          event: "restart_quiz",
+                          payload: {
+                            message: "Quiz restarting with new questions.",
+                          },
+                        });
+
+                      // have to manually reset quiz state for host
+                      setQuizComplete(false);
+                    }}
                     className="px-6 py-2 bg-green-600 text-white rounded-full"
                   >
                     Restart Quiz
                   </button>
                   <button
-                    onClick={() => {
-                      supabase.from("Lobbies").delete().eq("id", lobbyId);
-                      navigate("/");
-                    }}
+                    onClick={handleDisbandLobby}
                     className="px-6 py-2 bg-red-600 text-white rounded-full"
                   >
                     Disband Lobby
