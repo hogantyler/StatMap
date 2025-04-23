@@ -17,7 +17,6 @@ const LobbyTest = () => {
   const [showSignInModal, setShowSignInModal] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
 
-
   async function handleSubmit(e) {
     e.preventDefault();
     const {
@@ -46,16 +45,17 @@ const LobbyTest = () => {
       return;
     }
 
-    // check the number of players in the lobby (max 2 for now)
+    // check the number of players in the lobby
     const { count, error: countError } = await supabase
       .from("Players")
       .select("*", { count: "exact" })
       .eq("lobby_id", lobby.id);
 
-    if (countError || count >= 2) {
-      console.error("Lobby is full!");
-      return;
-    }
+    // removing limit of 2 players in a lobby
+    // if (countError || count >= 2) {
+    //   console.error("Lobby is full!");
+    //   return;
+    // }
 
     // Add the user to the lobby
     const { data, error: joinError } = await supabase
@@ -225,7 +225,10 @@ const LobbyTest = () => {
           Create Lobby
         </button>
         <div className="bg-gradient-to-r from-white to-gray-300 p-8 rounded-lg shadow-lg border-2 border-black w-full max-w-md text-center">
-          <form onSubmit={joinLobbyByCode} className="flex flex-col items-center">
+          <form
+            onSubmit={joinLobbyByCode}
+            className="flex flex-col items-center"
+          >
             <input
               type="text"
               value={joinCode}
@@ -248,31 +251,30 @@ const LobbyTest = () => {
         >
           SIGN IN / SIGN UP
         </button>
-
       </div>
-      {
-        showSignInModal && (
-          <Modal isOpen={showSignInModal} onClose={() => setShowSignInModal(false)}>
-            <SignIn
-              onModalClose={() => setShowSignInModal(false)}
-              onSignUpClick={() => {
-                setShowSignInModal(false);
-                setShowSignUpModal(true);
-              }}
-            />
-          </Modal>
-        )
-      }
+      {showSignInModal && (
+        <Modal
+          isOpen={showSignInModal}
+          onClose={() => setShowSignInModal(false)}
+        >
+          <SignIn
+            onModalClose={() => setShowSignInModal(false)}
+            onSignUpClick={() => {
+              setShowSignInModal(false);
+              setShowSignUpModal(true);
+            }}
+          />
+        </Modal>
+      )}
 
-      {
-        showSignUpModal && (
-          <Modal isOpen={showSignUpModal} onClose={() => setShowSignUpModal(false)}>
-            <SignUp
-              onModalClose={() => setShowSignUpModal(false)}
-            />
-          </Modal>
-        )
-      }
+      {showSignUpModal && (
+        <Modal
+          isOpen={showSignUpModal}
+          onClose={() => setShowSignUpModal(false)}
+        >
+          <SignUp onModalClose={() => setShowSignUpModal(false)} />
+        </Modal>
+      )}
     </>
   ) : (
     <>
