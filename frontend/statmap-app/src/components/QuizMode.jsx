@@ -83,8 +83,8 @@ const QuizModeContent = () => {
               Hint_One_Used: hintOneUsed,
               Hint_Two_Used: hintTwoUsed,
               Hint_Three_Used: hintThreeUsed,
-              Start_Time: String(startTime),
-              End_Time: String(new Date()),
+              Start_Time: startTime.getTime(),
+              End_Time: (new Date()).getTime(),
             },
           ])
           .select();

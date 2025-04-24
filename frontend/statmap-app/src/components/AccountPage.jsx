@@ -64,13 +64,12 @@ const AccountPage = ({ isOpen, onModalClose }) => {
       .select('*')
       .eq('User_ID', user_id)
       .limit(10)
-      .order('Game Logs.Start_Time', { asc: false });
 
     if (error) {
       // alert(error);
       console.log(error);
     } else {
-      setGameLogs(data);
+      setGameLogs(data.sort((a, b) => b.Start_Time - a.End_Time));
     }
   }
 
@@ -92,8 +91,8 @@ const AccountPage = ({ isOpen, onModalClose }) => {
 
   // Calculate game duration in a readable format
   const calculateDuration = (startTime, endTime) => {
-    const start = new Date(startTime);
-    const end = new Date(endTime);
+    const start = startTime;
+    const end = endTime;
     const diffMs = end - start;
     const diffMins = Math.floor(diffMs / 60000);
     const diffSecs = Math.floor((diffMs % 60000) / 1000);
