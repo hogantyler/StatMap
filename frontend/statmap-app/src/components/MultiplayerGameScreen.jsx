@@ -321,7 +321,7 @@ const MultiplayerGameScreenContent = () => {
 
 
     try {
-      if (attempts > 3) setScore(0);
+      if (attempts > 3) points = 0;
       const { error } = await supabase.rpc("increment_score", {
         player_id: userId,
         points: points,
