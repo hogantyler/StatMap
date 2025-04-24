@@ -58,8 +58,8 @@ const Landing = () => {
   //logic for giving right loading screen message
   const location = useLocation();
   const loadingMessage =
-  location.state?.loadingMessage ||
-  "Welcome to StatMap, the world's next great online trivia game.";
+    location.state?.loadingMessage ||
+    "Welcome to StatMap, the world's next great online trivia game.";
 
   const handleOpenModal = ({ title, icon, content }) => {
     playClickSound();
@@ -246,7 +246,7 @@ const Landing = () => {
               )}
               onMouseEnter={() => setHoveredMode("multiplayer")}
               onMouseLeave={() => setHoveredMode(null)}
-            //onClick={() => handleNavigate("/lobbyTest")}
+              onClick={() => handleNavigate("/lobbyTest")}
             >
               <div
                 className={cn(
@@ -257,13 +257,13 @@ const Landing = () => {
 
               <button
                 className="w-full p-6 flex items-center justify-between text-left"
-                onClick={() => alert("Multiplayer is still in development. Check back soon!")/*handleNavigate("/lobbyTest")*/}
+                onClick={() => handleNavigate("/lobbyTest")}
               >
                 <div>
                   <h2 className="text-2xl font-medium text-white">Multiplayer</h2>
                   <p className="text-white/60 mt-1 max-w-md">
                     Compete with friends in real-time challenges{" "}
-                    <span className="text-xs ml-2 py-0.5 px-2 bg-white/10 rounded-full">Coming Soon</span>
+                    <span className="text-xs ml-2 py-0.5 px-2 bg-white/10 rounded-full">BETA</span>
                   </p>
                 </div>
                 <div

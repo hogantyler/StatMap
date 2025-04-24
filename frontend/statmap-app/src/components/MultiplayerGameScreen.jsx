@@ -10,6 +10,7 @@ import {
   useCountrySelection,
 } from "./CountrySelectionContext";
 import { playClickSound } from "../utils/soundUtils";
+import { ChevronDown, ChevronUp } from "lucide-react";
 
 const MultiplayerGameScreenContent = () => {
   const { selectedCountry, selectCountry } = useCountrySelection();
@@ -31,6 +32,8 @@ const MultiplayerGameScreenContent = () => {
   const [feedback, setFeedback] = useState("");
   const [feedbackType, setFeedbackType] = useState("");
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [typingDone, setTypingDone] = useState(false);
+  const [assetsLoaded, setAssetsLoaded] = useState(false);
 
   // Get userId
   useEffect(() => {
@@ -39,15 +42,14 @@ const MultiplayerGameScreenContent = () => {
     });
   }, []);
 
-
-  //Cleanup lobby when game is closed or people leave 
+  //Cleanup lobby when game is closed or people leave
   useEffect(() => {
     const cleanup = async () => {
       if (userId) {
         await supabase.from("Players").delete().eq("id", userId);
       }
     };
-  
+
     window.addEventListener("beforeunload", cleanup);
     window.addEventListener("unload", cleanup);
     return () => {
@@ -57,29 +59,30 @@ const MultiplayerGameScreenContent = () => {
   }, [userId]);
 
   const removePlayerAndCleanupLobby = async () => {
-  if (!lobbyId || !userId) return;
+    if (!lobbyId || !userId) return;
+    if (isHost) {
+      handleDisbandLobby();
+    } else {
+      await supabase.from("Players").delete().eq("id", userId);
 
-  await supabase.from("Players").delete().eq("id", userId);
+      const { data: remaining } = await supabase
+        .from("Players")
+        .select("id")
+        .eq("lobby_id", lobbyId);
 
-  const { data: remaining } = await supabase
-    .from("Players")
-    .select("id")
-    .eq("lobby_id", lobbyId);
-
-  if (remaining.length === 0) {
-    await supabase.from("Lobbies").delete().eq("id", lobbyId);
-  }
-};
-useEffect(() => {
-  const handleUnload = async () => {
-    await removePlayerAndCleanupLobby();
+      if (remaining.length === 0) {
+        await supabase.from("Lobbies").delete().eq("id", lobbyId);
+      }
+    }
   };
+  useEffect(() => {
+    const handleUnload = async () => {
+      await removePlayerAndCleanupLobby();
+    };
 
-  window.addEventListener("beforeunload", handleUnload);
-  return () => window.removeEventListener("beforeunload", handleUnload);
-}, []);
-
-  
+    window.addEventListener("beforeunload", handleUnload);
+    return () => window.removeEventListener("beforeunload", handleUnload);
+  }, []);
 
   // Get lobbyId from Players table
   useEffect(() => {
@@ -130,7 +133,10 @@ useEffect(() => {
         setQuestionNumber(lobby.question_number);
         setCurrentFact(lobby.questions[lobby.question_number - 1] || null);
         setTimer(
-          60 - Math.floor((new Date() - new Date(lobby.question_started_at)) / 1000)
+          60 -
+          Math.floor(
+            (new Date() - new Date(lobby.question_started_at)) / 1000
+          )
         );
       }
     };
@@ -159,6 +165,19 @@ useEffect(() => {
           setIsCollapsed(false);
         }
       )
+      // Add this in the same broadcast subscription that handles 'disband_lobby'
+      .on("broadcast", { event: "restart_quiz" }, () => {
+        // Reset local state to get fresh lobby data and re-enter the game screen
+        setScore(0);
+        setAttempts(0);
+        setFeedback("");
+        setFeedbackType("");
+        setQuizComplete(false);
+        setShowLeaderboard(false);
+        setIsCollapsed(false);
+        // You could optionally reload the page or re-fetch lobby state here
+        navigate("/multiplayer");
+      })
       .subscribe();
 
     return () => supabase.removeChannel(chan);
@@ -182,7 +201,12 @@ useEffect(() => {
       .channel(`players_${lobbyId}`)
       .on(
         "postgres_changes",
-        { event: "*", schema: "public", table: "Players", filter: `lobby_id=eq.${lobbyId}` },
+        {
+          event: "*",
+          schema: "public",
+          table: "Players",
+          filter: `lobby_id=eq.${lobbyId}`,
+        },
         ({ new: p }) => {
           setPlayers((prev) => {
             const idx = prev.findIndex((x) => x.id === p.id);
@@ -203,9 +227,11 @@ useEffect(() => {
   // Timer logic and host advancing
   useEffect(() => {
     if (quizComplete || showLeaderboard || timer <= 0 || !currentFact) return;
-  
-    const allAnswered = players.length > 0 && players.every(p => p.last_answered >= questionNumber);
-  
+
+    const allAnswered =
+      players.length > 0 &&
+      players.every((p) => p.last_answered >= questionNumber);
+
     const interval = setInterval(() => {
       setTimer((t) => {
         if (t <= 1 || allAnswered) {
@@ -235,11 +261,19 @@ useEffect(() => {
         return t - 1;
       });
     }, 1000);
-  
-    return () => clearInterval(interval);
-  }, [timer, players, questionNumber, isHost, quizComplete, showLeaderboard, currentFact]);
 
-  const handleSubmitAnswer = useCallback(() => {
+    return () => clearInterval(interval);
+  }, [
+    timer,
+    players,
+    questionNumber,
+    isHost,
+    quizComplete,
+    showLeaderboard,
+    currentFact,
+  ]);
+
+  const handleSubmitAnswer = useCallback(async () => {
     playClickSound();
     if (!currentFact || timer <= 0) return;
     if (!selectedCountry.name) {
@@ -247,10 +281,8 @@ useEffect(() => {
       return;
     }
 
-    const correct =
-      selectedCountry.name.includes(currentFact.Correct_Country) ||
-      currentFact.Correct_Country.includes(selectedCountry.name);
-    let pts = [1000, 750, 500, 250][attempts] || 250;
+    const correct = selectedCountry.code === currentFact?.CC_Abbrev
+    let pts = [1000, 750, 500, 250][attempts];
 
     if (correct) {
       setScore((s) => s + pts);
@@ -259,9 +291,11 @@ useEffect(() => {
     } else if (attempts < 3) {
       setAttempts((a) => a + 1);
       const hintParts = [];
-      if (attempts >= 0) hintParts.push(`Continent - ${currentFact.CC_Continent}`);
+      if (attempts >= 0)
+        hintParts.push(`Continent - ${currentFact.CC_Continent}`);
       if (attempts >= 1) hintParts.push(`Capital - ${currentFact.CC_Capital}`);
-      if (attempts >= 2) hintParts.push(`Abbreviation - ${currentFact.CC_Abbrev}`);
+      if (attempts >= 2)
+        hintParts.push(`Abbreviation - ${currentFact.CC_Abbrev}`);
       setFeedback(`Incorrect! Hint: ${hintParts.join(" | ")}`);
       setFeedbackType("incorrect");
       return;
@@ -271,142 +305,266 @@ useEffect(() => {
         `Capital - ${currentFact.CC_Capital}`,
         `Abbreviation - ${currentFact.CC_Abbrev}`,
       ];
-      setFeedback(`Incorrect! The answer was ${currentFact.Correct_Country}. Hints: ${hintParts.join(" | ")}`);
+      setFeedback(
+        `Incorrect! The answer was ${currentFact.Correct_Country
+        }.`
+      );
       setFeedbackType("incorrect");
     }
 
-    // Always update player score + last_answered:
-    supabase
-      .from("Players")
-      .update({ score: score + pts, last_answered: questionNumber })
-      .eq("id", userId);
-  }, [selectedCountry.name, currentFact, attempts, score, questionNumber, timer, userId]);
+    try {
+      console.log(userId);
+      console.log(pts);
+      console.log(questionNumber);
+      if (attempts >= 3) pts = 0;
+      const { error } = await supabase.rpc("increment_score", {
+        player_id: userId,
+        points: pts,
+        question: questionNumber,
+      });
+      if (error) throw error;
+      console.log("Score updated!");
+    } catch (err) {
+      console.error("Failed to update score:", err);
+    }
+  }, [
+    selectedCountry.name,
+    currentFact,
+    attempts,
+    score,
+    questionNumber,
+    timer,
+    userId,
+  ]);
 
   const handleBack = async () => {
     playClickSound();
-    await removePlayerAndCleanupLobby();  //cleanup first
-    navigate("/");  // then navigate away
+    await removePlayerAndCleanupLobby(); //cleanup first
+    navigate("/", {
+      state: {
+        loadingMessage: "Returning to main menu..."
+      }
+    }); // then navigate away
   };
 
-  return (
-    <Suspense fallback={<Loading />}>
-      <div className="relative min-h-screen w-full">
-        <Globe />
-        <div className="absolute top-0 right-0 z-50">
-          <button onClick={handleBack} className="text-white p-2 hover:text-red-600">
-            <FaTimes size={50} />
-          </button>
-        </div>
-        <div className="absolute top-0 left-0 z-50">
-          <HoverDropMenu />
-        </div>
+  useEffect(() => {
+    if (!lobbyId || !userId) return;
 
-        {quizComplete ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-30">
-            <div className="bg-transparent p-10 rounded-xl w-11/12 max-w-3xl border-2 border-white shadow-xl text-center">
-              <h2 className="text-3xl font-bold text-white mb-4">Quiz Complete!</h2>
-              <ul className="text-white mb-6">
-                {players.sort((a, b) => b.score - a.score).map((p) => (
-                  <li key={p.id}>{p.display_name || "Player"}: {p.score}</li>
+    const channel = supabase
+      .channel(`lobby_${lobbyId}_broadcast`)
+      .on("broadcast", { event: "disband_lobby" }, async () => {
+        await supabase.from("Players").delete().eq("id", userId);
+        navigate("/");
+      })
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [lobbyId, userId]);
+
+  const handleDisbandLobby = async () => {
+    if (!lobbyId) return;
+
+    // broadcast to disband lobby
+    await supabase.channel(`lobby_${lobbyId}_broadcast`).send({
+      type: "broadcast",
+      event: "disband_lobby",
+      payload: { message: "Lobby is being disbanded." },
+    });
+
+    await supabase.from("Players").delete().eq("id", userId);
+    await supabase.from("Lobbies").delete().eq("id", lobbyId);
+
+    navigate("/");
+  };
+
+  //load assets while animating the loading screen
+  useEffect(() => {
+    // Simulate a delay to mimic loading assets (or wait on real setup)
+    const loadAssets = async () => {
+      await new Promise((res) => setTimeout(res, 1000));
+      setAssetsLoaded(true);
+    };
+    loadAssets();
+  }, []);
+
+  //show loading screen until done animating and assets are loaded
+  if (!typingDone || !assetsLoaded) {
+    return <Loading message="Loading multiplayer... answer in under a minute!" onComplete={() => setTypingDone(true)} />;
+  }
+
+  return (
+    <div className="relative min-h-screen w-full">
+      {/* Globe Background */}
+      <Globe />
+
+      {/* Back Button */}
+      <div className="fixed top-6 right-6 z-50 flex items-center">
+        <button
+          onClick={handleBack}
+          className="bg-zinc-900/80 border border-red-400 p-2 rounded-full text-white/70 hover:text-red-400 hover:bg-zinc-800/80 transition-all duration-200"
+          title="Return to Home"
+        >
+          <FaTimes size={20} />
+        </button>
+      </div>
+
+      {/* Hover Menu */}
+      <div className="fixed top-0 left-0 z-50 flex items-center">
+        <HoverDropMenu />
+      </div>
+
+      {/* Main Gameplay UI */}
+      {quizComplete ? (
+        // Post-Game Screen
+        <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-30">
+          <div className="bg-zinc-900/80 border border-white/10 rounded-lg p-6 max-w-lg w-full text-center">
+            <h2 className="text-3xl font-bold text-white mb-4">Quiz Complete!</h2>
+            <ul className="text-white/70 mb-6">
+              {players
+                .sort((a, b) => b.score - a.score)
+                .map((p) => (
+                  <li key={p.id} className="text-lg">
+                    {p.display_name || "Player"}: {p.score}
+                  </li>
                 ))}
-              </ul>
-              {isHost ? (
-                <div className="space-x-4">
-                  <button
-                    onClick={() =>
-                      supabase.from("Lobbies").update({
+            </ul>
+            {isHost ? (
+              <div className="flex justify-center gap-4">
+                <button
+                  onClick={async () => {
+                    playClickSound();
+                    const arr = [];
+                    for (let i = 0; i < 10; i++) {
+                      const { data } = await supabase.rpc("random_fact");
+                      if (data) arr.push(data);
+                    }
+                    await supabase
+                      .from("Lobbies")
+                      .update({
+                        questions: arr,
                         question_number: 1,
                         question_started_at: new Date().toISOString(),
-                        questions: questions,
-                      }).eq("id", lobbyId)
-                    }
-                    className="px-6 py-2 bg-green-600 text-white rounded-full"
-                  >
-                    Restart Quiz
-                  </button>
-                  <button
-                    onClick={() => {
-                      supabase.from("Lobbies").delete().eq("id", lobbyId);
-                      navigate("/");
-                    }}
-                    className="px-6 py-2 bg-red-600 text-white rounded-full"
-                  >
-                    Disband Lobby
-                  </button>
-                </div>
-              ) : (
-                <button onClick={handleBack} className="px-6 py-2 bg-gray-600 text-white rounded-full">Back Home</button>
-              )}
-            </div>
+                      })
+                      .eq("id", lobbyId);
+                    await supabase
+                      .from("Players")
+                      .update({ score: 0, last_answered: 0 })
+                      .eq("lobby_id", lobbyId);
+                    setQuizComplete(false);
+                    setScore(0);
+                    setAttempts(0);
+                    setFeedback("");
+                    setFeedbackType("");
+                    setShowLeaderboard(false);
+                    setIsCollapsed(false);
+                    setQuestionNumber(1);
+                    setCurrentFact(arr[0]);
+                    setQuestions(arr);
+                  }}
+                  className="bg-emerald-500/50 text-emerald-400 border border-emerald-500/60 rounded-lg py-2 px-4 hover:bg-emerald-500/60 transition-colors font-medium"
+                >
+                  Restart Quiz
+                </button>
+                <button
+                  onClick={handleDisbandLobby}
+                  className="bg-red-500/50 text-red-400 border border-red-500/60 rounded-lg py-2 px-4 hover:bg-red-500/60 transition-colors font-medium"
+                >
+                  Disband Lobby
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={handleBack}
+                className="bg-zinc-900/60 text-white/70 border border-white/10 rounded-lg py-2 px-4 hover:bg-zinc-800/60 transition-colors font-medium"
+              >
+                Back Home
+              </button>
+            )}
           </div>
-        ) : showLeaderboard ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-30">
-            <div className="bg-white bg-opacity-80 p-8 rounded-xl w-11/12 max-w-2xl text-center">
-              <h2 className="text-xl font-semibold mb-4">Leaderboard</h2>
-              <ul className="text-black mb-4">
-                {players.sort((a, b) => b.score - a.score).map((p) => (
-                  <li key={p.id}>{p.display_name || "Player"}: {p.score}</li>
+        </div>
+      ) : showLeaderboard ? (
+        // Leaderboard Screen
+        <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-30">
+          <div className="bg-zinc-900/80 border border-white/10 rounded-lg p-6 max-w-lg w-full text-center">
+            <h2 className="text-2xl font-bold text-white mb-4">Leaderboard</h2>
+            <ul className="text-white/70 mb-4">
+              {players
+                .sort((a, b) => b.score - a.score)
+                .map((p) => (
+                  <li key={p.id} className="text-lg">
+                    {p.display_name || "Player"}: {p.score}
+                  </li>
                 ))}
-              </ul>
-              <p>Next question shortly...</p>
-            </div>
+            </ul>
+            <p className="text-white/60">Next question starting shortly...</p>
           </div>
-        ) : (
-          <div className="absolute top-0 left-0 w-full flex flex-col items-center mt-2 z-30">
-            <div className="bg-white bg-opacity-0 p-4 rounded-xl w-11/12 max-w-3xl">
-              <div className="text-center text-white font-bold text-sm">
-                Question: {questionNumber} of {questions.length}
+        </div>
+      ) : (
+        // Gameplay UI
+        <div className="absolute inset-x-0 bottom-2 flex flex-col items-center z-30 pointer-events-none">
+          <div className="max-w-md w-full px-2 pointer-events-auto">
+            {/* Score and Collapsible Fact Box */}
+            <div className="bg-zinc-900/40 backdrop-blur-sm border border-white/10 rounded-lg overflow-hidden mb-2">
+              <div className="flex justify-between items-center p-2">
+                <div className="flex items-center gap-2">
+                  <div className="bg-zinc-800 text-white px-2 py-1 rounded text-xs font-medium">
+                    Question {questionNumber} of {questions.length}
+                  </div>
+                  <div className="bg-zinc-800 text-white px-2 py-1 rounded text-xs font-medium">
+                    Score: {score}
+                  </div>
+                </div>
+                <div className="text-white/70 text-xs">Time Left: {timer}s</div>
+                <button
+                  onClick={() => setIsCollapsed(!isCollapsed)}
+                  className="text-white/60 hover:text-white transition-all"
+                >
+                  {isCollapsed ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                </button>
               </div>
-              <div className="text-center text-white text-xl font-bold mb-1">Score: {score}</div>
-              <div className="text-center text-white mb-2">Time left: {timer}s</div>
-              {!isCollapsed && currentFact && (
-                <div className="mb-2 p-2 border border-white rounded">
-                  <p className="text-center font-semibold text-white">{currentFact.Fact}</p>
+              {!isCollapsed && (
+                <div className="p-2 border-t border-white/10">
+                  <div className="text-center text-white text-sm font-medium">
+                    {currentFact?.Fact || "Loading question..."}
+                  </div>
                 </div>
               )}
-              <div className="mb-2 text-center text-white text-sm">
-                Selected Country: {selectedCountry.name || "None"}
-              </div>
-              <div className="flex justify-center items-center mb-4">
+            </div>
+
+            {/* Submit Button */}
+            <div className="mt-2 bg-zinc-900/60 backdrop-blur-sm border border-white/10 rounded-lg p-2">
+              <div className="flex flex-col gap-2">
+                <div className="flex justify-between items-center">
+                  <div className="text-white/70 text-sm">Selected Country</div>
+                  <div className="text-white font-medium text-sm">{selectedCountry.name || "None"}</div>
+                </div>
                 <button
                   onClick={handleSubmitAnswer}
-                  className="bg-green-600 text-white py-2 px-4 rounded-full hover:bg-green-500"
+                  className="w-full bg-emerald-500/50 text-emerald-400 border border-emerald-500/60 rounded-lg py-1.5 px-3 hover:bg-emerald-500/60 transition-colors font-medium flex items-center justify-center gap-2 text-sm"
                 >
                   Submit Answer
                 </button>
-                {!isCollapsed && (
-                  <button
-                    onClick={() => {
-                      playClickSound();
-                      setIsCollapsed(true);
-                    }}
-                    className="ml-4 bg-white text-black rounded-full p-1 hover:bg-green-600 transition-colors"
-                  >
-                    Hide Fact
-                  </button>
-                )}
-                {isCollapsed && (
-                  <button
-                    onClick={() => {
-                      playClickSound();
-                      setIsCollapsed(false);
-                    }}
-                    className="bg-white text-black rounded-full p-1 hover:bg-green-600 transition-colors"
-                  >
-                    Show Fact
-                  </button>
-                )}
               </div>
-              {feedback && (
-                <div className={`mt-2 p-2 rounded text-center text-sm ${feedbackType === "correct" ? "bg-green-300 text-green-900" : "bg-red-300 text-red-900"}`}>
-                  {feedback}
-                </div>
-              )}
             </div>
+
+            {/* Feedback Box */}
+            {feedback && (
+              <div
+                className={`mt-2 p-2 rounded-lg border backdrop-blur-sm flex flex-col items-center justify-center min-w-0 text-center ${feedbackType === "correct"
+                  ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
+                  : "bg-red-500/20 border-red-500/30 text-red-400"
+                  }`}
+                style={{ wordWrap: "break-word", whiteSpace: "normal" }}
+              >
+                <p className="text-sm">{feedback}</p>
+              </div>
+            )}
           </div>
-        )}
-      </div>
-    </Suspense>
+        </div>
+      )}
+    </div>
   );
 };
 

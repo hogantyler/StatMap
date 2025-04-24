@@ -1,10 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { supabase } from "../SupabaseContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
 import SignIn from "../SignIn";
 import SignUp from "../SignUp";
 import Modal from "../Modal";
+import { motion } from "framer-motion";
 
 /**
  * This outputs a 6 character digit code, which is immediately integrated into the
@@ -28,6 +29,8 @@ function CreateLobby() {
   const [showSignInModal, setShowSignInModal] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
   const navigate = useNavigate();
+  const location = useLocation();
+  const navigatingToMultiplayer = useRef(false);
 
   // generate 6 character code (thanks gpt)
   const generateJoinCode = () => {
@@ -111,11 +114,13 @@ function CreateLobby() {
 
     const { data, error } = await supabase
       .from("Lobbies")
-      .insert([{
-        join_code: newJoinCode,
-        player_count: 1,
-        host_id: user.id
-      }])
+      .insert([
+        {
+          join_code: newJoinCode,
+          player_count: 1,
+          host_id: user.id,
+        },
+      ])
       .select();
 
     if (error) {
@@ -192,10 +197,15 @@ function CreateLobby() {
 
     return () => {
       const currentId = localStorage.getItem("currentLobbyId");
-      leaveLobby(currentId);
-      localStorage.removeItem("currentLobbyId");
+      if (!navigatingToMultiplayer.current && currentId) {
+        leaveLobby(currentId);
+        localStorage.removeItem("currentLobbyId");
+      } else {
+        console.log("Skipping lobby leave due to navigation to /multiplayer");
+      }
     };
   }, []);
+
   // runs once on mount
 
   // button goes back to landing
@@ -208,79 +218,93 @@ function CreateLobby() {
   const handleBack = () => navigate("/");
 
   const handleStart = async () => {
+    navigatingToMultiplayer.current = true;
     await supabase.channel(`lobby_${joinCode}`).send({
       type: "broadcast",
       event: "start_game",
       payload: { message: "Let's go!" },
     });
+    navigate("/multiplayer");
   };
 
   return (
     <>
-      {/* Back Button in top right */}
       {loggedIn ? (
-        <>
-          <div className="absolute top-0 right-0 z-50">
-            <button
-              onClick={handleBack}
-              className=" text-black border border-white rounded-full p-2  hover:text-red-600 transition-colors"
-            >
-              <FaTimes size={50} />
-            </button>
-          </div>
-          <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-gray-400 to-white p-4">
-            <div>Player Count: {playerCount}</div>
-            <div className="text-4xl font-semibold mb-6 text-black">
-              Your Lobby Code:
-            </div>
+        <div className="relative w-full h-screen bg-black flex flex-col items-center justify-center px-4">
+          {/* Back Button */}
+          <button
+            onClick={handleBack}
+            className="fixed top-6 right-6 z-50 bg-zinc-900/80 border border-white/10 px-3 py-2 rounded-full text-white/70 hover:text-white hover:bg-zinc-800/80 transition-all duration-200"
+          >
+            <FaTimes size={24} />
+          </button>
 
-            <div className="text-6xl font-extrabold bg-gradient-to-r from-white to-gray-300 p-6 rounded-lg shadow-lg border-2 border-black min-h-[33vh] flex items-center justify-center w-full max-w-md">
+          {/* Lobby Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="bg-white/10 backdrop-blur-lg border border-white/10 rounded-xl p-8 w-full max-w-xl text-center text-white"
+          >
+            <h2 className="text-2xl font-bold mb-2">Your Lobby Code</h2>
+            <div className="text-5xl font-extrabold tracking-widest mb-4">
               {joinCode || "Loading..."}
             </div>
 
-            <button
-              onClick={handleLeaveLobby}
-              className="mt-8 px-6 py-3 text-2xl bg-black text-white rounded-lg shadow-lg hover:bg-white hover:text-black border-2 border-black transition"
-            >
-              Disband Lobby
-            </button>
+            <p className="text-white/60 mb-6">
+              Share this code with your friends so they can join your game.
+            </p>
 
-            <button
-              onClick={handleStart}
-              className="mt-8 px-6 py-3 text-2xl bg-black text-white rounded-lg shadow-lg hover:bg-white hover:text-black border-2 border-black transition"
-            >
-              Start Game
-            </button>
-          </div>
-        </>
+            <div className="mb-4 text-white/80">Players in Lobby: {playerCount}</div>
+
+            <div className="flex flex-col sm:flex-row justify-center gap-4">
+              <button
+                onClick={handleStart}
+                className="px-6 py-3 rounded-lg text-lg font-semibold bg-emerald-500 hover:bg-emerald-600 text-white transition"
+              >
+                Start Game
+              </button>
+              <button
+                onClick={handleLeaveLobby}
+                className="px-6 py-3 rounded-lg text-lg font-semibold bg-red-500 hover:bg-red-600 text-white transition"
+              >
+                Disband Lobby
+              </button>
+            </div>
+          </motion.div>
+        </div>
       ) : (
-        <>
-          <div className="absolute top-0 right-0 z-50">
-            <button
-              onClick={handleBack}
-              className=" text-black border border-white rounded-full p-2  hover:text-red-600 transition-colors"
-            >
-              <FaTimes size={50} />
-            </button>
-          </div>
-          <div className="h-screen w-screen flex flex-col justify-center items-center text-center bg-gradient-to-r from-gray-400 to-white px-4">
-            <h2 className="text-3xl font-bold text-black mb-6">
+        <div className="relative w-full h-screen bg-black flex flex-col items-center justify-center px-4">
+          {/* Back Button */}
+          <button
+            onClick={handleBack}
+            className="fixed top-6 right-6 z-50 bg-zinc-900/80 border border-white/10 px-3 py-2 rounded-full text-white/70 hover:text-white hover:bg-zinc-800/80 transition-all duration-200"
+          >
+            <FaTimes size={24} />
+          </button>
+
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="bg-white/10 backdrop-blur-lg border border-white/10 rounded-xl p-8 w-full max-w-xl text-center text-white"
+          >
+            <h2 className="text-2xl font-bold mb-4">
               You must be signed in to create or join a lobby.
             </h2>
             <button
               onClick={() => setShowSignInModal(true)}
-              className="px-6 py-3 text-xl bg-black text-white rounded-lg shadow-lg hover:bg-white hover:text-black border-2 border-black transition"
+              className="px-6 py-3 text-lg font-semibold bg-blue-600 hover:bg-blue-700 rounded-lg transition"
             >
               SIGN IN / SIGN UP
             </button>
-          </div>
-        </>
+          </motion.div>
+        </div>
       )}
+
+      {/* SignIn Modal */}
       {showSignInModal && (
-        <Modal
-          isOpen={showSignInModal}
-          onClose={() => setShowSignInModal(false)}
-        >
+        <Modal isOpen={showSignInModal} onClose={() => setShowSignInModal(false)}>
           <SignIn
             onModalClose={() => setShowSignInModal(false)}
             onSignUpClick={() => {
@@ -294,11 +318,10 @@ function CreateLobby() {
           />
         </Modal>
       )}
+
+      {/* SignUp Modal */}
       {showSignUpModal && (
-        <Modal
-          isOpen={showSignUpModal}
-          onClose={() => setShowSignUpModal(false)}
-        >
+        <Modal isOpen={showSignUpModal} onClose={() => setShowSignUpModal(false)}>
           <SignUp
             onModalClose={() => setShowSignUpModal(false)}
             onSuccessfulSignUp={async () => {
@@ -310,6 +333,7 @@ function CreateLobby() {
       )}
     </>
   );
+
 }
 
 export default CreateLobby;
