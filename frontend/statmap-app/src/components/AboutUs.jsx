@@ -1,36 +1,31 @@
-import React from 'react';
-import { FaTimes } from "react-icons/fa";
-import { playClickSound } from "../utils/soundUtils";
-import { useNavigate } from 'react-router-dom';
-
+import React from 'react'
 
 const AboutUs = () => {
-  const navigate = useNavigate();
-
-  const handleBack = () => {
-      playClickSound();
-      navigate("/");
-  };
-
   return (
-    <div className="p-8 max-w-4xl mx-auto text-center text-black">
-        <div className="absolute top-0 right-0 z-50">
-          <button
-            onClick={handleBack}
-            className="text-black rounded-full p-2 hover:text-red-600 transition-colors"
-          >
-            <FaTimes size={50} />
-          </button>
-        </div>
-      <h1 className="text-4xl font-bold mb-4">About StatMap</h1>
-      <p className="text-lg mb-6">
-        StatMap was created by 6 UW-Madison students taking Software Engineering (ECE 506) who love maps, trivia, and competition. Our goal is to make learning about different countries fun and engaging for everyone.
+    <div className="space-y-6 text-center">
+      <h1 className="text-3xl font-bold">About StatMap</h1>
+
+      <p className="text-base text-white/90">
+        StatMap was created by six UW – Madison students in Software Engineering (ECE 506) who love maps, trivia, and competition. Our goal is to make learning about different countries fun and engaging for everyone.
       </p>
-      <p className="text-md">
-        Whether you're here to test your knowledge, compete with friends, or just explore global facts, we're building this game for curious minds like yours.
+
+      <p className="text-base text-white/90">
+        Whether you’re here to test your knowledge, compete with friends, or just explore global facts, we’re building this game for curious minds like yours.
+      </p>
+
+      <p className="text-base text-white/90">
+        Check out our full source code on GitHub:&nbsp;
+        <a
+          href="https://github.com/hogantyler/StatMap/tree/main"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="underline text-sky-400 hover:text-sky-300 transition-colors"
+        >
+          github.com/hogantyler/StatMap
+        </a>
       </p>
     </div>
-  );
-};
+  )
+}
 
-export default AboutUs;
+export default AboutUs

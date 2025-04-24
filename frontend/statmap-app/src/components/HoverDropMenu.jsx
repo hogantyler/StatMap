@@ -10,6 +10,7 @@ import AccountPage from "./AccountPage"
 import SignIn from "./SignIn"
 import SignUp from "./SignUp"
 import Modal from "./Modal"
+import AboutUs from "./AboutUs"
 
 export default function HoverDropMenu() {
   const [modalContent, setModalContent] = useState(null)
@@ -71,9 +72,30 @@ export default function HoverDropMenu() {
       <FlyoutLink
         FlyoutContent={() => (
           <FlyoutContent
-            onSignInClick={() => handleOpenModal(<SignIn onModalClose={handleCloseModal} onSuccessfulLogin={getAccount} onSignUpClick={() => handleOpenModal(<SignUp onModalClose={handleCloseModal} onSuccessfulSignUp={getAccount} />, "Sign Up", LogIn)}/>, "Sign In", LogIn, "sky")}
-            onAccountPageClick={() => handleOpenModal(<AccountPage onModalClose={handleCloseModal} />, "Account", User, "emerald")}
-            onLeaderboardClick={() => handleOpenModal(<Leaderboard onModalClose={handleCloseModal} />, "Leaderboard", Trophy, "indigo")}
+            onSignInClick={() => 
+              handleOpenModal(
+                <SignIn 
+                  onModalClose={handleCloseModal} 
+                  onSuccessfulLogin={getAccount} 
+                  onSignUpClick={() => 
+                    handleOpenModal(
+                      <SignUp 
+                      onModalClose={handleCloseModal} 
+                      onSuccessfulSignUp={getAccount} />,
+                  "Sign Up", LogIn)}/>,
+              "Sign In", LogIn, "sky")}
+            onAccountPageClick={() => 
+              handleOpenModal(
+                <AccountPage onModalClose={handleCloseModal} />,
+              "Account", User, "emerald")}
+            onLeaderboardClick={() => 
+              handleOpenModal(
+                <Leaderboard onModalClose={handleCloseModal} />,
+              "Leaderboard", Trophy, "indigo")}
+            onAboutClick={() =>
+                handleOpenModal(
+                  <AboutUs onModalClose={handleCloseModal} />,
+                  "About Us", Info, "sky")}
             account={account}
             onSignOutClick={onSignOutClick}
             handleSettingsClick={handleSettingsClick}
@@ -130,6 +152,7 @@ const FlyoutContent = ({
   onSignInClick,
   onAccountPageClick,
   onLeaderboardClick,
+  onAboutClick,
   account,
   onSignOutClick,
   handleSettingsClick,
@@ -232,10 +255,7 @@ const FlyoutContent = ({
 
       {/* About Us Button */}
       <button
-        onClick={() => {
-          playClickSound()
-          navigate("/about")
-        }}
+        onClick={() => handleButtonClick(onAboutClick)}
         className="w-full py-2 px-3 border border-white/20 rounded-md text-center hover:bg-white/10 transition-colors"
       >
         <div className="flex items-center justify-center gap-2">

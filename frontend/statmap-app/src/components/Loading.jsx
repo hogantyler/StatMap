@@ -1,25 +1,33 @@
 import React, { useState, useEffect } from "react";
 
-function Loading() {
-    
-    //edited from this example here https://tailwindflex.com/@freja-jensen/ovel-shaped-loding-spinner
-    return (
-        <div className="flex items-center justify-center h-screen bg-black w-screen">
-            <div className="relative">
-                <div className="animate-bounce">
-                    <div className="h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-600"></div>
-                    <div className="absolute top-0 left-0 h-24 w-24 rounded-full border-t-8 border-b-8 border-blue-700 animate-spin">
-                    </div>
-                </div>
+function Loading({ message = "Welcome to StatMap, the world's next great online trivia game.", onComplete }) {
+  const [typedText, setTypedText] = useState("");
+  const [index, setIndex] = useState(0);
+  const [done, setDone] = useState(false);
 
-                <div className="flex items-center justify-center mt-4 animate-pulse">
-                    <p className="text-green-500">Loading . . . </p>
-                </div>
-            </div>
-        </div>
+  useEffect(() => {
+    if (index < message.length) {
+      const timeout = setTimeout(() => {
+        setTypedText((prev) => prev + message.charAt(index));
+        setIndex((prev) => prev + 1);
+      }, 60); // Adjust speed here
+      return () => clearTimeout(timeout);
+    } else {
+      const doneTimeout = setTimeout(() => {
+        if (onComplete) onComplete();
+      }, 1000);
+      return () => clearTimeout(doneTimeout);
+    }
+  }, [index, message, onComplete]);
 
-    )
-
+  return (
+    <div className="flex items-center justify-center h-screen bg-black w-screen px-4">
+      <p className="text-blue-400 text-lg sm:text-xl md:text-2xl lg:text-3xl font-mono text-center max-w-screen-sm whitespace-pre-wrap">
+        {typedText}
+        <span className="animate-pulse">|</span>
+      </p>
+    </div>
+  );
 }
 
 export default Loading;

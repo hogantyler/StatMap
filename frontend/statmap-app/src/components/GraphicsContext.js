@@ -9,7 +9,7 @@ const GraphicsContext = createContext();
 const defaultSettings = {
   polygonCount: 50,           // Range: 20-100
   anisotropicFiltering: 4,    // Range: 0-16
-  globeBrightness: 70,        // Range: 0-100 (percentage)
+  globeBrightness: 50,        // Range: 0-100 (percentage)
   rotationSpeed: 50,          // Range: 0-100 (percentage)
   textColor: '#FFFFFF',       // Default white
   borderColor: '#336699',     // Default blue
@@ -21,13 +21,24 @@ const defaultSettings = {
 export const GraphicsContextProvider = ({ children }) => {
   // Initialize state from localStorage or use defaults
   const [graphicsSettings, setGraphicsSettings] = useState(() => {
-    const savedSettings = localStorage.getItem('graphicsSettings');
-    return savedSettings ? JSON.parse(savedSettings) : defaultSettings;
+    try {
+      const savedSettings = localStorage.getItem('graphicsSettings');
+      // Merge saved settings with defaults to ensure all keys exist
+      const initialSettings = savedSettings ? JSON.parse(savedSettings) : {};
+      return { ...defaultSettings, ...initialSettings };
+    } catch (error) {
+      console.error("Error reading graphics settings from localStorage:", error);
+      return defaultSettings;
+    }
   });
 
   //save settings to localStorage whenever they change
   useEffect(() => {
-    localStorage.setItem('graphicsSettings', JSON.stringify(graphicsSettings));
+    try {
+      localStorage.setItem('graphicsSettings', JSON.stringify(graphicsSettings));
+    } catch (error) {
+      console.error("Error saving graphics settings to localStorage:", error);
+    }
   }, [graphicsSettings]);
 
   // Update a single setting
