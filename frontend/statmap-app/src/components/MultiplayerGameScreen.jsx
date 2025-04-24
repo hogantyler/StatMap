@@ -26,7 +26,7 @@ const MultiplayerGameScreenContent = () => {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [quizComplete, setQuizComplete] = useState(false);
   const [players, setPlayers] = useState([]);
-
+  const [isAnswered, setIsAnswered] = useState(false);
   const [score, setScore] = useState(0);
   const [attempts, setAttempts] = useState(0);
   const [feedback, setFeedback] = useState("");
@@ -34,6 +34,9 @@ const MultiplayerGameScreenContent = () => {
   const [isCollapsed, setIsCollapsed] = useState(false);
   const [typingDone, setTypingDone] = useState(false);
   const [assetsLoaded, setAssetsLoaded] = useState(false);
+  const [hintOneUsed, setHintOneUsed] = useState(0);
+  const [hintTwoUsed, setHintTwoUsed] = useState(0);
+  const [hintThreeUsed, setHintThreeUsed] = useState(0);
 
   // Get userId
   useEffect(() => {
@@ -159,6 +162,7 @@ const MultiplayerGameScreenContent = () => {
           setQuestionNumber(l.question_number);
           setCurrentFact(l.questions[l.question_number - 1]);
           setTimer(60);
+          setIsAnswered(false);
           setShowLeaderboard(false);
           setAttempts(0);
           setFeedback("");
@@ -274,52 +278,53 @@ const MultiplayerGameScreenContent = () => {
   ]);
 
   const handleSubmitAnswer = useCallback(async () => {
+    let points = 0;
     playClickSound();
-    if (!currentFact || timer <= 0) return;
+    if (isAnswered) return;
     if (!selectedCountry.name) {
-      alert("Select a country");
+      alert("Please select a country on the globe first.");
       return;
     }
-
-    const correct = selectedCountry.code === currentFact?.CC_Abbrev
-    let pts = [1000, 750, 500, 250][attempts];
-
-    if (correct) {
-      setScore((s) => s + pts);
+    setIsCollapsed(false);
+    setIsAnswered(true);
+    const answer = selectedCountry;
+    if (answer.code === currentFact?.CC_Abbrev) {
+      points = attempts === 0 ? 1000 : attempts === 1 ? 750 : attempts === 2 ? 500 : 250;
+      setScore((prev) => prev + points);
       setFeedback("Correct!");
       setFeedbackType("correct");
-    } else if (attempts < 3) {
-      setAttempts((a) => a + 1);
-      const hintParts = [];
-      if (attempts >= 0)
-        hintParts.push(`Continent - ${currentFact.CC_Continent}`);
-      if (attempts >= 1) hintParts.push(`Capital - ${currentFact.CC_Capital}`);
-      if (attempts >= 2)
-        hintParts.push(`Abbreviation - ${currentFact.CC_Abbrev}`);
-      setFeedback(`Incorrect! Hint: ${hintParts.join(" | ")}`);
-      setFeedbackType("incorrect");
-      return;
     } else {
-      const hintParts = [
-        `Continent - ${currentFact.CC_Continent}`,
-        `Capital - ${currentFact.CC_Capital}`,
-        `Abbreviation - ${currentFact.CC_Abbrev}`,
-      ];
-      setFeedback(
-        `Incorrect! The answer was ${currentFact.Correct_Country
-        }.`
-      );
-      setFeedbackType("incorrect");
+      if (attempts < 3) {
+        const newAttempts = attempts + 1;
+        setAttempts(newAttempts);
+        let hint = "";
+        if (newAttempts === 1) {
+          hint = `Hint: Continent - ${currentFact.CC_Continent}`;
+          setHintOneUsed((prev) => prev + 1);
+        } else if (newAttempts === 2) {
+          hint = `Hint: Continent - ${currentFact.CC_Continent}, Capital - ${currentFact.CC_Capital}`;
+          setHintTwoUsed((prev) => prev + 1);
+        } else if (newAttempts === 3) {
+          hint = `Hint: Continent - ${currentFact.CC_Continent}, Capital - ${currentFact.CC_Capital}, Abbreviation - ${currentFact.CC_Abbrev}`;
+          setHintThreeUsed((prev) => prev + 1);
+        }
+        setFeedback(`Incorrect! Try again. ${hint}`);
+        setFeedbackType("incorrect");
+        setIsAnswered(false);
+        return;
+      } else {
+        setFeedback(`Incorrect! The correct answer is ${currentFact?.Correct_Country}.`);
+        setFeedbackType("incorrect");
+      }
+      setIsAnswered(false);
     }
 
+
     try {
-      console.log(userId);
-      console.log(pts);
-      console.log(questionNumber);
-      if (attempts >= 3) pts = 0;
+      if (attempts > 3) setScore(0);
       const { error } = await supabase.rpc("increment_score", {
         player_id: userId,
-        points: pts,
+        points: points,
         question: questionNumber,
       });
       if (error) throw error;
