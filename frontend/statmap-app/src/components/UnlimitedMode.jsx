@@ -154,14 +154,14 @@ function UnlimitedModeContent() {
       {/* Back Button in top right */}
       <button
         onClick={handleBack}
-        className="absolute top-6 right-6 z-50 bg-zinc-900/80 border border-red-400 p-2 rounded-full text-white/70 hover:text-red-400 hover:bg-zinc-800/80 transition-all duration-200"
+        className="fixed top-6 right-6 z-50 bg-zinc-900/80 border border-red-400 p-2 rounded-full text-white/70 hover:text-red-400 hover:bg-zinc-800/80 transition-all duration-200"
         title="Return to Home"
       >
         <X size={20} />
       </button>
 
       {/* Hover Menu in top left */}
-      <div className="absolute top-0 left-0 z-50">
+      <div className="fixed top-0 left-0 z-50">
         {/* <HoverDropMenu onSignInClick={(e) => handleOpenModal(
           <SignIn onSignUpClick={(e) => handleOpenModal(<SignUp onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/>)} 
           onAccountPageClick={(e) => handleOpenModal(<AccountPage onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/> */}
@@ -169,7 +169,7 @@ function UnlimitedModeContent() {
       </div>
 
       {/* UI Container - Moved to bottom of screen */}
-      <div className="absolute inset-x-0 bottom-2 flex flex-col items-center z-30 pointer-events-none">
+      <div className="fixed inset-x-0 bottom-2 flex flex-col items-center z-30 pointer-events-none">
         <div className="max-w-sm w-full px-2 pointer-events-auto">
           {/* Score and Collapsible Fact Box */}
           <div className="bg-zinc-900/40 backdrop-blur-sm border border-white/10 rounded-lg overflow-hidden mb-2">

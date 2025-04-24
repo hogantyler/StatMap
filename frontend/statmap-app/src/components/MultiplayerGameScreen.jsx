@@ -503,7 +503,7 @@ const MultiplayerGameScreenContent = () => {
         </div>
       ) : (
         // Gameplay UI
-        <div className="absolute inset-x-0 bottom-2 flex flex-col items-center z-30 pointer-events-none">
+        <div className="fixed inset-x-0 bottom-2 flex flex-col items-center z-30 pointer-events-none">
           <div className="max-w-md w-full px-2 pointer-events-auto">
             {/* Score and Collapsible Fact Box */}
             <div className="bg-zinc-900/40 backdrop-blur-sm border border-white/10 rounded-lg overflow-hidden mb-2">
