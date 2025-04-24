@@ -57,11 +57,20 @@ const LobbyTest = () => {
     //   console.error("Lobby is full!");
     //   return;
     // }
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
     // Add the user to the lobby
-    const { data, error: joinError } = await supabase
-      .from("Players")
-      .insert([{ lobby_id: lobby.id, score: 0, id: userId }]);
+    const { data, error: joinError } = await supabase.from("Players").insert([
+      {
+        display_name: user.user_metadata.display_name,
+        lobby_id: lobby.id,
+        score: 0,
+        id: userId,
+      },
+    ]);
 
     if (joinError) console.error("Error joining lobby:", joinError);
     else console.log("Joined lobby:", data);
@@ -271,7 +280,10 @@ const LobbyTest = () => {
       </div>
 
       {showSignInModal && (
-        <Modal isOpen={showSignInModal} onClose={() => setShowSignInModal(false)}>
+        <Modal
+          isOpen={showSignInModal}
+          onClose={() => setShowSignInModal(false)}
+        >
           <SignIn
             onModalClose={() => setShowSignInModal(false)}
             onSignUpClick={() => {
@@ -283,7 +295,10 @@ const LobbyTest = () => {
       )}
 
       {showSignUpModal && (
-        <Modal isOpen={showSignUpModal} onClose={() => setShowSignUpModal(false)}>
+        <Modal
+          isOpen={showSignUpModal}
+          onClose={() => setShowSignUpModal(false)}
+        >
           <SignUp onModalClose={() => setShowSignUpModal(false)} />
         </Modal>
       )}
@@ -323,7 +338,6 @@ const LobbyTest = () => {
       </div>
     </>
   );
-
 };
 
 export default LobbyTest;

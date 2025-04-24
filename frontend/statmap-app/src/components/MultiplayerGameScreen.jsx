@@ -137,9 +137,9 @@ const MultiplayerGameScreenContent = () => {
         setCurrentFact(lobby.questions[lobby.question_number - 1] || null);
         setTimer(
           60 -
-          Math.floor(
-            (new Date() - new Date(lobby.question_started_at)) / 1000
-          )
+            Math.floor(
+              (new Date() - new Date(lobby.question_started_at)) / 1000
+            )
         );
       }
     };
@@ -289,7 +289,14 @@ const MultiplayerGameScreenContent = () => {
     setIsAnswered(true);
     const answer = selectedCountry;
     if (answer.code === currentFact?.CC_Abbrev) {
-      points = attempts === 0 ? 1000 : attempts === 1 ? 750 : attempts === 2 ? 500 : 250;
+      points =
+        attempts === 0
+          ? 1000
+          : attempts === 1
+          ? 750
+          : attempts === 2
+          ? 500
+          : 250;
       setScore((prev) => prev + points);
       setFeedback("Correct!");
       setFeedbackType("correct");
@@ -313,15 +320,16 @@ const MultiplayerGameScreenContent = () => {
         setIsAnswered(false);
         return;
       } else {
-        setFeedback(`Incorrect! The correct answer is ${currentFact?.Correct_Country}.`);
+        setFeedback(
+          `Incorrect! The correct answer is ${currentFact?.Correct_Country}.`
+        );
         setFeedbackType("incorrect");
       }
       setIsAnswered(false);
     }
 
-
     try {
-      if (attempts > 3) setScore(0);
+      if (attempts > 3) points = 0;
       const { error } = await supabase.rpc("increment_score", {
         player_id: userId,
         points: points,
@@ -347,8 +355,8 @@ const MultiplayerGameScreenContent = () => {
     await removePlayerAndCleanupLobby(); //cleanup first
     navigate("/", {
       state: {
-        loadingMessage: "Returning to main menu..."
-      }
+        loadingMessage: "Returning to main menu...",
+      },
     }); // then navigate away
   };
 
@@ -396,7 +404,12 @@ const MultiplayerGameScreenContent = () => {
 
   //show loading screen until done animating and assets are loaded
   if (!typingDone || !assetsLoaded) {
-    return <Loading message="Loading multiplayer... answer in under a minute!" onComplete={() => setTypingDone(true)} />;
+    return (
+      <Loading
+        message="Loading multiplayer... answer in under a minute!"
+        onComplete={() => setTypingDone(true)}
+      />
+    );
   }
 
   return (
@@ -425,15 +438,20 @@ const MultiplayerGameScreenContent = () => {
         // Post-Game Screen
         <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-30">
           <div className="bg-zinc-900/80 border border-white/10 rounded-lg p-6 max-w-lg w-full text-center">
-            <h2 className="text-3xl font-bold text-white mb-4">Quiz Complete!</h2>
+            <h2 className="text-3xl font-bold text-white mb-4">
+              Quiz Complete!
+            </h2>
             <ul className="text-white/70 mb-6">
               {players
                 .sort((a, b) => b.score - a.score)
-                .map((p) => (
-                  <li key={p.id} className="text-lg">
-                    {p.display_name || "Player"}: {p.score}
-                  </li>
-                ))}
+                .map((p) => {
+                  console.log(p);
+                  return (
+                    <li key={p.id} className="text-lg">
+                      {p.display_name || "Player"}: {p.score}
+                    </li>
+                  );
+                })}
             </ul>
             {isHost ? (
               <div className="flex justify-center gap-4">
@@ -497,11 +515,14 @@ const MultiplayerGameScreenContent = () => {
             <ul className="text-white/70 mb-4">
               {players
                 .sort((a, b) => b.score - a.score)
-                .map((p) => (
-                  <li key={p.id} className="text-lg">
-                    {p.display_name || "Player"}: {p.score}
-                  </li>
-                ))}
+                .map((p) => {
+                  console.log(p);
+                  return (
+                    <li key={p.id} className="text-lg">
+                      {p.display_name || "Player"}: {p.score}
+                    </li>
+                  );
+                })}
             </ul>
             <p className="text-white/60">Next question starting shortly...</p>
           </div>
@@ -526,7 +547,11 @@ const MultiplayerGameScreenContent = () => {
                   onClick={() => setIsCollapsed(!isCollapsed)}
                   className="text-white/60 hover:text-white transition-all"
                 >
-                  {isCollapsed ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                  {isCollapsed ? (
+                    <ChevronUp size={16} />
+                  ) : (
+                    <ChevronDown size={16} />
+                  )}
                 </button>
               </div>
               {!isCollapsed && (
@@ -543,7 +568,9 @@ const MultiplayerGameScreenContent = () => {
               <div className="flex flex-col gap-2">
                 <div className="flex justify-between items-center">
                   <div className="text-white/70 text-sm">Selected Country</div>
-                  <div className="text-white font-medium text-sm">{selectedCountry.name || "None"}</div>
+                  <div className="text-white font-medium text-sm">
+                    {selectedCountry.name || "None"}
+                  </div>
                 </div>
                 <button
                   onClick={handleSubmitAnswer}
@@ -557,10 +584,11 @@ const MultiplayerGameScreenContent = () => {
             {/* Feedback Box */}
             {feedback && (
               <div
-                className={`mt-2 p-2 rounded-lg border backdrop-blur-sm flex flex-col items-center justify-center min-w-0 text-center ${feedbackType === "correct"
-                  ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
-                  : "bg-red-500/20 border-red-500/30 text-red-400"
-                  }`}
+                className={`mt-2 p-2 rounded-lg border backdrop-blur-sm flex flex-col items-center justify-center min-w-0 text-center ${
+                  feedbackType === "correct"
+                    ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
+                    : "bg-red-500/20 border-red-500/30 text-red-400"
+                }`}
                 style={{ wordWrap: "break-word", whiteSpace: "normal" }}
               >
                 <p className="text-sm">{feedback}</p>

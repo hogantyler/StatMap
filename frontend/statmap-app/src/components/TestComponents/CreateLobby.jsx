@@ -138,6 +138,7 @@ function CreateLobby() {
     // add player to the Players table
     const { error: playerError } = await supabase.from("Players").insert([
       {
+        display_name: user.user_metadata.display_name,
         id: user.id,
         lobby_id: newLobbyId,
         score: 0, // start at 0
@@ -255,7 +256,9 @@ function CreateLobby() {
               Share this code with your friends so they can join your game.
             </p>
 
-            <div className="mb-4 text-white/80">Players in Lobby: {playerCount}</div>
+            <div className="mb-4 text-white/80">
+              Players in Lobby: {playerCount}
+            </div>
 
             <div className="flex flex-col sm:flex-row justify-center gap-4">
               <button
@@ -304,7 +307,10 @@ function CreateLobby() {
 
       {/* SignIn Modal */}
       {showSignInModal && (
-        <Modal isOpen={showSignInModal} onClose={() => setShowSignInModal(false)}>
+        <Modal
+          isOpen={showSignInModal}
+          onClose={() => setShowSignInModal(false)}
+        >
           <SignIn
             onModalClose={() => setShowSignInModal(false)}
             onSignUpClick={() => {
@@ -321,7 +327,10 @@ function CreateLobby() {
 
       {/* SignUp Modal */}
       {showSignUpModal && (
-        <Modal isOpen={showSignUpModal} onClose={() => setShowSignUpModal(false)}>
+        <Modal
+          isOpen={showSignUpModal}
+          onClose={() => setShowSignUpModal(false)}
+        >
           <SignUp
             onModalClose={() => setShowSignUpModal(false)}
             onSuccessfulSignUp={async () => {
@@ -333,7 +342,6 @@ function CreateLobby() {
       )}
     </>
   );
-
 }
 
 export default CreateLobby;
