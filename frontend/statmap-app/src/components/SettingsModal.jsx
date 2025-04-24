@@ -84,31 +84,31 @@ const SettingsModal = ({ isOpen, onClose }) => {
   // Define quality presets
   const qualityPresets = {
     low: {
-      polygonCount: 20,
+      polygonCount: 15,
       anisotropicFiltering: 0,
       globeBrightness: 50,
-      rotationSpeed: 30,
+      rotationSpeed: 50,
       showClouds: false,
     },
     medium: {
-      polygonCount: 50,
+      polygonCount: 40,
       anisotropicFiltering: 4,
-      globeBrightness: 70,
+      globeBrightness: 50,
       rotationSpeed: 50,
       showClouds: true,
     },
     high: {
-      polygonCount: 75,
+      polygonCount: 60,
       anisotropicFiltering: 8,
-      globeBrightness: 85,
-      rotationSpeed: 70,
+      globeBrightness: 50,
+      rotationSpeed: 50,
       showClouds: true,
     },
     ultra: {
       polygonCount: 100,
       anisotropicFiltering: 16,
-      globeBrightness: 100,
-      rotationSpeed: 100,
+      globeBrightness: 50,
+      rotationSpeed: 50,
       showClouds: true,
     },
   };
