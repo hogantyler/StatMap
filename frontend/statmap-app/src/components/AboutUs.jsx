@@ -5,13 +5,12 @@ import { useNavigate } from 'react-router-dom';
 
 
 const AboutUs = () => {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate();
-
-    const handleBack = () => {
-        playClickSound();
-        navigate("/");
-    };
+  const handleBack = () => {
+      playClickSound();
+      navigate("/");
+  };
 
   return (
     <div className="p-8 max-w-4xl mx-auto text-center text-black">

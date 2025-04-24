@@ -14,6 +14,7 @@ import { SupabaseContext, supabase } from "./components/SupabaseContext.jsx";
 import { LobbyProvider } from "./components/TestComponents/LobbyContext";
 import { GraphicsContextProvider } from './components/GraphicsContext';
 import AboutUs from "./components/AboutUs";
+import ChangePassword from "./components/ChangePassword.jsx";
 
 function App() {
   return (
@@ -34,6 +35,7 @@ function App() {
               <Route path="/createLobby" element={<CreateLobby></CreateLobby>} />
               <Route path="/about" element={<AboutUs />} />
               <Route path="/multiplayer" element={<MultiplayerGameScreen/>}/>
+              <Route path="/changepassword" element={<ChangePassword />} />
             </Routes>
           </SupabaseContext.Provider>
         </LobbyProvider>

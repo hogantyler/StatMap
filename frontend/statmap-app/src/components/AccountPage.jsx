@@ -63,10 +63,12 @@ const AccountPage = ({ isOpen, onModalClose }) => {
       .from('Game Logs')
       .select('*')
       .eq('User_ID', user_id)
-      .limit(10);
+      .limit(10)
+      .order('Game Logs.Start_Time', { asc: false });
 
     if (error) {
-      alert(error);
+      // alert(error);
+      console.log(error);
     } else {
       setGameLogs(data);
     }
@@ -101,6 +103,13 @@ const AccountPage = ({ isOpen, onModalClose }) => {
     }
     return `${diffSecs}s`;
   };
+
+  const changePassword = async () => {
+    await supabase.auth.resetPasswordForEmail(account.data.user.user_metadata.email, {
+      redirectTo: 'https://statmap.world/#/changepassword',
+    })
+    alert("An email has been sent to reset your password");
+  }
 
   if (!account || !account.data.user) {
     return (
@@ -343,15 +352,15 @@ const AccountPage = ({ isOpen, onModalClose }) => {
                     Manage your account settings and security preferences.
                   </p>
 
-                  <button className="w-full py-2 px-3 bg-zinc-800/80 hover:bg-zinc-700/80 text-white/80 hover:text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2">
+                  <button onClick={changePassword} className="w-full py-2 px-3 bg-zinc-800/80 hover:bg-zinc-700/80 text-white/80 hover:text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2">
                     <span>Reset Password</span>
                     <ArrowRight size={14} />
                   </button>
 
-                  <button className="w-full py-2 px-3 bg-zinc-800/80 hover:bg-zinc-700/80 text-white/80 hover:text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2">
+                  {/* <button className="w-full py-2 px-3 bg-zinc-800/80 hover:bg-zinc-700/80 text-white/80 hover:text-white rounded-lg text-sm font-medium transition-colors flex items-center justify-center gap-2">
                     <span>Update Profile</span>
                     <ArrowRight size={14} />
-                  </button>
+                  </button> */}
 
                   <div className="pt-2">
                     <p className="text-xs text-white/40 text-center">
