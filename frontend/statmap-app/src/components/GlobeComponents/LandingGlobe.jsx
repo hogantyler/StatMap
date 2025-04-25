@@ -69,6 +69,7 @@ const LandingGlobe = React.memo(function LandingGlobe(props) {
 
                     <EarthTest globeRef={globeRef} cloudsRef={cloudsRef} NoOffSet={NoOffSet} />
                     <AtmosphereMesh radius={1.02} />
+
                     <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />
 
                     {/* Performance monitor (toggle with 'p' key) */}
@@ -80,10 +81,14 @@ const LandingGlobe = React.memo(function LandingGlobe(props) {
 });
 
 function RotateGlobe({ globeRef, cloudsRef }) {
+    
     useFrame(({ clock }) => {
         const elapsedTime = clock.getElapsedTime();
-        globeRef.current.rotation.y = elapsedTime / 70;
-        cloudsRef.current.rotation.y = elapsedTime / 40;
+        globeRef.current.rotation.y = elapsedTime / 50;
+        //console.log(cloudsRef);
+        if (cloudsRef.current) {
+            cloudsRef.current.rotation.y = elapsedTime / 30;
+        }
     });
     return null;
 }

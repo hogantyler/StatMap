@@ -6,6 +6,7 @@ import { Perf } from 'r3f-perf'
 import ConicGlobe from "../TestComponents/ConicGlobe";
 import AtmosphereMesh from "./AtmosphereMesh";
 import EarthTest from "../TestComponents/EarthTest";
+import { useGraphicsSettings } from "../GraphicsContext";
 import geoDataUrl from '../../data/simpleCountries.geojson'; // Import the url/path to the geojson file
 
 /**
@@ -143,13 +144,28 @@ const Globe = React.memo(function Globe(props) {
     );
 });
 
-function RotateGlobe({ globeRef, cloudsRef, linesRef, conicGlobeRef }) {
+function RotateGlobe({ globeRef, cloudsRef, linesRef }) {
+    const { graphicsSettings } = useGraphicsSettings();
+    const rotationSpeed = graphicsSettings.rotationSpeed;
+    const speedDivisor = Math.max(1, 105 - rotationSpeed);
+
+
     useFrame(({ clock }) => {
         const elapsedTime = clock.getElapsedTime();
-        globeRef.current.rotation.y = linesRef.current.rotation.y = elapsedTime / 80;
-        //linesRef.current.rotation.y = elapsedTime / 80
-        //conicGlobeRef.current.rotation.y = elapsedTime / 60;
-        cloudsRef.current.rotation.y = elapsedTime / 50;
+
+        //console.log("speedDivisor", speedDivisor);
+        //console.log("rotateSpeed", rotationSpeed);
+
+        if (rotationSpeed > 0) {
+
+            globeRef.current.rotation.y = linesRef.current.rotation.y = elapsedTime / (speedDivisor * 8 / 5);
+            //linesRef.current.rotation.y = elapsedTime / 80
+            //conicGlobeRef.current.rotation.y = elapsedTime / 60;
+            if (cloudsRef.current) {
+                cloudsRef.current.rotation.y = elapsedTime / speedDivisor;
+            }
+        }
+
     });
     return null;
 }

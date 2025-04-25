@@ -141,11 +141,15 @@ function EarthTest(props) {
         // Define maximum anisotropy based on GPU capabilities
         const maxAnisotropy = gl.capabilities.getMaxAnisotropy();
 
+        const anisotropyLevel = Math.min(maxAnisotropy, graphicsSettings.anisotropicFiltering);
+
         const applyTextureSettings = (texture) => {
             if (!texture) return;
 
+            //console.log("anisotropyLevel", anisotropyLevel);
+
             // Apply anisotropic filtering
-            texture.anisotropy = maxAnisotropy;
+            texture.anisotropy = anisotropyLevel;
 
             // Set texture wrapping
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
@@ -168,7 +172,7 @@ function EarthTest(props) {
         // Apply settings to all textures
         [colorMap, normalMap, specularMap, nightMap, cloudMap].forEach(applyTextureSettings);
 
-    }, [gl.capabilities, colorMap, normalMap, specularMap, nightMap, cloudMap]);
+    }, [gl.capabilities, graphicsSettings.anisotropicFiltering, colorMap, normalMap, specularMap, nightMap, cloudMap]);
 
     // Create sphere geometry WITH TANGENTS using the built-in method
     const sphereGeometry = useMemo(() => {
@@ -204,17 +208,22 @@ function EarthTest(props) {
 
     return (
         <group>
-            <mesh ref={props.cloudsRef}>
-                <sphereGeometry args={[1.01, spherePolygonCount, spherePolygonCount]} />
-                <meshPhongMaterial
-                    map={cloudMap}
-                    opacity={0.8}
-                    depthWrite={false}
-                    transparent={true}
-                    side={THREE.FrontSide}
-                    blending={THREE.AdditiveBlending}
-                />
-            </mesh>
+            {/* Clouds mesh */}
+            {graphicsSettings.showClouds && (
+                <mesh ref={props.cloudsRef}>
+                    <sphereGeometry args={[1.01, spherePolygonCount, spherePolygonCount]} />
+                    <meshPhongMaterial
+                        map={cloudMap}
+                        opacity={0.8}
+                        depthWrite={false}
+                        transparent={true}
+                        side={THREE.FrontSide}
+                        blending={THREE.AdditiveBlending}
+                    />
+                </mesh>
+            )}
+            
+
             {earthMaterial && sphereGeometry && (
                 <mesh
                     ref={props.globeRef}
