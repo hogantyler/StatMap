@@ -9,6 +9,7 @@ const GraphicsContext = createContext();
 const defaultSettings = {
   polygonCount: 50,           // Range: 20-100
   anisotropicFiltering: 4,    // Range: 0-16
+  antiAliasing: false,      // Toggle: true/false
   globeBrightness: 50,        // Range: 0-100 (percentage)
   rotationSpeed: 50,          // Range: 0-100 (percentage)
   textColor: '#FFFFFF',       // Default white

@@ -15,6 +15,7 @@ import geoDataUrl from '../../data/simpleCountries.geojson'; // Import the url/p
  * @returns A Canvas component that encapsulates all the 3D components including the globe, lights, stars, etc.
  */
 const Globe = React.memo(function Globe(props) {
+    const { graphicsSettings } = useGraphicsSettings();
     const [showLabel, setShowLabel] = useState(true);
     const [showPerformance, setShowPerformance] = useState(false);
     const [geoData, setGeoData] = useState(null);
@@ -98,7 +99,7 @@ const Globe = React.memo(function Globe(props) {
         <div className="relative w-full h-full">
             <div className="absolute top-0 left-0 w-full h-full">
                 <Canvas
-                    gl={{ antialias: false }}
+                    gl={{ antialias: graphicsSettings.antiAliasing }}
                     camera={{ position: [0, 1, 2], near: 0.01, far: 1000 }}
                     style={{ background: "black", width: "100vw", height: "100vh" }}
                 >

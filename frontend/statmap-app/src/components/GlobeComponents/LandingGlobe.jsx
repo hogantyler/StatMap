@@ -6,6 +6,8 @@ import { Perf } from 'r3f-perf'
 //import ConicGlobe from "./TestComponents/ConicGlobe";
 import AtmosphereMesh from "./AtmosphereMesh";
 import EarthTest from "../TestComponents/EarthTest";
+import { useGraphicsSettings } from "../GraphicsContext";
+
 
 /**
  * For showing 3D globe background on landing page
@@ -13,7 +15,7 @@ import EarthTest from "../TestComponents/EarthTest";
  * @returns A Canvas component that encapsulates 3D components including the earth, lights, stars, etc.
  */
 const LandingGlobe = React.memo(function LandingGlobe(props) {
-
+    const { graphicsSettings } = useGraphicsSettings();
     const [showPerformance, setShowPerformance] = useState(false);
     const NoOffSet = true;
 
@@ -35,13 +37,13 @@ const LandingGlobe = React.memo(function LandingGlobe(props) {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, []);
 
-    // Handlers for OrbitControls drag state
+    //console.log("Graphics settings:", graphicsSettings.antiAliasing);
 
     return (
         <div className="relative w-full h-full">
             <div className="absolute top-0 left-0 w-full h-full">
                 <Canvas
-                    gl={{ antialias: false }}
+                    gl={{ antialias: graphicsSettings.antiAliasing }}
                     camera={{ position: [0, 0.75, 1.5], near: 0.01, far: 1000 }}
                     style={{ background: "black", width: "100vw", height: "100vh" }}
                 >
@@ -81,7 +83,7 @@ const LandingGlobe = React.memo(function LandingGlobe(props) {
 });
 
 function RotateGlobe({ globeRef, cloudsRef }) {
-    
+
     useFrame(({ clock }) => {
         const elapsedTime = clock.getElapsedTime();
         globeRef.current.rotation.y = elapsedTime / 50;

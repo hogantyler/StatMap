@@ -14,6 +14,8 @@ import {
   CloudSun,
   Palette,
   Check,
+  Boxes,
+  CopyX,
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { setGlobalVolume, playClickSound } from '../utils/soundUtils';
@@ -86,6 +88,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
     low: {
       polygonCount: 15,
       anisotropicFiltering: 0,
+      antiAliasing: false,
       globeBrightness: 50,
       rotationSpeed: 50,
       showClouds: false,
@@ -93,6 +96,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
     medium: {
       polygonCount: 40,
       anisotropicFiltering: 4,
+      antiAliasing: false,
       globeBrightness: 50,
       rotationSpeed: 50,
       showClouds: true,
@@ -100,6 +104,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
     high: {
       polygonCount: 60,
       anisotropicFiltering: 8,
+      antiAliasing: true,
       globeBrightness: 50,
       rotationSpeed: 50,
       showClouds: true,
@@ -107,6 +112,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
     ultra: {
       polygonCount: 100,
       anisotropicFiltering: 16,
+      antiAliasing: true,
       globeBrightness: 50,
       rotationSpeed: 50,
       showClouds: true,
@@ -140,14 +146,14 @@ const SettingsModal = ({ isOpen, onClose }) => {
     // Apply all settings
     setGlobalVolume(tempSoundLevel);
     updateSettings(tempGraphicsSettings);
-    
+
     // Save to localStorage
     if (typeof window !== 'undefined') {
       localStorage.setItem('brightness', tempBrightness);
       localStorage.setItem('soundLevel', tempSoundLevel);
       localStorage.setItem('globeQuality', tempGlobeQuality);
     }
-    
+
     playClickSound();
     onClose();
   };
@@ -380,7 +386,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                         <div>
                           <div className="flex items-center justify-between mb-2">
                             <label className="text-sm text-white/70 flex items-center gap-2">
-                              <Layers size={14} className="text-white/40" />
+                              <Boxes size={14} className="text-white/40" />
                               Polygon Count
                             </label>
                             <span className="text-sm font-medium">{tempGraphicsSettings.polygonCount}</span>
@@ -424,6 +430,60 @@ const SettingsModal = ({ isOpen, onClose }) => {
                             className="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer"
                           />
                         </div>
+
+                        {/* Anti-Aliasing Toggle */}
+                        <div>
+                          <div className="flex items-center justify-between pb-3">
+                            <div className="flex items-center gap-2">
+                              <CopyX size={14} className="text-white/40" />
+                              <label className="text-sm text-white/70">Anti-Aliasings</label>
+                            </div>
+                            <button
+                              onClick={() =>
+                                setTempGraphicsSettings((prev) => ({
+                                  ...prev,
+                                  antiAliasing: !prev.antiAliasing,
+                                }))
+                              }
+                              className={cn(
+                                'w-12 h-6 rounded-full relative transition-colors',
+                                tempGraphicsSettings.antiAliasing ? 'bg-emerald-500/30' : 'bg-zinc-700',
+                              )}
+                            >
+                              <div
+                                className={cn(
+                                  'absolute top-1 w-4 h-4 rounded-full transition-all',
+                                  tempGraphicsSettings.antiAliasing ? 'right-1 bg-emerald-400' : 'left-1 bg-white/60',
+                                )}
+                              />
+                            </button>
+                          </div>
+                        </div>
+
+                        {/* Anti-Aliasing Level */}
+                        {/*<div>
+                          <div className="flex items-center justify-between mb-2">
+                            <label className="text-sm text-white/70 flex items-center gap-2">
+                              <Sliders size={14} className="text-white/40" />
+                              Anti-Aliasing Level
+                            </label>
+                            <span className="text-sm font-medium">{tempGraphicsSettings.antiAliasingLevel}x</span>
+                          </div>
+                          <input
+                            type="range"
+                            min="0"
+                            max="8"
+                            step="2"
+                            value={tempGraphicsSettings.antiAliasingLevel}
+                            onChange={(e) =>
+                              setTempGraphicsSettings((prev) => ({
+                                ...prev,
+                                antiAliasingLevel: Number.parseInt(e.target.value),
+                              }))
+                            }
+                            className="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer"
+                          />
+                        </div>*/}
 
                         {/* Globe Brightness */}
                         <div>
@@ -499,6 +559,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                             />
                           </button>
                         </div>
+
                       </div>
                     )}
                   </div>
