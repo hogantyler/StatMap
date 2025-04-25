@@ -156,6 +156,7 @@ function EarthTest(props) {
             texture.repeat.set(1, 1);
 
             // Apply offset for proper alignment
+            //console.log("offset", props.NoOffSet);
             if (!props.NoOffSet) {
                 texture.offset.x = (Math.PI / 2) / (2 * Math.PI);
             }

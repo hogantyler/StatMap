@@ -6,6 +6,7 @@ import { Perf } from 'r3f-perf'
 import ConicGlobe from "../TestComponents/ConicGlobe";
 import AtmosphereMesh from "./AtmosphereMesh";
 import EarthTest from "../TestComponents/EarthTest";
+import GalaxyBackground from "./GalaxyBackground";
 import { useGraphicsSettings } from "../GraphicsContext";
 import geoDataUrl from '../../data/simpleCountries.geojson'; // Import the url/path to the geojson file
 
@@ -119,6 +120,9 @@ const Globe = React.memo(function Globe(props) {
                         onStart={handleDragStart}
                         onEnd={handleDragEnd}
                     />
+
+                    <GalaxyBackground />
+
                     <Stars
                         radius={200}
                         depth={60}

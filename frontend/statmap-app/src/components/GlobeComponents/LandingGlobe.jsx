@@ -6,6 +6,7 @@ import { Perf } from 'r3f-perf'
 //import ConicGlobe from "./TestComponents/ConicGlobe";
 import AtmosphereMesh from "./AtmosphereMesh";
 import EarthTest from "../TestComponents/EarthTest";
+import GalaxyBackground from "./GalaxyBackground";
 import { useGraphicsSettings } from "../GraphicsContext";
 
 
@@ -60,6 +61,9 @@ const LandingGlobe = React.memo(function LandingGlobe(props) {
                         zoomSpeed={0.4}
                         rotateSpeed={0.4}
                     />
+                    
+                    <GalaxyBackground />
+
                     <Stars
                         radius={200}
                         depth={60}

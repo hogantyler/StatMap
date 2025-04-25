@@ -18,6 +18,7 @@ import { Perf } from "r3f-perf";
 import ConicGlobe from "./ConicGlobe";
 import AtmosphereMesh from "../GlobeComponents/AtmosphereMesh";
 import EarthTest from "./EarthTest";
+import GalaxyBackground from "../GlobeComponents/GalaxyBackground";
 import { useGraphicsSettings } from "../GraphicsContext";
 import geoDataUrl from "../../data/simpleCountries.geojson"; // Import the url/path to the geojson file
 // import NaturalEarthUrl from "../../data/NaturalEarthData.geojson";
@@ -147,6 +148,9 @@ const GlobeTest = React.memo(function GlobeTest(props) {
             onStart={handleDragStart}
             onEnd={handleDragEnd}
           />
+
+          <GalaxyBackground />
+
           <Stars
             radius={200}
             depth={60}
