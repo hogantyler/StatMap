@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button } from "react-bootstrap";
-import { supabase } from "../SupabaseContext";
+import { supabase } from "./SupabaseContext";
 import { FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import SignIn from "../SignIn";
-import SignUp from "../SignUp";
-import Modal from "../Modal";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
+import Modal from "./Modal";
 import { motion } from "framer-motion";
 
-const LobbyTest = () => {
+const Lobby = () => {
   const navigate = useNavigate();
   const [joinCode, setJoinCode] = useState("");
   const [lobbyId, setLobbyId] = useState(null);
@@ -340,4 +339,4 @@ const LobbyTest = () => {
   );
 };
 
-export default LobbyTest;
+export default Lobby;

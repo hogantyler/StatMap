@@ -4,7 +4,7 @@ import * as THREE from 'three';
 import galaxyTexturePath from '../../textures/galaxy_texture.jpg'; // Adjust path as needed
 
 function GalaxyBackground() {
-    const { gl } = useThree();
+    const { } = useThree();
 
     // Load the texture
     const texture = useLoader(THREE.TextureLoader, galaxyTexturePath);

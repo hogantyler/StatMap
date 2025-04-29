@@ -1,14 +1,11 @@
-import React, { useContext, useEffect, useState, Suspense } from "react";
-import { Globe, ImageIcon, User, HelpCircle, ArrowRight } from "lucide-react";
+import React, { useEffect, useState } from "react";
+import { Globe, ImageIcon, HelpCircle, ArrowRight } from "lucide-react";
 import BlackGlobe from "../black_globe.svg";
 import HoverDropMenu from "./HoverDropMenu";
-import SignIn from "./SignIn";
 import Modal from "./Modal";
 import Loading from "./Loading";
 import LandingGlobe from "./GlobeComponents/LandingGlobe";
 import { useNavigate } from "react-router-dom";
-import SignUp from "./SignUp";
-import AccountPage from "./AccountPage";
 import { useGraphicsSettings } from "./GraphicsContext";
 import { playClickSound } from "../utils/soundUtils";
 import { motion } from "framer-motion";
@@ -82,14 +79,6 @@ const Landing = () => {
     playClickSound();
     navigate(path);
   };
-
-  const [leaderboard] = useState([
-    //arbitrary leaderboard placeholder data
-    { name: "GeoMaster", score: 985 },
-    { name: "MapExpert", score: 920 },
-    { name: "CountryPro", score: 875 },
-    { name: "CapitalWhiz", score: 810 },
-  ]);
 
   //attempting to load assets in background while loading screen is running
   useEffect(() => {
@@ -246,7 +235,7 @@ const Landing = () => {
               )}
               onMouseEnter={() => setHoveredMode("multiplayer")}
               onMouseLeave={() => setHoveredMode(null)}
-              onClick={() => handleNavigate("/lobbyTest")}
+              onClick={() => handleNavigate("/lobby")}
             >
               <div
                 className={cn(

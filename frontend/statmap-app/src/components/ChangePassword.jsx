@@ -1,4 +1,3 @@
-import { div } from "motion/react-client";
 import { useContext, useEffect, useRef, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -22,7 +21,7 @@ export default function ChangePassword (props) {
         console.log(newPass.current.value);
         console.log(confirmNewPass.current.value);
 
-        if (newPass.current.value != confirmNewPass.current.value) {
+        if (newPass.current.value !== confirmNewPass.current.value) {
             alert("Your passwords do not match");
         } else {
             await supabase.auth.updateUser({ password: confirmNewPass.current.value })

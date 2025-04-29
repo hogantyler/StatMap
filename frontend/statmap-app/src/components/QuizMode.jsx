@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Globe from "./GlobeComponents/Globe";
 import HoverDropMenu from "./HoverDropMenu";
@@ -12,7 +12,6 @@ import {
   useCountrySelection,
 } from "./CountrySelectionContext";
 import { playClickSound } from "../utils/soundUtils";
-import { cn } from "../lib/utils";
 
 const QuizModeContent = () => {
   // --- Quiz Logic States ---
@@ -31,7 +30,7 @@ const QuizModeContent = () => {
   const [hintOneUsed, setHintOneUsed] = useState(0);
   const [hintTwoUsed, setHintTwoUsed] = useState(0);
   const [hintThreeUsed, setHintThreeUsed] = useState(0);
-  const [startTime, setStartTime] = useState(new Date());
+  const [startTime] = useState(new Date());
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [typingDone, setTypingDone] = useState(false);
   const [assetsLoaded, setAssetsLoaded] = useState(false);
@@ -70,7 +69,7 @@ const QuizModeContent = () => {
     const user = await supabase.auth.getUser();
     if (user) {
       if (user.data.user && user.data.user.id) {
-        const { data, error } = await supabase
+        const { error } = await supabase
           .from("Game Logs")
           .insert([
             {

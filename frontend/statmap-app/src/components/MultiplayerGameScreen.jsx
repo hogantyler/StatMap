@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Suspense, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import Globe from "./GlobeComponents/Globe";
 import HoverDropMenu from "./HoverDropMenu";
@@ -13,7 +13,7 @@ import { playClickSound } from "../utils/soundUtils";
 import { ChevronDown, ChevronUp } from "lucide-react";
 
 const MultiplayerGameScreenContent = () => {
-  const { selectedCountry, selectCountry } = useCountrySelection();
+  const { selectedCountry } = useCountrySelection();
   const navigate = useNavigate();
 
   const [userId, setUserId] = useState(null);

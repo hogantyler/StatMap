@@ -12,7 +12,6 @@ import {
   Sliders,
   RotateCw,
   CloudSun,
-  Palette,
   Check,
   Boxes,
   CopyX,
@@ -20,28 +19,6 @@ import {
 import { cn } from '../lib/utils';
 import { setGlobalVolume, playClickSound } from '../utils/soundUtils';
 import { useGraphicsSettings } from './GraphicsContext';
-
-// Animation variants
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      duration: 0.1,
-    },
-  },
-};
-
-const itemVariants = {
-  hidden: { opacity: 0, y: 5 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: {
-      duration: 0.1,
-    },
-  },
-};
 
 const SettingsModal = ({ isOpen, onClose }) => {
   const [activeTab, setActiveTab] = useState('general');
@@ -73,7 +50,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
     return 'medium';
   });
 
-  const { graphicsSettings, updateSetting, updateSettings } = useGraphicsSettings();
+  const { graphicsSettings, updateSettings } = useGraphicsSettings();
   const [tempGraphicsSettings, setTempGraphicsSettings] = useState({});
 
   // Initialize temporary graphics settings when modal opens

@@ -6,7 +6,7 @@ import React, {
   useCallback,
   memo,
 } from "react";
-import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
   OrbitControls,
   Stars,
@@ -31,7 +31,7 @@ import geoDataUrl from "../../data/simpleCountries.geojson"; // Import the url/p
  */
 const GlobeTest = React.memo(function GlobeTest(props) {
   const { graphicsSettings } = useGraphicsSettings();
-  const [showLabel, setShowLabel] = useState(true);
+  const [showLabel] = useState(true);
   const [showPerformance, setShowPerformance] = useState(true);
   const [geoData, setGeoData] = useState(null);
 
