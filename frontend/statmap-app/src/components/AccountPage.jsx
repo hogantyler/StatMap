@@ -395,7 +395,7 @@ const AccountPage = ({ isOpen, onModalClose }) => {
                 </h2>
                 <button
                   onClick={() => setActiveTab('history')}
-                  className="text-sm text-white/60 hover:text-white flex items-center gap-1 transition-colors"
+                  className="text-sm text-white/60 hover:text-white flex items-center gap-1 transition-colors z-20"
                 >
                   <span>View All</span>
                   <ArrowRight size={14} />
