@@ -60,16 +60,18 @@ const Globe = React.memo(function Globe(props) {
     }, []);
 
 
-    function hasTouchSupport() {
+    /*function hasTouchSupport() {
         return ('maxTouchPoints' in navigator && navigator.maxTouchPoints > 0);
-    }
+    }*/
 
     // To check if the device supports touch events
-    const supportsTouch = useMemo(() => hasTouchSupport(), []);
+    //const supportsTouch = useMemo(() => hasTouchSupport(), []);
+
+    const mobileInput = useMemo(() => graphicsSettings.mobile, [graphicsSettings.mobile]);
 
     // Handlers for OrbitControls drag state
     const handleDragStart = useCallback((event) => {
-        if (supportsTouch) {
+        if (mobileInput) {
             //console.log("Touch drag start detected, ignoring handler logic.");
             isDraggingRef.current = !isDraggingRef.current;
             return; // Exit early for touch events
@@ -80,10 +82,10 @@ const Globe = React.memo(function Globe(props) {
             //console.log("dragStart " + isDraggingRef.current);
         }, 150);
         document.body.style.cursor = 'grabbing';
-    }, [supportsTouch]);
+    }, [mobileInput]);
 
     const handleDragEnd = useCallback((event) => {
-        if (supportsTouch) {
+        if (mobileInput) {
             //console.log("Touch drag stop detected, ignoring handler logic.");
             isDraggingRef.current = !isDraggingRef.current;
             return; // Exit early for touch events
@@ -94,7 +96,7 @@ const Globe = React.memo(function Globe(props) {
             //console.log("dragEnd " + isDraggingRef.current);
         }, 150);
         document.body.style.cursor = 'auto';
-    }, [supportsTouch]);
+    }, [mobileInput]);
 
     return (
         <div className="relative w-full h-full">
@@ -114,8 +116,8 @@ const Globe = React.memo(function Globe(props) {
                         enablePan={false}
                         minDistance={1.02}
                         maxDistance={4}
-                        zoomSpeed={0.4}
-                        rotateSpeed={0.4}
+                        zoomSpeed={0.2}
+                        rotateSpeed={0.2}
                         // Event handlers to track if globe is being rotated
                         onStart={handleDragStart}
                         onEnd={handleDragEnd}
