@@ -121,18 +121,18 @@ const Globe = React.memo(function Globe(props) {
                         onEnd={handleDragEnd}
                     />
 
-                    <GalaxyBackground />
+                    {/* Conditionally render Galaxy based on settings */}
+                    {graphicsSettings.showGalaxyBackground ? <GalaxyBackground />
+                        : <Stars
+                            radius={200}
+                            depth={60}
+                            count={5000}
+                            factor={7}
+                            saturation={0}
+                            fade={true}
+                        />}
 
-                    <Stars
-                        radius={200}
-                        depth={60}
-                        count={5000}
-                        factor={7}
-                        saturation={0}
-                        fade={true}
-                    />
-
-                    <EarthTest globeRef={globeRef} cloudsRef={cloudsRef} />
+                    <EarthTest globeRef={globeRef} cloudsRef={cloudsRef} />}
                     <AtmosphereMesh radius={1.02} />
 
                     <ConicGlobe globeRef={globeRef} isDraggingRef={isDraggingRef} geoData={geoData} />
