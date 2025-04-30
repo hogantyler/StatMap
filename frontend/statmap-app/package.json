@@ -19,12 +19,14 @@
     "motion": "^12.4.7",
     "react": "^19.0.0",
     "react-bootstrap": "^2.10.9",
+    "react-device-detect": "^2.2.3",
     "react-dom": "^19.0.0",
     "react-globe.gl": "^2.33.1",
     "react-icons": "^5.5.0",
     "react-router-dom": "^7.2.0",
     "react-scripts": "5.0.1",
     "react-select": "^5.10.0",
+    "source-map-explorer": "^2.5.3",
     "tailwind-merge": "^3.2.0",
     "three": "^0.173.0",
     "three-conic-polygon-geometry": "^2.1.2",
@@ -32,6 +34,7 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",

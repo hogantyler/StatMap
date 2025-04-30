@@ -1,6 +1,6 @@
-import React, { useState, useEffect, Suspense, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import Globe from "./GlobeComponents/Globe";
+//import Globe from "./GlobeComponents/Globe";
 import HoverDropMenu from "./HoverDropMenu";
 import { FaTimes } from "react-icons/fa";
 import Loading from "./Loading";
@@ -11,9 +11,13 @@ import {
 } from "./CountrySelectionContext";
 import { playClickSound } from "../utils/soundUtils";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { Suspense } from "react";
+import RotationButton from "./RotationButton";
+
+const Globe = React.lazy(() => import("./GlobeComponents/Globe"));
 
 const MultiplayerGameScreenContent = () => {
-  const { selectedCountry, selectCountry } = useCountrySelection();
+  const { selectedCountry } = useCountrySelection();
   const navigate = useNavigate();
 
   const [userId, setUserId] = useState(null);
@@ -137,9 +141,9 @@ const MultiplayerGameScreenContent = () => {
         setCurrentFact(lobby.questions[lobby.question_number - 1] || null);
         setTimer(
           60 -
-            Math.floor(
-              (new Date() - new Date(lobby.question_started_at)) / 1000
-            )
+          Math.floor(
+            (new Date() - new Date(lobby.question_started_at)) / 1000
+          )
         );
       }
     };
@@ -293,10 +297,10 @@ const MultiplayerGameScreenContent = () => {
         attempts === 0
           ? 1000
           : attempts === 1
-          ? 750
-          : attempts === 2
-          ? 500
-          : 250;
+            ? 750
+            : attempts === 2
+              ? 500
+              : 250;
       setScore((prev) => prev + points);
       setFeedback("Correct!");
       setFeedbackType("correct");
@@ -413,191 +417,201 @@ const MultiplayerGameScreenContent = () => {
   }
 
   return (
-    <div className="relative min-h-screen w-full">
-      {/* Globe Background */}
-      <Globe />
-
-      {/* Back Button */}
-      <div className="fixed top-6 right-6 z-50 flex items-center">
-        <button
-          onClick={handleBack}
-          className="bg-zinc-900/80 border border-red-400 p-2 rounded-full text-white/70 hover:text-red-400 hover:bg-zinc-800/80 transition-all duration-200"
-          title="Return to Home"
-        >
-          <FaTimes size={20} />
-        </button>
+    <Suspense fallback={
+      <div className="flex justify-center items-center min-h-screen bg-black">
+        <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin" />
       </div>
+    }>
+      <div className="relative min-h-screen w-full">
+        {/* Globe Background */}
+        <Globe />
 
-      {/* Hover Menu */}
-      <div className="fixed top-0 left-0 z-50 flex items-center">
-        <HoverDropMenu />
-      </div>
+        {/* Back Button */}
+        <div className="fixed top-6 right-6 z-50 flex items-center">
+          <button
+            onClick={handleBack}
+            className="bg-zinc-900/80 border border-red-400 p-2 rounded-full text-white/70 hover:text-red-400 hover:bg-zinc-800/80 transition-all duration-200"
+            title="Return to Home"
+          >
+            <FaTimes size={20} />
+          </button>
+        </div>
 
-      {/* Main Gameplay UI */}
-      {quizComplete ? (
-        // Post-Game Screen
-        <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-30">
-          <div className="bg-zinc-900/80 border border-white/10 rounded-lg p-6 max-w-lg w-full text-center">
-            <h2 className="text-3xl font-bold text-white mb-4">
-              Quiz Complete!
-            </h2>
-            <ul className="text-white/70 mb-6">
-              {players
-                .sort((a, b) => b.score - a.score)
-                .map((p) => {
-                  console.log(p);
-                  return (
-                    <li key={p.id} className="text-lg">
-                      {p.display_name || "Player"}: {p.score}
-                    </li>
-                  );
-                })}
-            </ul>
-            {isHost ? (
-              <div className="flex justify-center gap-4">
-                <button
-                  onClick={async () => {
-                    playClickSound();
-                    const arr = [];
-                    for (let i = 0; i < 10; i++) {
-                      const { data } = await supabase.rpc("random_fact");
-                      if (data) arr.push(data);
-                    }
-                    await supabase
-                      .from("Lobbies")
-                      .update({
-                        questions: arr,
-                        question_number: 1,
-                        question_started_at: new Date().toISOString(),
-                      })
-                      .eq("id", lobbyId);
-                    await supabase
-                      .from("Players")
-                      .update({ score: 0, last_answered: 0 })
-                      .eq("lobby_id", lobbyId);
-                    setQuizComplete(false);
-                    setScore(0);
-                    setAttempts(0);
-                    setFeedback("");
-                    setFeedbackType("");
-                    setShowLeaderboard(false);
-                    setIsCollapsed(false);
-                    setQuestionNumber(1);
-                    setCurrentFact(arr[0]);
-                    setQuestions(arr);
-                  }}
-                  className="bg-emerald-500/50 text-emerald-400 border border-emerald-500/60 rounded-lg py-2 px-4 hover:bg-emerald-500/60 transition-colors font-medium"
-                >
-                  Restart Quiz
-                </button>
-                <button
-                  onClick={handleDisbandLobby}
-                  className="bg-red-500/50 text-red-400 border border-red-500/60 rounded-lg py-2 px-4 hover:bg-red-500/60 transition-colors font-medium"
-                >
-                  Disband Lobby
-                </button>
-              </div>
-            ) : (
-              <button
-                onClick={handleBack}
-                className="bg-zinc-900/60 text-white/70 border border-white/10 rounded-lg py-2 px-4 hover:bg-zinc-800/60 transition-colors font-medium"
-              >
-                Back Home
-              </button>
-            )}
-          </div>
+        {/* Rotation Button in top center */}
+        <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
+          <RotationButton />
         </div>
-      ) : showLeaderboard ? (
-        // Leaderboard Screen
-        <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-30">
-          <div className="bg-zinc-900/80 border border-white/10 rounded-lg p-6 max-w-lg w-full text-center">
-            <h2 className="text-2xl font-bold text-white mb-4">Leaderboard</h2>
-            <ul className="text-white/70 mb-4">
-              {players
-                .sort((a, b) => b.score - a.score)
-                .map((p) => {
-                  console.log(p);
-                  return (
-                    <li key={p.id} className="text-lg">
-                      {p.display_name || "Player"}: {p.score}
-                    </li>
-                  );
-                })}
-            </ul>
-            <p className="text-white/60">Next question starting shortly...</p>
-          </div>
+
+        {/* Hover Menu */}
+        <div className="fixed top-0 left-0 z-50 flex items-center">
+          <HoverDropMenu />
         </div>
-      ) : (
-        // Gameplay UI
-        <div className="fixed inset-x-0 bottom-2 flex flex-col items-center z-30 pointer-events-none">
-          <div className="max-w-md w-full px-2 pointer-events-auto">
-            {/* Score and Collapsible Fact Box */}
-            <div className="bg-zinc-900/40 backdrop-blur-sm border border-white/10 rounded-lg overflow-hidden mb-2">
-              <div className="flex justify-between items-center p-2">
-                <div className="flex items-center gap-2">
-                  <div className="bg-zinc-800 text-white px-2 py-1 rounded text-xs font-medium">
-                    Question {questionNumber} of {questions.length}
-                  </div>
-                  <div className="bg-zinc-800 text-white px-2 py-1 rounded text-xs font-medium">
-                    Score: {score}
-                  </div>
+
+        {/* Main Gameplay UI */}
+        {quizComplete ? (
+          // Post-Game Screen
+          <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-30">
+            <div className="bg-zinc-900/80 border border-white/10 rounded-lg p-6 max-w-lg w-full text-center">
+              <h2 className="text-3xl font-bold text-white mb-4">
+                Quiz Complete!
+              </h2>
+              <ul className="text-white/70 mb-6">
+                {players
+                  .sort((a, b) => b.score - a.score)
+                  .map((p) => {
+                    console.log(p);
+                    return (
+                      <li key={p.id} className="text-lg">
+                        {p.display_name || "Player"}: {p.score}
+                      </li>
+                    );
+                  })}
+              </ul>
+              {isHost ? (
+                <div className="flex justify-center gap-4">
+                  <button
+                    onClick={async () => {
+                      playClickSound();
+                      const arr = [];
+                      for (let i = 0; i < 10; i++) {
+                        const { data } = await supabase.rpc("random_fact");
+                        if (data) arr.push(data);
+                      }
+                      await supabase
+                        .from("Lobbies")
+                        .update({
+                          questions: arr,
+                          question_number: 1,
+                          question_started_at: new Date().toISOString(),
+                        })
+                        .eq("id", lobbyId);
+                      await supabase
+                        .from("Players")
+                        .update({ score: 0, last_answered: 0 })
+                        .eq("lobby_id", lobbyId);
+                      setQuizComplete(false);
+                      setScore(0);
+                      setAttempts(0);
+                      setFeedback("");
+                      setFeedbackType("");
+                      setShowLeaderboard(false);
+                      setIsCollapsed(false);
+                      setQuestionNumber(1);
+                      setCurrentFact(arr[0]);
+                      setQuestions(arr);
+                    }}
+                    className="bg-emerald-500/50 text-emerald-400 border border-emerald-500/60 rounded-lg py-2 px-4 hover:bg-emerald-500/60 transition-colors font-medium"
+                  >
+                    Restart Quiz
+                  </button>
+                  <button
+                    onClick={handleDisbandLobby}
+                    className="bg-red-500/50 text-red-400 border border-red-500/60 rounded-lg py-2 px-4 hover:bg-red-500/60 transition-colors font-medium"
+                  >
+                    Disband Lobby
+                  </button>
                 </div>
-                <div className="text-white/70 text-xs">Time Left: {timer}s</div>
+              ) : (
                 <button
-                  onClick={() => setIsCollapsed(!isCollapsed)}
-                  className="text-white/60 hover:text-white transition-all"
+                  onClick={handleBack}
+                  className="bg-zinc-900/60 text-white/70 border border-white/10 rounded-lg py-2 px-4 hover:bg-zinc-800/60 transition-colors font-medium"
                 >
-                  {isCollapsed ? (
-                    <ChevronUp size={16} />
-                  ) : (
-                    <ChevronDown size={16} />
-                  )}
+                  Back Home
                 </button>
-              </div>
-              {!isCollapsed && (
-                <div className="p-2 border-t border-white/10">
-                  <div className="text-center text-white text-sm font-medium">
-                    {currentFact?.Fact || "Loading question..."}
+              )}
+            </div>
+          </div>
+        ) : showLeaderboard ? (
+          // Leaderboard Screen
+          <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-30">
+            <div className="bg-zinc-900/80 border border-white/10 rounded-lg p-6 max-w-lg w-full text-center">
+              <h2 className="text-2xl font-bold text-white mb-4">Leaderboard</h2>
+              <ul className="text-white/70 mb-4">
+                {players
+                  .sort((a, b) => b.score - a.score)
+                  .map((p) => {
+                    console.log(p);
+                    return (
+                      <li key={p.id} className="text-lg">
+                        {p.display_name || "Player"}: {p.score}
+                      </li>
+                    );
+                  })}
+              </ul>
+              <p className="text-white/60">Next question starting shortly...</p>
+            </div>
+          </div>
+        ) : (
+          // Gameplay UI
+          <div className="fixed inset-x-0 bottom-2 flex flex-col items-center z-30 pointer-events-none">
+            <div className="max-w-md w-full px-2 pointer-events-auto">
+              {/* Score and Collapsible Fact Box */}
+              <div className="bg-zinc-900/40 backdrop-blur-sm border border-white/10 rounded-lg overflow-hidden mb-2">
+                <div className="flex justify-between items-center p-2">
+                  <div className="flex items-center gap-2">
+                    <div className="bg-zinc-800 text-white px-2 py-1 rounded text-xs font-medium">
+                      Question {questionNumber} of {questions.length}
+                    </div>
+                    <div className="bg-zinc-800 text-white px-2 py-1 rounded text-xs font-medium">
+                      Score: {score}
+                    </div>
                   </div>
+                  <div className="text-white/70 text-xs">Time Left: {timer}s</div>
+                  <button
+                    onClick={() => setIsCollapsed(!isCollapsed)}
+                    className="text-white/60 hover:text-white transition-all"
+                  >
+                    {isCollapsed ? (
+                      <ChevronUp size={16} />
+                    ) : (
+                      <ChevronDown size={16} />
+                    )}
+                  </button>
+                </div>
+                {!isCollapsed && (
+                  <div className="p-2 border-t border-white/10">
+                    <div className="text-center text-white text-sm font-medium">
+                      {currentFact?.Fact || "Loading question..."}
+                    </div>
+                  </div>
+                )}
+              </div>
+
+              {/* Submit Button */}
+              <div className="mt-2 bg-zinc-900/60 backdrop-blur-sm border border-white/10 rounded-lg p-2">
+                <div className="flex flex-col gap-2">
+                  <div className="flex justify-between items-center">
+                    <div className="text-white/70 text-sm">Selected Country</div>
+                    <div className="text-white font-medium text-sm">
+                      {selectedCountry.name || "None"}
+                    </div>
+                  </div>
+                  <button
+                    onClick={handleSubmitAnswer}
+                    className="w-full bg-emerald-500/50 text-emerald-400 border border-emerald-500/60 rounded-lg py-1.5 px-3 hover:bg-emerald-500/60 transition-colors font-medium flex items-center justify-center gap-2 text-sm"
+                  >
+                    Submit Answer
+                  </button>
+                </div>
+              </div>
+
+              {/* Feedback Box */}
+              {feedback && (
+                <div
+                  className={`mt-2 p-2 rounded-lg border backdrop-blur-sm flex flex-col items-center justify-center min-w-0 text-center ${feedbackType === "correct"
+                    ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
+                    : "bg-red-500/20 border-red-500/30 text-red-400"
+                    }`}
+                  style={{ wordWrap: "break-word", whiteSpace: "normal" }}
+                >
+                  <p className="text-sm">{feedback}</p>
                 </div>
               )}
             </div>
-
-            {/* Submit Button */}
-            <div className="mt-2 bg-zinc-900/60 backdrop-blur-sm border border-white/10 rounded-lg p-2">
-              <div className="flex flex-col gap-2">
-                <div className="flex justify-between items-center">
-                  <div className="text-white/70 text-sm">Selected Country</div>
-                  <div className="text-white font-medium text-sm">
-                    {selectedCountry.name || "None"}
-                  </div>
-                </div>
-                <button
-                  onClick={handleSubmitAnswer}
-                  className="w-full bg-emerald-500/50 text-emerald-400 border border-emerald-500/60 rounded-lg py-1.5 px-3 hover:bg-emerald-500/60 transition-colors font-medium flex items-center justify-center gap-2 text-sm"
-                >
-                  Submit Answer
-                </button>
-              </div>
-            </div>
-
-            {/* Feedback Box */}
-            {feedback && (
-              <div
-                className={`mt-2 p-2 rounded-lg border backdrop-blur-sm flex flex-col items-center justify-center min-w-0 text-center ${
-                  feedbackType === "correct"
-                    ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
-                    : "bg-red-500/20 border-red-500/30 text-red-400"
-                }`}
-                style={{ wordWrap: "break-word", whiteSpace: "normal" }}
-              >
-                <p className="text-sm">{feedback}</p>
-              </div>
-            )}
           </div>
-        </div>
-      )}
-    </div>
+        )}
+      </div>
+    </Suspense>
   );
 };
 

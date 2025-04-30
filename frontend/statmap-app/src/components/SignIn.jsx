@@ -1,6 +1,5 @@
 import React, { useContext, useState } from 'react';
 import { SupabaseContext } from './SupabaseContext';
-import { FaTimes } from 'react-icons/fa';
 
 /**
  * Sign In component for accounts that allows users to enter their credentials and sign in.

@@ -3,7 +3,7 @@ import HoverDropMenu from "../HoverDropMenu";
 import Loading from "../Loading";
 import GlobeTest from "./GlobeTest";
 import NightLightsEarth from "./NightLightsEarth";
-import { CountrySelectionProvider, useCountrySelection } from "../CountrySelectionContext";
+import { CountrySelectionProvider } from "../CountrySelectionContext";
 
 /**
  * Renders a page with interactive globe with experimetnal features under testing and development.

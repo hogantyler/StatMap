@@ -1,7 +1,6 @@
-import React, { useRef, useState, useEffect, useMemo, useCallback, memo } from "react";
-import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
-import { OrbitControls, Stars, Text, Billboard } from "@react-three/drei";
-import * as THREE from "three";
+import React, { useRef, useState, useEffect } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { OrbitControls, Stars } from "@react-three/drei";
 import { Perf } from 'r3f-perf'
 //import ConicGlobe from "./TestComponents/ConicGlobe";
 import AtmosphereMesh from "./AtmosphereMesh";
@@ -38,7 +37,7 @@ const LandingGlobe = React.memo(function LandingGlobe(props) {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, []);
 
-    //console.log("Graphics settings:", graphicsSettings.antiAliasing);
+    //console.log("Graphics settings:", graphicsSettings.showGalaxyBackground);
 
     return (
         <div className="relative w-full h-full">
@@ -61,17 +60,19 @@ const LandingGlobe = React.memo(function LandingGlobe(props) {
                         zoomSpeed={0.4}
                         rotateSpeed={0.4}
                     />
-                    
-                    <GalaxyBackground />
 
-                    <Stars
-                        radius={200}
-                        depth={60}
-                        count={5000}
-                        factor={7}
-                        saturation={0}
-                        fade={true}
-                    />
+                    {/* Conditionally render Galaxy based on settings */}
+                    {graphicsSettings.showGalaxyBackground ? <GalaxyBackground />
+                        : <Stars
+                            radius={200}
+                            depth={60}
+                            count={5000}
+                            factor={7}
+                            saturation={0}
+                            fade={true}
+                        />}
+
+
 
                     <EarthTest globeRef={globeRef} cloudsRef={cloudsRef} NoOffSet={NoOffSet} />
                     <AtmosphereMesh radius={1.02} />

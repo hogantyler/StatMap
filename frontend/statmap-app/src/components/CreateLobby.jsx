@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { supabase } from "../SupabaseContext";
-import { useNavigate, useLocation } from "react-router-dom";
+import { supabase } from "./SupabaseContext";
+import { useNavigate } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
-import SignIn from "../SignIn";
-import SignUp from "../SignUp";
-import Modal from "../Modal";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
+import Modal from "./Modal";
 import { motion } from "framer-motion";
 
 /**
@@ -29,7 +29,6 @@ function CreateLobby() {
   const [showSignInModal, setShowSignInModal] = useState(false);
   const [showSignUpModal, setShowSignUpModal] = useState(false);
   const navigate = useNavigate();
-  const location = useLocation();
   const navigatingToMultiplayer = useRef(false);
 
   // generate 6 character code (thanks gpt)
@@ -136,7 +135,7 @@ function CreateLobby() {
     localStorage.setItem("currentLobbyId", newLobbyId);
 
     // add player to the Players table
-    const { error: playerError } = await supabase.from("Players").insert([
+    const { } = await supabase.from("Players").insert([
       {
         display_name: user.user_metadata.display_name,
         id: user.id,
@@ -213,7 +212,7 @@ function CreateLobby() {
   const handleLeaveLobby = () => {
     leaveLobby(lobbyId);
     localStorage.removeItem("currentLobbyId");
-    navigate("/lobbyTest");
+    navigate("/lobby");
   };
 
   const handleBack = () => navigate("/");
