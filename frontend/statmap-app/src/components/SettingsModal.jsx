@@ -15,6 +15,7 @@ import {
   Check,
   Boxes,
   CopyX,
+  Stars,
 } from 'lucide-react';
 import { cn } from '../lib/utils';
 import { setGlobalVolume, playClickSound } from '../utils/soundUtils';
@@ -69,6 +70,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
       globeBrightness: 50,
       rotationSpeed: 50,
       showClouds: false,
+      showGalaxyBackground: false,
     },
     medium: {
       polygonCount: 40,
@@ -77,6 +79,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
       globeBrightness: 50,
       rotationSpeed: 50,
       showClouds: true,
+      showGalaxyBackground: false,
     },
     high: {
       polygonCount: 60,
@@ -85,6 +88,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
       globeBrightness: 50,
       rotationSpeed: 50,
       showClouds: true,
+      showGalaxyBackground: false,
     },
     ultra: {
       polygonCount: 100,
@@ -93,6 +97,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
       globeBrightness: 50,
       rotationSpeed: 50,
       showClouds: true,
+      showGalaxyBackground: true,
     },
   };
 
@@ -413,7 +418,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                           <div className="flex items-center justify-between pb-3">
                             <div className="flex items-center gap-2">
                               <CopyX size={14} className="text-white/40" />
-                              <label className="text-sm text-white/70">Anti-Aliasings</label>
+                              <label className="text-sm text-white/70">Anti-Aliasing</label>
                             </div>
                             <button
                               onClick={() =>
@@ -436,31 +441,6 @@ const SettingsModal = ({ isOpen, onClose }) => {
                             </button>
                           </div>
                         </div>
-
-                        {/* Anti-Aliasing Level */}
-                        {/*<div>
-                          <div className="flex items-center justify-between mb-2">
-                            <label className="text-sm text-white/70 flex items-center gap-2">
-                              <Sliders size={14} className="text-white/40" />
-                              Anti-Aliasing Level
-                            </label>
-                            <span className="text-sm font-medium">{tempGraphicsSettings.antiAliasingLevel}x</span>
-                          </div>
-                          <input
-                            type="range"
-                            min="0"
-                            max="8"
-                            step="2"
-                            value={tempGraphicsSettings.antiAliasingLevel}
-                            onChange={(e) =>
-                              setTempGraphicsSettings((prev) => ({
-                                ...prev,
-                                antiAliasingLevel: Number.parseInt(e.target.value),
-                              }))
-                            }
-                            className="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer"
-                          />
-                        </div>*/}
 
                         {/* Globe Brightness */}
                         <div>
@@ -532,6 +512,33 @@ const SettingsModal = ({ isOpen, onClose }) => {
                               className={cn(
                                 'absolute top-1 w-4 h-4 rounded-full transition-all',
                                 tempGraphicsSettings.showClouds ? 'right-1 bg-emerald-400' : 'left-1 bg-white/60',
+                              )}
+                            />
+                          </button>
+                        </div>
+
+                        {/* Galaxy Background Toggle */}
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-2">
+                            <Stars size={14} className="text-white/40" />
+                            <label className="text-sm text-white/70">Galaxy Background</label>
+                          </div>
+                          <button
+                            onClick={() =>
+                              setTempGraphicsSettings((prev) => ({
+                                ...prev,
+                                showGalaxyBackground: !prev.showGalaxyBackground,
+                              }))
+                            }
+                            className={cn(
+                              'w-12 h-6 rounded-full relative transition-colors',
+                              tempGraphicsSettings.showGalaxyBackground ? 'bg-emerald-500/30' : 'bg-zinc-700',
+                            )}
+                          >
+                            <div
+                              className={cn(
+                                'absolute top-1 w-4 h-4 rounded-full transition-all',
+                                tempGraphicsSettings.showGalaxyBackground ? 'right-1 bg-emerald-400' : 'left-1 bg-white/60',
                               )}
                             />
                           </button>
