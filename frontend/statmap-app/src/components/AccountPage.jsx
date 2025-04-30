@@ -63,7 +63,7 @@ const AccountPage = ({ isOpen, onModalClose }) => {
       .from('Game Logs')
       .select('*')
       .eq('User_ID', user_id)
-      .limit(10)
+      .limit(25)
 
     if (error) {
       // alert(error);
@@ -79,7 +79,7 @@ const AccountPage = ({ isOpen, onModalClose }) => {
     });
 
     if (error) {
-      alert(error);
+      console.log(error);
     } else {
       setAccountStats(data[0]);
     }
@@ -424,7 +424,7 @@ const AccountPage = ({ isOpen, onModalClose }) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {gameLogs.slice(0, 3).map((game, index) => (
+                    {gameLogs.slice(0, 5).map((game, index) => (
                       <tr
                         key={game.Game_ID}
                         className={cn(
@@ -440,9 +440,19 @@ const AccountPage = ({ isOpen, onModalClose }) => {
                           {game.Mode}
                         </td>
                         <td className="px-4 py-3 text-center whitespace-nowrap">
-                          <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-sky-500/10 text-sky-400">
-                            {game.Score}
-                          </span>
+                          {
+                            accountStats && (
+                              <span
+                                className={cn(
+                                  'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
+                                  game.Score === accountStats.High_Score
+                                    ? 'bg-yellow-500/20 text-yellow-300'
+                                    : 'bg-sky-500/10 text-sky-400'
+                                )}
+                              >
+                                {game.Score}
+                              </span>)
+                          }
                         </td>
                         <td className="px-4 py-3 text-center whitespace-nowrap text-sm">
                           {game.Num_Correct} / {game.Num_Questions}
@@ -533,16 +543,19 @@ const AccountPage = ({ isOpen, onModalClose }) => {
                           {game.Mode}
                         </td>
                         <td className="px-4 py-3 text-center whitespace-nowrap">
-                          <span
-                            className={cn(
-                              'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
-                              game.Score === accountStats.High_Score
-                                ? 'bg-yellow-500/20 text-yellow-300'
-                                : 'bg-sky-500/10 text-sky-400'
-                            )}
-                          >
-                            {game.Score}
-                          </span>
+                          {
+                            accountStats && (
+                              <span
+                              className={cn(
+                                'inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium',
+                                game.Score === accountStats.High_Score
+                                  ? 'bg-yellow-500/20 text-yellow-300'
+                                  : 'bg-sky-500/10 text-sky-400'
+                              )}
+                            >
+                              {game.Score}
+                            </span>)
+                          }
                         </td>
                         <td className="px-4 py-3 text-center whitespace-nowrap text-sm">
                           {game.Num_Correct} / {game.Num_Questions}
