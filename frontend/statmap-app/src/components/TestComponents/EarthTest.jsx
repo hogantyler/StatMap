@@ -192,7 +192,7 @@ function EarthTest(props) {
     // Create earth material with the MODIFIED shader function
     const earthMaterial = useMemo(() => {
         // Ensure all required maps for the *new* shader are loaded
-        if (colorMap && normalMap && specularMap && nightMap) {
+        if (colorMap && normalMap && specularMap && nightMap && !graphicsSettings.mobile) {
             return createEarthMaterial({
                 colorMap,
                 normalMap,
@@ -203,7 +203,7 @@ function EarthTest(props) {
         }
         return null; // Return null if textures aren't ready
         // Update dependencies to match the new shader's needs
-    }, [colorMap, normalMap, specularMap, nightMap]);
+    }, [colorMap, normalMap, specularMap, nightMap, graphicsSettings.mobile]);
 
     console.log("earth render");
 
@@ -223,18 +223,28 @@ function EarthTest(props) {
                     />
                 </mesh>
             )}
-            
 
-            {earthMaterial && sphereGeometry && (
-                <mesh
-                    ref={props.globeRef}
-                    geometry={sphereGeometry} // Use the geometry with tangents
-                    material={earthMaterial} // Use the custom shader material
-                    onPointerOver={(e) => e.stopPropagation()}
-                    onPointerOut={(e) => e.stopPropagation()}
-                    onClick={(e) => e.stopPropagation()}
-                />
-            )}
+            {!graphicsSettings.mobile ?
+                (earthMaterial && sphereGeometry && (
+                    <mesh
+                        ref={props.globeRef}
+                        geometry={sphereGeometry} // Use the geometry with tangents
+                        material={earthMaterial} // Use the custom shader material
+                        onPointerOver={(e) => e.stopPropagation()}
+                        onPointerOut={(e) => e.stopPropagation()}
+                        onClick={(e) => e.stopPropagation()}
+                    />
+                ) ):
+                <mesh ref={props.globeRef}>
+                    <sphereGeometry args={[1, spherePolygonCount, spherePolygonCount]} />
+                    <meshPhongMaterial
+                        map={colorMap}
+                        side={THREE.FrontSide}
+                    />
+                </mesh>}
+
+
+
         </group>
     );
 }
