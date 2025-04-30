@@ -13,6 +13,7 @@ import { supabase } from "./SupabaseContext";
 import { CountrySelectionProvider, useCountrySelection } from "./CountrySelectionContext";
 import { playClickSound } from "../utils/soundUtils";
 import { cn } from "../lib/utils";
+import RotationButton from "./RotationButton";
 
 const Globe = React.lazy(() => import("./GlobeComponents/Globe")); // Lazy load the Globe component
 
@@ -166,6 +167,11 @@ function UnlimitedModeContent() {
         >
           <X size={20} />
         </button>
+
+        {/* Rotation Button in top center */}
+        <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
+          <RotationButton />
+        </div>
 
         {/* Hover Menu in top left */}
         <div className="fixed top-0 left-0 z-50">

@@ -319,13 +319,19 @@ const SettingsModal = ({ isOpen, onClose }) => {
                           key={quality}
                           onClick={() => handlePresetChange(quality)}
                           className={cn(
-                            'py-2 px-3 rounded-md text-sm font-medium transition-all duration-200',
+                            'py-2 px-3 rounded-md text-sm font-medium transition-all duration-200 relative group mb-2',
                             tempGlobeQuality === quality
                               ? 'bg-indigo-500/20 text-indigo-400 border border-indigo-500/30'
                               : 'bg-zinc-800/60 text-white/70 border border-white/10 hover:bg-zinc-700/60 hover:text-white',
                           )}
                         >
                           {quality.charAt(0).toUpperCase() + quality.slice(1)}
+                          <div className="absolute top-full left-1/2 transform -translate-x-1/2 mt-1 px-2 bg-zinc-800 text-[10px] rounded opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none whitespace-nowrap z-10 border border-white/10">
+                            {quality === 'low' && "Potato PC 🥔"}
+                            {quality === 'medium' && "Balanced 👌"}
+                            {quality === 'high' && "Gaming PC 🎮"}
+                            {quality === 'ultra' && "NASA PC 🚀"}
+                          </div>
                         </button>
                       ))}
                     </div>

@@ -6,6 +6,7 @@ import Modal from "./Modal";
 import { X, AlertTriangle, ArrowRight, ChevronDown, ChevronUp, ExternalLink, User } from "lucide-react";
 import Loading from "./Loading";
 import { supabase } from "./SupabaseContext";
+import RotationButton from "./RotationButton";
 
 import {
   CountrySelectionProvider,
@@ -220,6 +221,11 @@ const QuizModeContent = () => {
         >
           <X size={20} />
         </button>
+
+        {/* Rotation Button in top center */}
+        <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
+          <RotationButton />
+        </div>
 
         {/* Hover Menu in top left */}
         <div className="fixed top-0 left-0 z-50">

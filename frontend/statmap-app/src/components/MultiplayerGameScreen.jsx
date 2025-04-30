@@ -12,6 +12,7 @@ import {
 import { playClickSound } from "../utils/soundUtils";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Suspense } from "react";
+import RotationButton from "./RotationButton";
 
 const Globe = React.lazy(() => import("./GlobeComponents/Globe"));
 
@@ -434,6 +435,11 @@ const MultiplayerGameScreenContent = () => {
           >
             <FaTimes size={20} />
           </button>
+        </div>
+
+        {/* Rotation Button in top center */}
+        <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
+          <RotationButton />
         </div>
 
         {/* Hover Menu */}
