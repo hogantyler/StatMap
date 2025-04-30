@@ -1,9 +1,11 @@
 {
   "files": {
-    "main.css": "/static/css/main.f8537fb9.css",
-    "main.js": "/static/js/main.6c3a7413.js",
-    "static/js/952.553d8c6b.chunk.js": "/static/js/952.553d8c6b.chunk.js",
-    "static/js/453.8207fe03.chunk.js": "/static/js/453.8207fe03.chunk.js",
+    "main.css": "/static/css/main.34536fbb.css",
+    "main.js": "/static/js/main.fd0a43cb.js",
+    "static/js/549.b896292a.chunk.js": "/static/js/549.b896292a.chunk.js",
+    "static/js/952.bcce249f.chunk.js": "/static/js/952.bcce249f.chunk.js",
+    "static/js/706.8df90a24.chunk.js": "/static/js/706.8df90a24.chunk.js",
+    "static/js/453.6cd3c3f3.chunk.js": "/static/js/453.6cd3c3f3.chunk.js",
     "static/media/8k_earth.png": "/static/media/8k_earth.e816d19d3a0f47c9169f.png",
     "static/media/galaxy_texture.jpg": "/static/media/galaxy_texture.528b6b1c6d487dc1c970.jpg",
     "static/media/8k_earthNightMap.jpg": "/static/media/8k_earthNightMap.08aaf9da39ec5d1a2bdc.jpg",
@@ -14,13 +16,15 @@
     "static/media/gebco_bathy_2700x1350.jpg": "/static/media/gebco_bathy_2700x1350.46dc6f48e5b929de2ffe.jpg",
     "static/media/black_globe.svg": "/static/media/black_globe.11ed65579c11797c5b2b3941e7516669.svg",
     "index.html": "/index.html",
-    "main.f8537fb9.css.map": "/static/css/main.f8537fb9.css.map",
-    "main.6c3a7413.js.map": "/static/js/main.6c3a7413.js.map",
-    "952.553d8c6b.chunk.js.map": "/static/js/952.553d8c6b.chunk.js.map",
-    "453.8207fe03.chunk.js.map": "/static/js/453.8207fe03.chunk.js.map"
+    "main.34536fbb.css.map": "/static/css/main.34536fbb.css.map",
+    "main.fd0a43cb.js.map": "/static/js/main.fd0a43cb.js.map",
+    "549.b896292a.chunk.js.map": "/static/js/549.b896292a.chunk.js.map",
+    "952.bcce249f.chunk.js.map": "/static/js/952.bcce249f.chunk.js.map",
+    "706.8df90a24.chunk.js.map": "/static/js/706.8df90a24.chunk.js.map",
+    "453.6cd3c3f3.chunk.js.map": "/static/js/453.6cd3c3f3.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f8537fb9.css",
-    "static/js/main.6c3a7413.js"
+    "static/css/main.34536fbb.css",
+    "static/js/main.fd0a43cb.js"
   ]
 }
