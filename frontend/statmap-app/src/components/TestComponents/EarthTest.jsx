@@ -141,17 +141,22 @@ function EarthTest(props) {
         // Define maximum anisotropy based on GPU capabilities
         const maxAnisotropy = gl.capabilities.getMaxAnisotropy();
 
+        const anisotropyLevel = Math.min(maxAnisotropy, graphicsSettings.anisotropicFiltering);
+
         const applyTextureSettings = (texture) => {
             if (!texture) return;
 
+            //console.log("anisotropyLevel", anisotropyLevel);
+
             // Apply anisotropic filtering
-            texture.anisotropy = maxAnisotropy;
+            texture.anisotropy = anisotropyLevel;
 
             // Set texture wrapping
             texture.wrapS = texture.wrapT = THREE.RepeatWrapping;
             texture.repeat.set(1, 1);
 
             // Apply offset for proper alignment
+            //console.log("offset", props.NoOffSet);
             if (!props.NoOffSet) {
                 texture.offset.x = (Math.PI / 2) / (2 * Math.PI);
             }
@@ -168,7 +173,7 @@ function EarthTest(props) {
         // Apply settings to all textures
         [colorMap, normalMap, specularMap, nightMap, cloudMap].forEach(applyTextureSettings);
 
-    }, [gl.capabilities, colorMap, normalMap, specularMap, nightMap, cloudMap]);
+    }, [gl.capabilities, graphicsSettings.anisotropicFiltering, colorMap, normalMap, specularMap, nightMap, cloudMap]);
 
     // Create sphere geometry WITH TANGENTS using the built-in method
     const sphereGeometry = useMemo(() => {
@@ -176,7 +181,7 @@ function EarthTest(props) {
         const geom = new THREE.SphereGeometry(1, spherePolygonCount, spherePolygonCount);
         try {
             geom.computeTangents(); // Use built-in method
-            console.log("Tangents computed successfully using geom.computeTangents().");
+            //console.log("Tangents computed successfully using geom.computeTangents().");
         } catch (error) {
             console.error("Error computing tangents:", error);
             return new THREE.SphereGeometry(1, spherePolygonCount, spherePolygonCount); // Fallback to original segments
@@ -187,7 +192,7 @@ function EarthTest(props) {
     // Create earth material with the MODIFIED shader function
     const earthMaterial = useMemo(() => {
         // Ensure all required maps for the *new* shader are loaded
-        if (colorMap && normalMap && specularMap && nightMap) {
+        if (colorMap && normalMap && specularMap && nightMap && !graphicsSettings.mobile) {
             return createEarthMaterial({
                 colorMap,
                 normalMap,
@@ -198,33 +203,48 @@ function EarthTest(props) {
         }
         return null; // Return null if textures aren't ready
         // Update dependencies to match the new shader's needs
-    }, [colorMap, normalMap, specularMap, nightMap]);
+    }, [colorMap, normalMap, specularMap, nightMap, graphicsSettings.mobile]);
 
     console.log("earth render");
 
     return (
         <group>
-            <mesh ref={props.cloudsRef}>
-                <sphereGeometry args={[1.01, spherePolygonCount, spherePolygonCount]} />
-                <meshPhongMaterial
-                    map={cloudMap}
-                    opacity={0.8}
-                    depthWrite={false}
-                    transparent={true}
-                    side={THREE.FrontSide}
-                    blending={THREE.AdditiveBlending}
-                />
-            </mesh>
-            {earthMaterial && sphereGeometry && (
-                <mesh
-                    ref={props.globeRef}
-                    geometry={sphereGeometry} // Use the geometry with tangents
-                    material={earthMaterial} // Use the custom shader material
-                    onPointerOver={(e) => e.stopPropagation()}
-                    onPointerOut={(e) => e.stopPropagation()}
-                    onClick={(e) => e.stopPropagation()}
-                />
+            {/* Clouds mesh */}
+            {graphicsSettings.showClouds && (
+                <mesh ref={props.cloudsRef}>
+                    <sphereGeometry args={[1.01, spherePolygonCount, spherePolygonCount]} />
+                    <meshPhongMaterial
+                        map={cloudMap}
+                        opacity={0.8}
+                        depthWrite={false}
+                        transparent={true}
+                        side={THREE.FrontSide}
+                        blending={THREE.AdditiveBlending}
+                    />
+                </mesh>
             )}
+
+            {!graphicsSettings.mobile ?
+                (earthMaterial && sphereGeometry && (
+                    <mesh
+                        ref={props.globeRef}
+                        geometry={sphereGeometry} // Use the geometry with tangents
+                        material={earthMaterial} // Use the custom shader material
+                        onPointerOver={(e) => e.stopPropagation()}
+                        onPointerOut={(e) => e.stopPropagation()}
+                        onClick={(e) => e.stopPropagation()}
+                    />
+                ) ):
+                <mesh ref={props.globeRef}>
+                    <sphereGeometry args={[1, spherePolygonCount, spherePolygonCount]} />
+                    <meshPhongMaterial
+                        map={colorMap}
+                        side={THREE.FrontSide}
+                    />
+                </mesh>}
+
+
+
         </group>
     );
 }

@@ -207,7 +207,7 @@ function NightLightsEarth(props) {
             }, sunDirection);
         }
         return null; // Return null if textures aren't ready
-    // Update dependencies to match the new shader's needs
+        // Update dependencies to match the new shader's needs
     }, [colorMap, normalMap, specularMap, nightMap, sunDirection]);
     // --- END MODIFIED EARTH MATERIAL CREATION ---
 
@@ -221,7 +221,7 @@ function NightLightsEarth(props) {
                     // Original camera settings
                     camera={{ position: [0, 1, 2], near: 0.01, far: 1000 }}
                     style={{ background: "black", width: "100vw", height: "100vh" }}
-                    // No gl={{ antialias: true }} added
+                // No gl={{ antialias: true }} added
                 >
                     {/* Original lighting */}
                     <directionalLight position={[sunDirection.x, sunDirection.y, sunDirection.z]} intensity={0.5} />
@@ -239,7 +239,7 @@ function NightLightsEarth(props) {
                         rotateSpeed={0.4}
                         onStart={handleDragStart}
                         onEnd={handleDragEnd}
-                        // No damping enabled
+                    // No damping enabled
                     />
 
                     {/* Original Stars */}

@@ -1,11 +1,13 @@
-import React, { useRef, useState, useEffect, useMemo, useCallback, memo } from "react";
-import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
-import { OrbitControls, Stars, Text, Billboard } from "@react-three/drei";
-import * as THREE from "three";
+import React, { useRef, useState, useEffect } from "react";
+import { Canvas, useFrame } from "@react-three/fiber";
+import { OrbitControls, Stars } from "@react-three/drei";
 import { Perf } from 'r3f-perf'
 //import ConicGlobe from "./TestComponents/ConicGlobe";
 import AtmosphereMesh from "./AtmosphereMesh";
 import EarthTest from "../TestComponents/EarthTest";
+import GalaxyBackground from "./GalaxyBackground";
+import { useGraphicsSettings } from "../GraphicsContext";
+
 
 /**
  * For showing 3D globe background on landing page
@@ -13,7 +15,7 @@ import EarthTest from "../TestComponents/EarthTest";
  * @returns A Canvas component that encapsulates 3D components including the earth, lights, stars, etc.
  */
 const LandingGlobe = React.memo(function LandingGlobe(props) {
-
+    const { graphicsSettings } = useGraphicsSettings();
     const [showPerformance, setShowPerformance] = useState(false);
     const NoOffSet = true;
 
@@ -21,7 +23,7 @@ const LandingGlobe = React.memo(function LandingGlobe(props) {
     const cloudsRef = useRef();
     const controlsRef = useRef();
 
-    console.log("landing globe render");
+    //console.log("landing globe render");
 
     // Toggle performance monitor with key press
     useEffect(() => {
@@ -35,13 +37,13 @@ const LandingGlobe = React.memo(function LandingGlobe(props) {
         return () => window.removeEventListener('keydown', handleKeyDown);
     }, []);
 
-    // Handlers for OrbitControls drag state
+    //console.log("Graphics settings:", graphicsSettings.showGalaxyBackground);
 
     return (
         <div className="relative w-full h-full">
             <div className="absolute top-0 left-0 w-full h-full">
                 <Canvas
-                    gl={{ antialias: false }}
+                    gl={{ antialias: graphicsSettings.antiAliasing }}
                     camera={{ position: [0, 0.75, 1.5], near: 0.01, far: 1000 }}
                     style={{ background: "black", width: "100vw", height: "100vh" }}
                 >
@@ -58,17 +60,23 @@ const LandingGlobe = React.memo(function LandingGlobe(props) {
                         zoomSpeed={0.4}
                         rotateSpeed={0.4}
                     />
-                    <Stars
-                        radius={200}
-                        depth={60}
-                        count={5000}
-                        factor={7}
-                        saturation={0}
-                        fade={true}
-                    />
+
+                    {/* Conditionally render Galaxy based on settings */}
+                    {graphicsSettings.showGalaxyBackground ? <GalaxyBackground />
+                        : <Stars
+                            radius={200}
+                            depth={60}
+                            count={5000}
+                            factor={7}
+                            saturation={0}
+                            fade={true}
+                        />}
+
+
 
                     <EarthTest globeRef={globeRef} cloudsRef={cloudsRef} NoOffSet={NoOffSet} />
                     <AtmosphereMesh radius={1.02} />
+
                     <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} />
 
                     {/* Performance monitor (toggle with 'p' key) */}
@@ -80,10 +88,14 @@ const LandingGlobe = React.memo(function LandingGlobe(props) {
 });
 
 function RotateGlobe({ globeRef, cloudsRef }) {
+
     useFrame(({ clock }) => {
         const elapsedTime = clock.getElapsedTime();
-        globeRef.current.rotation.y = elapsedTime / 70;
-        cloudsRef.current.rotation.y = elapsedTime / 40;
+        globeRef.current.rotation.y = elapsedTime / 50;
+        //console.log(cloudsRef);
+        if (cloudsRef.current) {
+            cloudsRef.current.rotation.y = elapsedTime / 30;
+        }
     });
     return null;
 }

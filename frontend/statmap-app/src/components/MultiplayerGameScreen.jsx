@@ -1,6 +1,6 @@
-import React, { useState, useEffect, Suspense, useCallback } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import Globe from "./GlobeComponents/Globe";
+//import Globe from "./GlobeComponents/Globe";
 import HoverDropMenu from "./HoverDropMenu";
 import { FaTimes } from "react-icons/fa";
 import Loading from "./Loading";
@@ -10,9 +10,14 @@ import {
   useCountrySelection,
 } from "./CountrySelectionContext";
 import { playClickSound } from "../utils/soundUtils";
+import { ChevronDown, ChevronUp } from "lucide-react";
+import { Suspense } from "react";
+import RotationButton from "./RotationButton";
+
+const Globe = React.lazy(() => import("./GlobeComponents/Globe"));
 
 const MultiplayerGameScreenContent = () => {
-  const { selectedCountry, selectCountry } = useCountrySelection();
+  const { selectedCountry } = useCountrySelection();
   const navigate = useNavigate();
 
   const [userId, setUserId] = useState(null);
@@ -25,12 +30,17 @@ const MultiplayerGameScreenContent = () => {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [quizComplete, setQuizComplete] = useState(false);
   const [players, setPlayers] = useState([]);
-
+  const [isAnswered, setIsAnswered] = useState(false);
   const [score, setScore] = useState(0);
   const [attempts, setAttempts] = useState(0);
   const [feedback, setFeedback] = useState("");
   const [feedbackType, setFeedbackType] = useState("");
   const [isCollapsed, setIsCollapsed] = useState(false);
+  const [typingDone, setTypingDone] = useState(false);
+  const [assetsLoaded, setAssetsLoaded] = useState(false);
+  const [hintOneUsed, setHintOneUsed] = useState(0);
+  const [hintTwoUsed, setHintTwoUsed] = useState(0);
+  const [hintThreeUsed, setHintThreeUsed] = useState(0);
 
   // Get userId
   useEffect(() => {
@@ -131,9 +141,9 @@ const MultiplayerGameScreenContent = () => {
         setCurrentFact(lobby.questions[lobby.question_number - 1] || null);
         setTimer(
           60 -
-            Math.floor(
-              (new Date() - new Date(lobby.question_started_at)) / 1000
-            )
+          Math.floor(
+            (new Date() - new Date(lobby.question_started_at)) / 1000
+          )
         );
       }
     };
@@ -156,6 +166,7 @@ const MultiplayerGameScreenContent = () => {
           setQuestionNumber(l.question_number);
           setCurrentFact(l.questions[l.question_number - 1]);
           setTimer(60);
+          setIsAnswered(false);
           setShowLeaderboard(false);
           setAttempts(0);
           setFeedback("");
@@ -271,55 +282,61 @@ const MultiplayerGameScreenContent = () => {
   ]);
 
   const handleSubmitAnswer = useCallback(async () => {
+    let points = 0;
     playClickSound();
-    if (!currentFact || timer <= 0) return;
+    if (isAnswered) return;
     if (!selectedCountry.name) {
-      alert("Select a country");
+      alert("Please select a country on the globe first.");
       return;
     }
-
-    const correct =
-      selectedCountry.name.includes(currentFact.Correct_Country) ||
-      currentFact.Correct_Country.includes(selectedCountry.name);
-    let pts = [1000, 750, 500, 250][attempts];
-
-    if (correct) {
-      setScore((s) => s + pts);
+    setIsCollapsed(false);
+    setIsAnswered(true);
+    const answer = selectedCountry;
+    if (answer.code === currentFact?.CC_Abbrev) {
+      points =
+        attempts === 0
+          ? 1000
+          : attempts === 1
+            ? 750
+            : attempts === 2
+              ? 500
+              : 250;
+      setScore((prev) => prev + points);
       setFeedback("Correct!");
       setFeedbackType("correct");
-    } else if (attempts < 3) {
-      setAttempts((a) => a + 1);
-      const hintParts = [];
-      if (attempts >= 0)
-        hintParts.push(`Continent - ${currentFact.CC_Continent}`);
-      if (attempts >= 1) hintParts.push(`Capital - ${currentFact.CC_Capital}`);
-      if (attempts >= 2)
-        hintParts.push(`Abbreviation - ${currentFact.CC_Abbrev}`);
-      setFeedback(`Incorrect! Hint: ${hintParts.join(" | ")}`);
-      setFeedbackType("incorrect");
-      return;
     } else {
-      const hintParts = [
-        `Continent - ${currentFact.CC_Continent}`,
-        `Capital - ${currentFact.CC_Capital}`,
-        `Abbreviation - ${currentFact.CC_Abbrev}`,
-      ];
-      setFeedback(
-        `Incorrect! The answer was ${
-          currentFact.Correct_Country
-        }. Hints: ${hintParts.join(" | ")}`
-      );
-      setFeedbackType("incorrect");
+      if (attempts < 3) {
+        const newAttempts = attempts + 1;
+        setAttempts(newAttempts);
+        let hint = "";
+        if (newAttempts === 1) {
+          hint = `Hint: Continent - ${currentFact.CC_Continent}`;
+          setHintOneUsed((prev) => prev + 1);
+        } else if (newAttempts === 2) {
+          hint = `Hint: Continent - ${currentFact.CC_Continent}, Capital - ${currentFact.CC_Capital}`;
+          setHintTwoUsed((prev) => prev + 1);
+        } else if (newAttempts === 3) {
+          hint = `Hint: Continent - ${currentFact.CC_Continent}, Capital - ${currentFact.CC_Capital}, Abbreviation - ${currentFact.CC_Abbrev}`;
+          setHintThreeUsed((prev) => prev + 1);
+        }
+        setFeedback(`Incorrect! Try again. ${hint}`);
+        setFeedbackType("incorrect");
+        setIsAnswered(false);
+        return;
+      } else {
+        setFeedback(
+          `Incorrect! The correct answer is ${currentFact?.Correct_Country}.`
+        );
+        setFeedbackType("incorrect");
+      }
+      setIsAnswered(false);
     }
 
     try {
-      console.log(userId);
-      console.log(pts);
-      console.log(questionNumber);
-      if (attempts >= 3) pts = 0;
+      if (attempts > 3) points = 0;
       const { error } = await supabase.rpc("increment_score", {
         player_id: userId,
-        points: pts,
+        points: points,
         question: questionNumber,
       });
       if (error) throw error;
@@ -340,7 +357,11 @@ const MultiplayerGameScreenContent = () => {
   const handleBack = async () => {
     playClickSound();
     await removePlayerAndCleanupLobby(); //cleanup first
-    navigate("/"); // then navigate away
+    navigate("/", {
+      state: {
+        loadingMessage: "Returning to main menu...",
+      },
+    }); // then navigate away
   };
 
   useEffect(() => {
@@ -375,51 +396,87 @@ const MultiplayerGameScreenContent = () => {
     navigate("/");
   };
 
+  //load assets while animating the loading screen
+  useEffect(() => {
+    // Simulate a delay to mimic loading assets (or wait on real setup)
+    const loadAssets = async () => {
+      await new Promise((res) => setTimeout(res, 1000));
+      setAssetsLoaded(true);
+    };
+    loadAssets();
+  }, []);
+
+  //show loading screen until done animating and assets are loaded
+  if (!typingDone || !assetsLoaded) {
+    return (
+      <Loading
+        message="Loading multiplayer... answer in under a minute!"
+        onComplete={() => setTypingDone(true)}
+      />
+    );
+  }
+
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={
+      <div className="flex justify-center items-center min-h-screen bg-black">
+        <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin" />
+      </div>
+    }>
       <div className="relative min-h-screen w-full">
+        {/* Globe Background */}
         <Globe />
-        <div className="absolute top-0 right-0 z-50">
+
+        {/* Back Button */}
+        <div className="fixed top-6 right-6 z-50 flex items-center">
           <button
             onClick={handleBack}
-            className="text-white p-2 hover:text-red-600"
+            className="bg-zinc-900/80 border border-red-400 p-2 rounded-full text-white/70 hover:text-red-400 hover:bg-zinc-800/80 transition-all duration-200"
+            title="Return to Home"
           >
-            <FaTimes size={50} />
+            <FaTimes size={20} />
           </button>
         </div>
-        <div className="absolute top-0 left-0 z-50">
+
+        {/* Rotation Button in top center */}
+        <div className="fixed top-6 left-1/2 transform -translate-x-1/2 z-50">
+          <RotationButton />
+        </div>
+
+        {/* Hover Menu */}
+        <div className="fixed top-0 left-0 z-50 flex items-center">
           <HoverDropMenu />
         </div>
 
+        {/* Main Gameplay UI */}
         {quizComplete ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-30">
-            <div className="bg-transparent p-10 rounded-xl w-11/12 max-w-3xl border-2 border-white shadow-xl text-center">
+          // Post-Game Screen
+          <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-30">
+            <div className="bg-zinc-900/80 border border-white/10 rounded-lg p-6 max-w-lg w-full text-center">
               <h2 className="text-3xl font-bold text-white mb-4">
                 Quiz Complete!
               </h2>
-              <ul className="text-white mb-6">
+              <ul className="text-white/70 mb-6">
                 {players
                   .sort((a, b) => b.score - a.score)
-                  .map((p) => (
-                    <li key={p.id}>
-                      {p.display_name || "Player"}: {p.score}
-                    </li>
-                  ))}
+                  .map((p) => {
+                    console.log(p);
+                    return (
+                      <li key={p.id} className="text-lg">
+                        {p.display_name || "Player"}: {p.score}
+                      </li>
+                    );
+                  })}
               </ul>
               {isHost ? (
-                <div className="space-x-4">
+                <div className="flex justify-center gap-4">
                   <button
                     onClick={async () => {
                       playClickSound();
-
-                      // get the new q's
                       const arr = [];
                       for (let i = 0; i < 10; i++) {
                         const { data } = await supabase.rpc("random_fact");
                         if (data) arr.push(data);
                       }
-
-                      // reset questions and timer
                       await supabase
                         .from("Lobbies")
                         .update({
@@ -428,37 +485,28 @@ const MultiplayerGameScreenContent = () => {
                           question_started_at: new Date().toISOString(),
                         })
                         .eq("id", lobbyId);
-
-                      // reset player progress
                       await supabase
                         .from("Players")
-                        .update({
-                          score: 0,
-                          last_answered: 0,
-                        })
+                        .update({ score: 0, last_answered: 0 })
                         .eq("lobby_id", lobbyId);
-
-                      // broadcast to all players
-                      await supabase
-                        .channel(`lobby_${lobbyId}_broadcast`)
-                        .send({
-                          type: "broadcast",
-                          event: "restart_quiz",
-                          payload: {
-                            message: "Quiz restarting with new questions.",
-                          },
-                        });
-
-                      // have to manually reset quiz state for host
                       setQuizComplete(false);
+                      setScore(0);
+                      setAttempts(0);
+                      setFeedback("");
+                      setFeedbackType("");
+                      setShowLeaderboard(false);
+                      setIsCollapsed(false);
+                      setQuestionNumber(1);
+                      setCurrentFact(arr[0]);
+                      setQuestions(arr);
                     }}
-                    className="px-6 py-2 bg-green-600 text-white rounded-full"
+                    className="bg-emerald-500/50 text-emerald-400 border border-emerald-500/60 rounded-lg py-2 px-4 hover:bg-emerald-500/60 transition-colors font-medium"
                   >
                     Restart Quiz
                   </button>
                   <button
                     onClick={handleDisbandLobby}
-                    className="px-6 py-2 bg-red-600 text-white rounded-full"
+                    className="bg-red-500/50 text-red-400 border border-red-500/60 rounded-lg py-2 px-4 hover:bg-red-500/60 transition-colors font-medium"
                   >
                     Disband Lobby
                   </button>
@@ -466,7 +514,7 @@ const MultiplayerGameScreenContent = () => {
               ) : (
                 <button
                   onClick={handleBack}
-                  className="px-6 py-2 bg-gray-600 text-white rounded-full"
+                  className="bg-zinc-900/60 text-white/70 border border-white/10 rounded-lg py-2 px-4 hover:bg-zinc-800/60 transition-colors font-medium"
                 >
                   Back Home
                 </button>
@@ -474,82 +522,89 @@ const MultiplayerGameScreenContent = () => {
             </div>
           </div>
         ) : showLeaderboard ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 z-30">
-            <div className="bg-white bg-opacity-80 p-8 rounded-xl w-11/12 max-w-2xl text-center">
-              <h2 className="text-xl font-semibold mb-4">Leaderboard</h2>
-              <ul className="text-black mb-4">
+          // Leaderboard Screen
+          <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-30">
+            <div className="bg-zinc-900/80 border border-white/10 rounded-lg p-6 max-w-lg w-full text-center">
+              <h2 className="text-2xl font-bold text-white mb-4">Leaderboard</h2>
+              <ul className="text-white/70 mb-4">
                 {players
                   .sort((a, b) => b.score - a.score)
-                  .map((p) => (
-                    <li key={p.id}>
-                      {p.display_name || "Player"}: {p.score}
-                    </li>
-                  ))}
+                  .map((p) => {
+                    console.log(p);
+                    return (
+                      <li key={p.id} className="text-lg">
+                        {p.display_name || "Player"}: {p.score}
+                      </li>
+                    );
+                  })}
               </ul>
-              <p>Next question shortly...</p>
+              <p className="text-white/60">Next question starting shortly...</p>
             </div>
           </div>
         ) : (
-          <div className="absolute top-0 left-0 w-full flex flex-col items-center mt-2 z-30">
-            <div className="bg-white bg-opacity-0 p-4 rounded-xl w-11/12 max-w-3xl">
-              <div className="text-center text-white font-bold text-sm">
-                Question: {questionNumber} of {questions.length}
-              </div>
-              <div className="text-center text-white text-xl font-bold mb-1">
-                Score: {score}
-              </div>
-              <div className="text-center text-white mb-2">
-                Time left: {timer}s
-              </div>
-              {!isCollapsed && currentFact && (
-                <div className="mb-2 p-2 border border-white rounded">
-                  <p className="text-center font-semibold text-white">
-                    {currentFact.Fact}
-                  </p>
+          // Gameplay UI
+          <div className="fixed inset-x-0 bottom-2 flex flex-col items-center z-30 pointer-events-none">
+            <div className="max-w-md w-full px-2 pointer-events-auto">
+              {/* Score and Collapsible Fact Box */}
+              <div className="bg-zinc-900/40 backdrop-blur-sm border border-white/10 rounded-lg overflow-hidden mb-2">
+                <div className="flex justify-between items-center p-2">
+                  <div className="flex items-center gap-2">
+                    <div className="bg-zinc-800 text-white px-2 py-1 rounded text-xs font-medium">
+                      Question {questionNumber} of {questions.length}
+                    </div>
+                    <div className="bg-zinc-800 text-white px-2 py-1 rounded text-xs font-medium">
+                      Score: {score}
+                    </div>
+                  </div>
+                  <div className="text-white/70 text-xs">Time Left: {timer}s</div>
+                  <button
+                    onClick={() => setIsCollapsed(!isCollapsed)}
+                    className="text-white/60 hover:text-white transition-all"
+                  >
+                    {isCollapsed ? (
+                      <ChevronUp size={16} />
+                    ) : (
+                      <ChevronDown size={16} />
+                    )}
+                  </button>
                 </div>
-              )}
-              <div className="mb-2 text-center text-white text-sm">
-                Selected Country: {selectedCountry.name || "None"}
-              </div>
-              <div className="flex justify-center items-center mb-4">
-                <button
-                  onClick={handleSubmitAnswer}
-                  className="bg-green-600 text-white py-2 px-4 rounded-full hover:bg-green-500"
-                >
-                  Submit Answer
-                </button>
                 {!isCollapsed && (
-                  <button
-                    onClick={() => {
-                      playClickSound();
-                      setIsCollapsed(true);
-                    }}
-                    className="ml-4 bg-white text-black rounded-full p-1 hover:bg-green-600 transition-colors"
-                  >
-                    Hide Fact
-                  </button>
-                )}
-                {isCollapsed && (
-                  <button
-                    onClick={() => {
-                      playClickSound();
-                      setIsCollapsed(false);
-                    }}
-                    className="bg-white text-black rounded-full p-1 hover:bg-green-600 transition-colors"
-                  >
-                    Show Fact
-                  </button>
+                  <div className="p-2 border-t border-white/10">
+                    <div className="text-center text-white text-sm font-medium">
+                      {currentFact?.Fact || "Loading question..."}
+                    </div>
+                  </div>
                 )}
               </div>
+
+              {/* Submit Button */}
+              <div className="mt-2 bg-zinc-900/60 backdrop-blur-sm border border-white/10 rounded-lg p-2">
+                <div className="flex flex-col gap-2">
+                  <div className="flex justify-between items-center">
+                    <div className="text-white/70 text-sm">Selected Country</div>
+                    <div className="text-white font-medium text-sm">
+                      {selectedCountry.name || "None"}
+                    </div>
+                  </div>
+                  <button
+                    onClick={handleSubmitAnswer}
+                    className="w-full bg-emerald-500/50 text-emerald-400 border border-emerald-500/60 rounded-lg py-1.5 px-3 hover:bg-emerald-500/60 transition-colors font-medium flex items-center justify-center gap-2 text-sm"
+                  >
+                    Submit Answer
+                  </button>
+                </div>
+              </div>
+
+              {/* Feedback Box */}
               {feedback && (
                 <div
-                  className={`mt-2 p-2 rounded text-center text-sm ${
-                    feedbackType === "correct"
-                      ? "bg-green-300 text-green-900"
-                      : "bg-red-300 text-red-900"
-                  }`}
+                  className={`mt-2 p-2 rounded-lg border backdrop-blur-sm flex flex-col items-center justify-center min-w-0 text-center ${feedbackType === "correct"
+                    ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
+                    : "bg-red-500/20 border-red-500/30 text-red-400"
+                    }`}
+                  style={{ wordWrap: "break-word", whiteSpace: "normal" }}
                 >
-                  {feedback}
+                  <p className="text-sm">{feedback}</p>
                 </div>
               )}
             </div>

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Form, Button } from "react-bootstrap";
-import { supabase } from "../SupabaseContext";
+import { supabase } from "./SupabaseContext";
 import { FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import SignIn from "../SignIn";
-import SignUp from "../SignUp";
-import Modal from "../Modal";
+import SignIn from "./SignIn";
+import SignUp from "./SignUp";
+import Modal from "./Modal";
+import { motion } from "framer-motion";
 
-const LobbyTest = () => {
+const Lobby = () => {
   const navigate = useNavigate();
   const [joinCode, setJoinCode] = useState("");
   const [lobbyId, setLobbyId] = useState(null);
@@ -56,11 +56,20 @@ const LobbyTest = () => {
     //   console.error("Lobby is full!");
     //   return;
     // }
+    const {
+      data: { user },
+      error: authError,
+    } = await supabase.auth.getUser();
 
     // Add the user to the lobby
-    const { data, error: joinError } = await supabase
-      .from("Players")
-      .insert([{ lobby_id: lobby.id, score: 0, id: userId }]);
+    const { data, error: joinError } = await supabase.from("Players").insert([
+      {
+        display_name: user.user_metadata.display_name,
+        lobby_id: lobby.id,
+        score: 0,
+        id: userId,
+      },
+    ]);
 
     if (joinError) console.error("Error joining lobby:", joinError);
     else console.log("Joined lobby:", data);
@@ -209,49 +218,66 @@ const LobbyTest = () => {
 
   return !lobbyId ? (
     <>
-      <div className="absolute top-0 right-0 z-50">
+      <div className="fixed top-6 right-6 z-50">
         <button
           onClick={handleBack}
-          className="text-black rounded-full p-2 hover:text-red-600 transition-colors"
+          className="bg-zinc-900/80 border border-white/10 px-3 py-2 rounded-full text-white/70 hover:text-white hover:bg-zinc-800/80 transition-all duration-200"
         >
-          <FaTimes size={50} />
+          <FaTimes size={24} />
         </button>
       </div>
-      <div className="flex flex-col items-center justify-center h-screen bg-gradient-to-r from-gray-400 to-white p-6">
-        <button
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-zinc-900 via-black to-zinc-800 px-4">
+        <motion.div
+          className="text-center text-white mb-10"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+        >
+          <h2 className="text-4xl font-bold mb-2">Multiplayer Lobby</h2>
+          <p className="text-white/60">Join or create a new game lobby</p>
+        </motion.div>
+
+        <motion.button
+          whileHover={{ scale: 1.05 }}
           onClick={() => navigate("/createLobby")}
-          className="mb-8 px-6 py-3 text-2xl bg-black text-white rounded-lg shadow-lg hover:bg-white hover:text-black border-2 border-black transition"
+          className="mb-6 px-8 py-3 text-xl bg-gradient-to-r from-green-600 to-emerald-500 text-white rounded-full shadow-lg border border-white/10 transition"
         >
           Create Lobby
-        </button>
-        <div className="bg-gradient-to-r from-white to-gray-300 p-8 rounded-lg shadow-lg border-2 border-black w-full max-w-md text-center">
-          <form
-            onSubmit={joinLobbyByCode}
-            className="flex flex-col items-center"
-          >
+        </motion.button>
+
+        <motion.div
+          className="bg-white/10 p-6 rounded-xl border border-white/20 shadow-md max-w-md w-full"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.2 }}
+        >
+          <form onSubmit={joinLobbyByCode} className="flex flex-col gap-4">
             <input
               type="text"
               value={joinCode}
               onChange={(e) => setJoinCode(e.target.value)}
-              placeholder="Insert Join Code"
-              className="text-center text-xl p-3 border-2 border-black rounded-lg w-full mb-4 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              placeholder="Enter Join Code"
+              className="text-center text-lg p-3 bg-white/5 border border-white/20 rounded-lg text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-green-400"
             />
             <button
               type="submit"
               onClick={handleSubmit}
-              className="px-6 py-3 text-2xl bg-black text-white rounded-lg shadow-lg hover:bg-white hover:text-black border-2 border-black transition"
+              className="px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-500 transition"
             >
               Join Lobby
             </button>
           </form>
-        </div>
-        <button
+        </motion.div>
+
+        <motion.button
+          whileHover={{ scale: 1.05 }}
           onClick={() => setShowSignInModal(true)}
-          className="mt-4 px-6 py-3 text-lg bg-black text-white rounded-lg shadow-lg hover:bg-white hover:text-black border-2 border-black transition"
+          className="mt-6 px-6 py-3 text-md bg-white/10 text-white rounded-full shadow hover:bg-white/20 border border-white/20 transition"
         >
           SIGN IN / SIGN UP
-        </button>
+        </motion.button>
       </div>
+
       {showSignInModal && (
         <Modal
           isOpen={showSignInModal}
@@ -278,26 +304,32 @@ const LobbyTest = () => {
     </>
   ) : (
     <>
-      <div className="absolute top-0 right-0 z-50">
+      <div className="fixed top-6 right-6 z-50">
         <button
           onClick={handleBack}
-          className="text-black rounded-full p-2 hover:text-red-600 transition-colors"
+          className="bg-zinc-900/80 border border-white/10 px-3 py-2 rounded-full text-white/70 hover:text-white hover:bg-zinc-800/80 transition-all duration-200"
         >
-          <FaTimes size={50} />
+          <FaTimes size={24} />
         </button>
       </div>
-      <div className="flex flex-col items-center justify-center min-h-screen bg-white text-black">
-        <h2 className="text-2xl mb-4">Join Code: {joinCode}</h2>
+
+      <div className="flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-zinc-900 via-black to-zinc-800 px-4 text-white text-center">
+        <h2 className="text-3xl font-bold mb-2">Lobby Code:</h2>
+        <div className="text-5xl font-extrabold bg-gradient-to-r from-white/20 to-white/10 px-6 py-4 rounded-lg border border-white/20 shadow-inner mb-8">
+          {joinCode}
+        </div>
+
         <button
           onClick={handleBack}
-          className="mb-4 px-6 py-3 text-2xl bg-black text-white rounded-lg shadow-lg hover:bg-white hover:text-black border-2 border-black transition"
+          className="mb-4 px-6 py-3 bg-white/10 text-white rounded-full hover:bg-white/20 border border-white/20 transition"
         >
           Leave Lobby
         </button>
+
         {userIsHost && (
           <button
             onClick={startGameInLobby}
-            className="px-6 py-3 text-2xl bg-green-600 text-white rounded-lg shadow-lg hover:bg-white hover:text-green-600 border-2 border-green-600 transition"
+            className="px-6 py-3 bg-green-600 text-white rounded-full hover:bg-green-500 transition border border-green-500"
           >
             Start Game
           </button>
@@ -307,4 +339,4 @@ const LobbyTest = () => {
   );
 };
 
-export default LobbyTest;
+export default Lobby;

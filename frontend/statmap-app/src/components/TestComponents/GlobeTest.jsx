@@ -6,11 +6,10 @@ import React, {
   useCallback,
   memo,
 } from "react";
-import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import {
   OrbitControls,
   Stars,
-  Stats,
   Text,
   Billboard,
 } from "@react-three/drei";
@@ -19,6 +18,8 @@ import { Perf } from "r3f-perf";
 import ConicGlobe from "./ConicGlobe";
 import AtmosphereMesh from "../GlobeComponents/AtmosphereMesh";
 import EarthTest from "./EarthTest";
+import GalaxyBackground from "../GlobeComponents/GalaxyBackground";
+import { useGraphicsSettings } from "../GraphicsContext";
 import geoDataUrl from "../../data/simpleCountries.geojson"; // Import the url/path to the geojson file
 // import NaturalEarthUrl from "../../data/NaturalEarthData.geojson";
 // import testCountries from '../../data/testCountries.json';
@@ -29,7 +30,8 @@ import geoDataUrl from "../../data/simpleCountries.geojson"; // Import the url/p
  * @returns A Canvas component that encapsulates all the 3D components including the globe, lights, stars, etc.
  */
 const GlobeTest = React.memo(function GlobeTest(props) {
-  const [showLabel, setShowLabel] = useState(true);
+  const { graphicsSettings } = useGraphicsSettings();
+  const [showLabel] = useState(true);
   const [showPerformance, setShowPerformance] = useState(true);
   const [geoData, setGeoData] = useState(null);
 
@@ -124,8 +126,9 @@ const GlobeTest = React.memo(function GlobeTest(props) {
   return (
     <div className="relative w-full h-full">
       <div className="absolute top-0 left-0 w-full h-full">
+
         <Canvas
-          gl={{ antialias: false }}
+          gl={{ antialias: graphicsSettings.antiAliasing }}
           camera={{ position: [0, 1, 2], near: 0.01, far: 1000 }}
           style={{ background: "black", width: "100vw", height: "100vh" }}
         >
@@ -145,6 +148,9 @@ const GlobeTest = React.memo(function GlobeTest(props) {
             onStart={handleDragStart}
             onEnd={handleDragEnd}
           />
+
+          <GalaxyBackground />
+
           <Stars
             radius={200}
             depth={60}
@@ -187,14 +193,27 @@ const GlobeTest = React.memo(function GlobeTest(props) {
   );
 });
 
-function RotateGlobe({ globeRef, cloudsRef, linesRef, conicGlobeRef }) {
+function RotateGlobe({ globeRef, cloudsRef, linesRef }) {
+  const { graphicsSettings } = useGraphicsSettings();
+  const rotationSpeed = graphicsSettings.rotationSpeed;
+  const speedDivisor = Math.max(1, 105 - rotationSpeed);
+
   useFrame(({ clock }) => {
     const elapsedTime = clock.getElapsedTime();
-    globeRef.current.rotation.y = linesRef.current.rotation.y =
-      elapsedTime / 80;
-    //linesRef.current.rotation.y = elapsedTime / 80
-    //conicGlobeRef.current.rotation.y = elapsedTime / 60;
-    cloudsRef.current.rotation.y = elapsedTime / 50;
+
+    //console.log("speedDivisor", speedDivisor);
+    //console.log("rotateSpeed", rotationSpeed);
+
+    if (rotationSpeed > 0) {
+
+      globeRef.current.rotation.y = linesRef.current.rotation.y = elapsedTime / (speedDivisor * 8 / 5);
+      //linesRef.current.rotation.y = elapsedTime / 80
+      //conicGlobeRef.current.rotation.y = elapsedTime / 60;
+      if (cloudsRef.current) {
+        cloudsRef.current.rotation.y = elapsedTime / speedDivisor;
+      }
+    }
+
   });
   return null;
 }
@@ -383,18 +402,9 @@ const CountryLabels = memo(function CountryLabels({
   const radius = 1.02; //height of the labels
 
   const visibleCountriesBySize = new Set([
-    "Russia",
-    "Canada",
-    "United States of America",
-    "China",
-    "Brazil",
-    "Australia",
-    "India",
-    "Argentina",
-    "Mexico",
-    "Indonesia",
-    "Saudi Arabia",
-    "Iran",
+    "Russia", "Canada", "United States of America", "China",
+    "Brazil", "Australia", "India", "Argentina", "Mexico",
+    "Indonesia", "Saudi Arabia", "Iran",
     "Kazakhstan",
     "Algeria",
     "Sudan",
