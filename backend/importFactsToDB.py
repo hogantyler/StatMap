@@ -1,38 +1,43 @@
 import pandas as pd
-import sqlite3
+from supabase import create_client, Client
+from dotenv import load_dotenv
+import os
 
-# Load CSV data containing facts
-df = pd.read_csv("./data/newFactsList.csv")
+load_dotenv()
 
-# Connect to the db.sqlite3 database
-conn = sqlite3.connect("db.sqlite3")
-cursor = conn.cursor()
 
-# Clear the api_fact table
-cursor.execute("DELETE FROM api_fact")
+def importFactsToDb():
+    """
+    This function is made to upload facts into the Supabase DB, in the format
+    of:
 
-# Iterate over each fact in the CSV file
-for i in range(len(df)):
-    fact = df["Fact"][i]
-    source = df["Fact Source"][i]
-    
-    if pd.isnull(source):
-        source = ""
-    country = df["Country"][i]
-    
-    country = df["Country"][i]
+    Fact_ID, Fact, Source, Country_ID
 
-    # Get the corresponding country ID from the api_country table
-    sql = "SELECT id FROM api_country WHERE country = ?;"
-    data = cursor.execute(sql, (country,))
-    
-    country_id = None
-    for row in data:
-        country_id = row[0]
+    The Country_ID will be a foreign key to the Country table.
+    To get this running, a .env file with the SUPABASE_SERVICE_KEY is required.
+    EX:
+    SUPABASE_SERVICE_KEY="asasdfasdfasdf"
+    """
+    df = pd.read_csv("./data/newFactsList.csv")
 
-    # Insert the fact into the api_fact table
-    sql = "INSERT INTO api_fact (fact, source, country_id) VALUES (?, ?, ?);"
-    cursor.execute(sql, (fact, source, country_id))
+    # Supabase credentials
+    SUPABASE_URL = "https://ewqbknnhmhepuqjbkgmm.supabase.co"
+    SUPABASE_KEY = os.getenv("SUPABASE_SERVICE_KEY")
 
-conn.commit()
-conn.close()
+    # Connect to supabase
+    supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
+
+    # Iterate over each fact in the CSV file
+    fact_data = []
+    for _, row in df.iterrows():
+        fact = row["Fact"]
+        source = row["Fact Source"] if pd.notnull(row["Fact Source"]) else ""
+        country = row["Country"]
+        country_id = country_map.get(country, None)
+
+        fact_data.append({"Fact": fact, "Source": source, "Country_ID": country_id})
+
+    supabase.table("api_fact").insert(fact_data).execute()
+
+
+importFactsToDb()

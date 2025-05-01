@@ -1,152 +1,268 @@
-import React, { useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { HiMenu } from "react-icons/hi";
-import { 
-  FaSignInAlt, 
-  FaGamepad, 
-  FaTrophy, 
-  FaUserCircle, 
-  FaCog, 
-  FaEnvelope 
-} from "react-icons/fa";
-import { FaMapMarkedAlt } from "react-icons/fa";
+import React, { useState, useEffect, useContext, useCallback } from "react"
+import { AnimatePresence, motion } from "framer-motion"
+import { Menu, LogIn, LogOut, Trophy, User, Settings, Info, ChevronRight, X } from "lucide-react"
+import SettingsModal from "./SettingsModal"
+import { playClickSound } from "../utils/soundUtils"
+import { SupabaseContext } from "./SupabaseContext"
+import { useNavigate } from "react-router-dom"
+import Leaderboard from "./Leaderboard"
+import AccountPage from "./AccountPage"
+import SignIn from "./SignIn"
+import SignUp from "./SignUp"
+import Modal from "./Modal"
+import AboutUs from "./AboutUs"
 
-/**
- * Renders a hovered dropdown menu that provides navigation options for the user.
- * 
- * @param {*} param0 Contains a callback function for sign-in click event
- * @returns {JSX.Element} A dropdown menu trigger
- */
-const HoverDropMenu = ({ onSignInClick }) => {
+export default function HoverDropMenu() {
+  const [modalContent, setModalContent] = useState(null)
+  const [modalTitle, setModalTitle] = useState("")
+  const [modalIcon, setModalIcon] = useState(null)
+  const [modalIconColor, setModalIconColor] = useState("amber")
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [account, setAccount] = useState(null)
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false)
+
+  const supabase = useContext(SupabaseContext)
+  const navigate = useNavigate()
+
+  const handleOpenModal = (content, title, icon, iconColor = "amber") => {
+    setModalContent(content)
+    setModalTitle(title)
+    setModalIcon(icon)
+    setModalIconColor(iconColor)
+    setIsModalOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    setIsModalOpen(false)
+    setModalContent(null)
+  }
+
+  const getAccount = async () => {
+    const tempAccount = await supabase.auth.getUser()
+    if (tempAccount.data.user) {
+      setAccount(tempAccount)
+    }
+  }
+
+  useEffect(() => {
+    getAccount()
+  }, [])
+
+  const onSignOutClick = async () => {
+    const { error } = await supabase.auth.signOut()
+    if (error) {
+      alert(error)
+    } else {
+      setAccount(null)
+    }
+  }
+
+  const handleButtonClick = (callback) => {
+    playClickSound()
+    callback()
+  }
+
+  const handleSettingsClick = () => {
+    playClickSound()
+    setIsSettingsOpen(true)
+  }
+
   return (
-    <div className="group top-1 left-1 m-1 cursor-pointer z-50">
-      <FlyoutLink href="#" FlyoutContent={MenuContent} onSignInClick={onSignInClick}>
-        <div className="w-18 h-18 flex items-center justify-center bg-black rounded-lg shadow-xl">
-          <HiMenu size={72} className="text-white" />
+    <div className="group absolute top-6 left-6 z-50">
+      <FlyoutLink
+        FlyoutContent={() => (
+          <FlyoutContent
+            onSignInClick={() => 
+              handleOpenModal(
+                <SignIn 
+                  onModalClose={handleCloseModal} 
+                  onSuccessfulLogin={getAccount} 
+                  onSignUpClick={() => 
+                    handleOpenModal(
+                      <SignUp 
+                      onModalClose={handleCloseModal} 
+                      onSuccessfulSignUp={getAccount} />,
+                  "Sign Up", LogIn)}/>,
+              "Sign In", LogIn, "sky")}
+            onAccountPageClick={() => 
+              handleOpenModal(
+                <AccountPage onModalClose={handleCloseModal} />,
+              "Account", User, "emerald")}
+            onLeaderboardClick={() => 
+              handleOpenModal(
+                <Leaderboard onModalClose={handleCloseModal} />,
+              "Leaderboard", Trophy, "indigo")}
+            onAboutClick={() =>
+                handleOpenModal(
+                  <AboutUs onModalClose={handleCloseModal} />,
+                  "About Us", Info, "sky")}
+            account={account}
+            onSignOutClick={onSignOutClick}
+            handleSettingsClick={handleSettingsClick}
+            navigate={navigate}
+            handleButtonClick={handleButtonClick}
+          />
+        )}
+      >
+        <div className="flex items-center gap-2 text-white/80 hover:text-white transition-colors bg-zinc-900/80 border border-white/10 px-3 py-2 rounded-lg">
+          <Menu size={18} />
+          <span className="text-sm font-medium">Menu</span>
         </div>
       </FlyoutLink>
+
+      <Modal 
+        isOpen={isModalOpen} 
+        onClose={handleCloseModal}
+        title={modalTitle}
+        icon={modalIcon}
+        iconColor={modalIconColor}
+      >
+        {modalContent}
+      </Modal>
+
+      <SettingsModal isOpen={isSettingsOpen} onClose={() => setIsSettingsOpen(false)} />
     </div>
-  );
-};
+  )
+}
 
-/**
- * Handles the dropdown menu functionality.
- * 
- * @param {*} param0 Contains children elements, link href, flyout content component, and sign-in click event handler
- * @returns {JSX.Element} A link with hover-triggered dropdown content
- */
-const FlyoutLink = ({ children, href, FlyoutContent, onSignInClick }) => {
-  const [open, setOpen] = useState(false);
-
-  const showFlyout = FlyoutContent && open;
+const FlyoutLink = ({ children, FlyoutContent }) => {
+  const [open, setOpen] = useState(false)
 
   return (
-    <div
-      onMouseEnter={() => setOpen(true)}
-      onMouseLeave={() => setOpen(false)}
-      className="relative w-fit h-fit"
-    >
-      <a href={href} className="relative text-black">
-        {children}
-        <span
-          style={{
-            transform: showFlyout ? "scaleX(1)" : "scaleX(0)",
-          }}
-        />
-      </a>
+    <div onMouseEnter={() => setOpen(true)} onMouseLeave={() => setOpen(false)} className="relative w-fit h-fit">
+      <div className="relative">{children}</div>
       <AnimatePresence>
-        {showFlyout && (
+        {open && FlyoutContent && (
           <motion.div
-            initial={{ opacity: 0, y: 0 }}
+            initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 0 }}
-            transition={{ duration: 0.3, ease: "easeOut" }}
-            className="absolute top-0 left-0 bg-black text-white shadow-lg rounded-md z-50"
+            exit={{ opacity: 0, y: 10 }}
+            transition={{ duration: 0.2, ease: "easeOut" }}
+            className="absolute top-full left-0 mt-2 z-50"
           >
-            <FlyoutContent onSignInClick={onSignInClick} />
+            <FlyoutContent />
           </motion.div>
         )}
       </AnimatePresence>
     </div>
-  );
-};
+  )
+}
 
-/**
- * Provides the content for the dropdown menu, including navigation buttons and sign-in functionality.
- * 
- * @param {*} param0 Contains a callback function for handling sign-in clicks
- * @returns {JSX.Element} A styled menu with various navigation options
- */
-const MenuContent = ({ onSignInClick }) => {
-    return (
-      <div className="w-96 bg-black p-9 shadow-xl text-white text-lg space-y-6 rounded-lg">
-        <div className="mb-6 space-y-6">
-          <h3 className="font-semibold text-xl flex items-center">
-            <FaMapMarkedAlt className="mr-2 w-6 h-6" />
-            STATMAP MENU
-          </h3>
+const FlyoutContent = ({
+  onSignInClick,
+  onAccountPageClick,
+  onLeaderboardClick,
+  onAboutClick,
+  account,
+  onSignOutClick,
+  handleSettingsClick,
+  navigate,
+  handleButtonClick,
+}) => {
+  return (
+    <div className="w-80 bg-zinc-900/95 backdrop-blur-md border border-white/10 p-4 shadow-xl text-white rounded-lg">
+      <div className="mb-4">
+        <h3 className="font-medium text-lg border-b border-white/10 pb-2 mb-3">STATMAP MENU</h3>
+
+        <div className="space-y-1">
+          {/* Sign In/Out Button */}
+          {account && account.data.user ? (
+            <button
+              onClick={onSignOutClick}
+              className="group w-full flex items-center justify-between p-2 rounded-md hover:bg-white/10 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-sky-400">
+                  <LogOut size={16} />
+                </div>
+                <div className="text-left">
+                  <div className="text-sm font-medium">Sign Out</div>
+                  <div className="text-xs text-white/60">Exit your account</div>
+                </div>
+              </div>
+              <ChevronRight size={16} className="text-white/40 group-hover:text-white/60 transition-colors" />
+            </button>
+          ) : (
+            <button
+              onClick={() => handleButtonClick(onSignInClick)}
+              className="group w-full flex items-center justify-between p-2 rounded-md hover:bg-white/10 transition-colors"
+            >
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-sky-400">
+                  <LogIn size={16} />
+                </div>
+                <div className="text-left">
+                  <div className="text-sm font-medium">Sign In</div>
+                  <div className="text-xs text-white/60">Access your account</div>
+                </div>
+              </div>
+              <ChevronRight size={16} className="text-white/40 group-hover:text-white/60 transition-colors" />
+            </button>
+          )}
+
+          {/* Leaderboards Button */}
           <button
-            onClick={onSignInClick}
-            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
+            onClick={() => handleButtonClick(onLeaderboardClick)}
+            className="group w-full flex items-center justify-between p-2 rounded-md hover:bg-white/10 transition-colors"
           >
-            <div className="flex items-center">
-              <FaSignInAlt className="mr-4 w-6 h-6" />
-              <span>SIGN IN</span>
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-indigo-400">
+                <Trophy size={16} />
+              </div>
+              <div className="text-left">
+                <div className="text-sm font-medium">Leaderboards</div>
+                <div className="text-xs text-white/60">View top players</div>
+              </div>
             </div>
-            <p className="ml-10 text-sm">Access your account</p>
+            <ChevronRight size={16} className="text-white/40 group-hover:text-white/60 transition-colors" />
           </button>
-          <a
-            href="#"
-            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
+
+          {/* Account Button */}
+          <button
+            onClick={() => handleButtonClick(onAccountPageClick)}
+            className="group w-full flex items-center justify-between p-2 rounded-md hover:bg-white/10 transition-colors"
           >
-            <div className="flex items-center">
-              <FaGamepad className="mr-4 w-6 h-6" />
-              <span>GAMEPLAY</span>
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-emerald-400">
+                <User size={16} />
+              </div>
+              <div className="text-left">
+                <div className="text-sm font-medium">Account</div>
+                <div className="text-xs text-white/60">Manage your profile</div>
+              </div>
             </div>
-            <p className="ml-10 text-sm">Start playing games</p>
-          </a>
-          <a
-            href="#"
-            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
+            <ChevronRight size={16} className="text-white/40 group-hover:text-white/60 transition-colors" />
+          </button>
+
+          {/* Settings Button */}
+          <button
+            onClick={handleSettingsClick}
+            className="group w-full flex items-center justify-between p-2 rounded-md hover:bg-white/10 transition-colors"
           >
-            <div className="flex items-center">
-              <FaTrophy className="mr-4 w-6 h-6" />
-              <span>LEADERBOARDS</span>
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-zinc-800 flex items-center justify-center text-amber-400">
+                <Settings size={16} />
+              </div>
+              <div className="text-left">
+                <div className="text-sm font-medium">Settings</div>
+                <div className="text-xs text-white/60">Adjust preferences</div>
+              </div>
             </div>
-            <p className="ml-10 text-sm">View top players</p>
-          </a>
-          <a
-            href="#"
-            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
-          >
-            <div className="flex items-center">
-              <FaUserCircle className="mr-4 w-6 h-6" />
-              <span>ACCOUNT</span>
-            </div>
-            <p className="ml-10 text-sm">Manage your profile</p>
-          </a>
-          <a
-            href="#"
-            className="group flex flex-col items-start text-lg hover:bg-white hover:text-black p-2 rounded w-full"
-          >
-            <div className="flex items-center">
-              <FaCog className="mr-4 w-6 h-6" />
-              <span>SETTINGS</span>
-            </div>
-            <p className="ml-10 text-sm">Adjust your preferences</p>
-          </a>
+            <ChevronRight size={16} className="text-white/40 group-hover:text-white/60 transition-colors" />
+          </button>
         </div>
-        <button className="group flex flex-col items-center justify-center w-full rounded-lg border-4 border-white px-4 py-2 font-semibold text-lg transition-colors hover:bg-white hover:text-black">
-          <div className="mr-4">
-          <div className="flex items-center">
-            <FaEnvelope className="mr-4 w-6 h-6" />
-            <span>CONTACT US</span>
-          </div>
-          <p className="ml-8 text-sm">Get in touch with us</p>
-          </div>
-        </button>
       </div>
-    );
-  };
-  
-  export default HoverDropMenu;
+
+      {/* About Us Button */}
+      <button
+        onClick={() => handleButtonClick(onAboutClick)}
+        className="w-full py-2 px-3 border border-white/20 rounded-md text-center hover:bg-white/10 transition-colors"
+      >
+        <div className="flex items-center justify-center gap-2">
+          <Info size={16} />
+          <span className="text-sm font-medium">About Us</span>
+        </div>
+      </button>
+    </div>
+  )
+}
