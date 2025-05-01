@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { supabase } from "./SupabaseContext";
+import { supabase } from "../SupabaseContext";
 import { useNavigate } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
-import Modal from "./Modal";
+import SignIn from "../MenuComponents/SignIn";
+import SignUp from "../MenuComponents/SignUp";
+import Modal from "../MenuComponents/Modal";
 import { motion } from "framer-motion";
 
 /**

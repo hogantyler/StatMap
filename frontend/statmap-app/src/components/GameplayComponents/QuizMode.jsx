@@ -1,21 +1,21 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 //import Globe from "./GlobeComponents/Globe";
-import HoverDropMenu from "./HoverDropMenu";
-import Modal from "./Modal";
+import HoverDropMenu from "../MenuComponents/HoverDropMenu";
+import Modal from "../MenuComponents/Modal";
 import { X, AlertTriangle, ArrowRight, ChevronDown, ChevronUp, ExternalLink, User } from "lucide-react";
-import Loading from "./Loading";
-import { supabase } from "./SupabaseContext";
-import RotationButton from "./RotationButton";
+import Loading from "../Loading";
+import { supabase } from "../SupabaseContext";
+import RotationButton from "../RotationButton";
 
 import {
   CountrySelectionProvider,
   useCountrySelection,
-} from "./CountrySelectionContext";
-import { playClickSound } from "../utils/soundUtils";
+} from "../CountrySelectionContext";
+import { playClickSound } from "../../utils/soundUtils";
 import { Suspense } from "react";
 
-const Globe = React.lazy(() => import("./GlobeComponents/Globe"));
+const Globe = React.lazy(() => import("../GlobeComponents/Globe"));
 
 const QuizModeContent = () => {
   // --- Quiz Logic States ---

@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { SupabaseContext } from './SupabaseContext';
+import { SupabaseContext } from '../SupabaseContext';
 import { FaTimes } from 'react-icons/fa';
 import {
   ArrowRight,
@@ -12,7 +12,7 @@ import {
   BarChart3,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
-import { cn } from '../lib/utils';
+import { cn } from '../../lib/utils';
 
 // Animation variants
 const containerVariants = {

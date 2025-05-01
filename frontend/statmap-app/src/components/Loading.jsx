@@ -10,7 +10,7 @@ function Loading({ message = "Welcome to StatMap, the world's next great online 
       const timeout = setTimeout(() => {
         setTypedText((prev) => prev + message.charAt(index));
         setIndex((prev) => prev + 1);
-      }, 60); // Adjust speed here
+      }, 40); // Adjust speed here
       return () => clearTimeout(timeout);
     } else {
       const doneTimeout = setTimeout(() => {

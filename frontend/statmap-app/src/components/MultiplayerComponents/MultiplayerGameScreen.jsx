@@ -1,20 +1,20 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 //import Globe from "./GlobeComponents/Globe";
-import HoverDropMenu from "./HoverDropMenu";
+import HoverDropMenu from "../MenuComponents/HoverDropMenu";
 import { FaTimes } from "react-icons/fa";
-import Loading from "./Loading";
-import { supabase } from "./SupabaseContext";
+import Loading from "../Loading";
+import { supabase } from "../SupabaseContext";
 import {
   CountrySelectionProvider,
   useCountrySelection,
-} from "./CountrySelectionContext";
-import { playClickSound } from "../utils/soundUtils";
+} from "../CountrySelectionContext";
+import { playClickSound } from "../../utils/soundUtils";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Suspense } from "react";
-import RotationButton from "./RotationButton";
+import RotationButton from "../RotationButton";
 
-const Globe = React.lazy(() => import("./GlobeComponents/Globe"));
+const Globe = React.lazy(() => import("../GlobeComponents/Globe"));
 
 const MultiplayerGameScreenContent = () => {
   const { selectedCountry } = useCountrySelection();

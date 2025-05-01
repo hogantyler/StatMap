@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from "react"
-import { SupabaseContext } from "./SupabaseContext"
+import { SupabaseContext } from "../SupabaseContext"
 
 export default function FactReports(props) {
     const [allReports, setAllReports] = useState([]);
