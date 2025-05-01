@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/static/css/main.34536fbb.css",
-    "main.js": "/static/js/main.e02d1bf8.js",
+    "main.css": "/static/css/main.2cd0b864.css",
+    "main.js": "/static/js/main.8a64cfe4.js",
     "static/js/549.986fdab0.chunk.js": "/static/js/549.986fdab0.chunk.js",
     "static/js/952.bcce249f.chunk.js": "/static/js/952.bcce249f.chunk.js",
-    "static/js/706.c95113f1.chunk.js": "/static/js/706.c95113f1.chunk.js",
+    "static/js/706.46da7b5e.chunk.js": "/static/js/706.46da7b5e.chunk.js",
     "static/js/453.6cd3c3f3.chunk.js": "/static/js/453.6cd3c3f3.chunk.js",
     "static/media/8k_earth.png": "/static/media/8k_earth.e816d19d3a0f47c9169f.png",
     "static/media/galaxy_texture.jpg": "/static/media/galaxy_texture.528b6b1c6d487dc1c970.jpg",
@@ -16,15 +16,15 @@
     "static/media/gebco_bathy_2700x1350.jpg": "/static/media/gebco_bathy_2700x1350.46dc6f48e5b929de2ffe.jpg",
     "static/media/black_globe.svg": "/static/media/black_globe.11ed65579c11797c5b2b3941e7516669.svg",
     "index.html": "/index.html",
-    "main.34536fbb.css.map": "/static/css/main.34536fbb.css.map",
-    "main.e02d1bf8.js.map": "/static/js/main.e02d1bf8.js.map",
+    "main.2cd0b864.css.map": "/static/css/main.2cd0b864.css.map",
+    "main.8a64cfe4.js.map": "/static/js/main.8a64cfe4.js.map",
     "549.986fdab0.chunk.js.map": "/static/js/549.986fdab0.chunk.js.map",
     "952.bcce249f.chunk.js.map": "/static/js/952.bcce249f.chunk.js.map",
-    "706.c95113f1.chunk.js.map": "/static/js/706.c95113f1.chunk.js.map",
+    "706.46da7b5e.chunk.js.map": "/static/js/706.46da7b5e.chunk.js.map",
     "453.6cd3c3f3.chunk.js.map": "/static/js/453.6cd3c3f3.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.34536fbb.css",
-    "static/js/main.e02d1bf8.js"
+    "static/css/main.2cd0b864.css",
+    "static/js/main.8a64cfe4.js"
   ]
 }
