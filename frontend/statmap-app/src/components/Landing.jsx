@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Globe, ImageIcon, HelpCircle, ArrowRight } from "lucide-react";
 import BlackGlobe from "../black_globe.svg";
+import globePic from "../globeScreenShotUS_2.jpg";
 import HoverDropMenu from "./HoverDropMenu";
 import Modal from "./Modal";
 import Loading from "./Loading";
@@ -106,16 +107,14 @@ const Landing = () => {
         ) : (
           <div className="min-h-screen bg-black">
             <div
-              className="min-h-screen bg-cover bg-center opacity-30"
+              className="min-h-screen bg-cover bg-center"
               style={{
-                backgroundImage: `url(${BlackGlobe})`,
-                filter: 'invert(100%)',
+                backgroundImage: `url(${globePic})`,
+                //filter: 'invert(100%)',
               }}
             />
           </div>
         )}
-        {/* Subtle gradient overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
       </div>
 
       {/* Toggle button */}
