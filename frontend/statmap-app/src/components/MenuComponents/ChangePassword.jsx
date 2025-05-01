@@ -1,7 +1,7 @@
 import { useContext, useEffect, useRef, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
-import { SupabaseContext } from "./SupabaseContext";
+import { SupabaseContext } from "../SupabaseContext";
 import { User } from "lucide-react";
 import { motion } from 'framer-motion';
 

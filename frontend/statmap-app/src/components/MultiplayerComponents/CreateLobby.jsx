@@ -1,10 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
-import { supabase } from "./SupabaseContext";
+import { supabase } from "../SupabaseContext";
 import { useNavigate } from "react-router-dom";
 import { FaTimes } from "react-icons/fa";
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
-import Modal from "./Modal";
+import SignIn from "../MenuComponents/SignIn";
+import SignUp from "../MenuComponents/SignUp";
+import Modal from "../MenuComponents/Modal";
 import { motion } from "framer-motion";
 
 /**
@@ -33,7 +33,7 @@ function CreateLobby() {
 
   // generate 6 character code (thanks gpt)
   const generateJoinCode = () => {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const chars = "0123456789";
     return Array.from({ length: 6 }, () =>
       chars.charAt(Math.floor(Math.random() * chars.length))
     ).join("");

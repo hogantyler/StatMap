@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { SupabaseContext } from './SupabaseContext';
+import { SupabaseContext } from '../SupabaseContext';
 import { motion } from 'framer-motion';
 import {
   User,
@@ -12,7 +12,7 @@ import {
   History,
   ArrowRight,
 } from 'lucide-react';
-import { cn } from '../lib/utils';
+import { cn } from '../../lib/utils';
 
 // Animation variants
 const containerVariants = {

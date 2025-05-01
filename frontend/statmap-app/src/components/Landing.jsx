@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { Globe, ImageIcon, HelpCircle, ArrowRight } from "lucide-react";
 import BlackGlobe from "../black_globe.svg";
-import HoverDropMenu from "./HoverDropMenu";
-import Modal from "./Modal";
+import HoverDropMenu from "./MenuComponents/HoverDropMenu";
+import Modal from "./MenuComponents/Modal";
 import Loading from "./Loading";
 //import LandingGlobe from "./GlobeComponents/LandingGlobe";
 import { useNavigate } from "react-router-dom";

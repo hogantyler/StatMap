@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useGraphicsSettings } from "./GraphicsContext";
+import { useGraphicsSettings } from "../GraphicsContext";
 import { Pause, Play, RefreshCwOff, RefreshCw } from "lucide-react";
 
 const RotationButton = () => {

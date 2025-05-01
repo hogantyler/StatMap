@@ -1,5 +1,5 @@
 import React, { Suspense, useState } from "react";
-import HoverDropMenu from "../HoverDropMenu";
+import HoverDropMenu from "../MenuComponents/HoverDropMenu";
 import Loading from "../Loading";
 import GlobeTest from "./GlobeTest";
 import NightLightsEarth from "./NightLightsEarth";
