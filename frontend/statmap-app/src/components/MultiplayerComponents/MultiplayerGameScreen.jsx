@@ -82,6 +82,7 @@ const MultiplayerGameScreenContent = () => {
       }
     }
   };
+
   useEffect(() => {
     const handleUnload = async () => {
       await removePlayerAndCleanupLobby();
@@ -141,9 +142,9 @@ const MultiplayerGameScreenContent = () => {
         setCurrentFact(lobby.questions[lobby.question_number - 1] || null);
         setTimer(
           60 -
-          Math.floor(
-            (new Date() - new Date(lobby.question_started_at)) / 1000
-          )
+            Math.floor(
+              (new Date() - new Date(lobby.question_started_at)) / 1000
+            )
         );
       }
     };
@@ -161,6 +162,7 @@ const MultiplayerGameScreenContent = () => {
           filter: `id=eq.${lobbyId}`,
         },
         ({ new: l }) => {
+          // console.log(l.quiz_complete);
           if (!l.questions || !l.questions[l.question_number - 1]) return;
           setQuestions(l.questions);
           setQuestionNumber(l.question_number);
@@ -171,6 +173,9 @@ const MultiplayerGameScreenContent = () => {
           setAttempts(0);
           setFeedback("");
           setIsCollapsed(false);
+          if (l.quiz_complete) {
+            setQuizComplete(true);
+          }
         }
       )
       // Add this in the same broadcast subscription that handles 'disband_lobby'
@@ -260,6 +265,10 @@ const MultiplayerGameScreenContent = () => {
                   .update({ last_answered: 0 })
                   .eq("lobby_id", lobbyId);
               } else {
+                await supabase
+                  .from("Lobbies")
+                  .update({ quiz_complete: true })
+                  .eq("id", lobbyId);
                 setQuizComplete(true);
               }
             }, 5000);
@@ -297,10 +306,10 @@ const MultiplayerGameScreenContent = () => {
         attempts === 0
           ? 1000
           : attempts === 1
-            ? 750
-            : attempts === 2
-              ? 500
-              : 250;
+          ? 750
+          : attempts === 2
+          ? 500
+          : 250;
       setScore((prev) => prev + points);
       setFeedback("Correct!");
       setFeedbackType("correct");
@@ -413,11 +422,13 @@ const MultiplayerGameScreenContent = () => {
   }
 
   return (
-    <Suspense fallback={
-      <div className="flex justify-center items-center min-h-screen bg-black">
-        <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin" />
-      </div>
-    }>
+    <Suspense
+      fallback={
+        <div className="flex justify-center items-center min-h-screen bg-black">
+          <div className="w-8 h-8 border-4 border-white border-t-transparent rounded-full animate-spin" />
+        </div>
+      }
+    >
       <div className="relative min-h-screen w-full">
         {/* Globe Background */}
         <Globe />
@@ -479,6 +490,7 @@ const MultiplayerGameScreenContent = () => {
                           questions: arr,
                           question_number: 1,
                           question_started_at: new Date().toISOString(),
+                          quiz_complete: false,
                         })
                         .eq("id", lobbyId);
                       await supabase
@@ -521,7 +533,9 @@ const MultiplayerGameScreenContent = () => {
           // Leaderboard Screen
           <div className="absolute inset-0 flex items-center justify-center bg-black/80 z-30">
             <div className="bg-zinc-900/80 border border-white/10 rounded-lg p-6 max-w-lg w-full text-center">
-              <h2 className="text-2xl font-bold text-white mb-4">Leaderboard</h2>
+              <h2 className="text-2xl font-bold text-white mb-4">
+                Leaderboard
+              </h2>
               <ul className="text-white/70 mb-4">
                 {players
                   .sort((a, b) => b.score - a.score)
@@ -552,7 +566,9 @@ const MultiplayerGameScreenContent = () => {
                       Score: {score}
                     </div>
                   </div>
-                  <div className="text-white/70 text-xs">Time Left: {timer}s</div>
+                  <div className="text-white/70 text-xs">
+                    Time Left: {timer}s
+                  </div>
                   <button
                     onClick={() => setIsCollapsed(!isCollapsed)}
                     className="text-white/60 hover:text-white transition-all"
@@ -577,7 +593,9 @@ const MultiplayerGameScreenContent = () => {
               <div className="mt-2 bg-zinc-900/60 backdrop-blur-sm border border-white/10 rounded-lg p-2">
                 <div className="flex flex-col gap-2">
                   <div className="flex justify-between items-center">
-                    <div className="text-white/70 text-sm">Selected Country</div>
+                    <div className="text-white/70 text-sm">
+                      Selected Country
+                    </div>
                     <div className="text-white font-medium text-sm">
                       {selectedCountry.name || "None"}
                     </div>
@@ -594,10 +612,11 @@ const MultiplayerGameScreenContent = () => {
               {/* Feedback Box */}
               {feedback && (
                 <div
-                  className={`mt-2 p-2 rounded-lg border backdrop-blur-sm flex flex-col items-center justify-center min-w-0 text-center ${feedbackType === "correct"
-                    ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
-                    : "bg-red-500/20 border-red-500/30 text-red-400"
-                    }`}
+                  className={`mt-2 p-2 rounded-lg border backdrop-blur-sm flex flex-col items-center justify-center min-w-0 text-center ${
+                    feedbackType === "correct"
+                      ? "bg-emerald-500/20 border-emerald-500/30 text-emerald-400"
+                      : "bg-red-500/20 border-red-500/30 text-red-400"
+                  }`}
                   style={{ wordWrap: "break-word", whiteSpace: "normal" }}
                 >
                   <p className="text-sm">{feedback}</p>
