@@ -134,7 +134,7 @@ const Globe = React.memo(function Globe(props) {
                             fade={true}
                         />}
 
-                    <EarthTest globeRef={globeRef} cloudsRef={cloudsRef} />}
+                    <EarthTest globeRef={globeRef} cloudsRef={cloudsRef} />
                     <AtmosphereMesh radius={1.02} />
 
                     <ConicGlobe globeRef={globeRef} isDraggingRef={isDraggingRef} geoData={geoData} />
