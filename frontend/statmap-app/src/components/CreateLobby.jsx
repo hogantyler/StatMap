@@ -33,7 +33,7 @@ function CreateLobby() {
 
   // generate 6 character code (thanks gpt)
   const generateJoinCode = () => {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+    const chars = "0123456789";
     return Array.from({ length: 6 }, () =>
       chars.charAt(Math.floor(Math.random() * chars.length))
     ).join("");
