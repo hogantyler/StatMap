@@ -10,7 +10,7 @@ import { supabase } from "../SupabaseContext";
 import { CountrySelectionProvider, useCountrySelection } from "../CountrySelectionContext";
 import { playClickSound } from "../../utils/soundUtils";
 import { cn } from "../../lib/utils";
-import RotationButton from "../RotationButton";
+import RotationButton from "./RotationButton";
 
 const Globe = React.lazy(() => import("../GlobeComponents/Globe")); // Lazy load the Globe component
 

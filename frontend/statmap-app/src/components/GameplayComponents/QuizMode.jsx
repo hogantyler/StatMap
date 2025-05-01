@@ -6,7 +6,7 @@ import Modal from "../MenuComponents/Modal";
 import { X, AlertTriangle, ArrowRight, ChevronDown, ChevronUp, ExternalLink, User } from "lucide-react";
 import Loading from "../Loading";
 import { supabase } from "../SupabaseContext";
-import RotationButton from "../RotationButton";
+import RotationButton from "./RotationButton";
 
 import {
   CountrySelectionProvider,

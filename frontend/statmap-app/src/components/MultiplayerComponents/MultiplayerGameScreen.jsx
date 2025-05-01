@@ -12,7 +12,7 @@ import {
 import { playClickSound } from "../../utils/soundUtils";
 import { ChevronDown, ChevronUp } from "lucide-react";
 import { Suspense } from "react";
-import RotationButton from "../RotationButton";
+import RotationButton from "../GameplayComponents/RotationButton";
 
 const Globe = React.lazy(() => import("../GlobeComponents/Globe"));
 
@@ -357,11 +357,7 @@ const MultiplayerGameScreenContent = () => {
   const handleBack = async () => {
     playClickSound();
     await removePlayerAndCleanupLobby(); //cleanup first
-    navigate("/", {
-      state: {
-        loadingMessage: "Returning to main menu...",
-      },
-    }); // then navigate away
+    navigate("/"); // then navigate away
   };
 
   useEffect(() => {
