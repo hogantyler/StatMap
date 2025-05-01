@@ -1,21 +1,18 @@
 import React, { useState, useEffect, Suspense, useRef, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import HoverDropMenu from "./HoverDropMenu";
+import HoverDropMenu from "../MenuComponents/HoverDropMenu";
 import { X, AlertTriangle, ArrowRight, ChevronDown, ChevronUp, ExternalLink, User } from "lucide-react";
 //import Globe from "./GlobeComponents/Globe";
 //import GlobeTest from "./TestComponents/GlobeTest"; //don't delete used for integration testing. Commented out when not testing
-import SignIn from "./SignIn";
-import SignUp from "./SignUp";
-import AccountPage from "./AccountPage";
-import Modal from "./Modal";
-import Loading from "./Loading";
-import { supabase } from "./SupabaseContext";
-import { CountrySelectionProvider, useCountrySelection } from "./CountrySelectionContext";
-import { playClickSound } from "../utils/soundUtils";
-import { cn } from "../lib/utils";
+import Modal from "../MenuComponents/Modal";
+import Loading from "../Loading";
+import { supabase } from "../SupabaseContext";
+import { CountrySelectionProvider, useCountrySelection } from "../CountrySelectionContext";
+import { playClickSound } from "../../utils/soundUtils";
+import { cn } from "../../lib/utils";
 import RotationButton from "./RotationButton";
 
-const Globe = React.lazy(() => import("./GlobeComponents/Globe")); // Lazy load the Globe component
+const Globe = React.lazy(() => import("../GlobeComponents/Globe")); // Lazy load the Globe component
 
 function UnlimitedModeContent() {
   const [isModalOpen, setIsModalOpen] = useState(false); // modal for side bar menu

@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { SupabaseContext } from './SupabaseContext';
+import { SupabaseContext } from '../SupabaseContext';
 
 /**
  * Sign In component for accounts that allows users to enter their credentials and sign in.

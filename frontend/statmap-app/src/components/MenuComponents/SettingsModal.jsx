@@ -17,9 +17,9 @@ import {
   CopyX,
   Stars,
 } from 'lucide-react';
-import { cn } from '../lib/utils';
-import { setGlobalVolume, playClickSound } from '../utils/soundUtils';
-import { useGraphicsSettings } from './GraphicsContext';
+import { cn } from '../../lib/utils';
+import { setGlobalVolume, playClickSound } from '../../utils/soundUtils';
+import { useGraphicsSettings } from '../GraphicsContext';
 
 const SettingsModal = ({ isOpen, onClose }) => {
   const [activeTab, setActiveTab] = useState('general');
