@@ -1,11 +1,14 @@
 import React, { useRef, useState, useEffect, useMemo, useCallback, memo } from "react";
-import { Canvas, useFrame, useLoader, useThree } from "@react-three/fiber";
-import { OrbitControls, Stars, Stats, Text, Billboard } from "@react-three/drei";
+import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { OrbitControls, Stars, Text, Billboard } from "@react-three/drei";
 import * as THREE from "three";
 import { Perf } from 'r3f-perf'
 import ConicGlobe from "../TestComponents/ConicGlobe";
 import AtmosphereMesh from "./AtmosphereMesh";
 import EarthTest from "../TestComponents/EarthTest";
+import GalaxyBackground from "./GalaxyBackground";
+import { useGraphicsSettings } from "../GraphicsContext";
+import geoDataUrl from '../../data/simpleCountries.geojson'; // Import the url/path to the geojson file
 
 /**
  * Ultimate graphical component containing canvas which encapsulates all the 3D graphical webgl/three.js/react-three-fiber components.
@@ -13,8 +16,10 @@ import EarthTest from "../TestComponents/EarthTest";
  * @returns A Canvas component that encapsulates all the 3D components including the globe, lights, stars, etc.
  */
 const Globe = React.memo(function Globe(props) {
-    const [showLabel, setShowLabel] = useState(true);
+    const { graphicsSettings } = useGraphicsSettings();
+    const [showLabel] = useState(true);
     const [showPerformance, setShowPerformance] = useState(false);
+    const [geoData, setGeoData] = useState(null);
 
     const globeRef = useRef();
     const cloudsRef = useRef();
@@ -22,6 +27,25 @@ const Globe = React.memo(function Globe(props) {
     const linesRef = useRef();
     const isDraggingRef = useRef(false); // For checking if the globe is being rotated
     console.log("globe render");
+
+    // Fetching the GeoJSON data using the imported URL
+    useEffect(() => {
+        //console.log(testCountries);
+        fetch(geoDataUrl)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
+            .then(data => {
+                //console.log("Fetched GeoJSON data:", data);
+                setGeoData(data);
+            })
+            .catch(error => {
+                console.error('Error fetching local GeoJSON:', error);
+            });
+    }, []);
 
     // Toggle performance monitor with key press
     useEffect(() => {
@@ -36,16 +60,18 @@ const Globe = React.memo(function Globe(props) {
     }, []);
 
 
-    function hasTouchSupport() {
+    /*function hasTouchSupport() {
         return ('maxTouchPoints' in navigator && navigator.maxTouchPoints > 0);
-    }
+    }*/
 
     // To check if the device supports touch events
-    const supportsTouch = useMemo(() => hasTouchSupport(), []);
+    //const supportsTouch = useMemo(() => hasTouchSupport(), []);
+
+    const mobileInput = useMemo(() => graphicsSettings.mobile, [graphicsSettings.mobile]);
 
     // Handlers for OrbitControls drag state
     const handleDragStart = useCallback((event) => {
-        if (supportsTouch) {
+        if (mobileInput) {
             //console.log("Touch drag start detected, ignoring handler logic.");
             isDraggingRef.current = !isDraggingRef.current;
             return; // Exit early for touch events
@@ -56,10 +82,10 @@ const Globe = React.memo(function Globe(props) {
             //console.log("dragStart " + isDraggingRef.current);
         }, 150);
         document.body.style.cursor = 'grabbing';
-    }, []);
+    }, [mobileInput]);
 
     const handleDragEnd = useCallback((event) => {
-        if (supportsTouch) {
+        if (mobileInput) {
             //console.log("Touch drag stop detected, ignoring handler logic.");
             isDraggingRef.current = !isDraggingRef.current;
             return; // Exit early for touch events
@@ -70,17 +96,18 @@ const Globe = React.memo(function Globe(props) {
             //console.log("dragEnd " + isDraggingRef.current);
         }, 150);
         document.body.style.cursor = 'auto';
-    }, []);
+    }, [mobileInput]);
 
     return (
         <div className="relative w-full h-full">
             <div className="absolute top-0 left-0 w-full h-full">
                 <Canvas
+                    gl={{ antialias: graphicsSettings.antiAliasing }}
                     camera={{ position: [0, 1, 2], near: 0.01, far: 1000 }}
                     style={{ background: "black", width: "100vw", height: "100vh" }}
                 >
                     <ambientLight intensity={0.5} />
-                    <directionalLight position={[0, 0, 4]} intensity={2} />
+                    <directionalLight position={[-30, 0, 5]} intensity={1} />
 
                     <OrbitControls
                         ref={controlsRef}
@@ -89,26 +116,31 @@ const Globe = React.memo(function Globe(props) {
                         enablePan={false}
                         minDistance={1.02}
                         maxDistance={4}
-                        zoomSpeed={0.4}
-                        rotateSpeed={0.4}
+                        zoomSpeed={0.2}
+                        rotateSpeed={0.2}
                         // Event handlers to track if globe is being rotated
                         onStart={handleDragStart}
                         onEnd={handleDragEnd}
                     />
-                    <Stars
-                        radius={200}
-                        depth={60}
-                        count={5000}
-                        factor={7}
-                        saturation={0}
-                        fade={true}
-                    />
 
-                    <EarthTest ref={globeRef} cloudsRef={cloudsRef} />
+                    {/* Conditionally render Galaxy based on settings */}
+                    {graphicsSettings.showGalaxyBackground ? <GalaxyBackground />
+                        : <Stars
+                            radius={200}
+                            depth={60}
+                            count={5000}
+                            factor={7}
+                            saturation={0}
+                            fade={true}
+                        />}
+
+                    <EarthTest globeRef={globeRef} cloudsRef={cloudsRef} />
                     <AtmosphereMesh radius={1.02} />
-                    <ConicGlobe globeRef={globeRef} isDraggingRef={isDraggingRef} />
-                    <CountryBorders globeRef={globeRef} linesRef={linesRef} />
-                    <CountryLabels globeRef={globeRef} showLabel={showLabel} />
+
+                    <ConicGlobe globeRef={globeRef} isDraggingRef={isDraggingRef} geoData={geoData} />
+                    <CountryBorders globeRef={globeRef} linesRef={linesRef} geoData={geoData} />
+                    <CountryLabels globeRef={globeRef} showLabel={showLabel} geoData={geoData} />
+
                     <RotateGlobe globeRef={globeRef} cloudsRef={cloudsRef} linesRef={linesRef} />
 
                     {/* Performance monitor (toggle with 'p' key) */}
@@ -119,23 +151,39 @@ const Globe = React.memo(function Globe(props) {
     );
 });
 
-function RotateGlobe({ globeRef, cloudsRef, linesRef, conicGlobeRef }) {
+function RotateGlobe({ globeRef, cloudsRef, linesRef }) {
+    const { graphicsSettings } = useGraphicsSettings();
+    const rotationSpeed = graphicsSettings.rotationSpeed;
+    const speedDivisor = Math.max(1, 105 - rotationSpeed);
+
+
     useFrame(({ clock }) => {
         const elapsedTime = clock.getElapsedTime();
-        globeRef.current.rotation.y = linesRef.current.rotation.y = elapsedTime / 80;
-        //linesRef.current.rotation.y = elapsedTime / 80
-        //conicGlobeRef.current.rotation.y = elapsedTime / 60;
-        cloudsRef.current.rotation.y = elapsedTime / 50;
+
+        //console.log("speedDivisor", speedDivisor);
+        //console.log("rotateSpeed", rotationSpeed);
+
+        if (rotationSpeed > 0) {
+
+            globeRef.current.rotation.y = linesRef.current.rotation.y = elapsedTime / (speedDivisor * 8 / 5);
+            //linesRef.current.rotation.y = elapsedTime / 80
+            //conicGlobeRef.current.rotation.y = elapsedTime / 60;
+            if (cloudsRef.current) {
+                cloudsRef.current.rotation.y = elapsedTime / speedDivisor;
+            }
+        }
+
     });
     return null;
 }
 
-function CountryBorders({ globeRef, linesRef }) {
-    const [geoData, setGeoData] = useState(null);
+function CountryBorders({ globeRef, linesRef, geoData }) {
+    //const [geoData, setGeoData] = useState(null);
     //const linesRef = useRef();
 
     console.log("border render");
-    useEffect(() => {
+
+    /*useEffect(() => {
         //gets geosjason data
         //https://raw.githubusercontent.com/vasturiano/three-conic-polygon-geometry/refs/heads/master/example/geojson/ne_110m_admin_0_countries.geojson
         fetch('https://raw.githubusercontent.com/vasturiano/three-conic-polygon-geometry/refs/heads/master/example/geojson/ne_110m_admin_0_countries.geojson')
@@ -144,14 +192,14 @@ function CountryBorders({ globeRef, linesRef }) {
                 setGeoData(data);
             })
             .catch(error => console.error('Error fetching GeoJSON:', error));
-    }, []);
+    }, []);*/
 
-    {/*useFrame(() => {
+    /*useFrame(() => {
         //make the lines follow the globe's rotation
         if (linesRef.current && globeRef.current) {
             linesRef.current.rotation.copy(globeRef.current.rotation);
         }
-    });*/}
+    });*/
 
     //lines and materials
     useEffect(() => {
@@ -212,8 +260,8 @@ function CountryBorders({ globeRef, linesRef }) {
     return <group ref={linesRef} />;
 }
 
-const CountryLabels = memo(function CountryLabels({ globeRef, showLabel }) {
-    const [geoData, setGeoData] = useState(null);
+const CountryLabels = memo(function CountryLabels({ globeRef, showLabel, geoData }) {
+    //const [geoData, setGeoData] = useState(null);
     const labelsRef = useRef();
     const { camera } = useThree();
     const [cameraDistance, setCameraDistance] = useState(0);
@@ -229,7 +277,7 @@ const CountryLabels = memo(function CountryLabels({ globeRef, showLabel }) {
         "Bosnia and Herzegovina": [0, -0.5, 0],
     }), []);
 
-    useEffect(() => {
+    /*useEffect(() => {
         console.log('labels fetching');
         //this is simpler more performant geojson: https://raw.githubusercontent.com/vasturiano/three-conic-polygon-geometry/refs/heads/master/example/geojson/ne_110m_admin_0_countries.geojson
         //this is more complex geojson: https://raw.githubusercontent.com/datasets/geo-countries/master/data/countries.geojson
@@ -239,7 +287,7 @@ const CountryLabels = memo(function CountryLabels({ globeRef, showLabel }) {
                 setGeoData(data);
             })
             .catch(error => console.error('Error fetching GeoJSON:', error));
-    }, []);
+    }, []);*/
 
     useFrame(() => {
         if (labelsRef.current && globeRef.current) {

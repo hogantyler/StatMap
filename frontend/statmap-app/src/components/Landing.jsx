@@ -1,17 +1,42 @@
-import React, { useContext, useEffect, useState, Suspense } from "react";
-import { FaUser, FaGlobe } from "react-icons/fa"; // Added profile icon import
-import { BsFillQuestionSquareFill, BsImage } from "react-icons/bs"; //question mark icon
+import React, { useEffect, useState } from "react";
+import { Globe, ImageIcon, HelpCircle, ArrowRight } from "lucide-react";
 import BlackGlobe from "../black_globe.svg";
 import HoverDropMenu from "./HoverDropMenu";
-import SignIn from "./SignIn";
 import Modal from "./Modal";
 import Loading from "./Loading";
-import LandingGlobe from "./GlobeComponents/LandingGlobe";
+//import LandingGlobe from "./GlobeComponents/LandingGlobe";
 import { useNavigate } from "react-router-dom";
-import SignUp from "./SignUp";
-import AccountPage from "./AccountPage";
 import { useGraphicsSettings } from "./GraphicsContext";
 import { playClickSound } from "../utils/soundUtils";
+import { motion } from "framer-motion";
+import { cn } from "../lib/utils";
+import { useLocation } from "react-router-dom";
+import { Suspense } from "react";
+
+
+const LandingGlobe = React.lazy(() => import("./GlobeComponents/LandingGlobe"));
+// Animation variants for staggered animations
+const containerVariants = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: {
+      staggerChildren: 0.1,
+    },
+  },
+};
+
+const itemVariants = {
+  hidden: { y: 20, opacity: 0 },
+  visible: {
+    y: 0,
+    opacity: 1,
+    transition: {
+      type: "spring",
+      stiffness: 100,
+    },
+  },
+};
 
 /**
  * Landing page component that provides navigation, game modes, leaderboards, and a help modal.
@@ -19,16 +44,27 @@ import { playClickSound } from "../utils/soundUtils";
  * @returns {JSX.Element} The main landing page layout
  */
 const Landing = () => {
-  // const [modalContent, setModalContent] = useState(null); //modal content decides what is shown when modal is open
   const { graphicsSettings, updateSettings } = useGraphicsSettings();
-  const use3DGlobe = graphicsSettings.globeBackGround; //use3DGlobe is set to the value of globeBackGround in the graphicsSettings context
-  
+  const use3DGlobe = graphicsSettings.globeBackGround;
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalIcon, setModalIcon] = useState(null);
   const [modalContent, setModalContent] = useState(null);
+  const [hoveredMode, setHoveredMode] = useState(null);
+  const [typingDone, setTypingDone] = useState(false);
+  const [assetsLoaded, setAssetsLoaded] = useState(false);
 
-  const handleOpenModal = (content) => {
+  //logic for giving right loading screen message
+  const location = useLocation();
+  const loadingMessage =
+    location.state?.loadingMessage ||
+    "Welcome to StatMap, the world's next great online trivia game.";
+
+  const handleOpenModal = ({ title, icon, content }) => {
     playClickSound();
+    setModalTitle(title);
+    setModalIcon(icon);
     setModalContent(content);
     setIsModalOpen(true);
   };
@@ -38,150 +74,237 @@ const Landing = () => {
     setIsModalOpen(false);
   };
 
-  // toggleGlobeType is a function that toggles between 3D globe and 2D BlackGlobe svg for background of landing page
   const toggleGlobeType = () => {
-    //setUse3DGlobe(prev => !prev);
     updateSettings({ globeBackGround: !use3DGlobe });
   };
 
-  const [leaderboard] = useState([
-    //arbitrary leaderboard placeholder data
-    { name: "GeoMaster", score: 985 },
-    { name: "MapExpert", score: 920 },
-    { name: "CountryPro", score: 875 },
-    { name: "CapitalWhiz", score: 810 },
-  ]);
+  const handleNavigate = (path) => {
+    playClickSound();
+    navigate(path);
+  };
+
+  //attempting to load assets in background while loading screen is running
+  useEffect(() => {
+    // Simulate a delay to mimic loading assets (or wait on real setup)
+    const loadAssets = async () => {
+      await new Promise((res) => setTimeout(res, 1000));
+      setAssetsLoaded(true);
+    };
+    loadAssets();
+  }, []);
+  //show loading screen until assets are loaded and animation is done
+  if (!typingDone || !assetsLoaded) {
+    return <Loading message={loadingMessage} onComplete={() => setTypingDone(true)} />;
+  }
 
   return (
-    <div className="relative w-full h-full">
-      {/* Position background based on toggle state */}
+    <div className="relative w-full h-full bg-black">
+      {/* Background with overlay */}
       <div className="fixed top-0 left-0 w-full h-full z-0">
         {use3DGlobe ? (
-          <Suspense fallback={<Loading />}>
-            <LandingGlobe />
-          </Suspense>
+          <LandingGlobe />
         ) : (
-          <div
-            className="min-h-screen bg-cover bg-center"
-            style={{ backgroundImage: `url(${BlackGlobe})` }}
-          />
+          <div className="min-h-screen bg-black">
+            <div
+              className="min-h-screen bg-cover bg-center opacity-30"
+              style={{
+                backgroundImage: `url(${BlackGlobe})`,
+                filter: 'invert(100%)',
+              }}
+            />
+          </div>
         )}
+        {/* Subtle gradient overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent" />
       </div>
 
-      {/* Toggle button for switching between globe types */}
+      {/* Toggle button */}
       <button
         onClick={toggleGlobeType}
-        className="fixed top-4 right-4 z-50 bg-white bg-opacity-80 p-2 rounded-full shadow-lg hover:bg-opacity-100 transition-all duration-150 transform hover:scale-105 hover:shadow-lg"
+        className="fixed top-6 right-6 z-50 bg-zinc-900/80 border border-white/10 px-3 py-2 rounded-full text-white/70 hover:text-white hover:bg-zinc-800/80 transition-all duration-200"
         title={use3DGlobe ? "Switch to SVG Globe" : "Switch to 3D Globe"}
       >
-        {use3DGlobe ? <FaGlobe size={24} /> : <BsImage size={24} />}
-        {use3DGlobe ? "3D" : "2D"}
+        <div className="flex items-center gap-2">
+          {use3DGlobe ? <Globe size={16} /> : <ImageIcon size={16} />}
+          <span className="text-sm font-medium">{use3DGlobe ? "3D" : "2D"}</span>
+        </div>
       </button>
 
-      {/* Main content positioned on top of Globe */}
-      <div className="relative z-10 w-full h-full ">
-        {/* <HoverDropMenu onSignInClick={(e) => handleOpenModal(<SignIn onSignUpClick={(e) => handleOpenModal(<SignUp onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/>)} onAccountPageClick={(e) => handleOpenModal(<AccountPage onModalClose={handleCloseModal}/>)} onModalClose={handleCloseModal}/> */}
-        <HoverDropMenu />
-
-        <div className="flex flex-col justify-start items-center gap-4 p-4">
-          {/* Game Card */}
-          <div className="flex flex-col items-center gap-4 bg-white bg-opacity-50 text-black p-6 m-4 rounded-xl shadow-lg w-full max-w-[30rem] border border-gray-300">
-            <h1 className="text-3xl font-helvetica font-extrabold">STATMAP</h1>
-            <p className="text-base font-helvetica">
-              Discover fascinating facts about countries around the world.
-            </p>
-            <button
-              className="w-full bg-black text-white font-helvetica py-2 px-4 rounded-lg border border-black transform hover:scale-105 hover:shadow-lg transition-all duration-150"
-              onClick={() => {
-                playClickSound();
-                navigate("/quiz");
-              }}
-            >
-              QUIZ
-            </button>
-            <button
-              className="w-full bg-black text-white font-helvetica py-2 px-4 rounded-lg border border-black transform hover:scale-105 hover:shadow-lg transition-all duration-150"
-              onClick={() => {
-                playClickSound();
-                navigate("/unlimited");
-              }}
-            >
-              UNLIMITED
-            </button>
-            <button
-              className="w-full bg-black text-white font-helvetica py-2 px-4 rounded-lg border border-black transform hover:scale-105 hover:shadow-lg transition-all duration-150"
-              onClick={() => {
-                playClickSound();
-                navigate("/lobbyTest");
-              }}
-            >
-              MULTIPLAYER (COMING SOON)
-            </button>
-          </div>
-
-          {/* Leaderboard Card */}
-          {/* Commenting out leaderboard card until implemented
-        <div className="flex flex-col justify-center items-center bg-gradient-to-r from-white to-gray-400 p-4 rounded-lg shadow-lg">
-          <h3 className="text-xl font-semibold">LEADERBOARDS</h3>
-          <p className="text-sm mb-4">View the top players around the world.</p>
-
-          <div className="space-y-4">
-            {leaderboard.map((player, index) => (
-              <div
-                key={index}
-                className="flex justify-between items-center text-base"
-              >
-                <span className="w-6 font-medium">{index + 1}.</span>
-                <span className="flex-1 ml-2 flex items-center gap-2"> */}
-          {/*} <FaUser className="w-4 h-4" /> */} {/* Adds profile icon */}
-          {/*  {player.name}
-                </span>
-                <span className="font-medium">Score: {player.score}</span>
-              </div>
-            ))}
-          </div>
-          <button
-            className=" bg-black text-white py-2 px-4 mt-4 rounded-lg hover:bg-white hover:text-black border border-black"
-            onClick={() => alert("leaderboard in progress")}
-          >
-            VIEW
-          </button> 
-        </div> */}
+      {/* Main content */}
+      <div className="relative z-10 w-full h-full flex flex-col items-center justify-center">
+        <div className="fixed top-0 left-0 z-50">
+          <HoverDropMenu />
         </div>
 
+        <div className="max-w-screen-md w-full px-6 py-12">
+          {/* Modern title section */}
+          <motion.div
+            className="mb-16 text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white tracking-tight">
+              STAT
+              <span className="bg-clip-text text-transparent bg-gradient-to-r from-sky-400 to-blue-500">
+                MAP
+              </span>
+            </h1>
+            <p className="mt-4 text-white/60 text-lg sm:text-xl max-w-md mx-auto">
+              Discover the world through data
+            </p>
+          </motion.div>
 
+          {/* Modern menu options */}
+          <motion.div
+            className="space-y-3"
+            variants={containerVariants}
+            initial="hidden"
+            animate="visible"
+          >
+            {/* Quiz Mode */}
+            <motion.div
+              variants={itemVariants}
+              className={cn(
+                "group relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300 pointer-events-auto cursor-pointer",
+                hoveredMode === "quiz" ? "bg-zinc-900/80" : "bg-zinc-900/40"
+              )}
+              onMouseEnter={() => setHoveredMode("quiz")}
+              onMouseLeave={() => setHoveredMode(null)}
+              onClick={() => handleNavigate("/quiz")}
+            >
+              <div
+                className={cn(
+                  "absolute inset-0 bg-gradient-to-r from-sky-500/10 to-blue-500/10 opacity-0 transition-opacity duration-300",
+                  hoveredMode === "quiz" && "opacity-100"
+                )}
+              />
+              <div className="w-full p-6 flex items-center justify-between text-left">
+                <div>
+                  <h2 className="text-2xl font-medium text-white">Quiz Mode</h2>
+                  <p className="text-white/60 mt-1 max-w-md">
+                    Test your knowledge with geography challenges
+                  </p>
+                </div>
+                <div
+                  className={cn(
+                    "h-10 w-10 rounded-full flex items-center justify-center bg-sky-500/20 text-sky-400 transition-all duration-300 transform",
+                    hoveredMode === "quiz" ? "translate-x-0" : "translate-x-2 opacity-70"
+                  )}
+                >
+                  <ArrowRight size={18} />
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Unlimited Mode */}
+            <motion.div
+              variants={itemVariants}
+              className={cn(
+                "group relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300 pointer-events-auto cursor-pointer",
+                hoveredMode === "unlimited" ? "bg-zinc-900/80" : "bg-zinc-900/40"
+              )}
+              onMouseEnter={() => setHoveredMode("unlimited")}
+              onMouseLeave={() => setHoveredMode(null)}
+              onClick={() => handleNavigate("/unlimited")}
+            >
+              <div
+                className={cn(
+                  "absolute inset-0 bg-gradient-to-r from-indigo-500/10 to-purple-500/10 opacity-0 transition-opacity duration-300",
+                  hoveredMode === "unlimited" && "opacity-100"
+                )}
+              />
+              <div className="w-full p-6 flex items-center justify-between text-left">
+                <div>
+                  <h2 className="text-2xl font-medium text-white">Unlimited</h2>
+                  <p className="text-white/60 mt-1 max-w-md">
+                    Endless exploration of global statistics
+                  </p>
+                </div>
+                <div
+                  className={cn(
+                    "h-10 w-10 rounded-full flex items-center justify-center bg-indigo-500/20 text-indigo-400 transition-all duration-300 transform",
+                    hoveredMode === "unlimited" ? "translate-x-0" : "translate-x-2 opacity-70"
+                  )}
+                >
+                  <ArrowRight size={18} />
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Multiplayer Mode */}
+            <motion.div
+              variants={itemVariants}
+              className={cn(
+                "group relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300 pointer-events-auto cursor-pointer",
+                hoveredMode === "multiplayer" ? "bg-zinc-900/80" : "bg-zinc-900/40"
+              )}
+              onMouseEnter={() => setHoveredMode("multiplayer")}
+              onMouseLeave={() => setHoveredMode(null)}
+              onClick={() => handleNavigate("/lobby")}
+            >
+              <div
+                className={cn(
+                  "absolute inset-0 bg-gradient-to-r from-emerald-500/10 to-teal-500/10 opacity-0 transition-opacity duration-300",
+                  hoveredMode === "multiplayer" && "opacity-100"
+                )}
+              />
+
+              <button
+                className="w-full p-6 flex items-center justify-between text-left"
+                onClick={() => handleNavigate("/lobbyTest")}
+              >
+                <div>
+                  <h2 className="text-2xl font-medium text-white">Multiplayer</h2>
+                  <p className="text-white/60 mt-1 max-w-md">
+                    Compete with friends in real-time challenges{" "}
+                    <span className="text-xs ml-2 py-0.5 px-2 bg-white/10 rounded-full">BETA</span>
+                  </p>
+                </div>
+                <div
+                  className={cn(
+                    "h-10 w-10 rounded-full flex items-center justify-center bg-emerald-500/20 text-emerald-400 transition-all duration-300 transform",
+                    hoveredMode === "multiplayer" ? "translate-x-0" : "translate-x-2 opacity-70"
+                  )}
+                >
+                  <ArrowRight size={18} />
+                </div>
+              </button>
+            </motion.div>
+          </motion.div>
+        </div>
+
+        {/* Help button */}
         <button
-          className="fixed bottom-1 right-1 text-opacity-0 text-transparent py-2 px-4 mt-40 rounded-lg hover:text-blue-500"
-          onClick={() => navigate("/globeModeTest")}
-        >
-          GlobeModeTest
-        </button>
-
-        {/* Modal compoent that gets opened when handleOpenModal is called and displays the passed content */}
-        <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-          {modalContent}
-        </Modal>
-
-        {/* <button //calls modal to open and passes the instructions as content to display
+          className="fixed bottom-6 left-6 z-50 focus:outline-none bg-zinc-900/80 border border-white/10 p-2 rounded-full text-white/70 hover:text-white hover:bg-zinc-800/80 transition-all duration-200"
           onClick={() =>
-            handleOpenModal(
-              <div className="w-full max-w-sm p-6 bg-white rounded-lg shadow-lg">
-                <h2 className="text-xl font-semibold mb-2">Game Instructions</h2>
+            handleOpenModal({
+              title: "Game Instructions",
+              icon: HelpCircle,
+              content: (
                 <p className="text-sm">
                   Welcome to STATMAP! To play the game, you will be presented with
                   a fact or statistic about a country from our custom database.
                   Your task is to choose the correct country on the interactive globe.
-                  The game tests your knowledge of global geography and
-                  country-specific facts. Good luck and have fun!
+                  The game tests your knowledge of global geography and country-specific facts. Good luck and have fun!
                 </p>
-              </div>
-            )
+              ),
+            })
           }
-          className="fixed bottom-4 left-6 z-50 focus:outline-none"
         >
-          <BsFillQuestionSquareFill size={50} className="bg-black text-white text-opacity-75 hover:text-green-600" />
-        </button> */}
+          <HelpCircle size={20} />
+        </button>
       </div>
+
+      {/* Modal component */}
+      <Modal
+        isOpen={isModalOpen}
+        onClose={handleCloseModal}
+        title={modalTitle}
+        icon={modalIcon}
+      >
+        {modalContent}
+      </Modal>
     </div>
   );
 };
