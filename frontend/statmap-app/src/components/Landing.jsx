@@ -258,7 +258,6 @@ const Landing = () => {
                   <h2 className="text-2xl font-medium text-white">Multiplayer</h2>
                   <p className="text-white/60 mt-1 max-w-md">
                     Compete with friends in real-time challenges{" "}
-                    <span className="text-xs ml-2 py-0.5 px-2 bg-white/10 rounded-full">BETA</span>
                   </p>
                 </div>
                 <div
