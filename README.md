@@ -1,4 +1,4 @@
-# StatMap <img src="./frontend/statmap-app/public/statmaplogo.png" alt="StatMap Logo" width="120"/>
+# StatMap <img src="./frontend/statmap-app/public/statmaplogo.png" alt="StatMap Logo" width="80"/>
 
 [![Stars](https://img.shields.io/github/stars/hogantyler/StatMap.svg)](https://github.com/hogantyler/StatMap)  
 
