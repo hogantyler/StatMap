@@ -1,7 +1,8 @@
 # StatMap
 
 [![Stars](https://img.shields.io/github/stars/hogantyler/StatMap.svg)](https://github.com/hogantyler/StatMap)  
-**Live Demo:** https://statmap.world/
+
+https://statmap.world/
 
 StatMap is an interactive geography trivia game that challenges players to guess countries based on intriguing, randomly selected facts. 
 
@@ -61,4 +62,4 @@ StatMap is an interactive geography trivia game that challenges players to guess
 ```
 
 3. **Play/Test**
-Open http://localhost:3000 in your browser.
+- Open http://localhost:3000 in your browser.
