@@ -1,12 +1,12 @@
 # RULES AND INSTRUCTIONS
 
 ## RUNNING THE WEBSITE LOCALLY 
-Locate the StatMap folder (run ‘git clone https://github.com/hogantyler/StatMap/tree/dev’ in the VS Code terminal/powershell command line if uninstalled)
-Run git checkout dev
-Run git pull
-Run npm install
-Run npm start
-Open “http://localhost:3000/” in a tab
+- Locate the StatMap folder (run ‘git clone https://github.com/hogantyler/StatMap/tree/dev’ in the VS Code terminal/powershell command line if uninstalled)
+- Run git checkout dev
+- Run git pull
+- Run npm install
+- Run npm start
+- Open “http://localhost:3000/” in a tab
 
 ## WORKING ON THE PROJECT
 - Locate the StatMap folder in your preferred IDE
