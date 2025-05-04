@@ -21,7 +21,7 @@ const GraphicsContext = createContext();
 
 // Define base default settings (good for desktop)
 const desktopDefaults = {
-  polygonCount: 50,           // Range: 20-100
+  polygonCount: 40,           // Range: 20-100
   anisotropicFiltering: 4,    // Range: 0-16
   antiAliasing: false,      // Toggle: true/false
   globeBrightness: 50,        // Range: 0-100 (percentage)
