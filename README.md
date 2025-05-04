@@ -1,5 +1,7 @@
 # StatMap
 
+![StatMap Logo](./frontend/statmap-app/public/statmaplogo.png)
+
 [![Stars](https://img.shields.io/github/stars/hogantyler/StatMap.svg)](https://github.com/hogantyler/StatMap)  
 
 https://statmap.world/
