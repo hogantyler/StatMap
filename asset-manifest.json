@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/static/css/main.fc3511b3.css",
-    "main.js": "/static/js/main.b9cbe201.js",
+    "main.js": "/static/js/main.909e5ed4.js",
     "static/js/549.986fdab0.chunk.js": "/static/js/549.986fdab0.chunk.js",
     "static/js/952.bcce249f.chunk.js": "/static/js/952.bcce249f.chunk.js",
     "static/js/706.f451f776.chunk.js": "/static/js/706.f451f776.chunk.js",
@@ -17,7 +17,7 @@
     "static/media/gebco_bathy_2700x1350.jpg": "/static/media/gebco_bathy_2700x1350.46dc6f48e5b929de2ffe.jpg",
     "index.html": "/index.html",
     "main.fc3511b3.css.map": "/static/css/main.fc3511b3.css.map",
-    "main.b9cbe201.js.map": "/static/js/main.b9cbe201.js.map",
+    "main.909e5ed4.js.map": "/static/js/main.909e5ed4.js.map",
     "549.986fdab0.chunk.js.map": "/static/js/549.986fdab0.chunk.js.map",
     "952.bcce249f.chunk.js.map": "/static/js/952.bcce249f.chunk.js.map",
     "706.f451f776.chunk.js.map": "/static/js/706.f451f776.chunk.js.map",
@@ -25,6 +25,6 @@
   },
   "entrypoints": [
     "static/css/main.fc3511b3.css",
-    "static/js/main.b9cbe201.js"
+    "static/js/main.909e5ed4.js"
   ]
 }
