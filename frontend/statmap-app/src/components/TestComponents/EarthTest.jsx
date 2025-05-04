@@ -234,8 +234,11 @@ function EarthTest(props) {
                         onPointerOut={(e) => e.stopPropagation()}
                         onClick={(e) => e.stopPropagation()}
                     />
-                ) ):
-                <mesh ref={props.globeRef}>
+                )) :
+                <mesh ref={props.globeRef}
+                    onPointerOver={(e) => e.stopPropagation()}
+                    onPointerOut={(e) => e.stopPropagation()}
+                    onClick={(e) => e.stopPropagation()}>
                     <sphereGeometry args={[1, spherePolygonCount, spherePolygonCount]} />
                     <meshPhongMaterial
                         map={colorMap}
