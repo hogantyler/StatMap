@@ -16,7 +16,7 @@ const AboutUs = () => {
       <p className="text-base text-white/90">
         Check out our full source code on GitHub:&nbsp;
         <a
-          href="https://github.com/hogantyler/StatMap/tree/main"
+          href="https://github.com/hogantyler/StatMap/"
           target="_blank"
           rel="noopener noreferrer"
           className="underline text-sky-400 hover:text-sky-300 transition-colors"
