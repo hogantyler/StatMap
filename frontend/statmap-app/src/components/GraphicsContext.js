@@ -21,7 +21,7 @@ const GraphicsContext = createContext();
 
 // Define base default settings (good for desktop)
 const desktopDefaults = {
-  polygonCount: 50,           // Range: 20-100
+  polygonCount: 40,           // Range: 20-100
   anisotropicFiltering: 4,    // Range: 0-16
   antiAliasing: false,      // Toggle: true/false
   globeBrightness: 50,        // Range: 0-100 (percentage)
@@ -29,7 +29,7 @@ const desktopDefaults = {
   textColor: '#FFFFFF',       // Default white
   borderColor: '#336699',     // Default blue
   showClouds: true,           // Toggle: true/false
-  globeBackGround: true,      // Toggle: true/false
+  globeBackGround: false,      // Toggle: true/false
   showGalaxyBackground: false, // Toggle: true/false      
   showStars: true,           // Toggle: true/false
   mobile: isMobile,
@@ -42,7 +42,6 @@ const mobileDefaults = {
   anisotropicFiltering: 0,    // Disable anisotropic filtering
   antiAliasing: false,         // Ensure AA is off
   showClouds: false,          // Disable clouds by default
-  globeBackGround: false,
   showGalaxyBackground: false, // Disable galaxy background by default
   showStars: true,           // Disable stars by default
   rotationSpeed: 50,       // Optionally reduce default rotation speed
@@ -59,10 +58,10 @@ export const GraphicsContextProvider = ({ children }) => {
     try {
       const savedSettings = localStorage.getItem('graphicsSettings');
       // Merge saved settings with defaults to ensure all keys exist
-      const initialSettings = savedSettings ? (isMobile ? 
-        { ...JSON.parse(savedSettings), ...mobileDefaults } : 
-        (JSON.parse(savedSettings).mobile === isMobile ? 
-          JSON.parse(savedSettings) : 
+      const initialSettings = savedSettings ? (isMobile ?
+        { ...JSON.parse(savedSettings), ...mobileDefaults } :
+        (JSON.parse(savedSettings).mobile === isMobile ?
+          { ...JSON.parse(savedSettings), globeBackGround: false } :
           { ...JSON.parse(savedSettings), ...desktopDefaults })) : {};
       return { ...defaultSettings, ...initialSettings };
     } catch (error) {
