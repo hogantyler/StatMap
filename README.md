@@ -1,37 +1,64 @@
-# RULES AND INSTRUCTIONS
+# StatMap
 
-## RUNNING THE WEBSITE LOCALLY 
-- Locate the StatMap folder (run ‘git clone https://github.com/hogantyler/StatMap/tree/dev’ in the VS Code terminal/powershell command line if uninstalled)
-- Run git checkout dev
-- Run git pull
-- Run npm install
-- Run npm start
-- Open “http://localhost:3000/” in a tab
+[![Stars](https://img.shields.io/github/stars/hogantyler/StatMap.svg)](https://github.com/hogantyler/StatMap)  
+**Live Demo:** https://statmap.world/
 
-## WORKING ON THE PROJECT
-- Locate the StatMap folder in your preferred IDE
-- Run git branch and make sure you are on the dev branch
-- Run git pull
-- Get to work!
-- Run git push when work completed
+StatMap is an interactive geography trivia game that challenges players to guess countries based on intriguing, randomly selected facts. 
 
-## QUIZ MODE
-- To play, press the “QUIZ” button on the landing page
-- Player is given a total of 10 facts
-- Player must read the fact presented and give their best guess on what country that fact pertains to
-- Refer to scoring
+---
 
-## UNLIMITED MODE
-- To play, press the “UNLIMITED” button on the landing page
-- Player is given as many facts as are in the database
-- Player must read the fact presented and give their best guess on what country that fact pertains to
-- Refer to scoring
+## 👥 The Team
+- Tyler Hogan
+- Jun Hong
+- Fernando Garza Gonzalez
+- Dane Breaker
+- Dong Woo Lee
+- Maciej Koziol
 
-## SCORING
-- For each question, the user scores a number out of a possible 1000 points
-- For getting the question correct on the first try, 1000 points is awarded
-- Getting the question correct after a certain number of hints awards the following points:
-  - 1 hint (continent): 750
-  - 2 hints (capital city): 500
-  - 3 hints (abbreviation): 250
-- If the player still does not respond with the correct country, they are awarded 0 points for that question
+---
+
+## 🚀 Features
+
+- **Quiz Mode**  
+  Ten unique, random facts per session for a quick challenge.
+- **Unlimited Mode**  
+  Play through the entire facts database at your own pace.
+- **Multiplayer Mode**
+  Join a friend's lobby and play quiz mode vs other people in a battle royale format.
+- **Dynamic Hints**  
+  Unlock up to three hints — continent, capital city, then ISO abbreviation—to help refine your guess.
+- **Scoring System**  
+  Earn up to 1000 points per question:  
+  - Correct on first try: **1000 pts**  
+  - After 1 hint (continent): **750 pts**  
+  - After 2 hints (capital): **500 pts**  
+  - After 3 hints (abbreviation): **250 pts**  
+  - No correct guess: **0 pts**
+
+---
+
+## 🏗️ Tech Stack & Architecture
+
+- **Frontend**: React and Three.js
+- **Backend**: Supabase and PostgreSQL
+- **Data**: CSV file, facts harvested from Wikipedia via chatGPT API using Python scripts
+
+---
+
+## ⚙️ Installation & Setup
+
+1. **Clone the repo**  
+ ```bash
+ git clone https://github.com/hogantyler/StatMap
+ cd StatMap
+```
+
+2. **Locate folder and install npm**
+```bash
+ cd frontend/statmap-app
+ npm install
+ npm start
+```
+
+3. **Play/Test**
+Open http://localhost:3000 in your browser.
