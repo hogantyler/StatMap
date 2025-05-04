@@ -210,7 +210,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
             {activeTab === 'general' && (
               <div className="space-y-6">
                 {/* Brightness Setting */}
-                <div
+                {/*<div
                   className={cn(
                     'relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300 bg-zinc-900/40 p-5',
                     hoveredSection === 'brightness' ? 'bg-zinc-900/60' : '',
@@ -245,7 +245,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                       <span className="w-12 text-right text-white/80">{tempBrightness}%</span>
                     </div>
                   </div>
-                </div>
+                </div>*/}
 
                 {/* Sound Level Setting */}
                 <div
