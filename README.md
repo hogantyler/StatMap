@@ -1,9 +1,19 @@
 # StatMap
 
 [![Stars](https://img.shields.io/github/stars/hogantyler/StatMap.svg)](https://github.com/hogantyler/StatMap)  
-**Live Demo:** https://statmap.world/ :contentReference[oaicite:0]{index=0}
+**Live Demo:** https://statmap.world/
 
 StatMap is an interactive geography trivia game that challenges players to guess countries based on intriguing, randomly selected facts. 
+
+---
+
+## 👥 The Team
+- Tyler Hogan
+- Jun Hong
+- Fernando Garza Gonzalez
+- Dane Breaker
+- Dong Woo Lee
+- Maciej Koziol
 
 ---
 
