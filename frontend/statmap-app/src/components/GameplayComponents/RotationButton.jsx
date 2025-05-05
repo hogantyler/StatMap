@@ -34,7 +34,17 @@ const RotationButton = () => {
       className="bg-zinc-900/80 border p-2 rounded-full text-white/70 border-sky-400 hover:text-sky-400 hover:bg-zinc-800/80 transition-all duration-200"
       title={isRotating ? "Pause Rotation" : "Resume Rotation"}
     >
-      {isRotating ? <RefreshCwOff  size={20}/> : <RefreshCw size={20}/>}
+      {isRotating ? (
+        <div className="flex items-center justify-center gap-1 text-xs">
+          <span className="inline-flex items-center">Stop Spin</span>
+          <RefreshCwOff size={14} className="inline-block"/>
+        </div>
+      ) : (
+        <div className="flex items-center justify-center gap-1 text-xs">
+          <span className="inline-flex items-center">Start Spin</span>
+          <RefreshCw size={14} className="inline-block"/>
+        </div>
+      )}
     </button>
   );
 };
