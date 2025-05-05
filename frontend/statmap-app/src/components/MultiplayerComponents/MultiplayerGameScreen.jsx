@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 //import Globe from "./GlobeComponents/Globe";
-import HoverDropMenu from "../MenuComponents/HoverDropMenu";
+import SettingsButton from "../MenuComponents/SettingsButton";
 import { FaTimes } from "react-icons/fa";
 import Loading from "../Loading";
 import { supabase } from "../SupabaseContext";
@@ -449,9 +449,9 @@ const MultiplayerGameScreenContent = () => {
           <RotationButton />
         </div>
 
-        {/* Hover Menu */}
+        {/* Settings Button */}
         <div className="fixed top-0 left-0 z-50 flex items-center">
-          <HoverDropMenu />
+          <SettingsButton />
         </div>
 
         {/* Main Gameplay UI */}
