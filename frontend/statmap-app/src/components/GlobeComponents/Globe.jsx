@@ -116,8 +116,8 @@ const Globe = React.memo(function Globe(props) {
                         enablePan={false}
                         minDistance={1.02}
                         maxDistance={4}
-                        zoomSpeed={0.2}
-                        rotateSpeed={0.2}
+                        zoomSpeed={0.3}
+                        rotateSpeed={0.3}
                         // Event handlers to track if globe is being rotated
                         onStart={handleDragStart}
                         onEnd={handleDragEnd}
