@@ -210,7 +210,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
             {activeTab === 'general' && (
               <div className="space-y-6">
                 {/* Brightness Setting */}
-                <div
+                {/*<div
                   className={cn(
                     'relative overflow-hidden border border-white/10 rounded-lg transition-all duration-300 bg-zinc-900/40 p-5',
                     hoveredSection === 'brightness' ? 'bg-zinc-900/60' : '',
@@ -245,7 +245,7 @@ const SettingsModal = ({ isOpen, onClose }) => {
                       <span className="w-12 text-right text-white/80">{tempBrightness}%</span>
                     </div>
                   </div>
-                </div>
+                </div>*/}
 
                 {/* Sound Level Setting */}
                 <div
@@ -419,9 +419,59 @@ const SettingsModal = ({ isOpen, onClose }) => {
                           />
                         </div>
 
+
+
+                        {/* Globe Brightness */}
+                        {/*<div>
+                          <div className="flex items-center justify-between mb-2">
+                            <label className="text-sm text-white/70 flex items-center gap-2">
+                              <Sun size={14} className="text-white/40" />
+                              Globe Brightness
+                            </label>
+                            <span className="text-sm font-medium">{tempGraphicsSettings.globeBrightness}%</span>
+                          </div>
+                          <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            value={tempGraphicsSettings.globeBrightness}
+                            onChange={(e) =>
+                              setTempGraphicsSettings((prev) => ({
+                                ...prev,
+                                globeBrightness: Number.parseInt(e.target.value),
+                              }))
+                            }
+                            className="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer"
+                          />
+                        </div>*/}
+
+                        {/* Rotation Speed */}
+                        <div>
+                          <div className="flex items-center justify-between mb-2">
+                            <label className="text-sm text-white/70 flex items-center gap-2">
+                              <RotateCw size={14} className="text-white/40" />
+                              Rotation Speed
+                            </label>
+                            <span className="text-sm font-medium">{tempGraphicsSettings.rotationSpeed}%</span>
+                          </div>
+                          <input
+                            type="range"
+                            min="0"
+                            max="100"
+                            value={tempGraphicsSettings.rotationSpeed}
+                            onChange={(e) =>
+                              setTempGraphicsSettings((prev) => ({
+                                ...prev,
+                                rotationSpeed: Number.parseInt(e.target.value),
+                              }))
+                            }
+                            className="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer"
+                          />
+                        </div>
+
                         {/* Anti-Aliasing Toggle */}
                         <div>
-                          <div className="flex items-center justify-between pb-3">
+                          <div className="flex items-center justify-between ">
                             <div className="flex items-center gap-2">
                               <CopyX size={14} className="text-white/40" />
                               <label className="text-sm text-white/70">Anti-Aliasing</label>
@@ -446,54 +496,6 @@ const SettingsModal = ({ isOpen, onClose }) => {
                               />
                             </button>
                           </div>
-                        </div>
-
-                        {/* Globe Brightness */}
-                        <div>
-                          <div className="flex items-center justify-between mb-2">
-                            <label className="text-sm text-white/70 flex items-center gap-2">
-                              <Sun size={14} className="text-white/40" />
-                              Globe Brightness
-                            </label>
-                            <span className="text-sm font-medium">{tempGraphicsSettings.globeBrightness}%</span>
-                          </div>
-                          <input
-                            type="range"
-                            min="0"
-                            max="100"
-                            value={tempGraphicsSettings.globeBrightness}
-                            onChange={(e) =>
-                              setTempGraphicsSettings((prev) => ({
-                                ...prev,
-                                globeBrightness: Number.parseInt(e.target.value),
-                              }))
-                            }
-                            className="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer"
-                          />
-                        </div>
-
-                        {/* Rotation Speed */}
-                        <div>
-                          <div className="flex items-center justify-between mb-2">
-                            <label className="text-sm text-white/70 flex items-center gap-2">
-                              <RotateCw size={14} className="text-white/40" />
-                              Rotation Speed
-                            </label>
-                            <span className="text-sm font-medium">{tempGraphicsSettings.rotationSpeed}%</span>
-                          </div>
-                          <input
-                            type="range"
-                            min="0"
-                            max="100"
-                            value={tempGraphicsSettings.rotationSpeed}
-                            onChange={(e) =>
-                              setTempGraphicsSettings((prev) => ({
-                                ...prev,
-                                rotationSpeed: Number.parseInt(e.target.value),
-                              }))
-                            }
-                            className="w-full h-2 bg-zinc-800 rounded-lg appearance-none cursor-pointer"
-                          />
                         </div>
 
                         {/* Show Clouds Toggle */}
