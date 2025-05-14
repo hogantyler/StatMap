@@ -30,7 +30,7 @@ function UnlimitedModeContent() {
   const [assetsLoaded, setAssetsLoaded] = useState(false);
 
   // Retrieve selected country from context
-  const { selectedCountry } = useCountrySelection();
+  const { selectedCountry, selectCountry } = useCountrySelection();
   const prevSelectedCountryRef = useRef(null); // ref for tracking country selection changes
 
   // Wrap modal handlers in useCallback to avoid unnecessary re-renders
@@ -96,6 +96,7 @@ function UnlimitedModeContent() {
       } else {
         setFeedback(`Incorrect! The correct answer is ${currentFact?.Correct_Country}.`);
         setFeedbackType("incorrect");
+        selectCountry({ name: currentFact?.Correct_Country, code: currentFact?.CC_Abbrev });
         setQuestionFinished(true);
       }
       setIsAnswered(false);
