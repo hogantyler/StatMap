@@ -19,7 +19,7 @@ const Globe = React.lazy(() => import("../GlobeComponents/Globe"));
 
 const QuizModeContent = () => {
   // --- Quiz Logic States ---
-  const { selectedCountry } = useCountrySelection();
+  const { selectedCountry, selectCountry } = useCountrySelection();
   const [currentFact, setCurrentFact] = useState(null);
   const [attempts, setAttempts] = useState(0);
   const [score, setScore] = useState(0);
@@ -162,6 +162,7 @@ const QuizModeContent = () => {
       } else {
         setFeedback(`Incorrect! The correct answer is ${currentFact?.Correct_Country}.`);
         setFeedbackType("incorrect");
+        selectCountry({ name: currentFact?.Correct_Country, code: currentFact?.CC_Abbrev });
       }
       setIsAnswered(false);
     }
